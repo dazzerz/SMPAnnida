@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Annida2PPDB</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <!-- Supabase SDK & Config -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../js/supabase-config.js" defer></script>
+</head>
+<body class="bg-light">
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="../index.html" class="logo-link">
+                    <img src="../assets/logo/1.png" alt="Logo Annida2PPDB" class="logo-icon">
+                    <span class="logo-text">Annida2PPDB</span>
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="../pages/about.html">Tentang Kami</a>
+                <a href="../index.html" class="btn btn-outline">Kembali ke Beranda</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="auth-page">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>Selamat Datang</h2>
+                <p>Silakan masuk ke portal Annida2PPDB</p>
+            </div>
+            <form action="#" method="POST" id="loginForm">
+                <div class="form-group">
+                    <label for="email">Alamat Email</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Contoh: user@email.com atau admin@annida.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password Anda" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">Masuk</button>
+                
+                <div class="form-footer">
+                    <p>Lupa password? <a href="#">Klik di sini</a></p>
+                    <p>Belum punya akun? <a href="register.html">Daftar Sekarang</a></p>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Annida2PPDB Management System.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

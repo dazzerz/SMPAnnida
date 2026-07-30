@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transaksi â€” Annida2Finance</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+  <meta name="description" content="Kelola dan pantau seluruh transaksi keuangan kamu." />
+  <link rel="icon" type="image/png" href="../assets/logo/1.png" />
+  
+  
+  <!-- SheetJS untuk baca/buat Excel -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js?v=6" defer></script>
+</head>
+<body>
+  <div class="app-layout">
+
+    <!-- â”€â”€ SIDEBAR â”€â”€ -->
+      <!-- Unified Sidebar -->
+    <!-- Unified Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo-icon">ðŸ«</div>
+      <div class="sidebar-brand">SMPAnnida</div>
+    </div>
+
+    <nav>
+      <div class="nav-group">
+        <div class="nav-group-title">Main</div>
+        <a href="../../index.html" class="nav-item">ðŸ“Š Super Dashboard</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Akademik & Kesiswaan</div>
+        <a href="../../pages/academic/dashboard.html" class="nav-item">ðŸ‘¨â€ðŸŽ“ Data Siswa</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Keuangan</div>
+        <a href="../../pages/finance/transactions.html" class="nav-item">ðŸ’¸ Transaksi Kas</a>
+        <a href="../../pages/finance/budget.html" class="nav-item">ðŸŽ¯ Budget Bulanan</a>
+        <a href="../../pages/finance/rab.html" class="nav-item">ðŸ“‹ RAB Kelas</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Penerimaan (PPDB)</div>
+        <a href="../../pages/ppdb/index.html" class="nav-item">ðŸ“ Pendaftar Baru</a>
+      </div>
+    </nav>
+
+    <div style="margin-top:auto">
+      <div class="user-widget">
+        <div class="user-avatar" id="user-avatar">G</div>
+        <div style="flex:1;overflow:hidden;">
+          <div style="font-weight:600;font-size:0.9rem;white-space:nowrap;text-overflow:ellipsis;" id="nav-user-name">Guest</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;text-overflow:ellipsis;" id="nav-user-email">Belum Login</div>
+        </div>
+      </div>
+      <button class="btn btn-outline" style="width:100%;margin-top:1rem;" id="logout-btn">Keluar</button>
+    </div>
+  </aside>
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- â”€â”€ MAIN CONTENT â”€â”€ -->
+    <div class="main-content">
+      <header class="topbar">
+        <div class="flex items-center gap-md">
+          <button class="mobile-menu-btn" id="mobile-menu-btn">â˜°</button>
+          <div class="topbar-left">
+            <div class="topbar-greeting">Kelola</div>
+            <div class="topbar-title">Transaksi</div>
+          </div>
+        </div>
+          <div class="topbar-right">
+            <button class="theme-toggle" id="theme-toggle">â˜€ï¸</button>
+            <button class="btn btn-ghost btn-sm" id="import-excel-btn" style="gap:0.4rem;">ðŸ“¥ Import Excel</button>
+            <button class="btn btn-primary btn-sm" id="add-transaction-btn">ï¼‹ Tambah Transaksi</button>
+          </div>
+      </header>
+      <main class="page-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Semua Transaksi</h1>
+            <p class="page-subtitle">Catat dan pantau setiap pemasukan & pengeluaranmu</p>
+          </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+          <div class="search-input-wrapper">
+            <span class="search-icon">ðŸ”</span>
+            <input type="text" class="search-input" id="search-input" placeholder="Cari keterangan transaksi..." />
+          </div>
+          <select class="filter-select" id="filter-type">
+            <option value="">Semua Tipe</option>
+            <option value="income">ðŸ’š Pemasukan</option>
+            <option value="expense">ðŸ”´ Pengeluaran</option>
+          </select>
+          <select class="filter-select" id="filter-category">
+            <option value="">Semua Kategori</option>
+          </select>
+          <select class="filter-select" id="filter-month">
+            <option value="">Semua Bulan</option>
+          </select>
+          <select class="filter-select" id="filter-sumber-dana">
+            <option value="">Semua Sumber</option>
+            <option value="bank">ðŸ¦ Bank</option>
+            <option value="kas">ðŸ’µ Kas Tunai</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" id="clear-filter-btn">âœ• Reset</button>
+        </div>
+
+        <!-- Table -->
+        <div class="transactions-table-wrapper">
+          <table class="transactions-table" aria-label="Daftar transaksi">
+            <thead>
+              <tr>
+                <th style="width:48px;"></th>
+                <th style="width:35%;">Keterangan</th>
+                <th>Tanggal</th>
+                <th>Kategori</th>
+                <th>Tipe</th>
+                <th>Sumber</th>
+                <th>Jumlah</th>
+                <th style="width:90px;text-align:right;" id="th-aksi">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="transactions-tbody">
+              <tr>
+                <td colspan="7">
+                  <div class="empty-state" style="padding:3rem;">
+                    <div class="spinner spinner-lg"></div>
+                    <div class="empty-state-title">Memuat transaksi...</div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- Pagination -->
+          <div class="pagination">
+            <div class="pagination-info" id="pagination-info">â€”</div>
+            <div class="pagination-controls" id="pagination-controls"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- â”€â”€ TRANSACTION MODAL â”€â”€ -->
+  <div class="modal-overlay" id="transaction-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 style="font-size:1.1rem;font-weight:700;" id="modal-title">Tambah Transaksi</h2>
+        <button class="btn-icon btn-ghost" id="modal-close-btn" aria-label="Tutup">âœ•</button>
+      </div>
+      <form id="transaction-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="modal-type">Tipe</label>
+            <select class="form-select" id="modal-type" required>
+              <option value="expense">ðŸ’¸ Pengeluaran</option>
+              <option value="income">ðŸ’š Pemasukan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="modal-category">Kategori</label>
+            <select class="form-select" id="modal-category">
+              <option value="">-- Pilih Kategori --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="modal-description">Keterangan</label>
+            <input type="text" class="form-input" id="modal-description" placeholder="Contoh: Makan siang" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="modal-amount">Jumlah (Rp) *</label>
+            <input type="number" class="form-input" id="modal-amount" placeholder="0" min="1" step="any" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="modal-date">Tanggal *</label>
+            <input type="date" class="form-input" id="modal-date" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="modal-sumber-dana">Sumber Dana *</label>
+            <select class="form-select" id="modal-sumber-dana" required>
+              <option value="bank">ðŸ¦ Bank</option>
+              <option value="kas">ðŸ’µ Kas Tunai</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="modal-cancel-btn">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- â”€â”€ IMPORT EXCEL MODAL â”€â”€ -->
+  <div class="modal-overlay" id="import-modal" role="dialog" aria-modal="true" aria-labelledby="import-modal-title">
+    <div class="modal" style="max-width:680px;">
+      <div class="modal-header">
+        <h2 style="font-size:1.1rem;font-weight:700;" id="import-modal-title">ðŸ“¥ Import dari Excel</h2>
+        <button class="btn-icon btn-ghost" id="import-modal-close" aria-label="Tutup">âœ•</button>
+      </div>
+      <div class="modal-body" id="import-modal-body">
+
+        <!-- Step indicator -->
+        <div class="import-steps">
+          <div class="import-step active" id="step-1">
+            <div class="step-num">1</div> Upload File
+          </div>
+          <div class="step-divider"></div>
+          <div class="import-step" id="step-2">
+            <div class="step-num">2</div> Preview
+          </div>
+          <div class="step-divider"></div>
+          <div class="import-step" id="step-3">
+            <div class="step-num">3</div> Selesai
+          </div>
+        </div>
+
+        <!-- STEP 1: Upload & Template -->
+        <div id="import-step-1">
+          <!-- Template download banner -->
+          <div class="template-banner" style="margin-bottom:1.25rem;">
+            <div class="template-banner-text">
+              <strong>ðŸ“‹ Belum punya template?</strong>
+              Download template Excel, isi datanya, lalu upload kembali di sini.
+            </div>
+            <button class="btn btn-primary btn-sm" id="download-template-btn" style="flex-shrink:0;">
+              â¬‡ï¸ Download Template
+            </button>
+          </div>
+
+          <!-- Drop Zone -->
+          <div class="drop-zone" id="drop-zone">
+            <input type="file" id="excel-file-input" accept=".xlsx,.xls,.csv" />
+            <div class="drop-zone-icon">ðŸ“‚</div>
+            <div class="drop-zone-title">Klik atau drag & drop file Excel di sini</div>
+            <div class="drop-zone-sub">Format yang didukung: .xlsx, .xls</div>
+          </div>
+        </div>
+
+        <!-- Loading State for AI (hidden) -->
+        <div id="import-step-loading" style="display:none;text-align:center;padding:3rem 1rem;">
+          <div class="spinner" style="border: 4px solid rgba(0,0,0,0.1); width: 48px; height: 48px; border-radius: 50%; border-left-color: var(--primary-color); animation: spin 1s linear infinite; margin: 0 auto 1rem;"></div>
+          <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+          <div style="font-weight:600;font-size:1.1rem;color:var(--text-color);">Memproses File & AI...</div>
+          <div style="font-size:0.875rem;color:var(--text-muted);margin-top:0.5rem;">Sedang menebak kategori secara otomatis. Harap tunggu beberapa detik.</div>
+        </div>
+
+        <!-- STEP 2: Preview (hidden initially) -->
+        <div id="import-step-2" style="display:none;">
+          <div class="import-summary" id="import-summary">
+            <div class="import-summary-item total">
+              <div class="import-summary-num" id="summary-total">0</div>
+              <div class="import-summary-label">Total Baris</div>
+            </div>
+            <div class="import-summary-item valid">
+              <div class="import-summary-num" id="summary-valid">0</div>
+              <div class="import-summary-label">Siap Import</div>
+            </div>
+            <div class="import-summary-item warning">
+              <div class="import-summary-num" id="summary-warning">0</div>
+              <div class="import-summary-label">Peringatan</div>
+            </div>
+            <div class="import-summary-item error">
+              <div class="import-summary-num" id="summary-error">0</div>
+              <div class="import-summary-label">Error</div>
+            </div>
+          </div>
+
+          <div class="import-preview-wrapper">
+            <table class="import-preview-table">
+              <thead>
+                <tr>
+                  <th style="width:36px;"></th>
+                  <th>Tanggal</th>
+                  <th>Keterangan</th>
+                  <th>Tipe</th>
+                  <th>Kategori</th>
+                  <th style="text-align:right;">Jumlah</th>
+                </tr>
+              </thead>
+              <tbody id="import-preview-tbody"></tbody>
+            </table>
+          </div>
+
+          <p style="font-size:0.75rem;color:var(--text-muted);margin-top:0.75rem;">
+            âš ï¸ Baris dengan peringatan (kategori tidak ditemukan) tetap akan diimport tanpa kategori.<br>
+            âŒ Baris dengan error tidak akan diimport.
+          </p>
+        </div>
+
+        <!-- STEP 3: Success (hidden) -->
+        <div id="import-step-3" style="display:none;text-align:center;padding:1.5rem 0;">
+          <div style="font-size:3rem;margin-bottom:1rem;">ðŸŽ‰</div>
+          <div style="font-size:1.25rem;font-weight:700;color:var(--income-color);margin-bottom:0.5rem;" id="import-success-text">Import berhasil!</div>
+          <div style="font-size:0.875rem;color:var(--text-muted);">Data transaksi sudah tersimpan ke database.</div>
+        </div>
+
+      </div>
+      <div class="modal-footer" id="import-modal-footer">
+        <button type="button" class="btn btn-ghost" id="import-cancel-btn">Batal</button>
+        <button type="button" class="btn btn-primary" id="import-confirm-btn" style="display:none;">
+          âœ… Import <span id="import-count">0</span> Transaksi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+
+  <script type="module">
+    import supabaseClient from '../js/supabase.js';
+    import { getOptionalUser, handleLogout } from '../../js/core/auth.js';
+    import { showToast, setupThemeToggle, applySavedTheme, formatCurrency, formatDate } from '../js/utils.js';
+    import {
+      fetchCategories, fetchTransactions, addTransaction, updateTransaction,
+      deleteTransaction, renderTransactionsTable, renderPagination,
+      populateCategoryDropdown, getAllCategories
+    } from '../js/transactions.js';
+    import {
+      downloadTemplate, parseExcelFile, validateAndMapRows, bulkInsertTransactions
+    } from '../js/import.js';
+
+    const PAGE_SIZE = 10;
+    let currentPage = 1;
+    let userId = null;
+    let editingId = null;
+    let filters = { search: '', type: '', categoryId: '', month: '' };
+
+    function populateMonthFilter() {
+      const select = document.getElementById('filter-month');
+      if (!select) return;
+      const months = [];
+      const now = new Date();
+      // Generate last 12 months
+      for (let i = 0; i < 12; i++) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const val = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        const label = d.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+        months.push(`<option value="${val}">${label}</option>`);
+      }
+      select.innerHTML = `<option value="">Semua Bulan</option>` + months.join('');
+    }
+
+    async function loadTransactions() {
+      // Pass userId (even if null)
+      const { data, count } = await fetchTransactions(userId, filters, currentPage);
+      renderTransactionsTable(data, !!userId); // pass isUser to hide edit buttons
+      renderPagination(count, currentPage);
+    }
+
+    // Global pagination handler
+    window.goToPage = (page) => {
+      currentPage = page;
+      loadTransactions();
+    };
+
+    // Edit
+    window.editTransaction = async (id) => {
+      const { data } = await supabaseClient.from('transactions').select('*').eq('id', id).single();
+      if (!data) return;
+      editingId = id;
+      document.getElementById('modal-title').textContent = 'Edit Transaksi';
+      document.getElementById('modal-type').value = data.type;
+      document.getElementById('modal-description').value = data.description || '';
+      document.getElementById('modal-amount').value = data.amount;
+      document.getElementById('modal-date').value = data.date;
+      document.getElementById('modal-sumber-dana').value = data.sumber_dana || 'bank';
+      populateCategoryDropdown(data.type);
+      setTimeout(() => { document.getElementById('modal-category').value = data.category_id || ''; }, 50);
+      document.getElementById('transaction-modal').classList.add('active');
+    };
+
+    // Delete
+    window.confirmDeleteTransaction = async (id) => {
+      if (!confirm('Hapus transaksi ini?')) return;
+      try {
+        await deleteTransaction(id);
+        showToast('Transaksi dihapus.', 'success');
+        loadTransactions();
+      } catch (e) {
+        showToast('Gagal menghapus: ' + e.message, 'error');
+      }
+    };
+
+    function openModal() {
+      editingId = null;
+      document.getElementById('modal-title').textContent = 'Tambah Transaksi';
+      document.getElementById('transaction-form').reset();
+      document.getElementById('modal-date').value = new Date().toISOString().split('T')[0];
+      populateCategoryDropdown('expense');
+      document.getElementById('transaction-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('transaction-modal').classList.remove('active');
+    }
+
+    async function init() {
+      applySavedTheme();
+
+      const user = await getOptionalUser();
+      if (user) {
+        userId = user.id;
+        const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Pengguna';
+        const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        document.getElementById('user-avatar').textContent = initials;
+        document.getElementById('nav-user-name').textContent = fullName;
+        document.getElementById('nav-user-email').textContent = user.email;
+        document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
+      } else {
+        if (!sessionStorage.getItem('guest_mode_active')) {
+          window.location.href = '../login.html';
+          return;
+        }
+
+        const navEntries = performance.getEntriesByType('navigation');
+        if (navEntries.length > 0 && navEntries[0].type === 'reload') {
+          sessionStorage.removeItem('guest_stats');
+        }
+        
+        const isGuestUnlocked = !!sessionStorage.getItem('guest_stats');
+        
+        // Sembunyikan menu RAB Kelas untuk semua guest (baik terkunci maupun tidak)
+        const navRab = document.getElementById('nav-rab');
+        if (navRab) navRab.style.display = 'none';
+
+        if (!isGuestUnlocked) {
+          const container = document.querySelector('.table-container');
+          if (container) {
+            container.innerHTML = `
+              <div class="locked-overlay" style="position: relative; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid var(--border-color); margin-top: 1rem;">
+                <div style="font-size:3rem;margin-bottom:1rem;text-align:center;">ðŸ”’</div>
+                <div style="color:var(--text-primary);text-align:center;font-weight:600;font-size:1.1rem;">Privasi Terkunci</div>
+                <div style="color:var(--text-secondary);text-align:center;font-size:0.9rem;margin-bottom:1.5rem;">Silakan buka kunci angka terlebih dahulu untuk melihat transaksi.</div>
+                <a href="../index.html" class="btn btn-primary" style="text-decoration:none;">Buka Kunci di Dashboard</a>
+              </div>
+            `;
+          }
+          const pagination = document.getElementById('pagination');
+          if (pagination) pagination.style.display = 'none';
+          
+          return; // Jangan lanjutkan muat data
+        }
+        
+        // Sembunyikan tombol aksi untuk guest yang SUDAH unlock
+        const navBudget = document.getElementById('nav-budget');
+        if (navBudget) navBudget.style.display = 'none';
+        
+        const addTxBtn = document.getElementById('add-transaction-btn');
+        if (addTxBtn) addTxBtn.style.display = 'none';
+        const importBtn = document.getElementById('import-excel-btn');
+        if (importBtn) importBtn.style.display = 'none';
+        const thAksi = document.getElementById('th-aksi');
+        if (thAksi) thAksi.style.display = 'none';
+
+        document.getElementById('logout-btn').innerHTML = '<span>ðŸ”‘</span> Login';
+        document.getElementById('logout-btn').addEventListener('click', () => window.location.href = '../login.html');
+      }
+
+      // Sidebar
+      if (user) {
+        document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
+      }
+      document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+        document.getElementById('sidebar')?.classList.toggle('open');
+        document.getElementById('sidebar-overlay')?.classList.toggle('show');
+      });
+      document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
+        document.getElementById('sidebar')?.classList.remove('open');
+        document.getElementById('sidebar-overlay')?.classList.remove('show');
+      });
+
+      setupThemeToggle('theme-toggle');
+
+      // Load categories
+      const categories = await fetchCategories(userId);
+
+      // Populate category filter
+      const catFilter = document.getElementById('filter-category');
+      catFilter.innerHTML = '<option value="">Semua Kategori</option>' +
+        categories.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+
+      // Populate month filter
+      populateMonthFilter();
+      document.getElementById('filter-month').value = ''; // Default ke "Semua Bulan"
+      filters.month = '';
+
+      // Initial load
+      loadTransactions();
+
+      // Filters
+      let searchTimeout;
+      document.getElementById('search-input').addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          filters.search = e.target.value;
+          currentPage = 1;
+          loadTransactions();
+        }, 400);
+      });
+
+      document.getElementById('filter-type').addEventListener('change', (e) => {
+        filters.type = e.target.value;
+        currentPage = 1;
+        loadTransactions();
+      });
+
+      document.getElementById('filter-category').addEventListener('change', (e) => {
+        filters.categoryId = e.target.value;
+        currentPage = 1;
+        loadTransactions();
+      });
+
+      document.getElementById('filter-month').addEventListener('change', (e) => {
+        filters.month = e.target.value;
+        currentPage = 1;
+        loadTransactions();
+      });
+
+      document.getElementById('clear-filter-btn').addEventListener('click', () => {
+        filters = { search: '', type: '', categoryId: '', month: '', sumberDana: '' };
+        document.getElementById('search-input').value = '';
+        document.getElementById('filter-type').value = '';
+        document.getElementById('filter-category').value = '';
+        document.getElementById('filter-month').value = '';
+        document.getElementById('filter-sumber-dana').value = '';
+        currentPage = 1;
+        loadTransactions();
+      });
+
+      document.getElementById('filter-sumber-dana').addEventListener('change', (e) => {
+        filters.sumberDana = e.target.value;
+        currentPage = 1;
+        loadTransactions();
+      });
+
+      // Modal type change
+      document.getElementById('modal-type').addEventListener('change', (e) => {
+        populateCategoryDropdown(e.target.value);
+      });
+
+      // Form submit
+      document.getElementById('transaction-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {
+          type: document.getElementById('modal-type').value,
+          description: document.getElementById('modal-description').value.trim(),
+          amount: parseFloat(document.getElementById('modal-amount').value),
+          date: document.getElementById('modal-date').value,
+          category_id: document.getElementById('modal-category').value || null,
+          sumber_dana: document.getElementById('modal-sumber-dana').value || 'bank',
+        };
+        try {
+          if (editingId) {
+            await updateTransaction(editingId, payload);
+            showToast('Transaksi diperbarui!', 'success');
+          } else {
+            await addTransaction(userId, payload);
+            showToast('Transaksi ditambahkan!', 'success');
+          }
+          closeModal();
+          loadTransactions();
+        } catch (err) {
+          showToast('Error: ' + err.message, 'error');
+        }
+      });
+
+      // Buttons
+      document.getElementById('add-transaction-btn').addEventListener('click', openModal);
+      document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+      document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
+      document.getElementById('transaction-modal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeModal();
+      });
+
+      // â”€â”€ IMPORT EXCEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      let parsedRows = [];
+
+      function setImportStep(step) {
+        [1,2,3].forEach(n => {
+          const el = document.getElementById(`import-step-${n}`);
+          const stepEl = document.getElementById(`step-${n}`);
+          if (el) el.style.display = n === step ? (n === 3 ? 'block' : 'block') : 'none';
+          if (stepEl) {
+            stepEl.classList.remove('active','done');
+            if (n < step) stepEl.classList.add('done');
+            else if (n === step) stepEl.classList.add('active');
+          }
+        });
+      }
+
+      function openImportModal() {
+        parsedRows = [];
+        document.getElementById('import-modal').classList.add('active');
+        document.getElementById('import-confirm-btn').style.display = 'none';
+        document.getElementById('excel-file-input').value = '';
+        setImportStep(1);
+      }
+
+      function closeImportModal() {
+        document.getElementById('import-modal').classList.remove('active');
+      }
+
+      async function handleFileSelected(file) {
+        if (!file) return;
+        const btn = document.getElementById('import-confirm-btn');
+        btn.style.display = 'none';
+
+        // Show loading screen, hide step 1 and step 2
+        document.getElementById('import-step-1').style.display = 'none';
+        document.getElementById('import-step-2').style.display = 'none';
+        document.getElementById('import-step-3').style.display = 'none';
+        document.getElementById('import-step-loading').style.display = 'block';
+
+        try {
+          const rawRows = await parseExcelFile(file);
+          if (!rawRows.length) {
+            document.getElementById('import-step-loading').style.display = 'none';
+            document.getElementById('import-step-1').style.display = 'block';
+            showToast('File kosong atau tidak ada data transaksi yang valid.', 'warning'); 
+            return;
+          }
+          const categories = getAllCategories();
+          
+          parsedRows = await validateAndMapRows(rawRows, categories);
+
+          // Hide loading
+          document.getElementById('import-step-loading').style.display = 'none';
+
+          // Count
+          const total = parsedRows.length;
+          const valid = parsedRows.filter(r => r.valid).length;
+          const warnings = parsedRows.filter(r => r.errors.some(e => e.includes('tidak ditemukan'))).length;
+          const errors = parsedRows.filter(r => !r.valid).length;
+          const importable = parsedRows.filter(r => r.valid).length;
+
+          document.getElementById('summary-total').textContent = total;
+          document.getElementById('summary-valid').textContent = valid;
+          document.getElementById('summary-warning').textContent = warnings;
+          document.getElementById('summary-error').textContent = errors;
+          document.getElementById('import-count').textContent = importable;
+
+          // Render preview table
+          const tbody = document.getElementById('import-preview-tbody');
+          tbody.innerHTML = parsedRows.map(r => {
+            const hasErr = !r.valid && !r.errors.every(e => e.includes('tidak ditemukan'));
+            const hasWarn = r.errors.some(e => e.includes('tidak ditemukan'));
+            const rowClass = hasErr ? 'has-error' : (hasWarn ? 'has-warning' : '');
+            const statusIcon = hasErr ? 'âŒ' : (hasWarn ? 'âš ï¸' : 'âœ…');
+            const statusClass = hasErr ? 'err' : (hasWarn ? 'warn' : 'ok');
+            const isIncome = r.type === 'income';
+            const tooltip = r.errors.length ? r.errors.join(' | ') : '';
+            return `<tr class="${rowClass}" title="${tooltip}">
+              <td><div class="row-status ${statusClass}">${statusIcon}</div></td>
+              <td>${r.date || 'â€”'}</td>
+              <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.description || 'â€”'}</td>
+              <td><span class="badge ${isIncome ? 'badge-income' : 'badge-expense'}" style="font-size:.7rem">${isIncome ? 'â†‘ Masuk' : 'â†“ Keluar'}</span></td>
+              <td>${r.categoryIcon} ${r.categoryName}</td>
+              <td style="text-align:right;font-weight:600;color:var(--${isIncome?'income':'expense'}-color)">${isIncome?'+':'-'}${formatCurrency(r.amount)}</td>
+            </tr>`;
+          }).join('');
+
+          document.getElementById('import-confirm-btn').style.display = importable > 0 ? 'flex' : 'none';
+          setImportStep(2);
+        } catch(err) {
+          document.getElementById('import-step-loading').style.display = 'none';
+          document.getElementById('import-step-1').style.display = 'block';
+          showToast('Gagal baca file: ' + err.message, 'error');
+        }
+      }
+
+      // Drag & drop
+      const dropZone = document.getElementById('drop-zone');
+      dropZone?.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+      dropZone?.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+      dropZone?.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        const file = e.dataTransfer?.files?.[0];
+        if (file) handleFileSelected(file);
+      });
+
+      document.getElementById('excel-file-input')?.addEventListener('change', e => {
+        handleFileSelected(e.target.files?.[0]);
+      });
+
+      // Download template
+      document.getElementById('download-template-btn')?.addEventListener('click', () => {
+        downloadTemplate(getAllCategories());
+      });
+
+      // Confirm import
+      document.getElementById('import-confirm-btn')?.addEventListener('click', async () => {
+        const toImport = parsedRows.filter(r => r.valid);
+        if (!toImport.length) { showToast('Tidak ada data yang bisa diimport.', 'warning'); return; }
+        const btn = document.getElementById('import-confirm-btn');
+        btn.disabled = true;
+        btn.textContent = 'â³ Mengimport...';
+        try {
+          await bulkInsertTransactions(userId, toImport);
+          document.getElementById('import-success-text').textContent =
+            `${toImport.length} transaksi berhasil diimport! ðŸŽ‰`;
+          setImportStep(3);
+          document.getElementById('import-confirm-btn').style.display = 'none';
+          document.getElementById('import-cancel-btn').textContent = 'Tutup';
+          showToast(`${toImport.length} transaksi berhasil diimport!`, 'success');
+          loadTransactions();
+        } catch(err) {
+          console.error("Insert error:", err);
+          alert("GAGAL MENYIMPAN KE DATABASE:\\n\\n" + (err.message || JSON.stringify(err)));
+          showToast('Gagal import: ' + err.message, 'error');
+          btn.disabled = false;
+          btn.innerHTML = `âœ… Import <span id="import-count">${toImport.length}</span> Transaksi`;
+        }
+      });
+
+      document.getElementById('import-excel-btn')?.addEventListener('click', openImportModal);
+      document.getElementById('import-modal-close')?.addEventListener('click', closeImportModal);
+      document.getElementById('import-cancel-btn')?.addEventListener('click', closeImportModal);
+      document.getElementById('import-modal')?.addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeImportModal();
+      });
+    }
+
+    init();
+  </script>
+
+</body>
+</html>

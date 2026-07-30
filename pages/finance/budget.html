@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Budget â€” Annida2Finance</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+  <meta name="description" content="Atur dan kelola budget bulanan kamu." />
+  <link rel="icon" type="image/png" href="../assets/logo/1.png" />
+  
+  
+  
+</head>
+<body>
+  <div class="app-layout">
+
+    <!-- â”€â”€ SIDEBAR â”€â”€ -->
+      <!-- Unified Sidebar -->
+    <!-- Unified Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo-icon">ðŸ«</div>
+      <div class="sidebar-brand">SMPAnnida</div>
+    </div>
+
+    <nav>
+      <div class="nav-group">
+        <div class="nav-group-title">Main</div>
+        <a href="../../index.html" class="nav-item">ðŸ“Š Super Dashboard</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Akademik & Kesiswaan</div>
+        <a href="../../pages/academic/dashboard.html" class="nav-item">ðŸ‘¨â€ðŸŽ“ Data Siswa</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Keuangan</div>
+        <a href="../../pages/finance/transactions.html" class="nav-item">ðŸ’¸ Transaksi Kas</a>
+        <a href="../../pages/finance/budget.html" class="nav-item">ðŸŽ¯ Budget Bulanan</a>
+        <a href="../../pages/finance/rab.html" class="nav-item">ðŸ“‹ RAB Kelas</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Penerimaan (PPDB)</div>
+        <a href="../../pages/ppdb/index.html" class="nav-item">ðŸ“ Pendaftar Baru</a>
+      </div>
+    </nav>
+
+    <div style="margin-top:auto">
+      <div class="user-widget">
+        <div class="user-avatar" id="user-avatar">G</div>
+        <div style="flex:1;overflow:hidden;">
+          <div style="font-weight:600;font-size:0.9rem;white-space:nowrap;text-overflow:ellipsis;" id="nav-user-name">Guest</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;text-overflow:ellipsis;" id="nav-user-email">Belum Login</div>
+        </div>
+      </div>
+      <button class="btn btn-outline" style="width:100%;margin-top:1rem;" id="logout-btn">Keluar</button>
+    </div>
+  </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- â”€â”€ MAIN CONTENT â”€â”€ -->
+    <div class="main-content">
+      <header class="topbar">
+        <div class="flex items-center gap-md">
+          <button class="mobile-menu-btn" id="mobile-menu-btn">â˜°</button>
+          <div class="topbar-left">
+            <div class="topbar-greeting">Kelola</div>
+            <div class="topbar-title">Budget Bulanan</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button class="theme-toggle" id="theme-toggle">â˜€ï¸</button>
+          <button class="btn btn-primary btn-sm" id="add-budget-btn">ï¼‹ Tambah Budget</button>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Anggaran Bulanan</h1>
+            <p class="page-subtitle">Atur berapa banyak kamu boleh belanjakan per kategori</p>
+          </div>
+          <!-- Month selector -->
+          <div class="flex items-center gap-md">
+            <input type="month" class="filter-select" id="budget-month" style="color:var(--text-secondary);" />
+          </div>
+        </div>
+
+        <!-- Budget Summary Banner -->
+        <div class="budget-summary" id="budget-banner">
+          <div class="budget-summary-title">Total Budget Bulan Ini</div>
+          <div class="budget-summary-value" id="budget-total-amount">Rp0</div>
+          <div class="budget-summary-sub" id="budget-total-spent">Rp0 telah digunakan</div>
+        </div>
+
+        <!-- Budget Cards Grid -->
+        <div class="budget-grid stagger" id="budget-grid">
+          <div class="empty-state" style="grid-column:1/-1;padding:3rem;">
+            <div class="spinner spinner-lg"></div>
+            <div class="empty-state-title">Memuat budget...</div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- â”€â”€ ADD/EDIT BUDGET MODAL â”€â”€ -->
+  <div class="modal-overlay" id="budget-modal" role="dialog" aria-modal="true" aria-labelledby="budget-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 style="font-size:1.1rem;font-weight:700;" id="budget-modal-title">Tambah Budget</h2>
+        <button class="btn-icon btn-ghost" id="budget-modal-close" aria-label="Tutup">âœ•</button>
+      </div>
+      <form id="budget-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="budget-category-select">Kategori Pengeluaran</label>
+            <select class="form-select" id="budget-category-select" required>
+              <option value="">-- Pilih Kategori --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="budget-amount">Batas Budget (Rp) *</label>
+            <input type="number" class="form-input" id="budget-amount" placeholder="Contoh: 500000" min="1000" step="any" required />
+          </div>
+          <div style="font-size:0.8rem;color:var(--text-muted);padding:0.5rem 0;">
+            ðŸ’¡ Jika budget untuk kategori ini sudah ada di bulan yang dipilih, nilai akan diperbarui.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="budget-modal-cancel">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Budget</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <script type="module">
+    import { getOptionalUser, handleLogout } from '../../js/core/auth.js';
+    import { showToast, setupThemeToggle, applySavedTheme, formatCurrency } from '../js/utils.js';
+    import { fetchCategories } from '../js/transactions.js';
+    import {
+      fetchBudgets, fetchBudgetSpending, upsertBudget, deleteBudget,
+      renderBudgetCards, updateBudgetSummary
+    } from '../js/budget.js';
+
+    let userId = null;
+    let editingBudgetId = null;
+    let currentYear, currentMonth;
+
+    async function loadBudgets() {
+      const budgets = await fetchBudgets(userId, currentYear, currentMonth);
+      const spending = await fetchBudgetSpending(userId, currentYear, currentMonth);
+      renderBudgetCards(budgets, spending, !!userId);
+      updateBudgetSummary(budgets, spending);
+    }
+
+    window.editBudget = (id, categoryId, amount) => {
+      editingBudgetId = id;
+      document.getElementById('budget-modal-title').textContent = 'Edit Budget';
+      document.getElementById('budget-category-select').value = categoryId;
+      document.getElementById('budget-amount').value = amount;
+      document.getElementById('budget-modal').classList.add('active');
+    };
+
+    window.confirmDeleteBudget = async (id) => {
+      if (!confirm('Hapus budget ini?')) return;
+      try {
+        await deleteBudget(id);
+        showToast('Budget dihapus.', 'success');
+        loadBudgets();
+      } catch (e) {
+        showToast('Gagal menghapus budget.', 'error');
+      }
+    };
+
+    async function init() {
+      applySavedTheme();
+
+      const user = await getOptionalUser();
+      if (user) {
+        userId = user.id;
+        const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Pengguna';
+        const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        document.getElementById('user-avatar').textContent = initials;
+        document.getElementById('nav-user-name').textContent = fullName;
+        document.getElementById('nav-user-email').textContent = user.email;
+        document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
+      } else {
+        if (!sessionStorage.getItem('guest_mode_active')) {
+          window.location.href = '../login.html';
+          return;
+        }
+
+        const navEntries = performance.getEntriesByType('navigation');
+        if (navEntries.length > 0 && navEntries[0].type === 'reload') {
+          sessionStorage.removeItem('guest_stats');
+        }
+        
+        const isGuestUnlocked = !!sessionStorage.getItem('guest_stats');
+        
+        // Sembunyikan menu RAB Kelas untuk guest
+        const navRab = document.getElementById('nav-rab');
+        if (navRab) navRab.style.display = 'none';
+
+        if (!isGuestUnlocked) {
+          const container = document.querySelector('.table-container') || document.querySelector('.budget-list-container');
+          if (container) {
+            container.innerHTML = `
+              <div class="locked-overlay" style="position: relative; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid var(--border-color); margin-top: 1rem;">
+                <div style="font-size:3rem;margin-bottom:1rem;text-align:center;">ðŸ”’</div>
+                <div style="color:var(--text-primary);text-align:center;font-weight:600;font-size:1.1rem;">Privasi Terkunci</div>
+                <div style="color:var(--text-secondary);text-align:center;font-size:0.9rem;margin-bottom:1.5rem;">Silakan buka kunci angka terlebih dahulu untuk melihat budget.</div>
+                <a href="../index.html" class="btn btn-primary" style="text-decoration:none;">Buka Kunci di Dashboard</a>
+              </div>
+            `;
+          }
+          return; // Jangan muat data budget
+        }
+        
+        // Sembunyikan tombol tambah budget untuk guest yang sudah unlock
+        const addBtn = document.getElementById('add-budget-btn');
+        if (addBtn) addBtn.style.display = 'none';
+        
+        document.getElementById('logout-btn').innerHTML = '<span>ðŸ”‘</span> Login';
+        document.getElementById('logout-btn').addEventListener('click', () => window.location.href = '../login.html');
+      }
+
+      // Sidebar
+      document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+        document.getElementById('sidebar')?.classList.toggle('open');
+        document.getElementById('sidebar-overlay')?.classList.toggle('show');
+      });
+      document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
+        document.getElementById('sidebar')?.classList.remove('open');
+        document.getElementById('sidebar-overlay')?.classList.remove('show');
+      });
+
+      setupThemeToggle('theme-toggle');
+
+      // Populate Category Dropdown
+      const cats = await fetchCategories(userId);
+      const catSelect = document.getElementById('budget-category-select');
+      const expCats = cats.filter(c => c.type === 'expense');
+      catSelect.innerHTML = '<option value="">-- Pilih Kategori --</option>' +
+        expCats.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+
+      // Month Selector
+      const now = new Date();
+      currentYear = now.getFullYear();
+      currentMonth = now.getMonth() + 1;
+      const mm = String(currentMonth).padStart(2, '0');
+      document.getElementById('budget-month').value = `${currentYear}-${mm}`;
+
+      document.getElementById('budget-month').addEventListener('change', (e) => {
+        if (!e.target.value) return;
+        const [y, m] = e.target.value.split('-');
+        currentYear = parseInt(y);
+        currentMonth = parseInt(m);
+        loadBudgets();
+      });
+
+      // Load budgets
+      loadBudgets();
+
+      function openBudgetModal() {
+        editingBudgetId = null;
+        document.getElementById('budget-modal-title').textContent = 'Tambah Budget';
+        document.getElementById('budget-form').reset();
+        document.getElementById('budget-modal').classList.add('active');
+      }
+
+      function closeBudgetModal() {
+        document.getElementById('budget-modal').classList.remove('active');
+      }
+
+      // Budget form submit
+      document.getElementById('budget-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const categoryId = document.getElementById('budget-category-select').value;
+        const amount = parseFloat(document.getElementById('budget-amount').value);
+        if (!categoryId || !amount) {
+          showToast('Lengkapi semua kolom.', 'warning');
+          return;
+        }
+        try {
+          await upsertBudget(userId, categoryId, amount, currentMonth, currentYear);
+          showToast('Budget berhasil disimpan!', 'success');
+          closeBudgetModal();
+          loadBudgets();
+        } catch (err) {
+          showToast('Gagal menyimpan: ' + err.message, 'error');
+        }
+      });
+
+      const addBudgetBtn = document.getElementById('add-budget-btn');
+      if (addBudgetBtn) addBudgetBtn.addEventListener('click', openBudgetModal);
+      
+      document.getElementById('budget-modal-close').addEventListener('click', closeBudgetModal);
+      document.getElementById('budget-modal-cancel').addEventListener('click', closeBudgetModal);
+      document.getElementById('budget-modal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeBudgetModal();
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>

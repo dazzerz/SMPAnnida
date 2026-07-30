@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Annida2PPDB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <!-- Supabase SDK & Config -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../js/supabase-config.js" defer></script>
+    <script src="../js/db.js" defer></script>
+    <style>
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        
+        /* Split view styling for Doc Verification */
+        .split-view {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .split-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .split-right {
+            flex: 1.5;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .preview-box {
+            width: 100%;
+            height: 250px;
+            background-color: var(--bg-light);
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        /* Calculator Styles */
+        .calc-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .calc-header {
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <a href="../index.html" class="logo-link">
+                <img src="../assets/logo/1.png" alt="Logo Annida2PPDB" class="logo-icon" style="max-height: 40px;">
+                <span class="logo-text" style="font-size: 1.2rem; font-weight: 700; color: var(--primary-color);">Annida2PPDB</span>
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="tab-trigger active" data-target="admin-dashboard">Dashboard Utama</a>
+            <a href="#" class="tab-trigger" data-target="admin-pendaftar">Data Pendaftar (SMP)</a>
+            <a href="#" class="tab-trigger" data-target="admin-verifikasi">Verifikasi Dokumen</a>
+            <a href="#" class="tab-trigger" data-target="admin-pembayaran">Verifikasi Pembayaran</a>
+            <a href="#" class="tab-trigger" data-target="admin-seleksi">Proses Seleksi</a>
+            <a href="about.html" style="margin-top: 20px;">Tentang Kami</a>
+            <a href="../index.html" class="logout-btn" style="margin-top: auto;">Keluar</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <h2>Admin PPDB Panel</h2>
+                <p>Gelombang 1 - SMP Sekolah Alam + Tahfidz 2026/2027</p>
+            </div>
+            <div class="user-profile">
+                <span>Super Admin</span>
+                <div class="user-avatar" style="background-color: var(--secondary-color); color: white;">SA</div>
+            </div>
+        </header>
+
+        <!-- TAB 1: DASHBOARD UTAMA -->
+        <div id="tab-admin-dashboard" class="tab-panel active">
+            <!-- KPI Cards -->
+            <section class="dashboard-cards">
+                <div class="dash-card">
+                    <div class="dash-card-title">Total Pendaftar</div>
+                    <div class="dash-card-value highlight" id="kpi-total">128</div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card-title">Menunggu Verifikasi</div>
+                    <div class="dash-card-value" style="color: #c05621;" id="kpi-verif">45</div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card-title">Menunggu Seleksi</div>
+                    <div class="dash-card-value" style="color: #3182ce;" id="kpi-seleksi">60</div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-card-title">Lulus Diterima</div>
+                    <div class="dash-card-value" style="color: #38a169;" id="kpi-lulus">23</div>
+                </div>
+            </section>
+
+            <div class="card" style="border-left: 5px solid var(--primary-color);">
+                <h3>Integrasi Sistem Core (Academic-Centric)</h3>
+                <p>Seluruh data pendaftar yang statusnya disetujui untuk **Daftar Ulang** akan langsung disinkronkan ke **Modul Akademik**. Sistem Keuangan (Finance) hanya akan melacak tagihan bulanan (SPP) berdasarkan data siswa aktif dari modul akademik pusat tersebut.</p>
+            </div>
+        </div>
+
+        <!-- TAB 2: DATA PENDAFTAR -->
+        <div id="tab-admin-pendaftar" class="tab-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3>Data Pendaftaran SMP Sekolah Alam + Tahfidz</h3>
+                <button class="btn btn-primary btn-sm" onclick="alert('Export PDF/Excel Berhasil didownload!')">Export Data</button>
+            </div>
+            
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No. Pendaftaran</th>
+                            <th>Nama Lengkap</th>
+                            <th>Jalur</th>
+                            <th>Tipe Program</th>
+                            <th>Status Pendaftaran</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-pendaftar-body">
+                        <tr>
+                            <td><strong>REG-2026-001</strong></td>
+                            <td>Ahmad Fulan</td>
+                            <td>Reguler</td>
+                            <td>Sekolah Saja</td>
+                            <td><span class="status-badge status-verifikasi">Menunggu Verifikasi</span></td>
+                            <td><a href="#" class="tab-trigger" data-target="admin-verifikasi" style="font-weight:600; color:var(--primary-color);">Periksa Berkas</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>REG-2026-002</strong></td>
+                            <td>Budi Santoso</td>
+                            <td>Tahfidz</td>
+                            <td>Sekolah + Pondok</td>
+                            <td><span class="status-badge status-verifikasi">Menunggu Verifikasi</span></td>
+                            <td><a href="#" class="tab-trigger" data-target="admin-verifikasi" style="font-weight:600; color:var(--primary-color);">Periksa Berkas</a></td>
+                        </tr>
+                        <tr>
+                            <td><strong>REG-2026-003</strong></td>
+                            <td>Siti Aminah</td>
+                            <td>Prestasi</td>
+                            <td>Sekolah Saja</td>
+                            <td><span class="status-badge status-lulus">Lulus - Daftar Ulang</span></td>
+                            <td><a href="#" class="tab-trigger" data-target="admin-seleksi" style="font-weight:600; color:var(--primary-color);">Lihat Nilai</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 3: VERIFIKASI BERKAS (SPLIT VIEW) -->
+        <div id="tab-admin-verifikasi" class="tab-panel">
+            <h3>Verifikasi Dokumen Masuk</h3>
+            <p>Pilih pendaftar untuk memverifikasi dokumen persyaratan mereka.</p>
+            
+            <div class="split-view">
+                <!-- Left List -->
+                <div class="split-left">
+                    <div class="card doc-item" style="cursor: pointer; border-left: 4px solid var(--primary-color);" onclick="showDocPreview('Ahmad Fulan', 'Kartu Keluarga (KK)', 'kk-fulan.png')">
+                        <div>
+                            <strong>Ahmad Fulan</strong>
+                            <p style="font-size:0.85rem; color: var(--text-muted);">KK & Akta Kelahiran</p>
+                        </div>
+                        <span class="status-badge status-verifikasi">Perlu Review</span>
+                    </div>
+                    
+                    <div class="card doc-item" style="cursor: pointer;" onclick="showDocPreview('Budi Santoso', 'Rapor SD / MI', 'rapor-budi.png')">
+                        <div>
+                            <strong>Budi Santoso</strong>
+                            <p style="font-size:0.85rem; color: var(--text-muted);">Rapor & KTP Ortu</p>
+                        </div>
+                        <span class="status-badge status-verifikasi">Perlu Review</span>
+                    </div>
+                </div>
+                
+                <!-- Right Preview & Actions -->
+                <div class="split-right" id="doc-preview-panel">
+                    <h4 id="preview-student-name" style="margin-bottom:5px;">Pilih Berkas Calon Siswa</h4>
+                    <p style="font-size:0.9rem; color:var(--text-muted);" id="preview-doc-title">Detail berkas scan akan tampil di sini.</p>
+                    
+                    <div class="preview-box" id="preview-img-box">
+                        <span>Tidak ada file yang dipilih</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Catatan/Revisi untuk Pendaftar (Opsional)</label>
+                        <textarea class="form-control" rows="2" placeholder="Tulis catatan jika dokumen ditolak/revisi"></textarea>
+                    </div>
+                    
+                    <div style="display:flex; gap:15px;">
+                        <button class="btn btn-primary" onclick="verifyDocumentAction('Approve')" style="flex:1;">Setujui Berkas</button>
+                        <button class="btn btn-outline" onclick="verifyDocumentAction('Reject')" style="flex:1; border-color:#e53e3e; color:#e53e3e;">Tolak / Butuh Revisi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: VERIFIKASI PEMBAYARAN -->
+        <div id="tab-admin-pembayaran" class="tab-panel">
+            <h3>Persetujuan Bukti Transfer Pembayaran</h3>
+            <p>Verifikasi bukti transfer dari calon pendaftar untuk meneruskan ke proses seleksi.</p>
+            
+            <div class="table-container" style="margin-top: 20px;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No. Pendaftaran</th>
+                            <th>Nama Lengkap</th>
+                            <th>Tipe Program</th>
+                            <th>Total Tagihan</th>
+                            <th>Bukti Transfer</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="pay-row-1">
+                            <td><strong>REG-2026-001</strong></td>
+                            <td>Ahmad Fulan</td>
+                            <td>Sekolah Saja</td>
+                            <td>Rp 250.000</td>
+                            <td><a href="#" onclick="alert('Membuka file: bukti-transfer-fulan.jpg')" style="color: var(--primary-color); font-weight:600;">Lihat Bukti</a></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="verifyPaymentAction(1)">Verifikasi Lunas</button>
+                            </td>
+                        </tr>
+                        <tr id="pay-row-2">
+                            <td><strong>REG-2026-002</strong></td>
+                            <td>Budi Santoso</td>
+                            <td>Sekolah + Pondok</td>
+                            <td>Rp 500.000</td>
+                            <td><a href="#" onclick="alert('Membuka file: bukti-transfer-budi.jpg')" style="color: var(--primary-color); font-weight:600;">Lihat Bukti</a></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="verifyPaymentAction(2)">Verifikasi Lunas</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 5: PROSES SELEKSI (CALCULATOR & RANKING) -->
+        <div id="tab-admin-seleksi" class="tab-panel">
+            <h3>Input Nilai Seleksi & Penilaian Akhir</h3>
+            <p>Masukkan nilai komponen seleksi untuk menghitung ranking kelulusan secara otomatis.</p>
+            
+            <div class="split-view">
+                <!-- Left Input Form -->
+                <div class="split-left" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding:30px; box-shadow: var(--shadow-sm);">
+                    <h4 style="margin-bottom:20px;">Kalkulator Nilai</h4>
+                    
+                    <div class="form-group">
+                        <label>Pilih Calon Siswa</label>
+                        <select class="form-control" id="seleksi-student-select">
+                            <option value="Ahmad Fulan">Ahmad Fulan</option>
+                            <option value="Budi Santoso">Budi Santoso</option>
+                        </select>
+                    </div>
+
+                    <div class="calc-header calc-row">
+                        <span>Komponen</span>
+                        <span>Bobot</span>
+                        <span>Nilai (0-100)</span>
+                    </div>
+
+                    <div class="calc-row">
+                        <span>Tes Akademik</span>
+                        <span>40%</span>
+                        <input type="number" class="form-control val-input" id="val-akademik" min="0" max="100" value="80">
+                    </div>
+                    <div class="calc-row">
+                        <span>Tahfidz</span>
+                        <span>30%</span>
+                        <input type="number" class="form-control val-input" id="val-tahfidz" min="0" max="100" value="85">
+                    </div>
+                    <div class="calc-row">
+                        <span>Wawancara / Interview</span>
+                        <span>20%</span>
+                        <input type="number" class="form-control val-input" id="val-interview" min="0" max="100" value="90">
+                    </div>
+                    <div class="calc-row">
+                        <span>Administrasi</span>
+                        <span>10%</span>
+                        <input type="number" class="form-control val-input" id="val-admin" min="0" max="100" value="95">
+                    </div>
+                    
+                    <div style="margin-top: 20px; font-weight:700; font-size:1.1rem; color:var(--primary-color);">
+                        Nilai Akhir Terkalkulasi: <span id="calculated-total-score">84.5</span>
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%; margin-top:20px;" onclick="saveSeleksiGrade()">Simpan & Update Ranking</button>
+                </div>
+
+                <!-- Right Ranking list -->
+                <div class="split-right">
+                    <h4 style="margin-bottom:20px;">Tabel Hasil Peringkat Seleksi</h4>
+                    <div class="table-container">
+                        <table class="data-table" style="font-size: 0.9rem;">
+                            <thead>
+                                <tr>
+                                    <th>Peringkat</th>
+                                    <th>Nama Siswa</th>
+                                    <th>Nilai Akhir</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ranking-table-body">
+                                <tr>
+                                    <td><strong>#1</strong></td>
+                                    <td>Siti Aminah</td>
+                                    <td><strong>89.0</strong></td>
+                                    <td><button class="btn btn-outline btn-sm" style="border-color:#38a169; color:#38a169;" onclick="activateToAcademic('Siti Aminah')">Aktivasi Akademik</button></td>
+                                </tr>
+                                <tr id="rank-row-Ahmad-Fulan">
+                                    <td><strong>#2</strong></td>
+                                    <td>Ahmad Fulan</td>
+                                    <td id="score-Ahmad-Fulan"><strong>84.5</strong></td>
+                                    <td><button class="btn btn-outline btn-sm" style="border-color:#38a169; color:#38a169;" onclick="activateToAcademic('Ahmad Fulan')">Aktivasi Akademik</button></td>
+                                </tr>
+                                <tr id="rank-row-Budi-Santoso" style="display:none;">
+                                    <td><strong>#3</strong></td>
+                                    <td>Budi Santoso</td>
+                                    <td id="score-Budi-Santoso"><strong>0.0</strong></td>
+                                    <td><button class="btn btn-outline btn-sm" style="border-color:#38a169; color:#38a169;" onclick="activateToAcademic('Budi Santoso')">Aktivasi Akademik</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="../js/script.js"></script>
+    <script>
+        // High fidelity interactive functions for admin dashboard mock
+
+        // 1. Doc Verification Split-View Mock
+        function showDocPreview(student, docName, file) {
+            document.getElementById('preview-student-name').innerText = student;
+            document.getElementById('preview-doc-title').innerText = docName;
+            document.getElementById('preview-img-box').innerHTML = `
+                <div style="text-align:center;">
+                    <span style="font-size:3rem; display:block;">ðŸ“„</span>
+                    <strong>${file}</strong>
+                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">[Klik Setujui Berkas di bawah untuk memproses]</p>
+                </div>
+            `;
+        }
+
+        function verifyDocumentAction(action) {
+            const student = document.getElementById('preview-student-name').innerText;
+            if (student === "Pilih Berkas Calon Siswa") {
+                alert("Silakan pilih berkas pendaftar di sebelah kiri terlebih dahulu.");
+                return;
+            }
+            alert(`Dokumen pendaftaran atas nama ${student} telah di- ${action === 'Approve' ? 'Setujui' : 'Tolak untuk Revisi'}!`);
+        }
+
+        // 2. Payment Verify Mock
+        function verifyPaymentAction(rowId) {
+            const row = document.getElementById(`pay-row-${rowId}`);
+            if (row) {
+                row.style.opacity = '0.5';
+                row.querySelector('button').disabled = true;
+                row.querySelector('button').innerText = 'âœ“ Terverifikasi';
+                row.querySelector('button').style.backgroundColor = '#38a169';
+                
+                // Update KPI Card Lulus Mock
+                const kpiLulus = document.getElementById('kpi-lulus');
+                let count = parseInt(kpiLulus.innerText);
+                kpiLulus.innerText = count + 1;
+                
+                alert("Verifikasi Pembayaran Berhasil! Status pendaftar diupdate untuk mengikuti tes seleksi.");
+            }
+        }
+
+        // 3. Score Calculator & Ranking Update Mock
+        const calcInputs = document.querySelectorAll('.val-input');
+        calcInputs.forEach(input => {
+            input.addEventListener('input', calculateLiveScore);
+        });
+
+        function calculateLiveScore() {
+            const akademik = parseFloat(document.getElementById('val-akademik').value) || 0;
+            const tahfidz = parseFloat(document.getElementById('val-tahfidz').value) || 0;
+            const interview = parseFloat(document.getElementById('val-interview').value) || 0;
+            const admin = parseFloat(document.getElementById('val-admin').value) || 0;
+            
+            // Weightage: 40%, 30%, 20%, 10%
+            const total = (akademik * 0.4) + (tahfidz * 0.3) + (interview * 0.2) + (admin * 0.1);
+            document.getElementById('calculated-total-score').innerText = total.toFixed(1);
+        }
+
+        function saveSeleksiGrade() {
+            const student = document.getElementById('seleksi-student-select').value;
+            const finalScore = parseFloat(document.getElementById('calculated-total-score').innerText);
+            
+            if (student === "Ahmad Fulan") {
+                document.getElementById('score-Ahmad-Fulan').innerHTML = `<strong>${finalScore.toFixed(1)}</strong>`;
+            } else if (student === "Budi Santoso") {
+                const budiRow = document.getElementById('rank-row-Budi-Santoso');
+                budiRow.style.display = 'table-row';
+                document.getElementById('score-Budi-Santoso').innerHTML = `<strong>${finalScore.toFixed(1)}</strong>`;
+            }
+            
+            alert(`Nilai seleksi untuk ${student} berhasil disimpan. Peringkat hasil seleksi diperbarui!`);
+        }
+
+        // 4. Activate to Academic Mock
+        function activateToAcademic(studentName) {
+            const confirmActivation = confirm(`Apakah Anda yakin ingin mengaktivasi ${studentName} menjadi SISWA AKTIF?\n\nProses ini otomatis:\n1. Menggenerate NIS (Nomor Induk Siswa).\n2. Memasukkan data ke Modul Akademik (Presensi & Rapor Kelas).\n3. Membuka portal tagihan SPP bulanan di Modul Finance.`);
+            
+            if (confirmActivation) {
+                alert(`Selamat! ${studentName} resmi diaktivasi menjadi Siswa Aktif.\nAkun portal Orang Tua & Siswa telah aktif.`);
+            }
+        }
+    </script>
+</body>
+</html>

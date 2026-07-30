@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Dashboard - SMPAnnida</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Unified Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo-icon">🏫</div>
+      <div class="sidebar-brand">SMPAnnida</div>
+    </div>
+
+    <nav>
+      <div class="nav-group">
+        <div class="nav-group-title">Main</div>
+        <a href="index.html" class="nav-item active">📊 Super Dashboard</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Akademik & Kesiswaan</div>
+        <a href="pages/academic/dashboard.html" class="nav-item">👨‍🎓 Data Siswa</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Keuangan</div>
+        <a href="pages/finance/transactions.html" class="nav-item">💸 Transaksi Kas</a>
+        <a href="pages/finance/budget.html" class="nav-item">🎯 Budget Bulanan</a>
+        <a href="pages/finance/rab.html" class="nav-item">📋 RAB Kelas</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Penerimaan (PPDB)</div>
+        <a href="pages/ppdb/index.html" class="nav-item">📝 Pendaftar Baru</a>
+      </div>
+    </nav>
+
+    <div style="margin-top:auto">
+      <div class="user-widget">
+        <div class="user-avatar" id="user-avatar">G</div>
+        <div style="flex:1;overflow:hidden;">
+          <div style="font-weight:600;font-size:0.9rem;white-space:nowrap;text-overflow:ellipsis;" id="nav-user-name">Guest</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;text-overflow:ellipsis;" id="nav-user-email">Belum Login</div>
+        </div>
+      </div>
+      <button class="btn btn-outline" style="width:100%;margin-top:1rem;" id="logout-btn">Keluar</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Executive Dashboard</h1>
+        <p class="page-subtitle">Ringkasan operasional dan proyeksi keuangan SMP Annida.</p>
+      </div>
+    </div>
+
+    <!-- Metrik Utama -->
+    <div class="grid grid-cols-4" style="margin-bottom: 2rem;">
+      <div class="glass-panel metric-card">
+        <div class="metric-title">Total Siswa Aktif</div>
+        <div class="metric-value" id="dash-students">--</div>
+        <div class="metric-footer" style="color:var(--success)">Diambil dari Database</div>
+      </div>
+      <div class="glass-panel metric-card">
+        <div class="metric-title">Kas Saat Ini</div>
+        <div class="metric-value" id="dash-cash">Rp ---</div>
+        <div class="metric-footer">Total saldo bersih</div>
+      </div>
+      <div class="glass-panel metric-card" style="border-color:var(--warning);">
+        <div class="metric-title">Open Amount (SPP)</div>
+        <div class="metric-value" style="color:var(--warning)" id="dash-open">Rp ---</div>
+        <div class="metric-footer">Estimasi belum tertagih</div>
+      </div>
+      <div class="glass-panel metric-card" style="border-color:var(--accent);">
+        <div class="metric-title">Pendaftar PPDB Baru</div>
+        <div class="metric-value" style="color:var(--accent)" id="dash-ppdb">--</div>
+        <div class="metric-footer">Siswa terdaftar</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2">
+      <div class="glass-panel">
+        <h3 style="margin-bottom:1rem;color:white;">Grafik Arus Kas (Contoh)</h3>
+        <div style="height:200px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);border:1px dashed var(--glass-border);border-radius:8px;">
+          [Area Grafik Chart.js]
+        </div>
+      </div>
+      <div class="glass-panel">
+        <h3 style="margin-bottom:1rem;color:white;">Pendaftar Terakhir</h3>
+        <ul style="list-style:none;">
+          <li style="padding:0.75rem 0;border-bottom:1px solid var(--glass-border);display:flex;justify-content:space-between;">
+            <span>Ahmad Fauzi</span> <span style="color:var(--warning)">Belum Lunas</span>
+          </li>
+          <li style="padding:0.75rem 0;border-bottom:1px solid var(--glass-border);display:flex;justify-content:space-between;">
+            <span>Siti Aminah</span> <span style="color:var(--success)">Lunas</span>
+          </li>
+          <li style="padding:0.75rem 0;display:flex;justify-content:space-between;">
+            <span>Budi Santoso</span> <span style="color:var(--warning)">Belum Lunas</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { getOptionalUser, handleLogout } from './js/core/auth.js';
+    import { fetchDashboardMetrics, formatCurrency } from './js/core/dashboard.js';
+    
+    async function init() {
+      const user = await getOptionalUser();
+      if (!user) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Pengguna';
+      document.getElementById('nav-user-name').textContent = fullName;
+      document.getElementById('nav-user-email').textContent = user.email;
+      document.getElementById('user-avatar').textContent = fullName.substring(0,2).toUpperCase();
+      document.getElementById('logout-btn').addEventListener('click', handleLogout);
+
+      // Load Metrics
+      const metrics = await fetchDashboardMetrics();
+      if (metrics) {
+        document.getElementById('dash-students').textContent = metrics.studentCount;
+        document.getElementById('dash-ppdb').textContent = metrics.ppdbCount;
+        document.getElementById('dash-cash').textContent = formatCurrency(metrics.totalCash);
+        document.getElementById('dash-open').textContent = formatCurrency(metrics.openAmount);
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>

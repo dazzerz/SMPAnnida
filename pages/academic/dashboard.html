@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Akademik</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="icon" href="assets/1.png" type="image/png">
+    <link rel="stylesheet" href="css/main.css?v=3">
+    <link rel="stylesheet" href="css/dashboard.css?v=3">
+    <link rel="stylesheet" href="css/absensi.css?v=3">
+    <link rel="stylesheet" href="css/nilai.css?v=3">
+    <link rel="stylesheet" href="css/jadwal.css?v=3">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <!-- PapaParse CDN for CSV Parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
+</head>
+<body>
+    <div class="app-container">
+          <!-- Unified Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo-icon">ðŸ«</div>
+      <div class="sidebar-brand">SMPAnnida</div>
+    </div>
+
+    <nav>
+      <div class="nav-group">
+        <div class="nav-group-title">Main</div>
+        <a href="../../index.html" class="nav-item">ðŸ“Š Super Dashboard</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Akademik & Kesiswaan</div>
+        <a href="../../pages/academic/dashboard.html" class="nav-item">ðŸ‘¨â€ðŸŽ“ Data Siswa</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Keuangan</div>
+        <a href="../../pages/finance/transactions.html" class="nav-item">ðŸ’¸ Transaksi Kas</a>
+        <a href="../../pages/finance/budget.html" class="nav-item">ðŸŽ¯ Budget Bulanan</a>
+        <a href="../../pages/finance/rab.html" class="nav-item">ðŸ“‹ RAB Kelas</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Penerimaan (PPDB)</div>
+        <a href="../../pages/ppdb/index.html" class="nav-item">ðŸ“ Pendaftar Baru</a>
+      </div>
+    </nav>
+
+    <div style="margin-top:auto">
+      <div class="user-widget">
+        <div class="user-avatar" id="user-avatar">G</div>
+        <div style="flex:1;overflow:hidden;">
+          <div style="font-weight:600;font-size:0.9rem;white-space:nowrap;text-overflow:ellipsis;" id="nav-user-name">Guest</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;text-overflow:ellipsis;" id="nav-user-email">Belum Login</div>
+        </div>
+      </div>
+      <button class="btn btn-outline" style="width:100%;margin-top:1rem;" id="logout-btn">Keluar</button>
+    </div>
+  </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <button id="menu-toggle" class="menu-toggle">â˜°</button>
+                <div class="user-profile" style="display: flex; align-items: center; gap: 15px;">
+                    <button id="btn-theme-toggle" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-main);" title="Toggle Dark Mode">ðŸŒ™</button>
+                    <button id="btn-logout" class="btn-logout">Keluar</button>
+                    <span>Guru Admin</span>
+                    <div class="avatar"></div>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="page-section active">
+                    <h1>Dashboard Utama</h1>
+                    <p>Selamat datang di Sistem Informasi Akademik.</p>
+                    <div class="dashboard-cards">
+                        <div class="card glass">
+                            <h3>Total Siswa</h3>
+                            <p class="number" id="total-siswa">0</p>
+                        </div>
+                        <div class="card glass">
+                            <h3>Kelas Aktif</h3>
+                            <p class="number" id="total-kelas">0</p>
+                        </div>
+                    </div>
+                    
+                    <h2 style="margin-top: 30px; margin-bottom: 15px; font-size: 18px; color: var(--text-main);">Aksi Cepat</h2>
+                    <div class="card glass" style="max-width: 500px;">
+                        <h3 style="margin-bottom: 10px;">Import Data Siswa (CSV)</h3>
+                        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">
+                            Unggah file .csv yang berisi kolom nama_lengkap, nisn, kelas, dan status_aktif.<br>
+                            <a href="docs/Format_Import_Siswa.csv" download="Format_Import_Siswa.csv" style="color: var(--primary); font-weight: 500; text-decoration: none; margin-top: 5px; display: inline-block;">â¬‡ï¸ Unduh Format CSV</a>
+                        </p>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input type="file" id="file-import-siswa" accept=".csv" class="input-control" style="flex: 1;">
+                            <button id="btn-import-siswa" class="btn-primary">Import Data</button>
+                        </div>
+                        <div id="import-status" style="margin-top: 10px; font-size: 14px; font-weight: 500;"></div>
+                    </div>
+                </section>
+
+                <!-- Absensi Section -->
+                <section id="absensi" class="page-section" style="display: none;">
+                    <h1>Absensi Digital</h1>
+                    <!-- Input Absensi -->
+                    <div class="card glass" style="margin-bottom: 20px;">
+                        <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Input Kehadiran</h2>
+                        <div class="form-group">
+                            <label for="select-kelas-absensi">Pilih Kelas:</label>
+                            <select id="select-kelas-absensi" class="input-control">
+                                <option value="">-- Pilih Kelas --</option>
+                            </select>
+                        </div>
+                        
+                        <div id="absensi-container" style="display: none; margin-top: 20px;">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Siswa</th>
+                                            <th>Kehadiran</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody-absensi">
+                                        <!-- Data siswa dimuat via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button id="btn-simpan-absensi" class="btn-primary" style="margin-top: 20px;">Simpan Absensi</button>
+                        </div>
+                    </div>
+
+                    <!-- Rekap Absensi Pivot -->
+                    <div class="card glass">
+                        <h2 style="font-size: 16px; margin-bottom: 5px; color: var(--text-main);">ðŸ“Š Rekap Kehadiran</h2>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Tampilan grid: baris = siswa, kolom = tanggal. <span style="color:var(--success);font-weight:700;">H</span>=Hadir, <span style="color:var(--warning);font-weight:700;">I</span>=Izin, <span style="color:var(--warning);font-weight:700;">S</span>=Sakit, <span style="color:var(--danger);font-weight:700;">A</span>=Alpa</p>
+                        <div style="display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; align-items: flex-end;">
+                            <div class="form-group" style="margin-bottom: 0; min-width: 140px;">
+                                <label>Kelas</label>
+                                <select id="filter-kelas-rekap-absensi" class="input-control">
+                                    <option value="">-- Pilih --</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0; min-width: 130px;">
+                                <label>Dari Tanggal</label>
+                                <input type="date" id="filter-dari-absensi" class="input-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0; min-width: 130px;">
+                                <label>Sampai Tanggal</label>
+                                <input type="date" id="filter-sampai-absensi" class="input-control">
+                            </div>
+                            <button id="btn-lihat-rekap-absensi" class="btn-primary" style="height: 41px;">Tampilkan</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table" id="tabel-pivot-absensi">
+                                <thead id="thead-pivot-absensi"><tr><th>Nama Siswa</th></tr></thead>
+                                <tbody id="tbody-rekap-absensi">
+                                    <tr><td style="text-align: center; color: var(--text-muted);">Pilih kelas dan rentang tanggal, lalu klik Tampilkan.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Nilai Section -->
+                <section id="nilai" class="page-section" style="display: none;">
+                    <h1>Manajemen Nilai & Rapor</h1>
+                    
+                    <!-- Form Input Nilai -->
+                    <div class="card glass" style="margin-bottom: 20px;">
+                        <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Input Nilai Baru</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div class="form-group">
+                                <label>Pilih Kelas</label>
+                                <select id="select-kelas-nilai" class="input-control">
+                                    <option value="">-- Pilih Kelas --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Pilih Siswa</label>
+                                <select id="select-siswa-nilai" class="input-control" disabled>
+                                    <option value="">-- Pilih Siswa --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Mata Pelajaran</label>
+                                <input type="text" id="input-mapel-nilai" class="input-control" placeholder="Contoh: Matematika">
+                            </div>
+                            <div class="form-group">
+                                <label>Jenis Penilaian</label>
+                                <select id="select-jenis-nilai" class="input-control">
+                                    <option value="Tugas">Tugas</option>
+                                    <option value="Ulangan Harian">Ulangan Harian</option>
+                                    <option value="UTS">UTS</option>
+                                    <option value="UAS">UAS</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nilai (0-100)</label>
+                                <input type="number" id="input-angka-nilai" class="input-control" min="0" max="100" placeholder="0">
+                            </div>
+                        </div>
+                        <button id="btn-simpan-nilai" class="btn-primary" style="margin-top: 15px;">Simpan Nilai</button>
+                        <div id="status-simpan-nilai" style="margin-top: 10px; font-size: 14px; font-weight: 500;"></div>
+                    </div>
+
+                    <!-- Tampilan Rapor Sederhana -->
+                    <div class="card glass">
+                        <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Lihat Rekap Nilai Siswa (Rapor)</h2>
+                        <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; align-items: flex-end;">
+                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <label>Kelas</label>
+                                <select id="filter-kelas-rekap" class="input-control">
+                                    <option value="">-- Pilih --</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0; min-width: 200px;">
+                                <label>Siswa</label>
+                                <select id="filter-siswa-rekap" class="input-control" disabled>
+                                    <option value="">-- Pilih --</option>
+                                </select>
+                            </div>
+                            <button id="btn-lihat-rekap" class="btn-primary" style="height: 41px;">Tampilkan</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mata Pelajaran</th>
+                                        <th>Tugas</th>
+                                        <th>UH</th>
+                                        <th>UTS</th>
+                                        <th>UAS</th>
+                                        <th style="color: var(--primary);">Rata-rata</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-rekap-nilai">
+                                    <tr><td colspan="6" style="text-align: center;">Pilih siswa untuk melihat nilai.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Jadwal Section -->
+                <section id="jadwal" class="page-section" style="display: none;">
+                    <h1>Jadwal Pelajaran</h1>
+                    <div class="card glass">
+                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: flex-end;">
+                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <label>Pilih Kelas</label>
+                                <select id="filter-kelas-jadwal" class="input-control">
+                                    <option value="">-- Semua Kelas --</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <label>Pilih Hari</label>
+                                <select id="filter-hari-jadwal" class="input-control">
+                                    <option value="">-- Semua Hari --</option>
+                                    <option value="Senin">Senin</option>
+                                    <option value="Selasa">Selasa</option>
+                                    <option value="Rabu">Rabu</option>
+                                    <option value="Kamis">Kamis</option>
+                                    <option value="Jumat">Jumat</option>
+                                    <option value="Sabtu">Sabtu</option>
+                                </select>
+                            </div>
+                            <button id="btn-lihat-jadwal" class="btn-primary" style="height: 41px;">Tampilkan</button>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Hari</th>
+                                        <th>Jam</th>
+                                        <th>Kelas</th>
+                                        <th>Mata Pelajaran</th>
+                                        <th>Guru Pengajar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-jadwal">
+                                    <tr><td colspan="5" style="text-align: center;">Klik Tampilkan untuk memuat jadwal dari database.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modular JS Logic -->
+    <script src="js/main.js" defer></script>
+    <script src="js/dashboard.js" defer></script>
+    <script src="js/absensi.js" defer></script>
+    <script src="js/nilai.js" defer></script>
+    <script src="js/jadwal.js" defer></script>
+</body>
+</html>
