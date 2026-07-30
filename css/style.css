@@ -586,3 +586,21 @@ option {
     max-width: 100% !important;
   }
 }
+
+
+/* =========================================================================
+   HIDDEN SCROLLBARS (Scrollable but invisible)
+========================================================================= */
+/* For Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent;
+  display: none;
+}
+
+/* For Firefox and IE/Edge legacy */
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
