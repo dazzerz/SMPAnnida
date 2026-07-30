@@ -265,7 +265,7 @@ body {
   padding: 2rem 3rem;
   margin-left: 0 !important; /* CRITICAL: Override old CSS that added double sidebar width margin */
   overflow-y: auto;
-  overflow-x: auto; /* Enable horizontal scroll for wide tables natively */
+  
   min-width: 0; /* CRITICAL: Allows flex child to shrink below content size */
   max-width: 100%;
 }
@@ -482,4 +482,15 @@ body {
 /* Force budget grid to have at least 2 columns on decent sized screens */
 .budget-grid {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+}
+
+/* Fix table expanding the main content */
+.transactions-table-wrapper, .table-container, .table-responsive {
+    width: 100% !important;
+    overflow-x: auto !important;
+    display: block !important;
+}
+.page-content {
+    min-width: 0 !important;
+    width: 100% !important;
 }
