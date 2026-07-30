@@ -306,3 +306,30 @@ body {
   font-size: 0.8rem;
   color: var(--text-muted);
 }
+
+/* ----------------------------------------------------------------------
+   RESPONSIVE LAYOUT (Mobile & Tablet)
+---------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-cols-2 { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+  .sidebar.active, .sidebar.show, body.sidebar-open .sidebar {
+    transform: translateX(0);
+  }
+  .main-content {
+    padding: 1rem;
+    width: 100%;
+  }
+  .grid-cols-4 { grid-template-columns: 1fr; }
+  .grid-cols-2 { grid-template-columns: 1fr; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+}

@@ -162,11 +162,11 @@
   <div class="toast-container" id="toast-container" aria-live="polite"></div>
 
   <script type="module">
-    import { getOptionalUser, handleLogout } from '../../js/core/auth.js';
-    import { showToast, setupThemeToggle, applySavedTheme, formatCurrency } from '../js/utils.js';
-    import { fetchMonthlySummary, fetchMonthlyTrend, fetchCategoryBreakdown, fetchTransactions } from '../js/transactions.js';
-    import { renderReportBarChart, renderReportDonutChart, setupChartDefaults } from '../js/charts.js';
-    import { renderReportTransactions, exportToPDF } from '../js/reports.js';
+    import { getOptionalUser, handleLogout } from '../../js/finance/core/auth.js';
+    import { showToast, setupThemeToggle, applySavedTheme, formatCurrency } from '../../js/finance/core/utils.js';
+    import { fetchMonthlySummary, fetchMonthlyTrend, fetchCategoryBreakdown, fetchTransactions } from '../../js/finance/transactions.js';
+    import { renderReportBarChart, renderReportDonutChart, setupChartDefaults } from '../../js/finance/charts.js';
+    import { renderReportTransactions, exportToPDF } from '../../js/finance/reports.js';
 
     let userId = null;
     let currentReportData = null;

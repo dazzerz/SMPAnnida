@@ -72,10 +72,12 @@ def process_html(source_path, dest_path, module_name):
     content = re.sub(r'<nav class="sidebar".*?</nav>', NEW_SIDEBAR, content, flags=re.DOTALL)
     content = re.sub(r'<aside class="sidebar".*?</aside>', NEW_SIDEBAR, content, flags=re.DOTALL)
 
-    # 4. Update JS imports (from relative to unified core)
+    # 4. Update JS imports
     content = re.sub(r"import\s+\{.*?\}\s+from\s+['\"].*?/auth\.js['\"];", "import { getOptionalUser, handleLogout } from '../../js/core/auth.js';", content)
-    # Update Supabase JS imports
     content = re.sub(r"import\s+\w+\s+from\s+['\"].*?/supabase(?:-config)?\.js['\"];", "import supabaseClient from '../../js/core/supabase.js';", content)
+    content = re.sub(r"from\s+['\"](?:\.\./)*js/utils\.js['\"]", "from '../../js/core/utils.js'", content)
+    # Catch any remaining module scripts
+    content = re.sub(r"from\s+['\"](?:\.\./)*js/([^'\"]+\.js)['\"]", lambda m: f"from '../../js/{module_name}/{m.group(1)}'", content)
 
     with open(dest_path, 'w', encoding='utf-8') as f:
         f.write(content)
