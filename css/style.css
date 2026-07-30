@@ -486,7 +486,7 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 }
 
 /* The exact glass effect from the reference */
-.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card, .topbar {
+.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card, .topbar, .budget-summary {
   background: rgba(25, 30, 25, 0.45) !important; /* Dark greenish tint */
   backdrop-filter: blur(24px) !important;
   -webkit-backdrop-filter: blur(24px) !important;
