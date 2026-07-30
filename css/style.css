@@ -604,3 +604,9 @@ option {
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
 }
+
+
+/* Permanently remove theme toggle button from UI */
+.theme-toggle, #theme-toggle, [aria-label='Toggle Theme'] {
+  display: none !important;
+}
