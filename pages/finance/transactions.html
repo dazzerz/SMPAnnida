@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Transaksi — Annida2Finance</title>
-  <link rel="stylesheet" href="../../css/style.css" />
   <meta name="description" content="Kelola dan pantau seluruh transaksi keuangan kamu." />
   <link rel="icon" type="image/png" href="../assets/logo/1.png" />
-  
-  
+  <link rel="stylesheet" href="../../css/finance/global.css">
+  <link rel="stylesheet" href="../../css/finance/dashboard.css">
   <!-- SheetJS untuk baca/buat Excel -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js?v=6" defer></script>
+  <link rel="stylesheet" href="../../css/style.css" />
 </head>
 <body>
   <div class="app-layout">
@@ -316,7 +316,7 @@
 
 
   <script type="module">
-    import supabaseClient from '../js/supabase.js';
+    import supabaseClient from '../../js/core/supabase.js';
     import { getOptionalUser, handleLogout } from '../../js/core/auth.js';
     import { showToast, setupThemeToggle, applySavedTheme, formatCurrency, formatDate } from '../js/utils.js';
     import {

@@ -1,0 +1,3 @@
+.dashboard-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+.card h3 { font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.card .number { font-size: 32px; font-weight: 700; color: var(--primary); margin-top: 10px; }

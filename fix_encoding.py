@@ -45,24 +45,28 @@ NEW_SIDEBAR = """  <!-- Unified Sidebar -->
     </div>
   </aside>"""
 
-def process_html(source_path, dest_path):
+def process_html(source_path, dest_path, module_name):
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
     with open(source_path, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # 1. Remove old CSS links
-    content = re.sub(r'<link rel="stylesheet" href="\.\./css/global\.css"\s*/>', '', content)
-    content = re.sub(r'<link rel="stylesheet" href="\.\./css/dashboard\.css"\s*/>', '', content)
-    content = re.sub(r'<link rel="stylesheet" href="\.\./css/rab\.css"\s*/>', '', content)
-    content = re.sub(r'<link rel="stylesheet" href="\.\./css/auth\.css"\s*/>', '', content)
+    # Remap old CSS links to the new modular CSS paths
+    # 1. Find all link rel stylesheet tags
+    def replace_css_link(match):
+        full_tag = match.group(0)
+        href = match.group(1)
+        filename = os.path.basename(href)
+        # Point to the specific modular css directory
+        return f'<link rel="stylesheet" href="../../css/{module_name}/{filename}">'
     
-    # Also handle PPDB/Academic css links which might be different, like "./assets/css/style.css" or similar
-    content = re.sub(r'<link\s+rel="stylesheet"\s+href="[^"]*css[^"]*"\s*>', '', content)
-    content = re.sub(r'<link\s+rel="stylesheet"\s+href="[^"]*css[^"]*"\s*/>', '', content)
-    
-    # 2. Add new CSS link
-    if 'style.css' not in content:
-        content = re.sub(r'(</title>)', r'\1\n  <link rel="stylesheet" href="../../css/style.css" />', content, flags=re.IGNORECASE)
+    # Replace single or double quote hrefs
+    content = re.sub(r'<link\s+rel="stylesheet"\s+href=["\']([^"\']+\.css)["\']\s*/?>', replace_css_link, content, flags=re.IGNORECASE)
+
+    # 2. Add the overriding Glassmorphism style.css at the end of the <head>
+    # Wait, only if it's not already there! Since we read from SOURCE, it won't be there.
+    # But just in case:
+    if 'href="../../css/style.css"' not in content:
+        content = re.sub(r'(</head>)', r'  <link rel="stylesheet" href="../../css/style.css" />\n\1', content, flags=re.IGNORECASE)
 
     # 3. Replace sidebar
     content = re.sub(r'<nav class="sidebar".*?</nav>', NEW_SIDEBAR, content, flags=re.DOTALL)
@@ -70,35 +74,34 @@ def process_html(source_path, dest_path):
 
     # 4. Update JS imports (from relative to unified core)
     content = re.sub(r"import\s+\{.*?\}\s+from\s+['\"].*?/auth\.js['\"];", "import { getOptionalUser, handleLogout } from '../../js/core/auth.js';", content)
+    # Update Supabase JS imports
+    content = re.sub(r"import\s+\w+\s+from\s+['\"].*?/supabase(?:-config)?\.js['\"];", "import supabaseClient from '../../js/core/supabase.js';", content)
 
     with open(dest_path, 'w', encoding='utf-8') as f:
         f.write(content)
-    print(f"Processed: {dest_path}")
+    print(f"Processed ({module_name}): {dest_path}")
 
 base_dir = r"C:\Users\daffaakhdaan\Annida2"
 
-# Mappings of (Source Directory/File, Target Directory)
 tasks = [
-    (os.path.join(base_dir, "Annida2Finance", "pages"), os.path.join(base_dir, "SMPAnnida", "pages", "finance")),
-    (os.path.join(base_dir, "Annida2PPDB", "pages"), os.path.join(base_dir, "SMPAnnida", "pages", "ppdb")),
+    (os.path.join(base_dir, "Annida2Finance", "pages"), os.path.join(base_dir, "SMPAnnida", "pages", "finance"), "finance"),
+    (os.path.join(base_dir, "Annida2PPDB", "pages"), os.path.join(base_dir, "SMPAnnida", "pages", "ppdb"), "ppdb"),
 ]
 
-# Handle directories
-for src_dir, dst_dir in tasks:
+for src_dir, dst_dir, module in tasks:
     for root, dirs, files in os.walk(src_dir):
         for file in files:
             if file.endswith('.html'):
                 src_file = os.path.join(root, file)
                 rel_path = os.path.relpath(src_file, src_dir)
                 dst_file = os.path.join(dst_dir, rel_path)
-                process_html(src_file, dst_file)
+                process_html(src_file, dst_file, module)
 
-# Handle specific isolated files
 isolated = [
-    (os.path.join(base_dir, "Annida2PPDB", "index.html"), os.path.join(base_dir, "SMPAnnida", "pages", "ppdb", "index.html")),
-    (os.path.join(base_dir, "Annida2Academic", "index.html"), os.path.join(base_dir, "SMPAnnida", "pages", "academic", "dashboard.html"))
+    (os.path.join(base_dir, "Annida2PPDB", "index.html"), os.path.join(base_dir, "SMPAnnida", "pages", "ppdb", "index.html"), "ppdb"),
+    (os.path.join(base_dir, "Annida2Academic", "index.html"), os.path.join(base_dir, "SMPAnnida", "pages", "academic", "dashboard.html"), "academic")
 ]
 
-for src_file, dst_file in isolated:
+for src_file, dst_file, module in isolated:
     if os.path.exists(src_file):
-        process_html(src_file, dst_file)
+        process_html(src_file, dst_file, module)
