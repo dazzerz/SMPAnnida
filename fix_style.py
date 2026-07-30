@@ -1,6 +1,8 @@
+import os
 
+css_path = r"C:\Users\daffaakhdaan\Annida2\SMPAnnida\css\style.css"
 
-
+glass_overrides = """
 /* =========================================================================
    MASSIVE GLASSMORPHISM & NEUMORPHISM OVERRIDES FOR ALL MODULES (PPDB, FINANCE, ACADEMIC)
 ========================================================================= */
@@ -94,3 +96,17 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
   overflow: hidden !important;
   background: transparent !important;
 }
+"""
+
+with open(css_path, 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# Strip any existing massive block
+if "MASSIVE GLASSMORPHISM" in content:
+    content = content.split("/* =========================================================================")[0]
+    # In case there are multiple or slightly different
+    content = content.split("/* MASSIVE GLASSMORPHISM")[0]
+
+with open(css_path, 'w', encoding='utf-8') as f:
+    f.write(content.strip() + "\n\n" + glass_overrides)
+print("Glassmorphism overrides cleanly applied to style.css!")
