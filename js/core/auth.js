@@ -20,7 +20,7 @@ function setLoading(btnId, isLoading) {
 }
 
 // ── LOGIN ─────────────────────────────────────────
-async function handleLogin(e) {
+export async function handleLogin(e) {
   e.preventDefault();
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
@@ -40,7 +40,7 @@ async function handleLogin(e) {
     return;
   }
   showAuthMessage('Login berhasil! Mengalihkan...', 'success');
-  setTimeout(() => { window.location.href = './index.html'; }, 800);
+  setTimeout(() => { window.location.href = './dashboard.html'; }, 800);
 }
 
 // ── REGISTER ──────────────────────────────────────
@@ -107,7 +107,7 @@ export async function handleLogout() {
   sessionStorage.removeItem('guest_mode_active');
   sessionStorage.removeItem('guest_stats');
   const isInPages = window.location.pathname.includes('/pages/');
-  window.location.href = isInPages ? '../login.html' : './login.html';
+  window.location.href = isInPages ? '../../index.html' : './index.html';
 }
 
 // ── AUTH GUARD ────────────────────────────────────
@@ -115,7 +115,7 @@ export async function requireAuth() {
   const { data: { user } } = await supabaseClient.auth.getUser();
   if (!user) {
     const isInPages = window.location.pathname.includes('/pages/');
-    window.location.href = isInPages ? '../login.html' : './login.html';
+    window.location.href = isInPages ? '../../index.html' : './index.html';
     return null;
   }
   return user;

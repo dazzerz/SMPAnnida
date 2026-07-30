@@ -12,7 +12,7 @@ NEW_SIDEBAR = """  <!-- Unified Sidebar -->
     <nav>
       <div class="nav-group">
         <div class="nav-group-title">Main</div>
-        <a href="../../index.html" class="nav-item">📊 Super Dashboard</a>
+        <a href="../../dashboard.html" class="nav-item">📊 Super Dashboard</a>
       </div>
 
       <div class="nav-group">
