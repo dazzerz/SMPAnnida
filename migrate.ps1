@@ -43,13 +43,16 @@ $newSidebar = @"
   </aside>
 "@
 
+$utf8NoBom = New-Object System.Text.UTF8Encoding $False
+
 Get-ChildItem -Path "pages" -Filter "*.html" -Recurse | ForEach-Object {
-    $content = Get-Content $_.FullName -Raw
+    $content = [IO.File]::ReadAllText($_.FullName, $utf8NoBom)
 
     # Replace CSS Links
-    $content = $content -replace '<link rel="stylesheet" href="\.\./css/global\.css" />', ''
-    $content = $content -replace '<link rel="stylesheet" href="\.\./css/dashboard\.css" />', ''
-    $content = $content -replace '<link rel="stylesheet" href="\.\./css/rab\.css" />', ''
+    $content = $content -replace '<link rel="stylesheet" href="\.\./css/global\.css".*?>', ''
+    $content = $content -replace '<link rel="stylesheet" href="\.\./css/dashboard\.css".*?>', ''
+    $content = $content -replace '<link rel="stylesheet" href="\.\./css/rab\.css".*?>', ''
+    $content = $content -replace '<link rel="stylesheet" href="\.\./css/auth\.css".*?>', ''
     
     if (-not $content.Contains('style.css')) {
         $content = $content -replace '</title>', "</title>`n  <link rel=`"stylesheet`" href=`"../../css/style.css`" />"
@@ -64,6 +67,6 @@ Get-ChildItem -Path "pages" -Filter "*.html" -Recurse | ForEach-Object {
     $content = $content -replace "import \{.*?\} from '\.\./js/core/auth\.js';", "import { getOptionalUser, handleLogout } from '../../js/core/auth.js';"
 
     # Set content
-    [IO.File]::WriteAllText($_.FullName, $content)
-    Write-Host "Updated: $($_.FullName)"
+    [IO.File]::WriteAllText($_.FullName, $content, $utf8NoBom)
+    Write-Host "Fixed encoding and updated: $($_.FullName)"
 }

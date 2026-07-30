@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Laporan â€” Annida2Finance</title>
+  <title>Laporan — Annida2Finance</title>
   <link rel="stylesheet" href="../../css/style.css" />
   <meta name="description" content="Buat dan export laporan keuangan bulanan dalam format PDF secara mudah." />
   <link rel="icon" type="image/png" href="../assets/logo/1.png" />
@@ -17,7 +17,7 @@
 <body>
   <div class="app-layout">
 
-    <!-- â”€â”€ SIDEBAR â”€â”€ -->
+    <!-- ── SIDEBAR ── -->
       <!-- Unified Sidebar -->
     <!-- Unified Sidebar -->
   <aside class="sidebar" id="sidebar">
@@ -63,20 +63,20 @@
   </aside>
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <!-- â”€â”€ MAIN CONTENT â”€â”€ -->
+    <!-- ── MAIN CONTENT ── -->
     <div class="main-content">
       <header class="topbar">
         <div class="flex items-center gap-md">
-          <button class="mobile-menu-btn" id="mobile-menu-btn">â˜°</button>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
           <div class="topbar-left">
             <div class="topbar-greeting">Lihat &amp; Export</div>
             <div class="topbar-title">Laporan Keuangan</div>
           </div>
         </div>
         <div class="topbar-right">
-          <button class="theme-toggle" id="theme-toggle">â˜€ï¸</button>
+          <button class="theme-toggle" id="theme-toggle">☀️</button>
           <button class="btn btn-success btn-sm" id="export-pdf-btn" style="gap:0.4rem;">
-            ðŸ“„ Export PDF
+            📄 Export PDF
           </button>
         </div>
       </header>
@@ -97,10 +97,10 @@
             </select>
           </div>
           <button class="btn btn-primary" id="generate-report-btn" style="align-self:flex-end;">
-            ðŸ”„ Tampilkan Laporan
+            🔄 Tampilkan Laporan
           </button>
           <button class="btn btn-success" id="export-pdf-btn-2" style="align-self:flex-end;">
-            ðŸ“„ Export PDF
+            📄 Export PDF
           </button>
         </div>
 
@@ -144,11 +144,11 @@
         <div class="export-section">
           <div class="export-header">
             <div class="export-title">Rincian Transaksi</div>
-            <span style="font-size:0.8rem;color:var(--text-muted);" id="report-period-label">â€”</span>
+            <span style="font-size:0.8rem;color:var(--text-muted);" id="report-period-label">—</span>
           </div>
           <div id="report-transactions-list">
             <div class="empty-state" style="padding:2rem;">
-              <div class="empty-state-icon">ðŸ“Š</div>
+              <div class="empty-state-icon">📊</div>
               <div class="empty-state-title">Pilih periode dan klik "Tampilkan Laporan"</div>
             </div>
           </div>
@@ -300,7 +300,7 @@
             const overlay = document.createElement('div');
             overlay.innerHTML = `
               <div class="locked-overlay" style="position: relative; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid var(--border-color); margin-top: 2rem;">
-                <div style="font-size:3rem;margin-bottom:1rem;text-align:center;">ðŸ”’</div>
+                <div style="font-size:3rem;margin-bottom:1rem;text-align:center;">🔒</div>
                 <div style="color:var(--text-primary);text-align:center;font-weight:600;font-size:1.1rem;">Privasi Terkunci</div>
                 <div style="color:var(--text-secondary);text-align:center;font-size:0.9rem;margin-bottom:1.5rem;">Silakan buka kunci angka terlebih dahulu untuk melihat Laporan.</div>
                 <a href="../index.html" class="btn btn-primary" style="text-decoration:none;">Buka Kunci di Dashboard</a>
@@ -316,7 +316,7 @@
         document.getElementById('nav-user-email').textContent = 'Read-Only Access';
         const logoutBtn = document.getElementById('logout-btn');
         if (logoutBtn) {
-          logoutBtn.innerHTML = '<span class="nav-icon">ðŸ”‘</span> Login';
+          logoutBtn.innerHTML = '<span class="nav-icon">🔑</span> Login';
           logoutBtn.addEventListener('click', () => window.location.href = '../login.html');
         }
         currentReportData && (currentReportData.userName = 'Guest');

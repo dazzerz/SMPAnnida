@@ -377,7 +377,7 @@
             document.getElementById('preview-doc-title').innerText = docName;
             document.getElementById('preview-img-box').innerHTML = `
                 <div style="text-align:center;">
-                    <span style="font-size:3rem; display:block;">ðŸ“„</span>
+                    <span style="font-size:3rem; display:block;">📄</span>
                     <strong>${file}</strong>
                     <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">[Klik Setujui Berkas di bawah untuk memproses]</p>
                 </div>
@@ -399,7 +399,7 @@
             if (row) {
                 row.style.opacity = '0.5';
                 row.querySelector('button').disabled = true;
-                row.querySelector('button').innerText = 'âœ“ Terverifikasi';
+                row.querySelector('button').innerText = '✓ Terverifikasi';
                 row.querySelector('button').style.backgroundColor = '#38a169';
                 
                 // Update KPI Card Lulus Mock

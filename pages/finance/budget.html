@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Budget â€” Annida2Finance</title>
+  <title>Budget — Annida2Finance</title>
   <link rel="stylesheet" href="../../css/style.css" />
   <meta name="description" content="Atur dan kelola budget bulanan kamu." />
   <link rel="icon" type="image/png" href="../assets/logo/1.png" />
@@ -14,7 +14,7 @@
 <body>
   <div class="app-layout">
 
-    <!-- â”€â”€ SIDEBAR â”€â”€ -->
+    <!-- ── SIDEBAR ── -->
       <!-- Unified Sidebar -->
     <!-- Unified Sidebar -->
   <aside class="sidebar" id="sidebar">
@@ -60,19 +60,19 @@
   </aside>
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-    <!-- â”€â”€ MAIN CONTENT â”€â”€ -->
+    <!-- ── MAIN CONTENT ── -->
     <div class="main-content">
       <header class="topbar">
         <div class="flex items-center gap-md">
-          <button class="mobile-menu-btn" id="mobile-menu-btn">â˜°</button>
+          <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
           <div class="topbar-left">
             <div class="topbar-greeting">Kelola</div>
             <div class="topbar-title">Budget Bulanan</div>
           </div>
         </div>
         <div class="topbar-right">
-          <button class="theme-toggle" id="theme-toggle">â˜€ï¸</button>
-          <button class="btn btn-primary btn-sm" id="add-budget-btn">ï¼‹ Tambah Budget</button>
+          <button class="theme-toggle" id="theme-toggle">☀️</button>
+          <button class="btn btn-primary btn-sm" id="add-budget-btn">＋ Tambah Budget</button>
         </div>
       </header>
 
@@ -106,12 +106,12 @@
     </div>
   </div>
 
-  <!-- â”€â”€ ADD/EDIT BUDGET MODAL â”€â”€ -->
+  <!-- ── ADD/EDIT BUDGET MODAL ── -->
   <div class="modal-overlay" id="budget-modal" role="dialog" aria-modal="true" aria-labelledby="budget-modal-title">
     <div class="modal">
       <div class="modal-header">
         <h2 style="font-size:1.1rem;font-weight:700;" id="budget-modal-title">Tambah Budget</h2>
-        <button class="btn-icon btn-ghost" id="budget-modal-close" aria-label="Tutup">âœ•</button>
+        <button class="btn-icon btn-ghost" id="budget-modal-close" aria-label="Tutup">✕</button>
       </div>
       <form id="budget-form">
         <div class="modal-body">
@@ -126,7 +126,7 @@
             <input type="number" class="form-input" id="budget-amount" placeholder="Contoh: 500000" min="1000" step="any" required />
           </div>
           <div style="font-size:0.8rem;color:var(--text-muted);padding:0.5rem 0;">
-            ðŸ’¡ Jika budget untuk kategori ini sudah ada di bulan yang dipilih, nilai akan diperbarui.
+            💡 Jika budget untuk kategori ini sudah ada di bulan yang dipilih, nilai akan diperbarui.
           </div>
         </div>
         <div class="modal-footer">
@@ -213,7 +213,7 @@
           if (container) {
             container.innerHTML = `
               <div class="locked-overlay" style="position: relative; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(5px); border-radius: 12px; border: 1px solid var(--border-color); margin-top: 1rem;">
-                <div style="font-size:3rem;margin-bottom:1rem;text-align:center;">ðŸ”’</div>
+                <div style="font-size:3rem;margin-bottom:1rem;text-align:center;">🔒</div>
                 <div style="color:var(--text-primary);text-align:center;font-weight:600;font-size:1.1rem;">Privasi Terkunci</div>
                 <div style="color:var(--text-secondary);text-align:center;font-size:0.9rem;margin-bottom:1.5rem;">Silakan buka kunci angka terlebih dahulu untuk melihat budget.</div>
                 <a href="../index.html" class="btn btn-primary" style="text-decoration:none;">Buka Kunci di Dashboard</a>
@@ -227,7 +227,7 @@
         const addBtn = document.getElementById('add-budget-btn');
         if (addBtn) addBtn.style.display = 'none';
         
-        document.getElementById('logout-btn').innerHTML = '<span>ðŸ”‘</span> Login';
+        document.getElementById('logout-btn').innerHTML = '<span>🔑</span> Login';
         document.getElementById('logout-btn').addEventListener('click', () => window.location.href = '../login.html');
       }
 
