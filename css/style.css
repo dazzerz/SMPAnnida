@@ -188,7 +188,7 @@ body {
 }
 
 .sidebar {
-  width: 22vw; min-width: 220px; max-width: 280px;
+  width: 20%;
   height: 100vh;
   position: sticky;
   top: 0;
@@ -460,12 +460,12 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
   background: transparent !important;
 }
 
-/* Responsive Sidebar */
+/* Truly Fluid Sidebar (No Locks) */
 .sidebar {
-  width: 22vw !important;
-  min-width: 220px !important;
-  max-width: 280px !important;
+  width: 20% !important;
+  flex: 0 0 20% !important;
   border-right: 1px solid var(--glass-border) !important;
+}
 }
 /* Colorful Background for Glassmorphism to work */
 body {
@@ -479,9 +479,14 @@ body {
     radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.2) 0%, transparent 40%),
     radial-gradient(circle at 100% 100%, rgba(5, 150, 105, 0.2) 0%, transparent 40%) !important;
 }
-/* Force budget grid to have at least 2 columns on decent sized screens */
+/* Always 2 columns for budget grid to perfectly match 75% zoom look at 100% zoom */
 .budget-grid {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  grid-template-columns: 1fr 1fr !important;
+}
+@media (max-width: 768px) {
+  .budget-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 /* Fix table expanding the main content */
