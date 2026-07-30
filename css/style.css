@@ -263,6 +263,7 @@ body {
 .main-content {
   flex: 1;
   padding: 2rem 3rem;
+  margin-left: 0 !important; /* CRITICAL: Override old CSS that added double sidebar width margin */
   overflow-y: auto;
   overflow-x: auto; /* Enable horizontal scroll for wide tables natively */
   min-width: 0; /* CRITICAL: Allows flex child to shrink below content size */
@@ -369,33 +370,6 @@ body {
    MASSIVE GLASSMORPHISM & NEUMORPHISM OVERRIDES FOR ALL MODULES (PPDB, FINANCE, ACADEMIC)
 ========================================================================= */
 
-/* Variable Mapping (Force all old variables to use Glassmorphism) */
-:root, [data-theme="light"], [data-theme="dark"] {
-  --bg-card: var(--glass-bg) !important;
-  --bg-main: transparent !important;
-  --bg-primary: transparent !important;
-  --bg-secondary: transparent !important;
-  --text-main: var(--text-primary) !important;
-  --primary-color: var(--primary) !important;
-  --accent-primary: var(--primary) !important;
-  --background-color: var(--body-color) !important;
-  --bg-elevated: var(--glass-bg-hover) !important;
-}
-
-/* Force Glassmorphism on all generic card and panel elements */
-.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card {
-  background: var(--glass-bg) !important;
-  backdrop-filter: var(--glass-blur) !important;
-  -webkit-backdrop-filter: var(--glass-blur) !important;
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: var(--glass-shadow) !important;
-  border-radius: 16px !important;
-}
-
-/* Force Table Backgrounds to be transparent */
-table, thead, tbody, tr, th, td {
-  background: transparent !important;
-  background-color: transparent !important;
   color: var(--text-primary) !important;
   border-bottom-color: var(--glass-border) !important;
 }
