@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Annida2PPDB</title>
+  <link rel="stylesheet" href="../../css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    
     
     <!-- Supabase SDK & Config -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
@@ -76,23 +77,48 @@
 <body class="dashboard-layout">
     
     <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-logo">
-            <a href="../index.html" class="logo-link">
-                <img src="../assets/logo/1.png" alt="Logo Annida2PPDB" class="logo-icon" style="max-height: 40px;">
-                <span class="logo-text" style="font-size: 1.2rem; font-weight: 700; color: var(--primary-color);">Annida2PPDB</span>
-            </a>
+      <!-- Unified Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo-icon">🏫</div>
+      <div class="sidebar-brand">SMPAnnida</div>
+    </div>
+
+    <nav>
+      <div class="nav-group">
+        <div class="nav-group-title">Main</div>
+        <a href="../../index.html" class="nav-item">📊 Super Dashboard</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Akademik & Kesiswaan</div>
+        <a href="../../pages/academic/dashboard.html" class="nav-item">👨‍🎓 Data Siswa</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Keuangan</div>
+        <a href="../../pages/finance/transactions.html" class="nav-item">💸 Transaksi Kas</a>
+        <a href="../../pages/finance/budget.html" class="nav-item">🎯 Budget Bulanan</a>
+        <a href="../../pages/finance/rab.html" class="nav-item">📋 RAB Kelas</a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Penerimaan (PPDB)</div>
+        <a href="../../pages/ppdb/index.html" class="nav-item">📝 Pendaftar Baru</a>
+      </div>
+    </nav>
+
+    <div style="margin-top:auto">
+      <div class="user-widget">
+        <div class="user-avatar" id="user-avatar">G</div>
+        <div style="flex:1;overflow:hidden;">
+          <div style="font-weight:600;font-size:0.9rem;white-space:nowrap;text-overflow:ellipsis;" id="nav-user-name">Guest</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;text-overflow:ellipsis;" id="nav-user-email">Belum Login</div>
         </div>
-        <nav class="sidebar-nav">
-            <a href="#" class="tab-trigger active" data-target="admin-dashboard">Dashboard Utama</a>
-            <a href="#" class="tab-trigger" data-target="admin-pendaftar">Data Pendaftar (SMP)</a>
-            <a href="#" class="tab-trigger" data-target="admin-verifikasi">Verifikasi Dokumen</a>
-            <a href="#" class="tab-trigger" data-target="admin-pembayaran">Verifikasi Pembayaran</a>
-            <a href="#" class="tab-trigger" data-target="admin-seleksi">Proses Seleksi</a>
-            <a href="about.html" style="margin-top: 20px;">Tentang Kami</a>
-            <a href="../index.html" class="logout-btn" style="margin-top: auto;">Keluar</a>
-        </nav>
-    </aside>
+      </div>
+      <button class="btn btn-outline" style="width:100%;margin-top:1rem;" id="logout-btn">Keluar</button>
+    </div>
+  </aside>
 
     <!-- Main Content -->
     <main class="main-content">
