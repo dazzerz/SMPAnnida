@@ -4,9 +4,12 @@ import shutil
 
 NEW_SIDEBAR = """  <!-- Unified Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-logo-icon">🏫</div>
-      <div class="sidebar-brand">SMPAnnida</div>
+    <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <div class="sidebar-logo-icon">🏫</div>
+        <div class="sidebar-brand">SMPAnnida</div>
+      </div>
+      <button class="theme-toggle" style="background:transparent; border:none; font-size:1.2rem; cursor:pointer;" aria-label="Toggle Theme">☀️</button>
     </div>
 
     <nav>

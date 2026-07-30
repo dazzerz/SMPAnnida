@@ -57,22 +57,30 @@ export function showToast(message, type = 'info') {
 
 // Setup dark/light theme toggle
 export function setupThemeToggle(btnId = 'theme-toggle') {
-  const btn = document.getElementById(btnId);
-  if (!btn) return;
-  const saved = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', saved);
-  btn.textContent = saved === 'dark' ? '☀️' : '🌙';
-  btn.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    btn.textContent = next === 'dark' ? '☀️' : '🌙';
+  const btns = document.querySelectorAll('.theme-toggle, #' + btnId);
+  if (!btns.length) return;
+  
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateThemeIcon(next);
+    });
+  });
+}
+
+export function updateThemeIcon(theme) {
+  const btns = document.querySelectorAll('.theme-toggle, #theme-toggle');
+  btns.forEach(btn => {
+    btn.textContent = theme === 'dark' ? '☀️' : '🌙';
   });
 }
 
 // Apply saved theme (call on every page load)
 export function applySavedTheme() {
-  const saved = localStorage.getItem('theme') || 'dark';
+  const saved = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
+  updateThemeIcon(saved);
 }

@@ -11,8 +11,8 @@
     
     <!-- Supabase SDK & Config -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="../../js/ppdb/supabase-config.js" defer></script>
-    <script src="../../js/ppdb/db.js" defer></script>
+    <script src="../js/supabase-config.js" defer></script>
+    <script src="../js/db.js" defer></script>
     <style>
         .tab-panel {
             display: none;
@@ -79,9 +79,12 @@
     <!-- Sidebar -->
       <!-- Unified Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="sidebar-logo-icon">🏫</div>
-      <div class="sidebar-brand">SMPAnnida</div>
+    <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <div class="sidebar-logo-icon">🏫</div>
+        <div class="sidebar-brand">SMPAnnida</div>
+      </div>
+      <button class="theme-toggle" style="background:transparent; border:none; font-size:1.2rem; cursor:pointer;" aria-label="Toggle Theme">☀️</button>
     </div>
 
     <nav>
@@ -393,7 +396,7 @@
 
     </main>
 
-    <script src="../../js/ppdb/script.js"></script>
+    <script src="../js/script.js"></script>
     <script>
         // High fidelity interactive functions for admin dashboard mock
 
