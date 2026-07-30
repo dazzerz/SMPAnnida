@@ -5,9 +5,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root, [data-theme="light"] {
-  /* Green Theme Colors */
-  --primary: #10b981;
-  --primary-hover: #059669;
+  /* Green Theme Colors (Darker for Light Mode contrast) */
+  --primary: #059669;
+  --primary-hover: #047857;
   --primary-light: rgba(16, 185, 129, 0.1);
   
   --secondary: #34d399;
@@ -39,6 +39,11 @@
 }
 
 [data-theme="dark"] {
+  /* Green Theme Colors (Lighter for Dark Mode contrast) */
+  --primary: #10b981;
+  --primary-hover: #059669;
+  --primary-light: rgba(16, 185, 129, 0.2);
+
   /* Glassmorphism Surface (Dark Mode) */
   --glass-bg: rgba(17, 24, 39, 0.65);
   --glass-bg-hover: rgba(17, 24, 39, 0.85);
@@ -259,6 +264,7 @@ body {
   flex: 1;
   padding: 2rem 3rem;
   overflow-y: auto;
+  overflow-x: auto; /* Enable horizontal scroll for wide tables natively */
   min-width: 0; /* CRITICAL: Allows flex child to shrink below content size */
   max-width: 100%;
 }
