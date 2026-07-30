@@ -419,8 +419,8 @@
         document.getElementById('nav-user-email').textContent = user.email;
         document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
       } else {
-        if (!sessionStorage.getItem('guest_mode_active')) {
-          window.location.href = '../login.html';
+        if (true) {
+          window.location.href = '../../index.html';
           return;
         }
 
@@ -465,7 +465,7 @@
         if (thAksi) thAksi.style.display = 'none';
 
         document.getElementById('logout-btn').innerHTML = '<span>🔑</span> Login';
-        document.getElementById('logout-btn').addEventListener('click', () => window.location.href = '../login.html');
+        document.getElementById('logout-btn').addEventListener('click', () => window.location.href = '../../index.html';);
       }
 
       // Sidebar

@@ -109,7 +109,8 @@
     if (guestBtn) {
       guestBtn.addEventListener('click', () => {
         sessionStorage.setItem('guest_mode_active', 'true');
-        window.location.href = 'dashboard.html';
+        localStorage.setItem('isGuest', 'true');
+        window.location.href = 'pages/academic/dashboard.html';
       });
     }
   </script>
