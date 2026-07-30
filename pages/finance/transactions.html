@@ -316,9 +316,9 @@
 
 
   <script type="module">
-    import supabaseClient from '../../js/finance/core/supabase.js';
-    import { getOptionalUser, handleLogout } from '../../js/finance/core/auth.js';
-    import { showToast, setupThemeToggle, applySavedTheme, formatCurrency, formatDate } from '../../js/finance/core/utils.js';
+    import supabaseClient from '../../js/core/supabase.js';
+    import { getOptionalUser, handleLogout } from '../../js/core/auth.js';
+    import { showToast, setupThemeToggle, applySavedTheme, formatCurrency, formatDate } from '../../js/core/utils.js';
     import {
       fetchCategories, fetchTransactions, addTransaction, updateTransaction,
       deleteTransaction, renderTransactionsTable, renderPagination,
