@@ -188,7 +188,7 @@ body {
 }
 
 .sidebar {
-  width: 280px;
+  width: 22vw; min-width: 220px; max-width: 280px;
   height: 100vh;
   position: sticky;
   top: 0;
@@ -384,7 +384,7 @@ body {
 }
 
 /* Force Glassmorphism on all generic card and panel elements */
-.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper {
+.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card {
   background: var(--glass-bg) !important;
   backdrop-filter: var(--glass-blur) !important;
   -webkit-backdrop-filter: var(--glass-blur) !important;
@@ -458,4 +458,28 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
   border-radius: 16px !important;
   overflow: hidden !important;
   background: transparent !important;
+}
+
+/* Responsive Sidebar */
+.sidebar {
+  width: 22vw !important;
+  min-width: 220px !important;
+  max-width: 280px !important;
+  border-right: 1px solid var(--glass-border) !important;
+}
+/* Colorful Background for Glassmorphism to work */
+body {
+  background-image: 
+    radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(52, 211, 153, 0.15) 0%, transparent 40%) !important;
+  background-attachment: fixed !important;
+}
+[data-theme="dark"] body {
+  background-image: 
+    radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(5, 150, 105, 0.2) 0%, transparent 40%) !important;
+}
+/* Force budget grid to have at least 2 columns on decent sized screens */
+.budget-grid {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
 }
