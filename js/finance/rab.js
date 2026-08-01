@@ -1,3 +1,6 @@
+import { injectSidebar } from '../core/layout.js';
+injectSidebar('sidebar', 'rab', '../');
+
 import supabaseClient from '../core/supabase.js';
 import { formatCurrency } from '../core/utils.js';
 import { getOptionalUser, handleLogout } from '../core/auth.js';

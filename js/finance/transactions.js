@@ -1,3 +1,6 @@
+import { injectSidebar } from '../core/layout.js';
+injectSidebar('sidebar', 'transactions', '../');
+
 // =====================================================
 // ANNIDA2FINANCE - Transactions Module
 // =====================================================

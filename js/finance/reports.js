@@ -1,3 +1,6 @@
+import { injectSidebar } from '../core/layout.js';
+injectSidebar('sidebar', 'reports', '../');
+
 // =====================================================
 // ANNIDA2FINANCE - Reports Module
 // =====================================================

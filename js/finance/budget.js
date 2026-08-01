@@ -1,3 +1,6 @@
+import { injectSidebar } from '../core/layout.js';
+injectSidebar('sidebar', 'budget', '../../');
+
 // =====================================================
 // ANNIDA2FINANCE - Budget Module
 // =====================================================

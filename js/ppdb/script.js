@@ -1,3 +1,6 @@
+import { injectSidebar } from '../core/layout.js';
+injectSidebar('sidebar', 'ppdb', '../');
+
 // Annida2PPDB - Main JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {

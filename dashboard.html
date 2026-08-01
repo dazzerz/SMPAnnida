@@ -9,7 +9,9 @@
 <body>
 
   <!-- Unified Sidebar -->
-  <aside class="sidebar" id="sidebar">
+  <aside class="sidebar" id="sidebar"></aside>
+<!-- [LEGACY] - Siap dihapus pada Sprint Cleanup.
+<aside class="sidebar" id="sidebar-legacy">
     <div class="sidebar-header">
       <div class="sidebar-logo-icon">🏫</div>
       <div class="sidebar-brand">SMPAnnida</div>
@@ -50,6 +52,7 @@
       <button class="btn btn-outline" style="width:100%;margin-top:1rem;" id="logout-btn">Keluar</button>
     </div>
   </aside>
+-->
 
   <!-- Main Content -->
   <main class="main-content">
@@ -103,6 +106,8 @@
   </main>
 
   <script type="module">
+    import { injectSidebar } from './js/core/layout.js';
+    injectSidebar('sidebar', 'dashboard', '');
     import { getOptionalUser, handleLogout } from './js/core/auth.js';
     import { fetchDashboardMetrics, formatCurrency } from './js/core/dashboard.js';
     

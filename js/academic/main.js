@@ -1,3 +1,6 @@
+import { injectSidebar } from '../core/layout.js';
+injectSidebar('sidebar', 'academic', '../');
+
 import supabaseClient from '../core/supabase.js';
 const db = supabaseClient;
 window.db = supabaseClient;

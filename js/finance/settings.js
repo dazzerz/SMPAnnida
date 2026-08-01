@@ -1,3 +1,6 @@
+import { injectSidebar } from '../core/layout.js';
+injectSidebar('sidebar', 'settings', '../');
+
 import supabaseClient from '../core/supabase.js';
 import { requireAuth, handleLogout } from '../core/auth.js';
 import { showToast, setupThemeToggle, applySavedTheme } from '../core/utils.js';
