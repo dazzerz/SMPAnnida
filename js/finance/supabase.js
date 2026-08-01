@@ -1,3 +1,4 @@
+// [LEGACY] - Tidak lagi digunakan. Siap dihapus pada sprint cleanup. Menggunakan js/core/supabase.js
 // =====================================================
 // ANNIDA2FINANCE - Supabase Client
 // Menggunakan ESM import langsung (lebih reliable)

@@ -1,7 +1,7 @@
 // =====================================================
 // ANNIDA2FINANCE - Transactions Module
 // =====================================================
-import supabaseClient from './supabase.js';
+import supabaseClient from '../core/supabase.js';
 import { formatCurrency, formatDate, showToast, escapeHTML } from './utils.js';
 
 let allCategories = [];

@@ -1,4 +1,4 @@
-import supabaseClient from './supabase.js';
+import supabaseClient from '../core/supabase.js';
 import { formatCurrency } from './utils.js';
 import { getOptionalUser, handleLogout } from '../core/auth.js';
 

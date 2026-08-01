@@ -2,7 +2,7 @@
 // =====================================================
 // ANNIDA2FINANCE - Authentication Module
 // =====================================================
-import supabaseClient from './supabase.js';
+import supabaseClient from '../core/supabase.js';
 import { showToast, setupThemeToggle, applySavedTheme } from './utils.js';
 
 function showAuthMessage(message, type) {

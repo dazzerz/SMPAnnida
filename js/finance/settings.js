@@ -1,4 +1,4 @@
-import supabaseClient from './supabase.js';
+import supabaseClient from '../core/supabase.js';
 import { requireAuth, handleLogout } from '../core/auth.js';
 import { showToast, setupThemeToggle, applySavedTheme } from './utils.js';
 

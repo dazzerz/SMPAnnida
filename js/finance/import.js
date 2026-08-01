@@ -2,7 +2,7 @@
 // ANNIDA2FINANCE - Excel Import Module
 // Menggunakan SheetJS (xlsx) untuk baca & buat Excel
 // =====================================================
-import supabaseClient from './supabase.js';
+import supabaseClient from '../core/supabase.js';
 
 // ── Generate & download template Excel ────────────
 export function downloadTemplate(categories) {

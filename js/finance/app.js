@@ -1,7 +1,7 @@
 // =====================================================
 // ANNIDA2FINANCE - Main App Controller (Dashboard)
 // =====================================================
-import supabaseClient from './supabase.js';
+import supabaseClient from '../core/supabase.js';
 import { getOptionalUser, handleLogout } from '../core/auth.js';
 import { injectLayout } from './layout.js';
 import { formatCurrency, formatDate, getMonthYear, showToast, setupThemeToggle, applySavedTheme } from './utils.js';
