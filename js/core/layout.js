@@ -1,6 +1,10 @@
-export function injectSidebar(containerId, activeMenuId, basePath = '') {
+export function injectSidebar(containerId, activeMenuId, ignoredBasePath = '') {
     const container = document.getElementById(containerId);
     if (!container) return;
+
+    const path = window.location.pathname;
+    const basePath = path.includes('/pages/') ? '../../' : './';
+
 
     container.innerHTML = `
     <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
