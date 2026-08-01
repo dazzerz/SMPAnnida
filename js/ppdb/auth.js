@@ -1,6 +1,8 @@
 // Annida2PPDB - Authentication Handler
 // Menghubungkan Form Login & Register ke Supabase Auth
 
+import supabaseClient from '../core/supabase.js';
+const db = supabaseClient;
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Form Login
     const loginForm = document.getElementById('loginForm');

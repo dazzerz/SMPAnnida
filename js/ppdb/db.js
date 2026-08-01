@@ -1,6 +1,8 @@
 // Annida2PPDB - Database Synchronization Handler
 // Menghubungkan Dashboard Pendaftar & Admin ke Supabase DB dengan Fallback Lokal
 
+import supabaseClient from '../core/supabase.js';
+const db = supabaseClient;
 document.addEventListener('DOMContentLoaded', async () => {
     let sessionUser = null;
     
