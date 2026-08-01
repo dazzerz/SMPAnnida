@@ -2,7 +2,7 @@
 // ANNIDA2FINANCE - Main App Controller (Dashboard)
 // =====================================================
 import supabaseClient from '../core/supabase.js';
-import { getOptionalUser, handleLogout } from '../core/auth.js';
+import { requireAuth, handleLogout } from '../core/auth.js';
 import { injectLayout } from './layout.js';
 import { formatCurrency, formatDate, getMonthYear, showToast, setupThemeToggle, applySavedTheme } from '../core/utils.js';
 import {
@@ -270,11 +270,8 @@ async function main() {
     sessionStorage.removeItem('guest_stats');
   }
 
-  const user = await getOptionalUser();
-  if (!user && !sessionStorage.getItem('guest_mode_active')) {
-    window.location.href = '../../index.html';
-    return;
-  }
+  const user = await requireAuth();
+  if (!user) return;
 
   injectLayout('dashboard', 'Selamat Datang, 👋', 'Memuat...');
   applySavedTheme();

@@ -116,15 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.classList.remove('active');
     });
 
-    // Logout
-    const btnLogout = document.getElementById('btn-logout');
-    if(btnLogout) {
-        btnLogout.addEventListener('click', async () => {
-            localStorage.removeItem('isGuest');
-            await db.auth.signOut();
-            window.location.href = '../../index.html';
-        });
-    }
+
 
     // Toggle Dark Mode
     const btnThemeToggle = document.getElementById('btn-theme-toggle');

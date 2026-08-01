@@ -2,6 +2,7 @@
 // Menghubungkan Dashboard Pendaftar & Admin ke Supabase DB dengan Fallback Lokal
 
 import supabaseClient from '../core/supabase.js';
+import { escapeHTML } from '../core/utils.js';
 import { getOptionalUser } from '../core/auth.js';
 const db = supabaseClient;
 document.addEventListener('DOMContentLoaded', async () => {
@@ -42,6 +43,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ==========================================
     const isAdminDashboard = document.getElementById('table-pendaftar-body');
     if (isAdminDashboard) {
+        if (!sessionUser || !sessionUser.email || !sessionUser.email.includes('admin')) {
+            alert("Akses Ditolak: Anda tidak memiliki izin untuk mengakses halaman Admin.");
+            window.location.href = '../../index.html';
+            return;
+        }
         console.log("Memuat data pendaftar untuk Admin...");
         loadAdminData();
     }
@@ -242,11 +248,11 @@ async function loadAdminData() {
                 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><strong>${p.no_pendaftaran}</strong></td>
+                    <td><strong>${escapeHTML(p.no_pendaftaran)}</strong></td>
                     <td>${nama}</td>
                     <td>Reguler</td>
-                    <td>${p.tipe_pendaftaran === 'pondok' ? 'Sekolah + Pondok' : 'Sekolah Saja'}</td>
-                    <td><span class="status-badge status-${statusClass}">${p.status_pendaftaran}</span></td>
+                    <td>${escapeHTML(p.tipe_pendaftaran === 'pondok' ? 'Sekolah + Pondok' : 'Sekolah Saja')}</td>
+                    <td><span class="status-badge status-${escapeHTML(statusClass)}">${escapeHTML(p.status_pendaftaran)}</span></td>
                     <td><a href="#" class="tab-trigger" data-target="admin-verifikasi" style="font-weight:600; color:var(--primary-color);">Detail</a></td>
                 `;
                 tableBody.appendChild(tr);
