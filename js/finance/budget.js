@@ -1,5 +1,10 @@
-import { injectSidebar } from '../core/layout.js';
+import { injectSidebar, injectTopbar } from '../core/layout.js';
 injectSidebar('sidebar', 'budget', '../../');
+injectTopbar('topbar', {
+  greeting: 'Kelola',
+  title: 'Budget Bulanan',
+  rightHtml: '<button class="btn btn-primary btn-sm" id="add-budget-btn">＋ Tambah Budget</button>'
+});
 
 // =====================================================
 // ANNIDA2FINANCE - Budget Module

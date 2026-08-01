@@ -1,4 +1,10 @@
-import { injectSidebar } from '../core/layout.js';
+import { injectSidebar, injectTopbar } from '../core/layout.js';
+injectTopbar('topbar', {
+  greeting: 'Perencanaan',
+  title: 'RAB Kelas Annida 2',
+  rightHtml: ``
+});
+
 injectSidebar('sidebar', 'rab', '../');
 
 import supabaseClient from '../core/supabase.js';

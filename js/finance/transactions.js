@@ -1,4 +1,10 @@
-import { injectSidebar } from '../core/layout.js';
+import { injectSidebar, injectTopbar } from '../core/layout.js';
+injectTopbar('topbar', {
+  greeting: 'Kelola',
+  title: 'Transaksi',
+  rightHtml: `<button class="btn btn-ghost btn-sm" id="import-excel-btn" style="gap:0.4rem;">📥 Import Excel</button> <button class="btn btn-primary btn-sm" id="add-transaction-btn">＋ Tambah Transaksi</button>`
+});
+
 injectSidebar('sidebar', 'transactions', '../');
 
 // =====================================================

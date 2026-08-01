@@ -47,3 +47,26 @@ export function injectSidebar(containerId, activeMenuId, basePath = '') {
     </div>
     `;
 }
+
+export function injectTopbar(containerId, options) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    const greeting = options.greeting || '';
+    const title = options.title || '';
+    const rightHtml = options.rightHtml || '';
+    
+    container.innerHTML = `
+        <div class="flex items-center gap-md">
+          <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+          <div class="topbar-left">
+            <div class="topbar-greeting">${greeting}</div>
+            <div class="topbar-title">${title}</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button class="theme-toggle" id="theme-toggle">☀️</button>
+          ${rightHtml}
+        </div>
+    `;
+}
