@@ -1,4 +1,5 @@
 import supabaseClient from '../core/supabase.js';
+import { escapeHTML } from '../core/utils.js';
 const db = supabaseClient;
 window.db = supabaseClient;
 
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
             selectElement.innerHTML = '<option value="">-- Pilih Siswa --</option>';
             data.forEach(student => {
-                selectElement.insertAdjacentHTML('beforeend', `<option value="${student.id}">${student.nama_lengkap}</option>`);
+                selectElement.insertAdjacentHTML('beforeend', `<option value="${student.id}">${escapeHTML(student.nama_lengkap)}</option>`);
             });
             selectElement.disabled = false;
         } catch (err) { selectElement.innerHTML = '<option value="">Gagal</option>'; }
@@ -69,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     let total = 0, count = 0;
                     ['Tugas', 'UH', 'UTS', 'UAS'].forEach(k => { if (n[k] !== '-') total += n[k], count++; });
                     const rata = count > 0 ? (total / count).toFixed(1) : '-';
-                    tbodyRekapNilai.insertAdjacentHTML('beforeend', `<tr><td><strong>${mapel}</strong></td><td>${n.Tugas}</td><td>${n.UH}</td><td>${n.UTS}</td><td>${n.UAS}</td><td style="color:var(--primary);font-weight:bold;">${rata}</td></tr>`);
+                    tbodyRekapNilai.insertAdjacentHTML('beforeend', `<tr><td><strong>${escapeHTML(mapel)}</strong></td><td>${n.Tugas}</td><td>${n.UH}</td><td>${n.UTS}</td><td>${n.UAS}</td><td style="color:var(--primary);font-weight:bold;">${rata}</td></tr>`);
                 }
             } catch (err) { tbodyRekapNilai.innerHTML = '<tr><td colspan="6" style="color:var(--danger);">Gagal</td></tr>'; }
         });

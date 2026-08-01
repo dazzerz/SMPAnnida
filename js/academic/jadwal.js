@@ -1,4 +1,5 @@
 import supabaseClient from '../core/supabase.js';
+import { escapeHTML } from '../core/utils.js';
 const db = supabaseClient;
 window.db = supabaseClient;
 
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 tbodyJadwal.innerHTML = '';
                 data.forEach(j => {
                     const jamMulai = j.jam_mulai ? j.jam_mulai.substring(0, 5) : '-', jamSelesai = j.jam_selesai ? j.jam_selesai.substring(0, 5) : '-';
-                    tbodyJadwal.insertAdjacentHTML('beforeend', `<tr><td><strong>${j.hari}</strong></td><td><span style="color:var(--primary);font-weight:500;">${jamMulai} - ${jamSelesai}</span></td><td>${j.kelas}</td><td>${j.mata_pelajaran}</td><td>${j.guru_pengajar}</td></tr>`);
+                    tbodyJadwal.insertAdjacentHTML('beforeend', `<tr><td><strong>${escapeHTML(j.hari)}</strong></td><td><span style="color:var(--primary);font-weight:500;">${jamMulai} - ${jamSelesai}</span></td><td>${escapeHTML(j.kelas)}</td><td>${escapeHTML(j.mata_pelajaran)}</td><td>${escapeHTML(j.guru_pengajar)}</td></tr>`);
                 });
             } catch (err) { tbodyJadwal.innerHTML = '<tr><td colspan="5" style="color:var(--danger);">Gagal memuat jadwal.</td></tr>'; }
         });
