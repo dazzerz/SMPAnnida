@@ -20,7 +20,7 @@ async function checkAuth() {
     try {
         const { data: { session }, error } = await db.auth.getSession();
         if (error || (!session && !window.isGuest)) {
-            window.location.href = 'login.html';
+            window.location.href = '../../index.html';
         }
 
         // Update profil UI
@@ -35,7 +35,7 @@ async function checkAuth() {
         }
     } catch (err) {
         console.error("Auth check failed:", err);
-        window.location.href = 'login.html';
+        window.location.href = '../../index.html';
     }
 }
 // Jalankan cek auth
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnLogout.addEventListener('click', async () => {
             localStorage.removeItem('isGuest');
             await db.auth.signOut();
-            window.location.href = 'login.html';
+            window.location.href = '../../index.html';
         });
     }
 

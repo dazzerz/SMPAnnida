@@ -64,7 +64,7 @@ function updateGreeting(user) {
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
       logoutBtn.innerHTML = '<span class="nav-icon">🔑</span> Login';
-      logoutBtn.addEventListener('click', () => window.location.href = './login.html');
+      logoutBtn.addEventListener('click', () => window.location.href = '../../index.html');
     }
     
     // Hide Transaksi, Budget, and RAB Kelas in sidebar for guests
@@ -272,7 +272,7 @@ async function main() {
 
   const user = await getOptionalUser();
   if (!user && !sessionStorage.getItem('guest_mode_active')) {
-    window.location.href = './login.html';
+    window.location.href = '../../index.html';
     return;
   }
 
