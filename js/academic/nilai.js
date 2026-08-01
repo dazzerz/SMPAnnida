@@ -1,3 +1,7 @@
+import supabaseClient from '../core/supabase.js';
+const db = supabaseClient;
+window.db = supabaseClient;
+
 document.addEventListener('DOMContentLoaded', () => {
     const selectKelasNilai = document.getElementById('select-kelas-nilai');
     const selectSiswaNilai = document.getElementById('select-siswa-nilai');

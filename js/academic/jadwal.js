@@ -1,3 +1,7 @@
+import supabaseClient from '../core/supabase.js';
+const db = supabaseClient;
+window.db = supabaseClient;
+
 document.addEventListener('DOMContentLoaded', () => {
     const btnLihatJadwal = document.getElementById('btn-lihat-jadwal');
     const filterKelasJadwal = document.getElementById('filter-kelas-jadwal');
