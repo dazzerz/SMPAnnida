@@ -1,3 +1,4 @@
+/* [LEGACY] - Siap dihapus pada Sprint Cleanup.
 :root {
     --primary: #4ade80;
     --primary-hover: #22c55e;
@@ -16,6 +17,7 @@
     --sidebar-width: 250px;
     --topbar-height: 60px;
 }
+*/
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Inter', sans-serif; background-color: var(--background); color: var(--text-main); line-height: 1.5; }
 .app-container { display: flex; min-height: 100vh; }

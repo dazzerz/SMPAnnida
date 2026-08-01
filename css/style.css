@@ -4,6 +4,204 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
+/* ==========================================
+   CONSOLIDATED MODULE VARIABLES
+========================================== */
+/* Extracted from css/finance/global.css */
+:root {
+
+  /* Colors - Dark Theme (default) */
+  --bg-primary: #0a0f12; /* Darker near-black for green contrast */
+  --bg-secondary: #10161a;
+  --bg-card: #141c21;
+  --bg-card-hover: #19242a;
+  --bg-elevated: #1a242a;
+  --bg-input: #0f161a;
+  --bg-sidebar: #060a0c;
+
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(124, 237, 80, 0.4); /* Green focus */
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0a0f12;
+
+  /* Brand Colors (Annida Logo) */
+  --accent-primary: #7ced50; /* Lime green from logo */
+  --accent-primary-glow: rgba(124, 237, 80, 0.15);
+  --accent-secondary: #000000; /* Black from logo stripes */
+  --accent-secondary-glow: rgba(0, 0, 0, 0.15);
+  --accent-warning: #f59e0b;
+  --accent-danger: #ef4444;
+  --accent-danger-glow: rgba(239, 68, 68, 0.15);
+  --accent-purple: #8b5cf6;
+  --accent-pink: #ec4899;
+  --accent-gold: #fbbf24;
+
+  /* Income / Expense specific */
+  --income-color: #10b981;
+  --income-bg: rgba(16, 185, 129, 0.1);
+  --expense-color: #ef4444;
+  --expense-bg: rgba(239, 68, 68, 0.1);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #7ced50, #4ade80); /* Bright green gradient */
+  --gradient-success: linear-gradient(135deg, #10b981, #059669);
+  --gradient-danger: linear-gradient(135deg, #ef4444, #be123c);
+  --gradient-gold: linear-gradient(135deg, #f59e0b, #d97706);
+  --gradient-sidebar: linear-gradient(180deg, #060a0c 0%, #080d11 100%);
+  --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+
+  /* Glass effect */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.2);
+  --shadow-glow-green: 0 0 20px rgba(16, 185, 129, 0.2);
+
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s ease;
+
+  /* Sidebar */
+  --sidebar-width: 260px;
+  --sidebar-collapsed: 72px;
+  --header-height: 70px;
+
+}
+
+/* Extracted from css/finance/global.css */
+[data-theme="light"] {
+
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-elevated: #ffffff;
+  --bg-input: #f1f5f9;
+  --bg-sidebar: #ffffff; /* Bright white sidebar in light mode */
+
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-focus: rgba(124, 237, 80, 0.4);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-inverse: #f8fafc;
+
+  /* Brand Colors Override for Light Theme */
+  --accent-primary: #60cc38; /* Slightly darker green for light theme contrast */
+  --accent-primary-glow: rgba(96, 204, 56, 0.15);
+  --accent-secondary: #000000;
+  --accent-secondary-glow: rgba(0, 0, 0, 0.15);
+  
+  --gradient-primary: linear-gradient(135deg, #60cc38, #4ade80);
+  --gradient-sidebar: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  --gradient-card: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(248,250,252,1) 100%);
+  
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+
+}
+
+/* Extracted from css/finance/global.css */
+:root {
+
+    --sidebar-width: 100%;
+    --font-size-3xl: 1.5rem;
+    --font-size-4xl: 1.875rem;
+  
+}
+
+/* Extracted from css/academic/main.css */
+:root {
+
+    --primary: #4ade80;
+    --primary-hover: #22c55e;
+    --background: #F3F4F6;
+    --surface: #FFFFFF;
+    --text-main: #1F2937;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+    --success: #10B981;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --sidebar-width: 250px;
+    --topbar-height: 60px;
+
+}
+
+/* Extracted from css/ppdb/style.css */
+:root {
+
+    /* Color Palette - Light Electric Green */
+    --primary-color: #00c853; /* Electric Green */
+    --primary-light: #5efc82;
+    --primary-dark: #009624;
+    --secondary-color: #2d3748; /* Dark Contrast for Accent */
+    --secondary-light: #e6f9ed; /* Very light green for subtle backgrounds */
+    
+    /* Neutrals */
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --bg-main: #f7fafc;
+    --bg-card: #ffffff;
+    --bg-light: #edf2f7;
+    --border-color: #e2e8f0;
+
+    /* Typography */
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    
+    /* Shadows & Effects */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+    --transition: all 0.3s ease;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+
+}
+
+
+
 :root, [data-theme="light"] {
   /* Green Theme Colors (Darker for Light Mode contrast) */
   --primary: #059669;

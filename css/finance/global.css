@@ -8,6 +8,7 @@
 /* =====================================================
    CSS CUSTOM PROPERTIES (DESIGN TOKENS)
    ===================================================== */
+/* [LEGACY] - Siap dihapus pada Sprint Cleanup.
 :root {
   /* Colors - Dark Theme (default) */
   --bg-primary: #0a0f12; /* Darker near-black for green contrast */
@@ -100,8 +101,10 @@
   --sidebar-collapsed: 72px;
   --header-height: 70px;
 }
+*/
 
 /* Light Theme Override */
+/* [LEGACY] - Siap dihapus pada Sprint Cleanup.
 [data-theme="light"] {
   --bg-primary: #f8fafc;
   --bg-secondary: #f1f5f9;
@@ -133,6 +136,7 @@
   --glass-border: rgba(255, 255, 255, 0.2);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
 }
+*/
 
 /* =====================================================
    RESET & BASE
@@ -710,11 +714,13 @@ img {
    RESPONSIVE
    ===================================================== */
 @media (max-width: 768px) {
-  :root {
+  /* [LEGACY] - Siap dihapus pada Sprint Cleanup.
+:root {
     --sidebar-width: 100%;
     --font-size-3xl: 1.5rem;
     --font-size-4xl: 1.875rem;
   }
+*/
 
   .modal {
     max-width: 100%;
