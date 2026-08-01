@@ -1,5 +1,12 @@
-import { injectSidebar } from '../core/layout.js';
+import { injectSidebar, injectTopbar } from '../core/layout.js';
 injectSidebar('sidebar', 'ppdb', '../');
+
+const isSiswa = window.location.pathname.includes('siswa');
+injectTopbar('topbar', {
+    greeting: isSiswa ? 'Portal PPDB' : 'Gelombang 1 - SMP Sekolah Alam + Tahfidz 2026/2027',
+    title: isSiswa ? 'Portal Calon Siswa' : 'Admin PPDB Panel'
+});
+
 
 // Annida2PPDB - Main JavaScript
 

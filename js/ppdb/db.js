@@ -2,23 +2,25 @@
 // Menghubungkan Dashboard Pendaftar & Admin ke Supabase DB dengan Fallback Lokal
 
 import supabaseClient from '../core/supabase.js';
+import { getOptionalUser } from '../core/auth.js';
 const db = supabaseClient;
 document.addEventListener('DOMContentLoaded', async () => {
     let sessionUser = null;
+    let userId = null;
     
-    // Inisialisasi Sesi Auth Supabase
     try {
-        const { data: { session } } = await db.auth.getSession();
-        if (session) {
-            sessionUser = session.user;
-            localStorage.setItem('user_id', sessionUser.id);
+        sessionUser = await getOptionalUser();
+        if (sessionUser) {
+            userId = sessionUser.id;
+            localStorage.setItem('user_id', userId);
             localStorage.setItem('user_email', sessionUser.email);
+        } else {
+            userId = localStorage.getItem('user_id');
         }
     } catch (e) {
         console.warn("Autentikasi offline / local-only");
+        userId = localStorage.getItem('user_id');
     }
-
-    const userId = sessionUser ? sessionUser.id : localStorage.getItem('user_id');
 
     // ==========================================
     // A. PORTAL CALON SISWA (dashboard-siswa.html)
