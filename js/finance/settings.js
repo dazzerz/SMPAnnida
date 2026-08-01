@@ -1,5 +1,5 @@
 import supabaseClient from './supabase.js';
-import { requireAuth, handleLogout } from './auth.js';
+import { requireAuth, handleLogout } from '../core/auth.js';
 import { showToast, setupThemeToggle, applySavedTheme } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', async () => {

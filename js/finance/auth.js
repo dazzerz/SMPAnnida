@@ -1,3 +1,4 @@
+// [LEGACY] File ini sudah didepresiasi dan tidak lagi digunakan. Gunakan js/core/auth.js sebagai Single Source of Truth.
 // =====================================================
 // ANNIDA2FINANCE - Authentication Module
 // =====================================================

@@ -1,6 +1,6 @@
 import supabaseClient from './supabase.js';
 import { formatCurrency } from './utils.js';
-import { getOptionalUser, handleLogout } from './auth.js';
+import { getOptionalUser, handleLogout } from '../core/auth.js';
 
 let userId = null;
 let currentRabId = null;
