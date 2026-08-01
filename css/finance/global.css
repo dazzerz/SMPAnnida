@@ -8,10 +8,7 @@
 /* =====================================================
    CSS CUSTOM PROPERTIES (DESIGN TOKENS)
    ===================================================== */
-/* [LEGACY] - Siap dihapus pada Sprint Cleanup.
-:root {
-  /* Colors - Dark Theme (default) */
-  --bg-primary: #0a0f12; /* Darker near-black for green contrast */
+--bg-primary: #0a0f12; /* Darker near-black for green contrast */
   --bg-secondary: #10161a;
   --bg-card: #141c21;
   --bg-card-hover: #19242a;
@@ -104,17 +101,7 @@
 */
 
 /* Light Theme Override */
-/* [LEGACY] - Siap dihapus pada Sprint Cleanup.
-[data-theme="light"] {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #f1f5f9;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f8fafc;
-  --bg-elevated: #ffffff;
-  --bg-input: #f1f5f9;
-  --bg-sidebar: #ffffff; /* Bright white sidebar in light mode */
-
-  --border-color: rgba(0, 0, 0, 0.08);
+--border-color: rgba(0, 0, 0, 0.08);
   --border-focus: rgba(124, 237, 80, 0.4);
 
   --text-primary: #0f172a;
@@ -714,14 +701,6 @@ img {
    RESPONSIVE
    ===================================================== */
 @media (max-width: 768px) {
-  /* [LEGACY] - Siap dihapus pada Sprint Cleanup.
-:root {
-    --sidebar-width: 100%;
-    --font-size-3xl: 1.5rem;
-    --font-size-4xl: 1.875rem;
-  }
-*/
-
   .modal {
     max-width: 100%;
     margin: 0;

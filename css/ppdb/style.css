@@ -3,10 +3,7 @@
  * Elegant, premium design system using Vanilla CSS.
  */
 
-/* [LEGACY] - Siap dihapus pada Sprint Cleanup.
-:root {
-    /* Color Palette - Light Electric Green */
-    --primary-color: #00c853; /* Electric Green */
+--primary-color: #00c853; /* Electric Green */
     --primary-light: #5efc82;
     --primary-dark: #009624;
     --secondary-color: #2d3748; /* Dark Contrast for Accent */
