@@ -5,7 +5,7 @@ injectTopbar('topbar', {
   rightHtml: ``
 });
 
-injectSidebar('sidebar', 'academic', '../');
+injectSidebar('sidebar', 'academic');
 
 import supabaseClient from '../core/supabase.js';
 const db = supabaseClient;

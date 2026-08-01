@@ -5,7 +5,7 @@ injectTopbar('topbar', {
   rightHtml: `<button class="btn btn-success btn-sm" id="export-pdf-btn" style="gap:0.4rem;"> 📄 Export PDF </button>`
 });
 
-injectSidebar('sidebar', 'reports', '../');
+injectSidebar('sidebar', 'reports');
 
 // =====================================================
 // ANNIDA2FINANCE - Reports Module

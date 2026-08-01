@@ -1,5 +1,5 @@
 import { injectSidebar, injectTopbar } from '../core/layout.js';
-injectSidebar('sidebar', 'budget', '../../');
+injectSidebar('sidebar', 'budget');
 injectTopbar('topbar', {
   greeting: 'Kelola',
   title: 'Budget Bulanan',

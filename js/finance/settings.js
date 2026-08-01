@@ -5,7 +5,7 @@ injectTopbar('topbar', {
   rightHtml: ``
 });
 
-injectSidebar('sidebar', 'settings', '../');
+injectSidebar('sidebar', 'settings');
 
 import supabaseClient from '../core/supabase.js';
 import { requireAuth, handleLogout } from '../core/auth.js';

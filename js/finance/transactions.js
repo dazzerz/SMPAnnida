@@ -5,7 +5,7 @@ injectTopbar('topbar', {
   rightHtml: `<button class="btn btn-ghost btn-sm" id="import-excel-btn" style="gap:0.4rem;">📥 Import Excel</button> <button class="btn btn-primary btn-sm" id="add-transaction-btn">＋ Tambah Transaksi</button>`
 });
 
-injectSidebar('sidebar', 'transactions', '../');
+injectSidebar('sidebar', 'transactions');
 
 // =====================================================
 // ANNIDA2FINANCE - Transactions Module

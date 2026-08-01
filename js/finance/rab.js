@@ -5,7 +5,7 @@ injectTopbar('topbar', {
   rightHtml: ``
 });
 
-injectSidebar('sidebar', 'rab', '../');
+injectSidebar('sidebar', 'rab');
 
 import supabaseClient from '../core/supabase.js';
 import { formatCurrency } from '../core/utils.js';
