@@ -11,8 +11,8 @@
     
     <!-- Supabase SDK & Config -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="../js/supabase-config.js" defer></script>
-    <script src="../js/db.js" defer></script>
+    <script type="module" src="../js/supabase-config.js" defer></script>
+    <script type="module" src="../js/db.js" defer></script>
     <style>
         .tab-panel {
             display: none;
@@ -396,90 +396,7 @@
 
     </main>
 
-    <script src="../js/script.js"></script>
-    <script>
-        // High fidelity interactive functions for admin dashboard mock
-
-        // 1. Doc Verification Split-View Mock
-        function showDocPreview(student, docName, file) {
-            document.getElementById('preview-student-name').innerText = student;
-            document.getElementById('preview-doc-title').innerText = docName;
-            document.getElementById('preview-img-box').innerHTML = `
-                <div style="text-align:center;">
-                    <span style="font-size:3rem; display:block;">📄</span>
-                    <strong>${file}</strong>
-                    <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">[Klik Setujui Berkas di bawah untuk memproses]</p>
-                </div>
-            `;
-        }
-
-        function verifyDocumentAction(action) {
-            const student = document.getElementById('preview-student-name').innerText;
-            if (student === "Pilih Berkas Calon Siswa") {
-                alert("Silakan pilih berkas pendaftar di sebelah kiri terlebih dahulu.");
-                return;
-            }
-            alert(`Dokumen pendaftaran atas nama ${student} telah di- ${action === 'Approve' ? 'Setujui' : 'Tolak untuk Revisi'}!`);
-        }
-
-        // 2. Payment Verify Mock
-        function verifyPaymentAction(rowId) {
-            const row = document.getElementById(`pay-row-${rowId}`);
-            if (row) {
-                row.style.opacity = '0.5';
-                row.querySelector('button').disabled = true;
-                row.querySelector('button').innerText = '✓ Terverifikasi';
-                row.querySelector('button').style.backgroundColor = '#38a169';
-                
-                // Update KPI Card Lulus Mock
-                const kpiLulus = document.getElementById('kpi-lulus');
-                let count = parseInt(kpiLulus.innerText);
-                kpiLulus.innerText = count + 1;
-                
-                alert("Verifikasi Pembayaran Berhasil! Status pendaftar diupdate untuk mengikuti tes seleksi.");
-            }
-        }
-
-        // 3. Score Calculator & Ranking Update Mock
-        const calcInputs = document.querySelectorAll('.val-input');
-        calcInputs.forEach(input => {
-            input.addEventListener('input', calculateLiveScore);
-        });
-
-        function calculateLiveScore() {
-            const akademik = parseFloat(document.getElementById('val-akademik').value) || 0;
-            const tahfidz = parseFloat(document.getElementById('val-tahfidz').value) || 0;
-            const interview = parseFloat(document.getElementById('val-interview').value) || 0;
-            const admin = parseFloat(document.getElementById('val-admin').value) || 0;
-            
-            // Weightage: 40%, 30%, 20%, 10%
-            const total = (akademik * 0.4) + (tahfidz * 0.3) + (interview * 0.2) + (admin * 0.1);
-            document.getElementById('calculated-total-score').innerText = total.toFixed(1);
-        }
-
-        function saveSeleksiGrade() {
-            const student = document.getElementById('seleksi-student-select').value;
-            const finalScore = parseFloat(document.getElementById('calculated-total-score').innerText);
-            
-            if (student === "Ahmad Fulan") {
-                document.getElementById('score-Ahmad-Fulan').innerHTML = `<strong>${finalScore.toFixed(1)}</strong>`;
-            } else if (student === "Budi Santoso") {
-                const budiRow = document.getElementById('rank-row-Budi-Santoso');
-                budiRow.style.display = 'table-row';
-                document.getElementById('score-Budi-Santoso').innerHTML = `<strong>${finalScore.toFixed(1)}</strong>`;
-            }
-            
-            alert(`Nilai seleksi untuk ${student} berhasil disimpan. Peringkat hasil seleksi diperbarui!`);
-        }
-
-        // 4. Activate to Academic Mock
-        function activateToAcademic(studentName) {
-            const confirmActivation = confirm(`Apakah Anda yakin ingin mengaktivasi ${studentName} menjadi SISWA AKTIF?\n\nProses ini otomatis:\n1. Menggenerate NIS (Nomor Induk Siswa).\n2. Memasukkan data ke Modul Akademik (Presensi & Rapor Kelas).\n3. Membuka portal tagihan SPP bulanan di Modul Finance.`);
-            
-            if (confirmActivation) {
-                alert(`Selamat! ${studentName} resmi diaktivasi menjadi Siswa Aktif.\nAkun portal Orang Tua & Siswa telah aktif.`);
-            }
-        }
-    </script>
+    <script type="module" src="../js/script.js"></script>
+    
 </body>
 </html>

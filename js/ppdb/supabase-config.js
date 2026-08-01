@@ -1,3 +1,4 @@
+// [LEGACY] - Akan diganti setelah seluruh PPDB selesai menggunakan ES Module.
 // Annida2PPDB - Supabase Configuration
 // Menggunakan kredensial dari ekosistem Annida2 yang sudah aktif
 
