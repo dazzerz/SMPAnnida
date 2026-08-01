@@ -1,3 +1,4 @@
+// [LEGACY] - Siap dihapus pada Sprint Cleanup.
 // =====================================================
 // ANNIDA2FINANCE - Utility Functions (shared)
 // =====================================================

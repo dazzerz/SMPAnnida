@@ -15,13 +15,8 @@ window.db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 // Cek Sesi (Auth)
 window.isGuest = localStorage.getItem('isGuest') === 'true';
 
-// Escape HTML untuk mencegah XSS
-window.escapeHTML = function(str) {
-  if (!str) return '-';
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-};
+import { escapeHTML } from \'../core/utils.js\';
+window.escapeHTML = escapeHTML;
 
 async function checkAuth() {
     try {

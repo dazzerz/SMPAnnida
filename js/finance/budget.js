@@ -2,7 +2,7 @@
 // ANNIDA2FINANCE - Budget Module
 // =====================================================
 import supabaseClient from '../core/supabase.js';
-import { formatCurrency, escapeHTML } from './utils.js';
+import { formatCurrency, escapeHTML } from '../core/utils.js';
 
 export async function fetchBudgets(userId, year, month) {
   if (!year || !month) return [];

@@ -1,7 +1,7 @@
 // =====================================================
 // ANNIDA2FINANCE - Reports Module
 // =====================================================
-import { formatCurrency, formatDate, escapeHTML } from './utils.js';
+import { formatCurrency, formatDate, escapeHTML } from '../core/utils.js';
 
 export async function exportToPDF(reportData) {
   const { jsPDF } = window.jspdf;

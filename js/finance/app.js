@@ -4,7 +4,7 @@
 import supabaseClient from '../core/supabase.js';
 import { getOptionalUser, handleLogout } from '../core/auth.js';
 import { injectLayout } from './layout.js';
-import { formatCurrency, formatDate, getMonthYear, showToast, setupThemeToggle, applySavedTheme } from './utils.js';
+import { formatCurrency, formatDate, getMonthYear, showToast, setupThemeToggle, applySavedTheme } from '../core/utils.js';
 import {
   fetchCategories, fetchMonthlySummary, fetchMonthlyTrend, fetchCategoryBreakdown,
   fetchRecentTransactions, addTransaction, updateTransaction, deleteTransaction,
