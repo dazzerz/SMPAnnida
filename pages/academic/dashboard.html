@@ -385,11 +385,124 @@
                     </div>
                 </section>
 
-                <!-- Rapor Section (Placeholder) -->
+                <!-- Rapor Section -->
                 <section id="rapor" class="page-section" style="display: none;">
-                    <h1>Rapor Siswa</h1>
-                    <div class="card glass">
-                        <p>Halaman Rapor Siswa sedang dalam tahap pengembangan.</p>
+                    <h1>Rapor Digital Siswa</h1>
+                    
+                    <style>
+                        @media print {
+                            body * { visibility: hidden; }
+                            #rapor-content, #rapor-content * { visibility: visible; }
+                            #rapor-content {
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                width: 100%;
+                                padding: 0 !important;
+                                margin: 0 !important;
+                            }
+                            #rapor-preview-container {
+                                box-shadow: none !important;
+                                border: none !important;
+                                background: none !important;
+                            }
+                        }
+                    </style>
+
+                    <div style="display: grid; grid-template-columns: minmax(250px, 300px) 1fr; gap: 20px; align-items: start;">
+                        <!-- Bagian Kiri: Filter -->
+                        <div class="card glass" id="rapor-filter-container">
+                            <h2 style="font-size: 16px; margin-bottom: 15px;">Filter Rapor</h2>
+                            <div class="form-group">
+                                <label>Tahun Ajaran</label>
+                                <select id="rapor-tahun" class="input-control">
+                                    <option value="2026/2027">2026/2027</option>
+                                    <option value="2025/2026">2025/2026</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Semester</label>
+                                <select id="rapor-semester" class="input-control">
+                                    <option value="Ganjil">Ganjil</option>
+                                    <option value="Genap">Genap</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Kelas</label>
+                                <select id="rapor-kelas" class="input-control">
+                                    <option value="">-- Pilih Kelas --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Siswa</label>
+                                <select id="rapor-siswa" class="input-control" disabled>
+                                    <option value="">-- Pilih Siswa --</option>
+                                </select>
+                            </div>
+                            <button id="btn-tampilkan-rapor" class="btn-primary" style="width: 100%;">Tampilkan Rapor</button>
+                        </div>
+                        
+                        <!-- Bagian Kanan: Preview Rapor -->
+                        <div class="card glass" id="rapor-preview-container" style="background: #fff; color: #000;">
+                            <div id="rapor-content" style="padding: 20px;">
+                                <!-- Identitas -->
+                                <div style="text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px; padding-bottom: 10px;">
+                                    <h2 style="margin:0; font-size: 20px; text-transform: uppercase;">LAPORAN HASIL BELAJAR SISWA</h2>
+                                    <h3 style="margin:5px 0 0 0; font-size: 16px;">SMP ANNIDA</h3>
+                                </div>
+                                
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; font-size: 14px;">
+                                    <div>
+                                        <table style="width: 100%;">
+                                            <tr><td style="width: 120px;">Nama Siswa</td><td>: <strong id="rapor-nama">-</strong></td></tr>
+                                            <tr><td>NIS/NISN</td><td>: <span id="rapor-nis">-</span></td></tr>
+                                        </table>
+                                    </div>
+                                    <div>
+                                        <table style="width: 100%;">
+                                            <tr><td style="width: 120px;">Kelas</td><td>: <strong id="rapor-kelas-lbl">-</strong></td></tr>
+                                            <tr><td>Semester</td><td>: <span id="rapor-semester-lbl">-</span></td></tr>
+                                            <tr><td>Tahun Ajaran</td><td>: <span id="rapor-tahun-lbl">-</span></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Tabel Nilai -->
+                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;" id="rapor-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="border: 1px solid #000; padding: 8px; text-align: left;">Mata Pelajaran</th>
+                                            <th style="border: 1px solid #000; padding: 8px; text-align: center; width: 60px;">Nilai</th>
+                                            <th style="border: 1px solid #000; padding: 8px; text-align: center; width: 80px;">Predikat</th>
+                                            <th style="border: 1px solid #000; padding: 8px; text-align: left;">Deskripsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rapor-tbody">
+                                        <tr><td colspan="4" style="border: 1px solid #000; padding: 20px; text-align: center; color: #666;">Silakan pilih siswa dan klik Tampilkan Rapor</td></tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- Statistik & TTD -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 14px;">
+                                    <div>
+                                        <table style="width: 100%; border-collapse: collapse;">
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Rata-rata</td><td style="border: 1px solid #000; padding: 5px; font-weight: bold;" id="rapor-rata">-</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Nilai Tertinggi</td><td style="border: 1px solid #000; padding: 5px;" id="rapor-max">-</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Nilai Terendah</td><td style="border: 1px solid #000; padding: 5px;" id="rapor-min">-</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Ranking Kelas</td><td style="border: 1px solid #000; padding: 5px; font-weight: bold;" id="rapor-rank">-</td></tr>
+                                        </table>
+                                    </div>
+                                    <div style="text-align: center; display: flex; flex-direction: column; justify-content: flex-end;">
+                                        <p style="margin: 0 0 50px 0;" id="rapor-date-lbl">Jakarta, -</p>
+                                        <p style="margin: 0; font-weight: bold; text-decoration: underline;">Wali Kelas</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 20px; text-align: right; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                                <button id="btn-cetak-rapor" class="btn-primary" style="display: inline-flex; align-items: center; gap: 8px;" disabled>🖨️ Cetak PDF</button>
+                            </div>
+                        </div>
                     </div>
                 </section>
 

@@ -155,6 +155,7 @@ window.loadAbsensiClasses = async function() {
         const attendClass = document.getElementById('attend-class');
         const jurnalClass = document.getElementById('jurnal-class');
         const exportKelas = document.getElementById('export-kelas');
+        const raporKelas = document.getElementById('rapor-kelas');
 
         let optionsHtml = '<option value="">-- Pilih Kelas --</option>';
         uniqueClasses.forEach(kelas => {
@@ -168,6 +169,7 @@ window.loadAbsensiClasses = async function() {
         if(attendClass) attendClass.innerHTML = optionsHtml;
         if(jurnalClass) jurnalClass.innerHTML = optionsHtml;
         if(exportKelas) exportKelas.innerHTML = optionsHtml;
+        if(raporKelas) raporKelas.innerHTML = optionsHtml;
         if(filterKelasJadwal) filterKelasJadwal.innerHTML = '<option value="">-- Semua Kelas --</option>' + optionsHtml.replace('<option value="">-- Pilih Kelas --</option>', '');
 
     } catch (err) {
