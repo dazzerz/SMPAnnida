@@ -154,6 +154,7 @@ window.loadAbsensiClasses = async function() {
         const filterKelasRekapAbsensi = document.getElementById('filter-kelas-rekap-absensi');
         const attendClass = document.getElementById('attend-class');
         const jurnalClass = document.getElementById('jurnal-class');
+        const exportKelas = document.getElementById('export-kelas');
 
         let optionsHtml = '<option value="">-- Pilih Kelas --</option>';
         uniqueClasses.forEach(kelas => {
@@ -166,6 +167,7 @@ window.loadAbsensiClasses = async function() {
         if(filterKelasRekapAbsensi) filterKelasRekapAbsensi.innerHTML = optionsHtml;
         if(attendClass) attendClass.innerHTML = optionsHtml;
         if(jurnalClass) jurnalClass.innerHTML = optionsHtml;
+        if(exportKelas) exportKelas.innerHTML = optionsHtml;
         if(filterKelasJadwal) filterKelasJadwal.innerHTML = '<option value="">-- Semua Kelas --</option>' + optionsHtml.replace('<option value="">-- Pilih Kelas --</option>', '');
 
     } catch (err) {
