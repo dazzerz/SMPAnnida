@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // RAPOR DIGITAL LOGIC
+    // RAPOR DIGITAL LOGIC (SPRINT 30B)
     // ==========================================
     const raporTahun = document.getElementById('rapor-tahun');
     const raporSemester = document.getElementById('rapor-semester');
@@ -86,19 +86,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnTampilkanRapor = document.getElementById('btn-tampilkan-rapor');
     const btnCetakRapor = document.getElementById('btn-cetak-rapor');
     
-    // Labels
+    // Identitas
     const lblNama = document.getElementById('rapor-nama');
     const lblNis = document.getElementById('rapor-nis');
+    const lblWali = document.getElementById('rapor-wali');
     const lblKelas = document.getElementById('rapor-kelas-lbl');
     const lblSemester = document.getElementById('rapor-semester-lbl');
     const lblTahun = document.getElementById('rapor-tahun-lbl');
     const lblDate = document.getElementById('rapor-date-lbl');
+    const lblTtdWali = document.getElementById('rapor-ttd-wali');
     
-    // Stats
+    // Stats & Attendance
     const lblRata = document.getElementById('rapor-rata');
     const lblMax = document.getElementById('rapor-max');
     const lblMin = document.getElementById('rapor-min');
     const lblRank = document.getElementById('rapor-rank');
+    const lblJmlMapel = document.getElementById('rapor-jml-mapel');
+    const lblPredikatAkhir = document.getElementById('rapor-predikat-akhir');
+    
+    const lblHadir = document.getElementById('rapor-hadir');
+    const lblSakit = document.getElementById('rapor-sakit');
+    const lblIzin = document.getElementById('rapor-izin');
+    const lblAlpha = document.getElementById('rapor-alpha');
+    const lblJurnalCount = document.getElementById('rapor-jurnal-count');
+    
     const raporTbody = document.getElementById('rapor-tbody');
 
     if (raporKelas) {
@@ -126,27 +137,38 @@ document.addEventListener('DOMContentLoaded', () => {
             btnCetakRapor.disabled = true;
 
             try {
-                // Determine year string for query (e.g. "2026/2027" -> "2026")
                 const yearStr = tahun.split('/')[0];
+                let startDate = '', endDate = '';
+                if (semester === 'Ganjil') {
+                    startDate = `${yearStr}-07-01`;
+                    endDate = `${yearStr}-12-31`;
+                } else {
+                    startDate = `${parseInt(yearStr)+1}-01-01`;
+                    endDate = `${parseInt(yearStr)+1}-06-30`;
+                }
 
-                // 1. Fetch current student details
-                const { data: student, error: stuErr } = await db.from('students').select('id, nama_lengkap, nisn').eq('id', studentId).single();
-                if (stuErr) throw stuErr;
+                // 4 Bulk Queries using Promise.all
+                const [resStudents, resGrades, resAttendance, resJournals] = await Promise.all([
+                    db.from('students').select('id, nama_lengkap, nisn').eq('kelas', kelas),
+                    db.from('grades').select('student_id, mata_pelajaran, nilai').eq('semester', semester).eq('tahun_ajaran', yearStr),
+                    db.from('attendance_students').select('status').eq('student_id', studentId).gte('attendance_date', startDate).lte('attendance_date', endDate),
+                    db.from('teacher_journals').select('*', { count: 'exact', head: true }).eq('class_id', kelas).gte('journal_date', startDate).lte('journal_date', endDate)
+                ]);
 
-                // 2. Fetch all students in class for ranking calculation
-                const { data: classStudents, error: classStuErr } = await db.from('students').select('id').eq('kelas', kelas);
-                if (classStuErr) throw classStuErr;
+                if (resStudents.error) throw resStudents.error;
+                if (resGrades.error) throw resGrades.error;
+                if (resAttendance.error) throw resAttendance.error;
+                if (resJournals.error) throw resJournals.error;
+
+                const classStudents = resStudents.data;
+                const student = classStudents.find(s => s.id === studentId);
+                if (!student) throw new Error("Siswa tidak ditemukan dalam kelas.");
                 const classStudentIds = classStudents.map(s => s.id);
+                
+                // Filter grades only for the students currently in the class
+                const allGrades = resGrades.data.filter(g => classStudentIds.includes(g.student_id));
 
-                // 3. Fetch grades for ALL students in class for that semester & year
-                const { data: allGrades, error: gradeErr } = await db.from('grades')
-                    .select('student_id, mata_pelajaran, nilai')
-                    .eq('semester', semester)
-                    .eq('tahun_ajaran', yearStr)
-                    .in('student_id', classStudentIds);
-                if (gradeErr) throw gradeErr;
-
-                // 4. Calculate rankings
+                // Kalkulasi Ranking
                 const studentAverages = {};
                 classStudentIds.forEach(id => { studentAverages[id] = { total: 0, count: 0, avg: 0 }; });
 
@@ -163,12 +185,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     rankingList.push({ id, avg: studentAverages[id].avg });
                 }
 
-                // Sort descending
                 rankingList.sort((a, b) => b.avg - a.avg);
                 const currentRank = rankingList.findIndex(r => r.id === studentId) + 1;
                 const totalStudentsWithGrades = rankingList.filter(r => r.avg > 0).length;
 
-                // 5. Process current student grades grouped by subject
+                // Proses Nilai Siswa
                 const studentGrades = allGrades.filter(g => g.student_id === studentId);
                 const mapelMap = {};
                 let overallTotal = 0, overallCount = 0;
@@ -184,59 +205,81 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (Object.keys(mapelMap).length === 0) {
                     raporTbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada nilai di semester ini.</td></tr>';
-                    // Clear identitas
-                    lblNama.textContent = escapeHTML(student.nama_lengkap);
-                    lblNis.textContent = escapeHTML(student.nisn || '-');
-                    lblKelas.textContent = escapeHTML(kelas);
-                    lblSemester.textContent = escapeHTML(semester);
-                    lblTahun.textContent = escapeHTML(tahun);
+                    lblJmlMapel.textContent = '0';
                     lblRata.textContent = '-'; lblMax.textContent = '-'; lblMin.textContent = '-'; lblRank.textContent = '-';
-                    return;
+                    lblPredikatAkhir.textContent = '-';
+                } else {
+                    for (const [mapel, stats] of Object.entries(mapelMap)) {
+                        const avgMapel = Math.round(stats.total / stats.count);
+                        overallTotal += avgMapel;
+                        overallCount++;
+                        if (avgMapel > maxNilai) maxNilai = avgMapel;
+                        if (avgMapel < minNilai) minNilai = avgMapel;
+
+                        let predikat = 'D', deskripsi = 'Perlu Bimbingan';
+                        if (avgMapel >= 90) { predikat = 'A'; deskripsi = 'Sangat Baik'; }
+                        else if (avgMapel >= 80) { predikat = 'B'; deskripsi = 'Baik'; }
+                        else if (avgMapel >= 70) { predikat = 'C'; deskripsi = 'Cukup'; }
+
+                        raporTbody.insertAdjacentHTML('beforeend', `
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 8px;">${escapeHTML(mapel)}</td>
+                                <td style="border: 1px solid #000; padding: 8px; text-align: center;">${avgMapel}</td>
+                                <td style="border: 1px solid #000; padding: 8px; text-align: center; font-weight: bold;">${predikat}</td>
+                                <td style="border: 1px solid #000; padding: 8px;">${deskripsi}</td>
+                            </tr>
+                        `);
+                    }
+
+                    const overallAvg = Math.round(overallTotal / overallCount);
+                    lblJmlMapel.textContent = overallCount;
+                    lblRata.textContent = overallAvg;
+                    lblMax.textContent = maxNilai;
+                    lblMin.textContent = minNilai;
+                    
+                    let predAkhir = 'D';
+                    if (overallAvg >= 90) predAkhir = 'A (Sangat Baik)';
+                    else if (overallAvg >= 80) predAkhir = 'B (Baik)';
+                    else if (overallAvg >= 70) predAkhir = 'C (Cukup)';
+                    else predAkhir = 'D (Perlu Bimbingan)';
+                    lblPredikatAkhir.textContent = predAkhir;
+                    
+                    if (studentAverages[studentId].avg > 0) {
+                        lblRank.textContent = `${currentRank} dari ${totalStudentsWithGrades}`;
+                    } else {
+                        lblRank.textContent = '-';
+                    }
                 }
 
-                for (const [mapel, stats] of Object.entries(mapelMap)) {
-                    const avgMapel = Math.round(stats.total / stats.count);
-                    overallTotal += avgMapel;
-                    overallCount++;
-                    if (avgMapel > maxNilai) maxNilai = avgMapel;
-                    if (avgMapel < minNilai) minNilai = avgMapel;
+                // Hitung Kehadiran
+                let h = 0, i = 0, s = 0, a = 0;
+                resAttendance.data.forEach(att => {
+                    if (att.status === 'Hadir') h++;
+                    else if (att.status === 'Izin') i++;
+                    else if (att.status === 'Sakit') s++;
+                    else if (att.status === 'Alpha') a++;
+                });
+                lblHadir.textContent = h;
+                lblIzin.textContent = i;
+                lblSakit.textContent = s;
+                lblAlpha.textContent = a;
 
-                    let predikat = 'D', deskripsi = 'Perlu bimbingan intensif.';
-                    if (avgMapel >= 90) { predikat = 'A'; deskripsi = 'Sangat baik dalam menguasai materi.'; }
-                    else if (avgMapel >= 80) { predikat = 'B'; deskripsi = 'Baik dalam menguasai materi.'; }
-                    else if (avgMapel >= 70) { predikat = 'C'; deskripsi = 'Cukup dalam menguasai materi.'; }
+                // Hitung Jurnal
+                lblJurnalCount.textContent = resJournals.count || 0;
 
-                    raporTbody.insertAdjacentHTML('beforeend', `
-                        <tr>
-                            <td style="border: 1px solid #000; padding: 8px;">${escapeHTML(mapel)}</td>
-                            <td style="border: 1px solid #000; padding: 8px; text-align: center;">${avgMapel}</td>
-                            <td style="border: 1px solid #000; padding: 8px; text-align: center; font-weight: bold;">${predikat}</td>
-                            <td style="border: 1px solid #000; padding: 8px;">${deskripsi}</td>
-                        </tr>
-                    `);
-                }
-
-                // Update Labels
+                // Update Identitas
                 lblNama.textContent = escapeHTML(student.nama_lengkap);
                 lblNis.textContent = escapeHTML(student.nisn || '-');
                 lblKelas.textContent = escapeHTML(kelas);
                 lblSemester.textContent = escapeHTML(semester);
                 lblTahun.textContent = escapeHTML(tahun);
                 
+                // Static Wali Kelas for now, or just extract name
+                lblWali.textContent = "Guru Admin"; 
+                lblTtdWali.textContent = "( Guru Admin )";
+
                 const formatter = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
                 lblDate.textContent = `Jakarta, ${formatter.format(new Date())}`;
-
-                const overallAvg = (overallTotal / overallCount).toFixed(1);
-                lblRata.textContent = overallAvg;
-                lblMax.textContent = maxNilai;
-                lblMin.textContent = minNilai;
-                
-                // Rank formatting
-                if (studentAverages[studentId].avg > 0) {
-                    lblRank.textContent = `${currentRank} dari ${totalStudentsWithGrades}`;
-                } else {
-                    lblRank.textContent = '-';
-                }
 
                 btnCetakRapor.disabled = false;
                 if (window.showToast) window.showToast('Rapor berhasil dimuat.', 'success');

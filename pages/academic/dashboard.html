@@ -445,10 +445,18 @@
                         <!-- Bagian Kanan: Preview Rapor -->
                         <div class="card glass" id="rapor-preview-container" style="background: #fff; color: #000;">
                             <div id="rapor-content" style="padding: 20px;">
-                                <!-- Identitas -->
-                                <div style="text-align: center; border-bottom: 2px solid #000; margin-bottom: 20px; padding-bottom: 10px;">
-                                    <h2 style="margin:0; font-size: 20px; text-transform: uppercase;">LAPORAN HASIL BELAJAR SISWA</h2>
-                                    <h3 style="margin:5px 0 0 0; font-size: 16px;">SMP ANNIDA</h3>
+                                <!-- Identitas Sekolah & Siswa -->
+                                <div style="display: flex; align-items: center; border-bottom: 2px solid #000; margin-bottom: 20px; padding-bottom: 15px;">
+                                    <div style="flex: 0 0 80px; text-align: center;">
+                                        <!-- Placeholder Logo -->
+                                        <div style="width: 70px; height: 70px; border: 1px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">LOGO</div>
+                                    </div>
+                                    <div style="flex: 1; text-align: center;">
+                                        <h2 style="margin:0; font-size: 22px; text-transform: uppercase;">LAPORAN HASIL BELAJAR SISWA</h2>
+                                        <h3 style="margin:5px 0 0 0; font-size: 18px; text-transform: uppercase;">SMP ANNIDA INTEGRATED SYSTEM</h3>
+                                        <p style="margin:5px 0 0 0; font-size: 12px;">Jl. Pendidikan No. 1, Kota Cerdas, Indonesia | Telp: (021) 1234567</p>
+                                    </div>
+                                    <div style="flex: 0 0 80px;"></div>
                                 </div>
                                 
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; font-size: 14px;">
@@ -456,6 +464,7 @@
                                         <table style="width: 100%;">
                                             <tr><td style="width: 120px;">Nama Siswa</td><td>: <strong id="rapor-nama">-</strong></td></tr>
                                             <tr><td>NIS/NISN</td><td>: <span id="rapor-nis">-</span></td></tr>
+                                            <tr><td>Wali Kelas</td><td>: <span id="rapor-wali">-</span></td></tr>
                                         </table>
                                     </div>
                                     <div>
@@ -470,7 +479,7 @@
                                 <!-- Tabel Nilai -->
                                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;" id="rapor-table">
                                     <thead>
-                                        <tr>
+                                        <tr style="background-color: #f2f2f2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;">
                                             <th style="border: 1px solid #000; padding: 8px; text-align: left;">Mata Pelajaran</th>
                                             <th style="border: 1px solid #000; padding: 8px; text-align: center; width: 60px;">Nilai</th>
                                             <th style="border: 1px solid #000; padding: 8px; text-align: center; width: 80px;">Predikat</th>
@@ -482,19 +491,52 @@
                                     </tbody>
                                 </table>
 
-                                <!-- Statistik & TTD -->
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 14px;">
+                                <!-- Statistik & Kehadiran -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 14px; margin-bottom: 20px;">
+                                    <!-- Kiri: Statistik Nilai -->
                                     <div>
+                                        <h4 style="margin: 0 0 10px 0; font-size: 14px; border-bottom: 1px solid #000; display: inline-block;">Ringkasan Nilai</h4>
                                         <table style="width: 100%; border-collapse: collapse;">
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Rata-rata</td><td style="border: 1px solid #000; padding: 5px; font-weight: bold;" id="rapor-rata">-</td></tr>
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Nilai Tertinggi</td><td style="border: 1px solid #000; padding: 5px;" id="rapor-max">-</td></tr>
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Nilai Terendah</td><td style="border: 1px solid #000; padding: 5px;" id="rapor-min">-</td></tr>
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Ranking Kelas</td><td style="border: 1px solid #000; padding: 5px; font-weight: bold;" id="rapor-rank">-</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Jumlah Mapel</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-jml-mapel">-</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Nilai Tertinggi</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-max">-</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Nilai Terendah</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-min">-</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px; font-weight: bold;">Rata-rata</td><td style="border: 1px solid #000; padding: 5px; text-align: center; font-weight: bold;" id="rapor-rata">-</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Predikat Akhir</td><td style="border: 1px solid #000; padding: 5px; text-align: center; font-weight: bold;" id="rapor-predikat-akhir">-</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Ranking Kelas</td><td style="border: 1px solid #000; padding: 5px; text-align: center; font-weight: bold;" id="rapor-rank">-</td></tr>
                                         </table>
                                     </div>
-                                    <div style="text-align: center; display: flex; flex-direction: column; justify-content: flex-end;">
-                                        <p style="margin: 0 0 50px 0;" id="rapor-date-lbl">Jakarta, -</p>
-                                        <p style="margin: 0; font-weight: bold; text-decoration: underline;">Wali Kelas</p>
+                                    
+                                    <!-- Kanan: Kehadiran & Jurnal -->
+                                    <div>
+                                        <h4 style="margin: 0 0 10px 0; font-size: 14px; border-bottom: 1px solid #000; display: inline-block;">Ketidakhadiran & Catatan</h4>
+                                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Hadir</td><td style="border: 1px solid #000; padding: 5px; text-align: center; width: 60px;" id="rapor-hadir">-</td><td style="border: 1px solid #000; padding: 5px; width: 50px;">hari</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Sakit</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-sakit">-</td><td style="border: 1px solid #000; padding: 5px;">hari</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Izin</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-izin">-</td><td style="border: 1px solid #000; padding: 5px;">hari</td></tr>
+                                            <tr><td style="border: 1px solid #000; padding: 5px;">Tanpa Keterangan</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-alpha">-</td><td style="border: 1px solid #000; padding: 5px;">hari</td></tr>
+                                        </table>
+                                        <div style="border: 1px solid #000; padding: 10px; text-align: center;">
+                                            <div style="font-size: 12px; margin-bottom: 5px;">Total Jurnal Terkait Kelas:</div>
+                                            <div style="font-size: 18px; font-weight: bold;" id="rapor-jurnal-count">-</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tanda Tangan -->
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; font-size: 14px; text-align: center; margin-top: 30px;">
+                                    <div>
+                                        <p style="margin: 0 0 60px 0;">Mengetahui,<br>Orang Tua / Wali Siswa</p>
+                                        <p style="margin: 0; font-weight: bold; text-decoration: underline;">( ........................................... )</p>
+                                    </div>
+                                    <div>
+                                        <p style="margin: 0 0 60px 0;" id="rapor-date-lbl">Jakarta, -<br>Wali Kelas</p>
+                                        <p style="margin: 0; font-weight: bold; text-decoration: underline;" id="rapor-ttd-wali">( ........................................... )</p>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: center; font-size: 14px; text-align: center; margin-top: 40px;">
+                                    <div>
+                                        <p style="margin: 0 0 60px 0;">Mengesahkan,<br>Kepala Sekolah</p>
+                                        <p style="margin: 0; font-weight: bold; text-decoration: underline;">Dr. Ahmad Fathoni, M.Pd.</p>
                                     </div>
                                 </div>
                             </div>
