@@ -298,33 +298,37 @@
                         <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 25px;">
                             <div style="text-align: center; flex: 1;">
                                 <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Tanggal</div>
-                                <div style="font-size: 1.2rem; font-weight: 600;">-</div>
+                                <div id="tg-date" style="font-size: 1.2rem; font-weight: 600;">-</div>
                             </div>
                             <div style="text-align: center; flex: 1; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);">
                                 <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Jam Masuk</div>
-                                <div style="font-size: 1.2rem; font-weight: 600; color: var(--success);">--:--</div>
+                                <div id="tg-checkin-time" style="font-size: 1.2rem; font-weight: 600; color: var(--success);">--:--</div>
                             </div>
                             <div style="text-align: center; flex: 1;">
                                 <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Jam Keluar</div>
-                                <div style="font-size: 1.2rem; font-weight: 600; color: var(--danger);">--:--</div>
+                                <div id="tg-checkout-time" style="font-size: 1.2rem; font-weight: 600; color: var(--danger);">--:--</div>
                             </div>
                         </div>
 
-                        <div style="background: var(--bg-secondary); border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 1px dashed var(--border-color);">
-                            <div style="color: var(--text-muted); text-align: center;">
+                        <div id="tg-preview-container" style="background: var(--bg-secondary); border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 1px dashed var(--border-color); overflow: hidden; position: relative;">
+                            <div id="tg-preview-placeholder" style="color: var(--text-muted); text-align: center;">
                                 <div style="font-size: 2rem; margin-bottom: 10px;">📸</div>
                                 <div>Preview Foto Kehadiran</div>
                             </div>
+                            <video id="tg-video" style="display: none; width: 100%; max-height: 300px; object-fit: cover;" autoplay playsinline></video>
+                            <canvas id="tg-canvas" style="display: none;"></canvas>
+                            <img id="tg-photo" style="display: none; width: 100%; max-height: 300px; object-fit: cover;" alt="Selfie">
                         </div>
 
                         <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                            <button class="btn btn-outline" style="flex: 1;" disabled>Ambil Foto</button>
-                            <button class="btn btn-outline" style="flex: 1;" disabled>Upload Foto</button>
+                            <button id="btn-tg-camera" class="btn btn-outline" style="flex: 1;" disabled>Ambil Foto</button>
+                            <button id="btn-tg-upload" class="btn btn-outline" style="flex: 1;" disabled>Upload Foto</button>
+                            <input type="file" id="tg-file-input" accept="image/*" style="display: none;">
                         </div>
 
                         <div style="display: flex; gap: 10px;">
-                            <button class="btn-primary" style="flex: 1; background-color: var(--success);" disabled>Check In</button>
-                            <button class="btn-primary" style="flex: 1; background-color: var(--danger);" disabled>Check Out</button>
+                            <button id="btn-tg-checkin" class="btn-primary" style="flex: 1; background-color: var(--success);" disabled>Check In</button>
+                            <button id="btn-tg-checkout" class="btn-primary" style="flex: 1; background-color: var(--danger);" disabled>Check Out</button>
                         </div>
                     </div>
                 </section>
@@ -338,6 +342,7 @@
     <script type="module" src="../../js/academic/absensi.js" defer></script>
     <script type="module" src="../../js/academic/attendance.js" defer></script>
     <script type="module" src="../../js/academic/teacher-journal.js" defer></script>
+    <script type="module" src="../../js/academic/teacher-attendance.js" defer></script>
     <script type="module" src="../../js/academic/nilai.js" defer></script>
     <script type="module" src="../../js/academic/jadwal.js" defer></script>
 </body>
