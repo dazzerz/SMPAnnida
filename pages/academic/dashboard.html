@@ -633,8 +633,125 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Guru Section -->
+                <section id="guru" class="page-section" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h1>Master Data Guru</h1>
+                        <button id="btn-add-guru" class="btn-primary">Tambah Guru</button>
+                    </div>
+
+                    <div class="card glass">
+                        <!-- Filters -->
+                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <label>Status</label>
+                                <select id="filter-status-guru" class="input-control">
+                                    <option value="">Semua Status</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Nonaktif">Nonaktif</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <label>Mata Pelajaran</label>
+                                <input type="text" id="filter-mapel-guru" class="input-control" placeholder="Cari mapel...">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <label>Wali Kelas</label>
+                                <input type="text" id="filter-wali-guru" class="input-control" placeholder="Cari kelas...">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                                <label>Cari Nama / NIP</label>
+                                <input type="text" id="filter-search-guru" class="input-control" placeholder="Cari nama atau nip...">
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">No</th>
+                                        <th>NIP</th>
+                                        <th>Nama</th>
+                                        <th>Mapel</th>
+                                        <th>Wali Kelas</th>
+                                        <th>Status</th>
+                                        <th style="text-align: center; width: 150px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-guru">
+                                    <tr><td colspan="7" style="text-align: center;">Memuat data guru...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
+    </div>
+
+    <!-- Modal Form Guru -->
+    <div id="modal-guru" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div class="modal-content card glass" style="width: 100%; max-width: 600px; padding: 25px; border-radius: 12px; margin: 20px;">
+            <h2 id="modal-guru-title" style="margin-bottom: 20px;">Tambah Guru</h2>
+            <form id="form-guru">
+                <input type="hidden" id="guru-id">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="form-group">
+                        <label>NIP</label>
+                        <input type="text" id="guru-nip" class="input-control" placeholder="Nomor Induk Pegawai" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Guru</label>
+                        <input type="text" id="guru-nama" class="input-control" placeholder="Nama Lengkap dengan Gelar" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="guru-email" class="input-control" placeholder="Email aktif">
+                    </div>
+                    <div class="form-group">
+                        <label>No HP</label>
+                        <input type="text" id="guru-hp" class="input-control" placeholder="Nomor HP/WA">
+                    </div>
+                    <div class="form-group">
+                        <label>Jenis Kelamin</label>
+                        <select id="guru-jk" class="input-control" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status Guru</label>
+                        <select id="guru-status" class="input-control" required>
+                            <option value="GTY">Guru Tetap Yayasan (GTY)</option>
+                            <option value="GTT">Guru Tidak Tetap (GTT)</option>
+                            <option value="Honorer">Honorer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Wali Kelas</label>
+                        <input type="text" id="guru-wali" class="input-control" placeholder="Kosongkan jika bukan wali kelas">
+                    </div>
+                    <div class="form-group">
+                        <label>Mata Pelajaran</label>
+                        <input type="text" id="guru-mapel" class="input-control" placeholder="Contoh: Matematika" required>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="guru-aktif" checked style="width: 18px; height: 18px;">
+                            <span>Status Aktif Mengajar</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" id="btn-close-modal-guru" class="btn btn-outline">Batal</button>
+                    <button type="submit" id="btn-save-guru" class="btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Third-Party Libraries -->
@@ -649,5 +766,6 @@
     <script type="module" src="../../js/academic/teacher-attendance.js" defer></script>
     <script type="module" src="../../js/academic/nilai.js" defer></script>
     <script type="module" src="../../js/academic/jadwal.js" defer></script>
+    <script type="module" src="../../js/academic/guru.js" defer></script>
 </body>
 </html>
