@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputGuru = document.getElementById('mapel-guru');
 
     let currentData = [];
-    let teachersData = [];
 
     // Guest Mode Protection
     if (window.isGuest && btnAddMapel) {
@@ -34,19 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!tbodyMapel) return;
         tbodyMapel.innerHTML = '<tr><td colspan="9" style="text-align: center;">Memuat data mata pelajaran...</td></tr>';
         try {
-            // Use Promise.all to fetch subjects and teachers concurrently
-            const [resSubjects, resTeachers] = await Promise.all([
-                db.from('subjects').select('*').order('urutan', { ascending: true }),
-                db.from('teachers').select('id, nama').order('nama', { ascending: true })
-            ]);
-
-            if (resSubjects.error) throw resSubjects.error;
-            if (resTeachers.error) throw resTeachers.error;
-
-            currentData = resSubjects.data || [];
-            teachersData = resTeachers.data || [];
+            const { data, error } = await db.from('subjects').select('*, teachers(nama)').order('urutan', { ascending: true });
+            if (error) throw error;
+            currentData = data || [];
             
-            populateTeacherDropdown();
             renderTable();
         } catch (err) {
             console.error("Error loading subjects:", err);
@@ -54,21 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function populateTeacherDropdown() {
-        if (!inputGuru) return;
-        let options = '<option value="">-- Pilih Guru --</option>';
-        teachersData.forEach(t => {
-            options += `<option value="${t.id}">${escapeHTML(t.nama)}</option>`;
-        });
-        inputGuru.innerHTML = options;
-    }
-
     // Render Table
     function renderTable() {
         if (!tbodyMapel) return;
         const sStat = filterStatus.value.toLowerCase();
         const sKel = filterKelompok.value.toLowerCase();
-        const sGuru = filterGuru.value.toLowerCase();
+        const sGuru = filterGuru.value; // It's a UUID now
         const sSearch = filterSearch.value.toLowerCase();
 
         const filtered = currentData.filter(m => {
@@ -78,13 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const mKel = !sKel || (m.kelompok && m.kelompok.toLowerCase() === sKel);
             
             // Get teacher name for filtering
-            let teacherName = '';
-            if (m.guru_id) {
-                const t = teachersData.find(x => x.id == m.guru_id);
-                if (t) teacherName = t.nama.toLowerCase();
-            }
+            let teacherName = m.teachers && m.teachers.nama ? m.teachers.nama : '';
             
-            const mGuru = !sGuru || teacherName.includes(sGuru);
+            const mGuru = !sGuru || (m.guru_id === sGuru);
             
             const mSearch = !sSearch || 
                 (m.nama_mapel && m.nama_mapel.toLowerCase().includes(sSearch)) || 
@@ -105,11 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 '<span style="padding: 4px 8px; background: rgba(40,167,69,0.1); color: var(--success); border-radius: 4px; font-size: 12px;">Aktif</span>' : 
                 '<span style="padding: 4px 8px; background: rgba(220,53,69,0.1); color: var(--danger); border-radius: 4px; font-size: 12px;">Nonaktif</span>';
             
-            let teacherName = '-';
-            if (m.guru_id) {
-                const t = teachersData.find(x => x.id == m.guru_id);
-                if (t) teacherName = t.nama;
-            }
+            let teacherName = m.teachers && m.teachers.nama ? m.teachers.nama : '-';
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -265,11 +238,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 optionsHtml += `<option value="${escapeHTML(s.nama_mapel)}">${escapeHTML(s.nama_mapel)}</option>`;
             });
 
-            const selectNilai = document.getElementById('input-mapel-nilai');
-            const selectJurnal = document.getElementById('jurnal-subject');
-
-            if (selectNilai) selectNilai.innerHTML = optionsHtml;
-            if (selectJurnal) selectJurnal.innerHTML = optionsHtml;
+            const selectIds = ['input-mapel-nilai', 'jurnal-subject', 'guru-mapel', 'filter-mapel-guru'];
+            selectIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const prevVal = el.value;
+                    el.innerHTML = optionsHtml;
+                    if (prevVal) el.value = prevVal;
+                }
+            });
         } catch (err) {
             console.error("Gagal memuat opsi mapel global:", err);
         }

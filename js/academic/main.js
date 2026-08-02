@@ -139,40 +139,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Global function to load classes since multiple modules use it
-window.loadAbsensiClasses = async function() {
-    try {
-        const { data, error } = await db.from('students').select('kelas');
-        if (error) throw error;
-        
-        const uniqueClasses = [...new Set(data.map(s => s.kelas))].sort();
-        
-        const selectKelas = document.getElementById('select-kelas-absensi');
-        const selectKelasNilai = document.getElementById('select-kelas-nilai');
-        const filterKelasRekap = document.getElementById('filter-kelas-rekap');
-        const filterKelasJadwal = document.getElementById('filter-kelas-jadwal');
-        const filterKelasRekapAbsensi = document.getElementById('filter-kelas-rekap-absensi');
-        const attendClass = document.getElementById('attend-class');
-        const jurnalClass = document.getElementById('jurnal-class');
-        const exportKelas = document.getElementById('export-kelas');
-        const raporKelas = document.getElementById('rapor-kelas');
-
-        let optionsHtml = '<option value="">-- Pilih Kelas --</option>';
-        uniqueClasses.forEach(kelas => {
-            optionsHtml += `<option value="${kelas}">${kelas}</option>`;
-        });
-
-        if(selectKelas) selectKelas.innerHTML = optionsHtml;
-        if(selectKelasNilai) selectKelasNilai.innerHTML = optionsHtml;
-        if(filterKelasRekap) filterKelasRekap.innerHTML = optionsHtml;
-        if(filterKelasRekapAbsensi) filterKelasRekapAbsensi.innerHTML = optionsHtml;
-        if(attendClass) attendClass.innerHTML = optionsHtml;
-        if(jurnalClass) jurnalClass.innerHTML = optionsHtml;
-        if(exportKelas) exportKelas.innerHTML = optionsHtml;
-        if(raporKelas) raporKelas.innerHTML = optionsHtml;
-        if(filterKelasJadwal) filterKelasJadwal.innerHTML = '<option value="">-- Semua Kelas --</option>' + optionsHtml.replace('<option value="">-- Pilih Kelas --</option>', '');
-
-    } catch (err) {
-        console.error("Gagal memuat kelas:", err);
-    }
-}
+// Legacy loadAbsensiClasses removed in favor of Master Kelas (kelas.js)

@@ -286,8 +286,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('hashchange', checkHashForDashboard);
     checkHashForDashboard();
-    
-    if(window.loadAbsensiClasses) window.loadAbsensiClasses();
 
     // Import CSV (Retained for legacy/Aksi Cepat)
     const btnImportSiswa = document.getElementById('btn-import-siswa');
@@ -328,7 +326,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         if(fileImportSiswa) fileImportSiswa.value = '';
                         hasLoadedStats = false; // force reload next time
                         if(window.location.hash === '#dashboard' || window.location.hash === '') loadDashboardStats();
-                        if(window.loadAbsensiClasses) window.loadAbsensiClasses();
                     } catch (err) {
                         importStatus.textContent = `Gagal: ${err.message}`; importStatus.style.color = 'var(--danger)';
                     } finally { btnImportSiswa.disabled = false; }

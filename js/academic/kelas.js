@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentTahunData = [];
     let currentKelasData = [];
-    let teachersData = [];
 
     // Guest protection
     if (window.isGuest) {
@@ -201,18 +200,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!tbodyKelas) return;
         tbodyKelas.innerHTML = '<tr><td colspan="8" style="text-align: center;">Memuat data kelas...</td></tr>';
         try {
-            const [resKelas, resTeachers] = await Promise.all([
-                db.from('classes').select('*').order('tingkat', { ascending: true }).order('nama_kelas', { ascending: true }),
-                db.from('teachers').select('id, nama').eq('aktif', true).order('nama', { ascending: true })
-            ]);
-
-            if (resKelas.error) throw resKelas.error;
-            if (resTeachers.error) throw resTeachers.error;
-
-            currentKelasData = resKelas.data || [];
-            teachersData = resTeachers.data || [];
-            
-            populateKelasTeacherDropdown();
+            const { data, error } = await db.from('classes').select('*, teachers(nama)').order('tingkat', { ascending: true }).order('nama_kelas', { ascending: true });
+            if (error) throw error;
+            currentKelasData = data || [];
             renderTableKelas();
         } catch (err) {
             console.error("Error loading kelas:", err);
@@ -220,20 +210,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function populateKelasTeacherDropdown() {
-        if (!inputKelasWali) return;
-        let options = '<option value="">-- Pilih Wali Kelas --</option>';
-        teachersData.forEach(t => {
-            options += `<option value="${t.id}">${escapeHTML(t.nama)}</option>`;
-        });
-        inputKelasWali.innerHTML = options;
-    }
-
     function renderTableKelas() {
         if (!tbodyKelas) return;
         const sTingkat = filterTingkatKelas.value;
         const sStat = filterStatusKelas.value.toLowerCase();
-        const sWali = filterWaliKelas.value.toLowerCase();
+        const sWali = filterWaliKelas.value; // It's a UUID now
         const sSearch = filterSearchKelas.value.toLowerCase();
 
         const filtered = currentKelasData.filter(k => {
@@ -242,12 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 (sStat === 'aktif' && k.aktif !== false) || 
                 (sStat === 'nonaktif' && k.aktif === false);
             
-            let waliName = '';
-            if (k.wali_kelas_id) {
-                const t = teachersData.find(x => x.id == k.wali_kelas_id);
-                if (t) waliName = t.nama.toLowerCase();
-            }
-            const mWali = !sWali || waliName.includes(sWali);
+            let waliName = k.teachers && k.teachers.nama ? k.teachers.nama : '';
+            const mWali = !sWali || (k.wali_kelas_id === sWali);
             const mSearch = !sSearch || 
                 (k.nama_kelas && k.nama_kelas.toLowerCase().includes(sSearch));
             
@@ -266,11 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 '<span style="padding: 4px 8px; background: rgba(40,167,69,0.1); color: var(--success); border-radius: 4px; font-size: 12px;">Aktif</span>' : 
                 '<span style="padding: 4px 8px; background: rgba(220,53,69,0.1); color: var(--danger); border-radius: 4px; font-size: 12px;">Nonaktif</span>';
             
-            let waliName = '-';
-            if (k.wali_kelas_id) {
-                const t = teachersData.find(x => x.id == k.wali_kelas_id);
-                if (t) waliName = t.nama;
-            }
+            let waliName = k.teachers && k.teachers.nama ? k.teachers.nama : '-';
 
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -425,7 +398,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Populate Classes Dropdowns
             const classSelectIds = [
                 'export-kelas', 'attend-class', 'select-kelas-nilai', 
-                'filter-kelas-rekap', 'filter-kelas-jadwal', 'rapor-kelas', 'jurnal-class'
+                'filter-kelas-rekap', 'filter-kelas-jadwal', 'rapor-kelas', 'jurnal-class',
+                'guru-wali', 'filter-wali-guru'
             ];
             
             let classOptions = '<option value="">-- Pilih Kelas --</option>';
@@ -459,6 +433,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const activeYearData = allTahun.find(t => t.aktif === true);
             const activeYearText = activeYearData ? activeYearData.tahun_ajaran : '-';
             const activeSemesterText = activeYearData ? activeYearData.semester : '-';
+            
+            // Export globally for insertions
+            window.activeTahunAjaran = activeYearText !== '-' ? activeYearText : null;
+            window.activeSemester = activeSemesterText !== '-' ? activeSemesterText : null;
 
             // Populate Semester Dropdowns
             const semesterSelectIds = ['export-semester', 'rapor-semester'];

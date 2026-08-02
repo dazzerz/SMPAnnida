@@ -192,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 modalGuru.style.display = 'none';
                 loadData();
+                window.loadGlobalGuruOptions();
             } catch (err) {
                 console.error("Error saving teacher:", err);
                 showToast('Gagal menyimpan data guru', 'error');
@@ -209,6 +210,41 @@ document.addEventListener('DOMContentLoaded', () => {
     [filterStatus].forEach(el => {
         if (el) el.addEventListener('change', renderTable);
     });
+
+    // Global Guru Loader
+    window.loadGlobalGuruOptions = async function() {
+        try {
+            const { data, error } = await db.from('teachers').select('id, nama, aktif').order('nama', { ascending: true });
+            if (error) throw error;
+            
+            const activeTeachers = data.filter(t => t.aktif !== false);
+            let optionsHtml = '<option value="">-- Pilih Guru --</option>';
+            activeTeachers.forEach(t => {
+                // Gunakan ID untuk value jika relasinya adalah UUID, atau nama jika backward compatible
+                optionsHtml += `<option value="${t.id}">${escapeHTML(t.nama)}</option>`;
+            });
+
+            // Elemen dropdown yang perlu disinkronkan dengan data Guru
+            const selectIds = ['mapel-guru', 'kelas-wali', 'filter-guru-mapel', 'filter-wali-kelas'];
+            selectIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const prevVal = el.value;
+                    el.innerHTML = optionsHtml;
+                    if (prevVal) el.value = prevVal;
+                }
+            });
+            
+            // Dashboard Guru Statistics
+            const statGuruTotal = document.getElementById('stat-guru-total');
+            if (statGuruTotal) statGuruTotal.textContent = activeTeachers.length;
+            
+        } catch (err) {
+            console.error("Gagal memuat global opsi guru:", err);
+        }
+    };
+
+    window.loadGlobalGuruOptions();
 
     // Initialize
     const isGuruPage = window.location.hash === '#guru';

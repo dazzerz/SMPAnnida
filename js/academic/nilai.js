@@ -43,7 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!studentId || !mapel || !nilai) return statusSimpanNilai.textContent = "Mohon lengkapi semua data.", statusSimpanNilai.style.color = "var(--danger)";
             btnSimpanNilai.disabled = true; statusSimpanNilai.textContent = "Menyimpan..."; statusSimpanNilai.style.color = "var(--text-muted)";
             try {
-                const { error } = await db.from('grades').insert([{ student_id: studentId, mata_pelajaran: mapel, jenis_penilaian: jenis, nilai: parseInt(nilai), semester: 'Ganjil', tahun_ajaran: new Date().getFullYear().toString() }]);
+                const actSmt = window.activeSemester || 'Ganjil';
+                const actThn = window.activeTahunAjaran || new Date().getFullYear().toString();
+                const { error } = await db.from('grades').insert([{ student_id: studentId, mata_pelajaran: mapel, jenis_penilaian: jenis, nilai: parseInt(nilai), semester: actSmt, tahun_ajaran: actThn }]);
                 if (error) throw error;
                 statusSimpanNilai.textContent = "Disimpan!"; statusSimpanNilai.style.color = "var(--success)"; document.getElementById('input-angka-nilai').value = '';
             } catch (err) { statusSimpanNilai.textContent = "Gagal."; statusSimpanNilai.style.color = "var(--danger)"; } finally { btnSimpanNilai.disabled = false; }
@@ -147,18 +149,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     endDate = `${parseInt(yearStr)+1}-06-30`;
                 }
 
-                // 4 Bulk Queries using Promise.all
-                const [resStudents, resGrades, resAttendance, resJournals] = await Promise.all([
+                // 5 Bulk Queries using Promise.all
+                const [resStudents, resGrades, resAttendance, resJournals, resClass] = await Promise.all([
                     db.from('students').select('id, nama_lengkap, nisn').eq('kelas', kelas),
                     db.from('grades').select('student_id, mata_pelajaran, nilai').eq('semester', semester).eq('tahun_ajaran', yearStr),
                     db.from('attendance_students').select('status').eq('student_id', studentId).gte('attendance_date', startDate).lte('attendance_date', endDate),
-                    db.from('teacher_journals').select('*', { count: 'exact', head: true }).eq('class_id', kelas).gte('journal_date', startDate).lte('journal_date', endDate)
+                    db.from('teacher_journals').select('*', { count: 'exact', head: true }).eq('class_id', kelas).gte('journal_date', startDate).lte('journal_date', endDate),
+                    db.from('classes').select('nama_kelas, teachers(nama)').eq('nama_kelas', kelas).single()
                 ]);
 
                 if (resStudents.error) throw resStudents.error;
                 if (resGrades.error) throw resGrades.error;
                 if (resAttendance.error) throw resAttendance.error;
                 if (resJournals.error) throw resJournals.error;
+                if (resClass.error && resClass.error.code !== 'PGRST116') throw resClass.error;
 
                 const classStudents = resStudents.data;
                 const student = classStudents.find(s => s.id === studentId);
@@ -274,9 +278,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 lblSemester.textContent = escapeHTML(semester);
                 lblTahun.textContent = escapeHTML(tahun);
                 
-                // Static Wali Kelas for now, or just extract name
-                lblWali.textContent = "Guru Admin"; 
-                lblTtdWali.textContent = "( Guru Admin )";
+                // Get Wali Kelas from classes table
+                let waliName = "Belum Diatur";
+                if (resClass.data && resClass.data.teachers && resClass.data.teachers.nama) {
+                    waliName = resClass.data.teachers.nama;
+                }
+                
+                lblWali.textContent = waliName; 
+                lblTtdWali.textContent = `( ${waliName} )`;
 
                 const formatter = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
                 lblDate.textContent = `Jakarta, ${formatter.format(new Date())}`;

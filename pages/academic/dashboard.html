@@ -675,11 +675,15 @@
                             </div>
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Mata Pelajaran</label>
-                                <input type="text" id="filter-mapel-guru" class="input-control" placeholder="Cari mapel...">
+                                <select id="filter-mapel-guru" class="input-control">
+                                    <option value="">Semua Mapel</option>
+                                </select>
                             </div>
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Wali Kelas</label>
-                                <input type="text" id="filter-wali-guru" class="input-control" placeholder="Cari kelas...">
+                                <select id="filter-wali-guru" class="input-control">
+                                    <option value="">Semua Kelas</option>
+                                </select>
                             </div>
                             <div class="form-group" style="margin-bottom: 0; flex: 1;">
                                 <label>Cari Nama / NIP</label>
@@ -738,7 +742,9 @@
                             </div>
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Guru Pengampu</label>
-                                <input type="text" id="filter-guru-mapel" class="input-control" placeholder="Cari nama guru...">
+                                <select id="filter-guru-mapel" class="input-control">
+                                    <option value="">Semua Guru</option>
+                                </select>
                             </div>
                             <div class="form-group" style="margin-bottom: 0; flex: 1;">
                                 <label>Cari Nama / Kode</label>
@@ -828,7 +834,9 @@
                                     </div>
                                     <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                         <label>Wali Kelas</label>
-                                        <input type="text" id="filter-wali-kelas" class="input-control" placeholder="Cari wali kelas...">
+                                        <select id="filter-wali-kelas" class="input-control">
+                                            <option value="">Semua Wali Kelas</option>
+                                        </select>
                                     </div>
                                     <div class="form-group" style="margin-bottom: 0; flex: 1;">
                                         <label>Cari Nama Kelas</label>
@@ -905,11 +913,15 @@
                     </div>
                     <div class="form-group">
                         <label>Wali Kelas</label>
-                        <input type="text" id="guru-wali" class="input-control" placeholder="Kosongkan jika bukan wali kelas">
+                        <select id="guru-wali" class="input-control">
+                            <option value="">-- Bukan Wali Kelas --</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Mata Pelajaran</label>
-                        <input type="text" id="guru-mapel" class="input-control" placeholder="Contoh: Matematika" required>
+                        <select id="guru-mapel" class="input-control">
+                            <option value="">-- Pilih Mapel --</option>
+                        </select>
                     </div>
                     <div class="form-group" style="grid-column: span 2;">
                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
