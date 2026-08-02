@@ -56,61 +56,50 @@
 
                 <!-- Absensi Section -->
                 <section id="absensi" class="page-section" style="display: none;">
-                    <h1>Absensi Digital</h1>
-                    <!-- Input Absensi -->
-                    <div class="card glass" style="margin-bottom: 20px;">
-                        <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Input Kehadiran</h2>
-                        <div class="form-group">
-                            <label for="select-kelas-absensi">Pilih Kelas:</label>
-                            <select id="select-kelas-absensi" class="input-control">
-                                <option value="">-- Pilih Kelas --</option>
-                            </select>
-                        </div>
-                        
-                        <div id="absensi-container" style="display: none; margin-top: 20px;">
-                            <div class="table-responsive">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Nama Siswa</th>
-                                            <th>Kehadiran</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody-absensi">
-                                        <!-- Data siswa dimuat via JS -->
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button id="btn-simpan-absensi" class="btn-primary" style="margin-top: 20px;">Simpan Absensi</button>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h1>Absensi Siswa</h1>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-outline">Refresh</button>
+                            <button class="btn-primary" disabled>Simpan</button>
                         </div>
                     </div>
-
-                    <!-- Rekap Absensi Pivot -->
+                    
                     <div class="card glass">
-                        <h2 style="font-size: 16px; margin-bottom: 5px; color: var(--text-main);">📊 Rekap Kehadiran</h2>
-                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Tampilan grid: baris = siswa, kolom = tanggal. <span style="color:var(--success);font-weight:700;">H</span>=Hadir, <span style="color:var(--warning);font-weight:700;">I</span>=Izin, <span style="color:var(--warning);font-weight:700;">S</span>=Sakit, <span style="color:var(--danger);font-weight:700;">A</span>=Alpa</p>
-                        <div style="display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; align-items: flex-end;">
-                            <div class="form-group" style="margin-bottom: 0; min-width: 140px;">
+                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: flex-end;">
+                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <label>Tanggal</label>
+                                <input type="date" class="input-control">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Kelas</label>
-                                <select id="filter-kelas-rekap-absensi" class="input-control">
-                                    <option value="">-- Pilih --</option>
+                                <select class="input-control">
+                                    <option value="">-- Pilih Kelas --</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 130px;">
-                                <label>Dari Tanggal</label>
-                                <input type="date" id="filter-dari-absensi" class="input-control">
+                            <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                                <label>Cari Nama</label>
+                                <input type="text" class="input-control" placeholder="Masukkan nama siswa...">
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 130px;">
-                                <label>Sampai Tanggal</label>
-                                <input type="date" id="filter-sampai-absensi" class="input-control">
-                            </div>
-                            <button id="btn-lihat-rekap-absensi" class="btn-primary" style="height: 41px;">Tampilkan</button>
                         </div>
+
                         <div class="table-responsive">
-                            <table class="data-table" id="tabel-pivot-absensi">
-                                <thead id="thead-pivot-absensi"><tr><th>Nama Siswa</th></tr></thead>
-                                <tbody id="tbody-rekap-absensi">
-                                    <tr><td style="text-align: center; color: var(--text-muted);">Pilih kelas dan rentang tanggal, lalu klik Tampilkan.</td></tr>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">No</th>
+                                        <th>Nama Siswa</th>
+                                        <th>NIS</th>
+                                        <th>Status</th>
+                                        <th>Keterangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; padding: 30px;">
+                                            <div style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 10px;">Belum ada data.</div>
+                                            <div style="color: var(--text-muted); font-size: 0.9rem;">Silakan pilih tanggal dan kelas.</div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -258,19 +247,85 @@
                     </div>
                 </section>
 
-                <!-- Jurnal Guru Section (Placeholder) -->
+                <!-- Jurnal Guru Section -->
                 <section id="jurnal-guru" class="page-section" style="display: none;">
-                    <h1>Jurnal Guru</h1>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h1>Jurnal Guru</h1>
+                        <button class="btn-primary" disabled>Simpan Jurnal</button>
+                    </div>
+                    
                     <div class="card glass">
-                        <p>Halaman Jurnal Guru sedang dalam tahap pengembangan.</p>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                            <div class="form-group">
+                                <label>Tanggal</label>
+                                <input type="date" class="input-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Kelas</label>
+                                <select class="input-control">
+                                    <option value="">-- Pilih Kelas --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Mapel</label>
+                                <input type="text" class="input-control" placeholder="Contoh: Matematika">
+                            </div>
+                            <div class="form-group">
+                                <label>Jam Pelajaran</label>
+                                <input type="text" class="input-control" placeholder="Contoh: Ke-1 s/d 3">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label>Materi Pokok</label>
+                            <input type="text" class="input-control" placeholder="Masukkan materi utama yang diajarkan">
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Catatan Kegiatan / Hambatan</label>
+                            <textarea class="input-control" rows="4" placeholder="Masukkan rincian kegiatan atau catatan khusus..." style="resize: vertical;"></textarea>
+                        </div>
                     </div>
                 </section>
 
-                <!-- Absensi Guru Section (Placeholder) -->
+                <!-- Absensi Guru Section -->
                 <section id="absensi-guru" class="page-section" style="display: none;">
-                    <h1>Absensi Guru</h1>
-                    <div class="card glass">
-                        <p>Halaman Absensi Guru sedang dalam tahap pengembangan.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h1>Absensi Guru</h1>
+                    </div>
+                    
+                    <div class="card glass" style="max-width: 600px; margin: 0 auto;">
+                        <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 25px;">
+                            <div style="text-align: center; flex: 1;">
+                                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Tanggal</div>
+                                <div style="font-size: 1.2rem; font-weight: 600;">-</div>
+                            </div>
+                            <div style="text-align: center; flex: 1; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);">
+                                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Jam Masuk</div>
+                                <div style="font-size: 1.2rem; font-weight: 600; color: var(--success);">--:--</div>
+                            </div>
+                            <div style="text-align: center; flex: 1;">
+                                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Jam Keluar</div>
+                                <div style="font-size: 1.2rem; font-weight: 600; color: var(--danger);">--:--</div>
+                            </div>
+                        </div>
+
+                        <div style="background: var(--bg-secondary); border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 1px dashed var(--border-color);">
+                            <div style="color: var(--text-muted); text-align: center;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">📸</div>
+                                <div>Preview Foto Kehadiran</div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                            <button class="btn btn-outline" style="flex: 1;" disabled>Ambil Foto</button>
+                            <button class="btn btn-outline" style="flex: 1;" disabled>Upload Foto</button>
+                        </div>
+
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-primary" style="flex: 1; background-color: var(--success);" disabled>Check In</button>
+                            <button class="btn-primary" style="flex: 1; background-color: var(--danger);" disabled>Check Out</button>
+                        </div>
                     </div>
                 </section>
             </div>
