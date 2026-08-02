@@ -20,6 +20,7 @@ if (academicNavGroup) {
         <a href="#absensi" class="nav-item nav-link" data-target="absensi">📋 Absensi Siswa</a>
         <a href="#jurnal-guru" class="nav-item nav-link" data-target="jurnal-guru">📓 Jurnal Guru</a>
         <a href="#absensi-guru" class="nav-item nav-link" data-target="absensi-guru">👨‍🏫 Absensi Guru</a>
+        <a href="#data-migration" class="nav-item nav-link" data-target="data-migration">📥 Data Migration</a>
     `;
 }
 

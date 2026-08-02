@@ -936,6 +936,109 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Data Migration Section -->
+                <section id="data-migration" class="page-section" style="display: none;">
+                    <h1>Data Migration Center</h1>
+                    <p style="margin-bottom: 20px; color: var(--text-muted);">Pusat impor seluruh Master Data menggunakan file Excel (Batch Processing).</p>
+
+                    <!-- Card 1: Validation Dashboard -->
+                    <h2 style="font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Data Validation Dashboard</h2>
+                    <div class="dashboard-cards" style="margin-bottom: 30px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                        <div class="card glass"><h3 style="font-size: 0.9rem;">Total Guru</h3><p class="number" id="dm-total-guru">0</p></div>
+                        <div class="card glass"><h3 style="font-size: 0.9rem;">Total Siswa</h3><p class="number" id="dm-total-siswa">0</p></div>
+                        <div class="card glass"><h3 style="font-size: 0.9rem;">Total Mapel</h3><p class="number" id="dm-total-mapel">0</p></div>
+                        <div class="card glass"><h3 style="font-size: 0.9rem;">Total Kelas</h3><p class="number" id="dm-total-kelas">0</p></div>
+                        <div class="card glass"><h3 style="font-size: 0.9rem;">Total Jadwal</h3><p class="number" id="dm-total-jadwal">0</p></div>
+                        
+                        <div class="card glass" style="border-left: 4px solid var(--danger);"><h3 style="font-size: 0.9rem;">Guru Tanpa Mapel</h3><p class="number" style="color: var(--danger);" id="dm-guru-no-mapel">0</p></div>
+                        <div class="card glass" style="border-left: 4px solid var(--danger);"><h3 style="font-size: 0.9rem;">Guru Tanpa Kelas</h3><p class="number" style="color: var(--danger);" id="dm-guru-no-kelas">0</p></div>
+                        <div class="card glass" style="border-left: 4px solid var(--danger);"><h3 style="font-size: 0.9rem;">Siswa Tanpa Kelas</h3><p class="number" style="color: var(--danger);" id="dm-siswa-no-kelas">0</p></div>
+                        <div class="card glass" style="border-left: 4px solid var(--danger);"><h3 style="font-size: 0.9rem;">Jadwal Bentrok</h3><p class="number" style="color: var(--danger);" id="dm-jadwal-bentrok">0</p></div>
+                        <div class="card glass" style="border-left: 4px solid var(--warning);"><h3 style="font-size: 0.9rem;">Mapel Tanpa Guru</h3><p class="number" style="color: var(--warning);" id="dm-mapel-no-guru">0</p></div>
+                        <div class="card glass" style="border-left: 4px solid var(--warning);"><h3 style="font-size: 0.9rem;">Kelas Tanpa Wali</h3><p class="number" style="color: var(--warning);" id="dm-kelas-no-wali">0</p></div>
+                        <div class="card glass" style="border-left: 4px solid var(--primary);"><h3 style="font-size: 0.9rem;">Tahun Ajaran Aktif</h3><p class="number" style="color: var(--primary);" id="dm-tahun-aktif">-</p></div>
+                    </div>
+
+                    <!-- Card 2: Import Control -->
+                    <div class="card glass" style="margin-bottom: 30px;">
+                        <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Import Control</h2>
+                        <div style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+                            <div class="form-group" style="margin-bottom: 0; min-width: 200px;">
+                                <label>Pilih Master Data</label>
+                                <select id="dm-type" class="input-control">
+                                    <option value="">-- Pilih Jenis Data --</option>
+                                    <option value="guru">Guru</option>
+                                    <option value="siswa">Siswa</option>
+                                    <option value="mapel">Mata Pelajaran</option>
+                                    <option value="kelas">Kelas</option>
+                                    <option value="tahun">Tahun Ajaran</option>
+                                    <option value="jadwal">Jadwal Pelajaran</option>
+                                </select>
+                            </div>
+                            <button id="btn-dm-download" class="btn btn-outline" disabled>Download Template</button>
+                            <label class="btn btn-outline" style="cursor: pointer; margin: 0;" id="label-dm-upload">
+                                Upload Excel
+                                <input type="file" id="dm-upload" accept=".xlsx, .xls" style="display: none;" disabled>
+                            </label>
+                            <button id="btn-dm-import" class="btn-primary" disabled>Import Data</button>
+                            <button id="btn-dm-clear" class="btn btn-danger" disabled>Clear Preview</button>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Progress & Log -->
+                    <div id="dm-progress-container" class="card glass" style="margin-bottom: 30px; display: none;">
+                        <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Progress Import</h2>
+                        <div style="width: 100%; background: var(--border-color); height: 20px; border-radius: 10px; overflow: hidden; margin-bottom: 10px;">
+                            <div id="dm-progress-bar" style="width: 0%; background: var(--primary); height: 100%; transition: width 0.3s ease;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                            <span id="dm-progress-text">0%</span>
+                            <span id="dm-progress-stats">0 / 0</span>
+                        </div>
+                        <div id="dm-import-log" style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 8px; max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 0.85rem; display: none;">
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Preview Table -->
+                    <div class="card glass" style="margin-bottom: 30px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h2 style="font-size: 1.2rem; margin: 0;">Preview Data</h2>
+                            <div style="display: flex; gap: 15px; font-size: 0.9rem;">
+                                <span>Total: <strong id="prev-total">0</strong></span>
+                                <span style="color: var(--success);">Valid: <strong id="prev-valid">0</strong></span>
+                                <span style="color: var(--warning);">Update: <strong id="prev-update">0</strong></span>
+                                <span style="color: var(--danger);">Error: <strong id="prev-error">0</strong></span>
+                                <span style="color: var(--text-muted);">Duplicate: <strong id="prev-duplicate">0</strong></span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group" id="dm-duplicate-strategy-container" style="display: none; margin-bottom: 15px;">
+                            <label>Strategi Duplikasi (Jika Ditemukan)</label>
+                            <select id="dm-duplicate-strategy" class="input-control" style="max-width: 200px;">
+                                <option value="skip">Lewati (Skip)</option>
+                                <option value="update">Update Existing (Upsert)</option>
+                                <option value="cancel">Batalkan Import</option>
+                            </select>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr id="prev-thead">
+                                        <th>No</th>
+                                        <th>Status</th>
+                                        <th>Keterangan</th>
+                                        <th>Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="prev-tbody">
+                                    <tr><td colspan="4" style="text-align: center;">Pilih jenis data dan upload file Excel untuk melihat preview.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
@@ -1245,5 +1348,6 @@
     <script type="module" src="../../js/academic/guru.js" defer></script>
     <script type="module" src="../../js/academic/mapel.js" defer></script>
     <script type="module" src="../../js/academic/kelas.js" defer></script>
+    <script type="module" src="../../js/academic/migration.js" defer></script>
 </body>
 </html>
