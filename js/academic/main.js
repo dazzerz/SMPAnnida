@@ -14,7 +14,7 @@ window.db = supabaseClient;
 // Cek Sesi (Auth)
 window.isGuest = localStorage.getItem('isGuest') === 'true';
 
-import { escapeHTML } from \'../core/utils.js\';
+import { escapeHTML } from '../core/utils.js';
 window.escapeHTML = escapeHTML;
 
 async function checkAuth() {

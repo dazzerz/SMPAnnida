@@ -183,7 +183,7 @@ export function renderTransactionsTable(transactions, canEdit = true) {
       <td><span style="font-size:1.2rem">${cat?.icon || '💰'}</span></td>
       <td><div style="font-weight:600;color:var(--text-primary);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4;padding-right:1rem;" title="${escapeHTML(t.description)}">${escapeHTML(t.description)}</div></td>
       <td>${formatDate(t.date)}</td>
-      <td><span class="badge" style="background:var(--bg-secondary);color:var(--text-secondary);font-weight:500;">${escapeHTML(cat?.name || \'Lainnya\')}</span></td>
+      <td><span class="badge" style="background:var(--bg-secondary);color:var(--text-secondary);font-weight:500;">${escapeHTML(cat?.name || 'Lainnya')}</span></td>
       <td><span class="badge ${isIncome ? 'badge-income' : 'badge-expense'}">${isIncome ? '↑ Pemasukan' : '↓ Pengeluaran'}</span></td>
       <td><span class="badge" style="background:${t.sumber_dana === 'kas' ? '#f59e0b22' : '#3b82f622'};color:${t.sumber_dana === 'kas' ? '#f59e0b' : '#3b82f6'}">${t.sumber_dana === 'kas' ? '💵 Kas' : '🏦 Bank'}</span></td>
       <td class="transaction-amount ${t.type}">${isIncome ? '+' : '-'}${formatCurrency(t.amount)}</td>
@@ -214,7 +214,7 @@ export function populateCategoryDropdown(type, selectId = 'modal-category') {
   if (!select) return;
   const filtered = allCategories.filter(c => c.type === type);
   select.innerHTML = `<option value="">-- Pilih Kategori --</option>` +
-    filtered.map(c => `<option value=\"${escapeHTML(c.id)}\">${escapeHTML(c.icon)} ${escapeHTML(c.name)}</option>`).join('');
+    filtered.map(c => `<option value="${escapeHTML(c.id)}">${escapeHTML(c.icon)} ${escapeHTML(c.name)}</option>`).join('');
 }
 
 // ── Render recent (dashboard) ─────────────────────
