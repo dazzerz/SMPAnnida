@@ -251,39 +251,39 @@
                 <section id="jurnal-guru" class="page-section" style="display: none;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <h1>Jurnal Guru</h1>
-                        <button class="btn-primary" disabled>Simpan Jurnal</button>
+                        <button id="btn-jurnal-save" class="btn-primary" disabled>Simpan Jurnal</button>
                     </div>
                     
                     <div class="card glass">
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
                             <div class="form-group">
                                 <label>Tanggal</label>
-                                <input type="date" class="input-control">
+                                <input type="date" id="jurnal-date" class="input-control">
                             </div>
                             <div class="form-group">
                                 <label>Kelas</label>
-                                <select class="input-control">
+                                <select id="jurnal-class" class="input-control">
                                     <option value="">-- Pilih Kelas --</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Mapel</label>
-                                <input type="text" class="input-control" placeholder="Contoh: Matematika">
+                                <input type="text" id="jurnal-subject" class="input-control" placeholder="Contoh: Matematika">
                             </div>
                             <div class="form-group">
                                 <label>Jam Pelajaran</label>
-                                <input type="text" class="input-control" placeholder="Contoh: Ke-1 s/d 3">
+                                <input type="text" id="jurnal-time" class="input-control" placeholder="Contoh: Ke-1 s/d 3">
                             </div>
                         </div>
                         
                         <div class="form-group" style="margin-bottom: 15px;">
                             <label>Materi Pokok</label>
-                            <input type="text" class="input-control" placeholder="Masukkan materi utama yang diajarkan">
+                            <input type="text" id="jurnal-material" class="input-control" placeholder="Masukkan materi utama yang diajarkan">
                         </div>
                         
                         <div class="form-group" style="margin-bottom: 0;">
                             <label>Catatan Kegiatan / Hambatan</label>
-                            <textarea class="input-control" rows="4" placeholder="Masukkan rincian kegiatan atau catatan khusus..." style="resize: vertical;"></textarea>
+                            <textarea id="jurnal-notes" class="input-control" rows="4" placeholder="Masukkan rincian kegiatan atau catatan khusus..." style="resize: vertical;"></textarea>
                         </div>
                     </div>
                 </section>
@@ -337,6 +337,7 @@
     <script type="module" src="../../js/academic/dashboard.js" defer></script>
     <script type="module" src="../../js/academic/absensi.js" defer></script>
     <script type="module" src="../../js/academic/attendance.js" defer></script>
+    <script type="module" src="../../js/academic/teacher-journal.js" defer></script>
     <script type="module" src="../../js/academic/nilai.js" defer></script>
     <script type="module" src="../../js/academic/jadwal.js" defer></script>
 </body>
