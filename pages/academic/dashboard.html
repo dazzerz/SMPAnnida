@@ -59,8 +59,8 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <h1>Absensi Siswa</h1>
                         <div style="display: flex; gap: 10px;">
-                            <button class="btn btn-outline">Refresh</button>
-                            <button class="btn-primary" disabled>Simpan</button>
+                            <button id="btn-attend-refresh" class="btn btn-outline">Refresh</button>
+                            <button id="btn-attend-save" class="btn-primary" disabled>Simpan</button>
                         </div>
                     </div>
                     
@@ -68,17 +68,17 @@
                         <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: flex-end;">
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Tanggal</label>
-                                <input type="date" class="input-control">
+                                <input type="date" id="attend-date" class="input-control">
                             </div>
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Kelas</label>
-                                <select class="input-control">
+                                <select id="attend-class" class="input-control">
                                     <option value="">-- Pilih Kelas --</option>
                                 </select>
                             </div>
                             <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
                                 <label>Cari Nama</label>
-                                <input type="text" class="input-control" placeholder="Masukkan nama siswa...">
+                                <input type="text" id="attend-search" class="input-control" placeholder="Masukkan nama siswa...">
                             </div>
                         </div>
 
@@ -93,7 +93,7 @@
                                         <th>Keterangan</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="attend-tbody">
                                     <tr>
                                         <td colspan="5" style="text-align: center; padding: 30px;">
                                             <div style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 10px;">Belum ada data.</div>
@@ -336,6 +336,7 @@
     <script type="module" src="../../js/academic/main.js" defer></script>
     <script type="module" src="../../js/academic/dashboard.js" defer></script>
     <script type="module" src="../../js/academic/absensi.js" defer></script>
+    <script type="module" src="../../js/academic/attendance.js" defer></script>
     <script type="module" src="../../js/academic/nilai.js" defer></script>
     <script type="module" src="../../js/academic/jadwal.js" defer></script>
 </body>
