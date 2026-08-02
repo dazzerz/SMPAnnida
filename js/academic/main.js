@@ -7,6 +7,22 @@ injectTopbar('topbar', {
 
 injectSidebar('sidebar', 'academic');
 
+// Modify the Academic nav-group to inject the sub-navigation menus
+const academicNavGroup = document.querySelectorAll('.nav-group')[1];
+if (academicNavGroup) {
+    academicNavGroup.innerHTML = `
+        <div class="nav-group-title">Akademik & Kesiswaan</div>
+        <a href="#dashboard" class="nav-item nav-link" data-target="dashboard">📊 Dashboard</a>
+        <a href="#data-siswa" class="nav-item nav-link" data-target="data-siswa">👨‍🎓 Data Siswa</a>
+        <a href="#jadwal" class="nav-item nav-link" data-target="jadwal">📅 Jadwal</a>
+        <a href="#nilai" class="nav-item nav-link" data-target="nilai">📝 Nilai</a>
+        <a href="#rapor" class="nav-item nav-link" data-target="rapor">📄 Rapor</a>
+        <a href="#absensi" class="nav-item nav-link" data-target="absensi">📋 Absensi Siswa</a>
+        <a href="#jurnal-guru" class="nav-item nav-link" data-target="jurnal-guru">📓 Jurnal Guru</a>
+        <a href="#absensi-guru" class="nav-item nav-link" data-target="absensi-guru">👨‍🏫 Absensi Guru</a>
+    `;
+}
+
 import supabaseClient from '../core/supabase.js';
 const db = supabaseClient;
 window.db = supabaseClient;
