@@ -395,6 +395,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const activeKelas = allKelas.filter(k => k.aktif !== false);
             const allTahun = resTahun.data || [];
 
+            // Expose globally for UUID conversions (Sprint 32A Addendum)
+            window.masterClasses = activeKelas;
+            window.masterTahunAjaran = allTahun;
+
             // Populate Classes Dropdowns
             const classSelectIds = [
                 'export-kelas', 'attend-class', 'select-kelas-nilai', 

@@ -218,6 +218,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
             
             const activeTeachers = data.filter(t => t.aktif !== false);
+            
+            // Expose globally for UUID conversions (Sprint 32A Addendum)
+            window.masterTeachers = activeTeachers;
+            
             let optionsHtml = '<option value="">-- Pilih Guru --</option>';
             activeTeachers.forEach(t => {
                 // Gunakan ID untuk value jika relasinya adalah UUID, atau nama jika backward compatible

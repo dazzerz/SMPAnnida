@@ -123,6 +123,39 @@
                         </div>
                     </div>
 
+                    <!-- SECTION: Statistik Jadwal (Baru) -->
+                    <h2 style="font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Statistik Jadwal & Akademik</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                        <div class="card glass">
+                            <h3 style="font-size: 0.9rem;">Total Jadwal Aktif</h3>
+                            <p class="number" id="stat-jadwal-aktif" style="font-size: 1.5rem; color: var(--primary);">0</p>
+                        </div>
+                        <div class="card glass">
+                            <h3 style="font-size: 0.9rem;">Guru Mengajar Hari Ini</h3>
+                            <p class="number" id="stat-jadwal-guru-today" style="font-size: 1.5rem;">0</p>
+                        </div>
+                        <div class="card glass">
+                            <h3 style="font-size: 0.9rem;">Kelas Aktif Hari Ini</h3>
+                            <p class="number" id="stat-jadwal-kelas-today" style="font-size: 1.5rem;">0</p>
+                        </div>
+                        <div class="card glass">
+                            <h3 style="font-size: 0.9rem;">Total Jam Hari Ini</h3>
+                            <p class="number" id="stat-jadwal-jam-today" style="font-size: 1.5rem;">0</p>
+                        </div>
+                        <div class="card glass" style="border-left: 4px solid var(--danger);">
+                            <h3 style="font-size: 0.9rem;">Kelas Tanpa Jadwal</h3>
+                            <p class="number" id="stat-jadwal-kelas-kosong" style="font-size: 1.5rem; color: var(--danger);">0</p>
+                        </div>
+                        <div class="card glass" style="border-left: 4px solid var(--danger);">
+                            <h3 style="font-size: 0.9rem;">Guru Tanpa Jadwal</h3>
+                            <p class="number" id="stat-jadwal-guru-kosong" style="font-size: 1.5rem; color: var(--danger);">0</p>
+                        </div>
+                        <div class="card glass" style="border-left: 4px solid var(--warning);">
+                            <h3 style="font-size: 0.9rem;">Mapel Belum Dijadwal</h3>
+                            <p class="number" id="stat-jadwal-mapel-kosong" style="font-size: 1.5rem; color: var(--warning);">0</p>
+                        </div>
+                    </div>
+
                     <!-- SECTION 4 & 5: Grafik & Tabel Kelas -->
                     <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 30px;">
                         <div class="card glass">
@@ -355,19 +388,35 @@
 
                 <!-- Jadwal Section -->
                 <section id="jadwal" class="page-section" style="display: none;">
-                    <h1>Jadwal Pelajaran</h1>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h1>Jadwal Pelajaran</h1>
+                        <button id="btn-tambah-jadwal" class="btn-primary" style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 1.2rem;">+</span> Tambah Jadwal
+                        </button>
+                    </div>
+
                     <div class="card glass">
-                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: flex-end;">
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
-                                <label>Pilih Kelas</label>
-                                <select id="filter-kelas-jadwal" class="input-control">
-                                    <option value="">-- Semua Kelas --</option>
-                                </select>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Cari Guru</label>
+                                <input type="text" id="filter-jadwal-guru" class="input-control" placeholder="Nama guru...">
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
-                                <label>Pilih Hari</label>
-                                <select id="filter-hari-jadwal" class="input-control">
-                                    <option value="">-- Semua Hari --</option>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Cari Kelas</label>
+                                <input type="text" id="filter-jadwal-kelas" class="input-control" placeholder="Nama kelas...">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Cari Mapel</label>
+                                <input type="text" id="filter-jadwal-mapel" class="input-control" placeholder="Nama mapel...">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Cari Ruangan</label>
+                                <input type="text" id="filter-jadwal-ruangan" class="input-control" placeholder="Ruangan...">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Hari</label>
+                                <select id="filter-jadwal-hari" class="input-control">
+                                    <option value="">-- Semua --</option>
                                     <option value="Senin">Senin</option>
                                     <option value="Selasa">Selasa</option>
                                     <option value="Rabu">Rabu</option>
@@ -376,7 +425,23 @@
                                     <option value="Sabtu">Sabtu</option>
                                 </select>
                             </div>
-                            <button id="btn-lihat-jadwal" class="btn-primary" style="height: 41px;">Tampilkan</button>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Semester</label>
+                                <select id="filter-jadwal-semester" class="input-control">
+                                    <option value="">-- Semua --</option>
+                                    <option value="Ganjil">Ganjil</option>
+                                    <option value="Genap">Genap</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label>Status</label>
+                                <select id="filter-jadwal-status" class="input-control">
+                                    <option value="">-- Semua --</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Draft">Draft</option>
+                                    <option value="Arsip">Arsip</option>
+                                </select>
+                            </div>
                         </div>
                         
                         <div class="table-responsive">
@@ -387,11 +452,15 @@
                                         <th>Jam</th>
                                         <th>Kelas</th>
                                         <th>Mata Pelajaran</th>
-                                        <th>Guru Pengajar</th>
+                                        <th>Guru</th>
+                                        <th>Ruangan</th>
+                                        <th>Semester</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-jadwal">
-                                    <tr><td colspan="5" style="text-align: center;">Klik Tampilkan untuk memuat jadwal dari database.</td></tr>
+                                    <tr><td colspan="9" style="text-align: center;">Memuat jadwal dari database...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1077,6 +1146,85 @@
                 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
                     <button type="button" id="btn-close-modal-kelas" class="btn btn-outline">Batal</button>
                     <button type="submit" id="btn-save-kelas" class="btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Form Jadwal -->
+    <div id="modal-jadwal" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; overflow-y: auto;">
+        <div class="modal-content card glass" style="width: 100%; max-width: 650px; padding: 25px; border-radius: 12px; margin: 20px;">
+            <h2 id="modal-jadwal-title" style="margin-bottom: 20px;">Tambah Jadwal Pelajaran</h2>
+            <form id="form-jadwal">
+                <input type="hidden" id="jadwal-id">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="form-group">
+                        <label>Tahun Ajaran</label>
+                        <select id="jadwal-academic-year" class="input-control" required>
+                            <option value="">-- Pilih Tahun Ajaran --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Kelas</label>
+                        <select id="jadwal-class" class="input-control" required>
+                            <option value="">-- Pilih Kelas --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Guru Pengajar</label>
+                        <select id="jadwal-teacher" class="input-control" required>
+                            <option value="">-- Pilih Guru --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Mata Pelajaran</label>
+                        <select id="jadwal-subject" class="input-control" required>
+                            <option value="">-- Pilih Mata Pelajaran --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hari</label>
+                        <select id="jadwal-day" class="input-control" required>
+                            <option value="">-- Pilih Hari --</option>
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                            <option value="Sabtu">Sabtu</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ruangan</label>
+                        <input type="text" id="jadwal-room" class="input-control" placeholder="Contoh: Lab Komputer">
+                    </div>
+                    <div class="form-group">
+                        <label>Jam Mulai</label>
+                        <input type="time" id="jadwal-start-time" class="input-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Jam Selesai</label>
+                        <input type="time" id="jadwal-end-time" class="input-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Status Jadwal</label>
+                        <select id="jadwal-status" class="input-control" required>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Draft">Draft</option>
+                            <option value="Arsip">Arsip</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label>Catatan (Opsional)</label>
+                    <textarea id="jadwal-notes" class="input-control" rows="2" placeholder="Catatan tambahan..." style="resize: vertical;"></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" id="btn-close-modal-jadwal" class="btn btn-outline">Batal</button>
+                    <button type="submit" id="btn-save-jadwal" class="btn-primary">Simpan Jadwal</button>
                 </div>
             </form>
         </div>

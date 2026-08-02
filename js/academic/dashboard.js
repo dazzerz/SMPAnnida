@@ -102,6 +102,64 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('stat-jurnal-guru-sudah').innerText = guruSudahJurnal;
             document.getElementById('stat-jurnal-guru-belum').innerText = Math.max(0, totalGuru - guruSudahJurnal);
 
+            // 5.5. Jadwal & Akademik Stats
+            try {
+                const daysMap = [ "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu" ];
+                const dayName = daysMap[new Date().getDay()];
+                
+                const [resSch, resCls, resTch, resSub] = await Promise.all([
+                    db.from('class_schedules').select('id, active, teacher_id, class_id, subject_id, day_of_week'),
+                    db.from('classes').select('id, aktif'),
+                    db.from('teachers').select('id, aktif'),
+                    db.from('subjects').select('id, aktif')
+                ]);
+                
+                const schedules = resSch.data || [];
+                const allCls = (resCls.data || []).filter(c => c.aktif !== false);
+                const allTch = (resTch.data || []).filter(t => t.aktif !== false);
+                const allSub = (resSub.data || []).filter(s => s.aktif !== false);
+
+                let jadwalAktif = 0;
+                let guruToday = new Set();
+                let kelasToday = new Set();
+                let mapelScheduled = new Set();
+                let guruScheduled = new Set();
+                let kelasScheduled = new Set();
+                let totalJamHariIni = 0;
+                
+                schedules.forEach(j => {
+                    if (j.active !== 'Arsip' && j.active !== 'Draft') { // Hanya hitung yang Aktif
+                        jadwalAktif++;
+                        mapelScheduled.add(j.subject_id);
+                        guruScheduled.add(j.teacher_id);
+                        kelasScheduled.add(j.class_id);
+                        
+                        if (j.day_of_week === dayName) {
+                            totalJamHariIni++;
+                            guruToday.add(j.teacher_id);
+                            kelasToday.add(j.class_id);
+                        }
+                    }
+                });
+                
+                const kelasKosong = allCls.length - kelasScheduled.size;
+                const guruKosong = allTch.length - guruScheduled.size;
+                const mapelKosong = allSub.length - mapelScheduled.size;
+                
+                const elAktif = document.getElementById('stat-jadwal-aktif');
+                if (elAktif) {
+                    elAktif.innerText = jadwalAktif;
+                    document.getElementById('stat-jadwal-guru-today').innerText = guruToday.size;
+                    document.getElementById('stat-jadwal-kelas-today').innerText = kelasToday.size;
+                    document.getElementById('stat-jadwal-jam-today').innerText = totalJamHariIni;
+                    document.getElementById('stat-jadwal-kelas-kosong').innerText = Math.max(0, kelasKosong);
+                    document.getElementById('stat-jadwal-guru-kosong').innerText = Math.max(0, guruKosong);
+                    document.getElementById('stat-jadwal-mapel-kosong').innerText = Math.max(0, mapelKosong);
+                }
+            } catch (err) {
+                console.error("Gagal memuat stat Jadwal:", err);
+            }
+
             // 6. Calculate Class Stats (Table)
             const classCounts = {};
             if (students) {

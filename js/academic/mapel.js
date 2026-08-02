@@ -232,6 +232,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
             
             const activeSubjects = data.filter(s => s.aktif !== false);
+            
+            // Expose globally for UUID conversions (Sprint 32A Addendum)
+            window.masterSubjects = activeSubjects;
+            
             let optionsHtml = '<option value="">-- Pilih Mapel --</option>';
             activeSubjects.forEach(s => {
                 // We use nama_mapel as value to maintain backward compatibility with old hardcoded inputs
