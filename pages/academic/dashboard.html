@@ -33,6 +33,27 @@
                             Memuat statistik...
                         </div>
                     </div>
+
+                    <!-- SECTION 0: Academic Info -->
+                    <h2 style="font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Informasi Akademik</h2>
+                    <div class="dashboard-cards" style="margin-bottom: 30px; grid-template-columns: repeat(4, 1fr);">
+                        <div class="card glass">
+                            <h3 style="font-size: 0.9rem;">🏫 Total Kelas</h3>
+                            <p class="number" id="stat-kelas-total" style="font-size: 1.5rem;">0</p>
+                        </div>
+                        <div class="card glass">
+                            <h3 style="font-size: 0.9rem;">👨‍🏫 Total Wali Kelas</h3>
+                            <p class="number" id="stat-walikelas-total" style="font-size: 1.5rem;">0</p>
+                        </div>
+                        <div class="card glass" style="border-left: 4px solid var(--primary);">
+                            <h3 style="font-size: 0.9rem;">📅 Tahun Ajaran Aktif</h3>
+                            <p class="number" id="stat-tahun-aktif" style="font-size: 1.2rem; margin-top: 5px; font-weight: 600;">-</p>
+                        </div>
+                        <div class="card glass" style="border-left: 4px solid var(--success);">
+                            <h3 style="font-size: 0.9rem;">🗓️ Semester Aktif</h3>
+                            <p class="number" id="stat-semester-aktif" style="font-size: 1.2rem; margin-top: 5px; font-weight: 600;">-</p>
+                        </div>
+                    </div>
                     
                     <!-- SECTION 1: Ringkasan Siswa Hari Ini -->
                     <h2 style="font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Ringkasan Siswa Hari Ini</h2>
@@ -169,15 +190,13 @@
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Tahun Ajaran</label>
                                 <select id="export-tahun" class="input-control">
-                                    <option value="2026/2027">2026/2027</option>
-                                    <option value="2025/2026">2025/2026</option>
+                                    <option value="">-- Pilih Tahun --</option>
                                 </select>
                             </div>
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Semester</label>
                                 <select id="export-semester" class="input-control">
-                                    <option value="Ganjil">Ganjil</option>
-                                    <option value="Genap">Genap</option>
+                                    <option value="">-- Pilih Semester --</option>
                                 </select>
                             </div>
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
@@ -418,15 +437,13 @@
                             <div class="form-group">
                                 <label>Tahun Ajaran</label>
                                 <select id="rapor-tahun" class="input-control">
-                                    <option value="2026/2027">2026/2027</option>
-                                    <option value="2025/2026">2025/2026</option>
+                                    <option value="">-- Pilih Tahun --</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Semester</label>
                                 <select id="rapor-semester" class="input-control">
-                                    <option value="Ganjil">Ganjil</option>
-                                    <option value="Genap">Genap</option>
+                                    <option value="">-- Pilih Semester --</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -751,6 +768,97 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Kelas Section -->
+                <section id="kelas" class="page-section" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 30px;">
+                        <!-- Bagian Tahun Ajaran -->
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <h1>Master Tahun Ajaran</h1>
+                                <button id="btn-add-tahun" class="btn-primary">Tambah Tahun Ajaran</button>
+                            </div>
+                            <div class="card glass">
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 50px;">No</th>
+                                                <th>Tahun Ajaran</th>
+                                                <th>Semester</th>
+                                                <th>Status</th>
+                                                <th style="text-align: center; width: 150px;">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody-tahun">
+                                            <tr><td colspan="5" style="text-align: center;">Memuat data tahun ajaran...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="border: 0; border-top: 1px solid var(--border-color);">
+
+                        <!-- Bagian Master Kelas -->
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <h1>Master Kelas</h1>
+                                <button id="btn-add-kelas" class="btn-primary">Tambah Kelas</button>
+                            </div>
+                            <div class="card glass">
+                                <!-- Filters -->
+                                <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                                    <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                        <label>Tingkat</label>
+                                        <select id="filter-tingkat-kelas" class="input-control">
+                                            <option value="">Semua Tingkat</option>
+                                            <option value="7">Kelas 7</option>
+                                            <option value="8">Kelas 8</option>
+                                            <option value="9">Kelas 9</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                        <label>Status</label>
+                                        <select id="filter-status-kelas" class="input-control">
+                                            <option value="">Semua Status</option>
+                                            <option value="Aktif">Aktif</option>
+                                            <option value="Nonaktif">Nonaktif</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                        <label>Wali Kelas</label>
+                                        <input type="text" id="filter-wali-kelas" class="input-control" placeholder="Cari wali kelas...">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                                        <label>Cari Nama Kelas</label>
+                                        <input type="text" id="filter-search-kelas" class="input-control" placeholder="Cari nama kelas...">
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 50px;">No</th>
+                                                <th>Nama Kelas</th>
+                                                <th style="text-align: center;">Tingkat</th>
+                                                <th>Wali Kelas</th>
+                                                <th style="text-align: center;">Ruangan</th>
+                                                <th style="text-align: center;">Kapasitas</th>
+                                                <th style="text-align: center;">Status</th>
+                                                <th style="text-align: center; width: 150px;">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody-kelas">
+                                            <tr><td colspan="8" style="text-align: center;">Memuat data kelas...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
@@ -879,6 +987,89 @@
         </div>
     </div>
 
+    <!-- Modal Form Tahun Ajaran -->
+    <div id="modal-tahun" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div class="modal-content card glass" style="width: 100%; max-width: 400px; padding: 25px; border-radius: 12px; margin: 20px;">
+            <h2 id="modal-tahun-title" style="margin-bottom: 20px;">Tambah Tahun Ajaran</h2>
+            <form id="form-tahun">
+                <input type="hidden" id="tahun-id">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label>Tahun Ajaran</label>
+                    <input type="text" id="tahun-nama" class="input-control" placeholder="Contoh: 2026/2027" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label>Semester</label>
+                    <select id="tahun-semester" class="input-control" required>
+                        <option value="Ganjil">Ganjil</option>
+                        <option value="Genap">Genap</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" id="tahun-aktif" style="width: 18px; height: 18px;">
+                        <span>Set sebagai Aktif (Saat ini)</span>
+                    </label>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Hanya boleh ada satu tahun ajaran yang aktif. Mengaktifkan ini akan menonaktifkan tahun ajaran lainnya.</div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" id="btn-close-modal-tahun" class="btn btn-outline">Batal</button>
+                    <button type="submit" id="btn-save-tahun" class="btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Form Kelas -->
+    <div id="modal-kelas" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div class="modal-content card glass" style="width: 100%; max-width: 600px; padding: 25px; border-radius: 12px; margin: 20px;">
+            <h2 id="modal-kelas-title" style="margin-bottom: 20px;">Tambah Kelas</h2>
+            <form id="form-kelas">
+                <input type="hidden" id="kelas-id">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="form-group">
+                        <label>Nama Kelas</label>
+                        <input type="text" id="kelas-nama" class="input-control" placeholder="Contoh: 7A" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tingkat</label>
+                        <select id="kelas-tingkat" class="input-control" required>
+                            <option value="">-- Pilih Tingkat --</option>
+                            <option value="7">Kelas 7</option>
+                            <option value="8">Kelas 8</option>
+                            <option value="9">Kelas 9</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Wali Kelas</label>
+                        <select id="kelas-wali" class="input-control">
+                            <option value="">-- Pilih Wali Kelas --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ruangan</label>
+                        <input type="text" id="kelas-ruangan" class="input-control" placeholder="Contoh: R.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Kapasitas Siswa</label>
+                        <input type="number" id="kelas-kapasitas" class="input-control" placeholder="Contoh: 32" min="1" required>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; padding-top: 25px;">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="kelas-aktif" checked style="width: 18px; height: 18px;">
+                            <span>Status Aktif</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" id="btn-close-modal-kelas" class="btn btn-outline">Batal</button>
+                    <button type="submit" id="btn-save-kelas" class="btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Third-Party Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 
@@ -893,5 +1084,6 @@
     <script type="module" src="../../js/academic/jadwal.js" defer></script>
     <script type="module" src="../../js/academic/guru.js" defer></script>
     <script type="module" src="../../js/academic/mapel.js" defer></script>
+    <script type="module" src="../../js/academic/kelas.js" defer></script>
 </body>
 </html>
