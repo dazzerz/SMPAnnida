@@ -274,7 +274,9 @@
                             </div>
                             <div class="form-group">
                                 <label>Mata Pelajaran</label>
-                                <input type="text" id="input-mapel-nilai" class="input-control" placeholder="Contoh: Matematika">
+                                <select id="input-mapel-nilai" class="input-control">
+                                    <option value="">-- Pilih Mapel --</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Jenis Penilaian</label>
@@ -569,7 +571,9 @@
                             </div>
                             <div class="form-group">
                                 <label>Mapel</label>
-                                <input type="text" id="jurnal-subject" class="input-control" placeholder="Contoh: Matematika">
+                                <select id="jurnal-subject" class="input-control">
+                                    <option value="">-- Pilih Mapel --</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Jam Pelajaran</label>
@@ -686,6 +690,67 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Mata Pelajaran Section -->
+                <section id="mata-pelajaran" class="page-section" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h1>Master Mata Pelajaran</h1>
+                        <button id="btn-add-mapel" class="btn-primary">Tambah Mapel</button>
+                    </div>
+
+                    <div class="card glass">
+                        <!-- Filters -->
+                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <label>Status</label>
+                                <select id="filter-status-mapel" class="input-control">
+                                    <option value="">Semua Status</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Nonaktif">Nonaktif</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <label>Kelompok</label>
+                                <select id="filter-kelompok-mapel" class="input-control">
+                                    <option value="">Semua Kelompok</option>
+                                    <option value="A">Kelompok A (Wajib)</option>
+                                    <option value="B">Kelompok B (Wajib)</option>
+                                    <option value="C">Kelompok C (Peminatan)</option>
+                                    <option value="Mulok">Muatan Lokal</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <label>Guru Pengampu</label>
+                                <input type="text" id="filter-guru-mapel" class="input-control" placeholder="Cari nama guru...">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                                <label>Cari Nama / Kode</label>
+                                <input type="text" id="filter-search-mapel" class="input-control" placeholder="Cari nama atau kode mapel...">
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">No</th>
+                                        <th>Kode</th>
+                                        <th>Nama</th>
+                                        <th>Guru Pengampu</th>
+                                        <th>Kelompok</th>
+                                        <th style="text-align: center;">KKM</th>
+                                        <th style="text-align: center;">Jam</th>
+                                        <th style="text-align: center;">Status</th>
+                                        <th style="text-align: center; width: 150px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-mapel">
+                                    <tr><td colspan="9" style="text-align: center;">Memuat data mata pelajaran...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
@@ -754,6 +819,66 @@
         </div>
     </div>
 
+    <!-- Modal Form Mapel -->
+    <div id="modal-mapel" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div class="modal-content card glass" style="width: 100%; max-width: 600px; padding: 25px; border-radius: 12px; margin: 20px;">
+            <h2 id="modal-mapel-title" style="margin-bottom: 20px;">Tambah Mata Pelajaran</h2>
+            <form id="form-mapel">
+                <input type="hidden" id="mapel-id">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div class="form-group">
+                        <label>Kode Mapel</label>
+                        <input type="text" id="mapel-kode" class="input-control" placeholder="Contoh: MTK01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Mapel</label>
+                        <input type="text" id="mapel-nama" class="input-control" placeholder="Contoh: Matematika Wajib" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Kelompok</label>
+                        <select id="mapel-kelompok" class="input-control" required>
+                            <option value="">-- Pilih Kelompok --</option>
+                            <option value="A">Kelompok A (Wajib)</option>
+                            <option value="B">Kelompok B (Wajib)</option>
+                            <option value="C">Kelompok C (Peminatan)</option>
+                            <option value="Mulok">Muatan Lokal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Guru Pengampu</label>
+                        <select id="mapel-guru" class="input-control">
+                            <option value="">-- Pilih Guru --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>KKM</label>
+                        <input type="number" id="mapel-kkm" class="input-control" placeholder="Contoh: 75" min="0" max="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Jam Per Minggu</label>
+                        <input type="number" id="mapel-jam" class="input-control" placeholder="Contoh: 4" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Urutan Tampil (Opsional)</label>
+                        <input type="number" id="mapel-urutan" class="input-control" placeholder="Contoh: 1" min="0">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="mapel-aktif" checked style="width: 18px; height: 18px;">
+                            <span>Status Aktif</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" id="btn-close-modal-mapel" class="btn btn-outline">Batal</button>
+                    <button type="submit" id="btn-save-mapel" class="btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Third-Party Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 
@@ -767,5 +892,6 @@
     <script type="module" src="../../js/academic/nilai.js" defer></script>
     <script type="module" src="../../js/academic/jadwal.js" defer></script>
     <script type="module" src="../../js/academic/guru.js" defer></script>
+    <script type="module" src="../../js/academic/mapel.js" defer></script>
 </body>
 </html>
