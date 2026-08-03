@@ -1,0 +1,1 @@
+var esprima = require('./esprima.js'); try { esprima.parseModule(require('fs').readFileSync('C:/Users/daffaakhdaan/Annida2/SMPAnnida/js/academic/migration.js', 'utf8')); console.log('OK'); } catch(e) { console.log(e); }

@@ -539,16 +539,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!confirm(`Yakin ingin mengimpor ${toImport.length} baris data?`)) return;
 
-        // UI Reset
-        btnImport.disabled = true;
-        btnClear.disabled = true;
-        progressContainer.style.display = 'block';
-        importLog.style.display = 'block';
-        importLog.innerHTML = `<div>[${new Date().toLocaleTimeString()}] Memulai import ${toImport.length} baris ke tabel ${tableName}...</div>`;
-        progressBar.style.width = '0%';
-        progressText.innerText = '0%';
-        progressStats.innerText = `0 / ${toImport.length}`;
-
         // DB table mapping
         const tableMap = {
             guru: 'teachers',
@@ -559,6 +549,18 @@ document.addEventListener('DOMContentLoaded', () => {
             jadwal: 'class_schedules'
         };
         const tableName = tableMap[type];
+
+        // UI Reset
+        btnImport.disabled = true;
+        btnClear.disabled = true;
+        progressContainer.style.display = 'block';
+        importLog.style.display = 'block';
+        importLog.innerHTML = `<div>[${new Date().toLocaleTimeString()}] Memulai import ${toImport.length} baris ke tabel ${tableName}...</div>`;
+        progressBar.style.width = '0%';
+        progressText.innerText = '0%';
+        progressStats.innerText = `0 / ${toImport.length}`;
+
+
 
         // 9. Chunking
         const chunkSize = 200;
