@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     payload.id = existing.id;
                 }
 
-                payload = { ...payload, nip, nama, email, no_hp: row['No HP'], jenis_kelamin: row['Jenis Kelamin'], status_guru: row['Status Guru'], mata_pelajaran_id: mapelId, aktif: String(row['Aktif'] || '').toLowerCase() !== 'tidak' };
+                payload = { ...payload, nip, nama, email: email || null, no_hp: row['No HP'], jenis_kelamin: row['Jenis Kelamin'], status_guru: row['Status Guru'], mata_pelajaran_id: mapelId, aktif: String(row['Aktif'] || '').toLowerCase() !== 'tidak' };
             }
             else if (type === 'siswa') {
                 const nis = String(row['NIS'] || '').trim();
@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     payload.id = existing.id;
                 }
 
-                payload = { ...payload, nis, nisn, nama_lengkap: nama, jenis_kelamin: row['Jenis Kelamin'], kelas: kelasName, kelas_id: cId, alamat: row['Alamat'], no_hp_orang_tua: row['No HP Orang Tua'], nama_orang_tua: row['Nama Orang Tua'], aktif: String(row['Aktif'] || '').toLowerCase() !== 'tidak' };
+                payload = { ...payload, nis, nisn: nisn || null, nama_lengkap: nama, jenis_kelamin: row['Jenis Kelamin'], kelas: kelasName, kelas_id: cId, alamat: row['Alamat'], no_hp_orang_tua: row['No HP Orang Tua'], nama_orang_tua: row['Nama Orang Tua'], aktif: String(row['Aktif'] || '').toLowerCase() !== 'tidak' };
             }
             else if (type === 'mapel') {
                 const kode = String(row['Kode'] || '').trim();
