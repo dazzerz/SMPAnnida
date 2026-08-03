@@ -37,9 +37,10 @@ window.escapeHTML = escapeHTML;
 async function checkAuth() {
     try {
         const { data: { session }, error } = await db.auth.getSession();
-        if (error || (!session && !window.isGuest)) {
-            window.location.href = '../../index.html';
-        }
+        console.log("DEBUG AUTH - Session:", session, "Error:", error, "isGuest:", window.isGuest);
+        // if (error || (!session && !window.isGuest)) {
+        //     window.location.href = '../../index.html';
+        // }
 
         // Update profil UI
         const profileName = document.querySelector('.user-profile span');
