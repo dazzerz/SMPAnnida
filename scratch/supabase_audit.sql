@@ -128,11 +128,56 @@ CREATE TABLE IF NOT EXISTS public.teacher_journals (
 -- Karena Supabase tidak men-drop data saat CREATE IF NOT EXISTS,
 -- pastikan kolom-kolom baru (addendum) ter-apply jika tabelnya sudah ada.
 
+ALTER TABLE public.teachers ADD COLUMN IF NOT EXISTS nip VARCHAR(50);
+ALTER TABLE public.teachers ADD COLUMN IF NOT EXISTS email VARCHAR(255);
+ALTER TABLE public.teachers ADD COLUMN IF NOT EXISTS no_hp VARCHAR(50);
+ALTER TABLE public.teachers ADD COLUMN IF NOT EXISTS jenis_kelamin VARCHAR(20);
+ALTER TABLE public.teachers ADD COLUMN IF NOT EXISTS status_guru VARCHAR(50);
+ALTER TABLE public.teachers ADD COLUMN IF NOT EXISTS mata_pelajaran_id UUID;
+ALTER TABLE public.teachers ADD COLUMN IF NOT EXISTS is_wali_kelas BOOLEAN DEFAULT false;
+ALTER TABLE public.teachers ADD COLUMN IF NOT EXISTS aktif BOOLEAN DEFAULT true;
 ALTER TABLE public.teachers ADD COLUMN IF NOT EXISTS urutan INTEGER DEFAULT 0;
+
+ALTER TABLE public.subjects ADD COLUMN IF NOT EXISTS kode_mapel VARCHAR(50);
+ALTER TABLE public.subjects ADD COLUMN IF NOT EXISTS nama_mapel VARCHAR(255);
+ALTER TABLE public.subjects ADD COLUMN IF NOT EXISTS kelompok VARCHAR(50);
+ALTER TABLE public.subjects ADD COLUMN IF NOT EXISTS guru_id UUID;
+ALTER TABLE public.subjects ADD COLUMN IF NOT EXISTS kkm INTEGER DEFAULT 75;
+ALTER TABLE public.subjects ADD COLUMN IF NOT EXISTS jam_pelajaran INTEGER DEFAULT 2;
 ALTER TABLE public.subjects ADD COLUMN IF NOT EXISTS urutan INTEGER DEFAULT 0;
+ALTER TABLE public.subjects ADD COLUMN IF NOT EXISTS aktif BOOLEAN DEFAULT true;
+
+ALTER TABLE public.classes ADD COLUMN IF NOT EXISTS nama_kelas VARCHAR(50);
+ALTER TABLE public.classes ADD COLUMN IF NOT EXISTS tingkat INTEGER;
+ALTER TABLE public.classes ADD COLUMN IF NOT EXISTS wali_kelas_id UUID;
+ALTER TABLE public.classes ADD COLUMN IF NOT EXISTS ruangan VARCHAR(50);
+ALTER TABLE public.classes ADD COLUMN IF NOT EXISTS kapasitas_siswa INTEGER DEFAULT 32;
+ALTER TABLE public.classes ADD COLUMN IF NOT EXISTS aktif BOOLEAN DEFAULT true;
+
+ALTER TABLE public.students ADD COLUMN IF NOT EXISTS nis VARCHAR(50);
+ALTER TABLE public.students ADD COLUMN IF NOT EXISTS nisn VARCHAR(50);
+ALTER TABLE public.students ADD COLUMN IF NOT EXISTS nama_lengkap VARCHAR(255);
+ALTER TABLE public.students ADD COLUMN IF NOT EXISTS jenis_kelamin VARCHAR(20);
+ALTER TABLE public.students ADD COLUMN IF NOT EXISTS tanggal_lahir DATE;
 ALTER TABLE public.students ADD COLUMN IF NOT EXISTS kelas VARCHAR(50);
 ALTER TABLE public.students ADD COLUMN IF NOT EXISTS kelas_id UUID;
+ALTER TABLE public.students ADD COLUMN IF NOT EXISTS alamat TEXT;
+ALTER TABLE public.students ADD COLUMN IF NOT EXISTS nama_orang_tua VARCHAR(255);
+ALTER TABLE public.students ADD COLUMN IF NOT EXISTS no_hp_orang_tua VARCHAR(50);
 ALTER TABLE public.students ADD COLUMN IF NOT EXISTS aktif BOOLEAN DEFAULT true;
+
+ALTER TABLE public.academic_years ADD COLUMN IF NOT EXISTS tahun_ajaran VARCHAR(20);
+ALTER TABLE public.academic_years ADD COLUMN IF NOT EXISTS semester VARCHAR(20);
+ALTER TABLE public.academic_years ADD COLUMN IF NOT EXISTS aktif BOOLEAN DEFAULT false;
+
+ALTER TABLE public.class_schedules ADD COLUMN IF NOT EXISTS day_of_week VARCHAR(20);
+ALTER TABLE public.class_schedules ADD COLUMN IF NOT EXISTS start_time TIME;
+ALTER TABLE public.class_schedules ADD COLUMN IF NOT EXISTS end_time TIME;
+ALTER TABLE public.class_schedules ADD COLUMN IF NOT EXISTS class_id UUID;
+ALTER TABLE public.class_schedules ADD COLUMN IF NOT EXISTS teacher_id UUID;
+ALTER TABLE public.class_schedules ADD COLUMN IF NOT EXISTS subject_id UUID;
+ALTER TABLE public.class_schedules ADD COLUMN IF NOT EXISTS room VARCHAR(50);
+ALTER TABLE public.class_schedules ADD COLUMN IF NOT EXISTS academic_year_id UUID;
 
 -- ==========================================
 -- 3. UNIQUE CONSTRAINTS
