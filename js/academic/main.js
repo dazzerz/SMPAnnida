@@ -37,10 +37,17 @@ window.escapeHTML = escapeHTML;
 async function checkAuth() {
     try {
         const { data: { session }, error } = await db.auth.getSession();
-        console.log("DEBUG AUTH - Session:", session, "Error:", error, "isGuest:", window.isGuest);
-        // if (error || (!session && !window.isGuest)) {
-        //     window.location.href = '../../index.html';
-        // }
+        
+        // Self-heal: Prioritize valid session over stale guest flag
+        if (session && window.isGuest) {
+            window.isGuest = false;
+            localStorage.removeItem('isGuest');
+        }
+
+        if (error || (!session && !window.isGuest)) {
+            window.location.href = '../../index.html';
+            return;
+        }
 
         // Update profil UI
         const profileName = document.querySelector('.user-profile span');

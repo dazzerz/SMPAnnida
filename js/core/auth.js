@@ -40,6 +40,8 @@ export async function handleLogin(e) {
     return;
   }
   showAuthMessage('Login berhasil! Mengalihkan...', 'success');
+  localStorage.removeItem('isGuest');
+  sessionStorage.removeItem('guest_mode_active');
   setTimeout(() => { window.location.href = './dashboard.html'; }, 800);
 }
 
@@ -104,6 +106,7 @@ async function handleRegister(e) {
 // ── LOGOUT ────────────────────────────────────────
 export async function handleLogout() {
   await supabaseClient.auth.signOut();
+  localStorage.removeItem('isGuest');
   sessionStorage.removeItem('guest_mode_active');
   sessionStorage.removeItem('guest_stats');
   const isInPages = window.location.pathname.includes('/pages/');
