@@ -206,16 +206,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 3. Download Template
-    btnDownload.addEventListener('click', () => {
+    btnDownload.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log("CLICK DOWNLOAD TEMPLATE");
+        
         if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+        
         const type = selectType.value;
+        console.log("Type selected:", type);
+        
         const headers = templates[type];
-        if (!headers) return;
+        console.log("Headers:", headers);
+        
+        if (!headers) {
+            console.error("Headers tidak ditemukan");
+            return;
+        }
 
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.aoa_to_sheet([headers]);
-        XLSX.utils.book_append_sheet(wb, ws, 'Template ' + type.charAt(0).toUpperCase() + type.slice(1));
-        XLSX.writeFile(wb, `Template_Import_${type}.xlsx`);
+        try {
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet([headers]);
+            XLSX.utils.book_append_sheet(wb, ws, 'Template ' + type.charAt(0).toUpperCase() + type.slice(1));
+            XLSX.writeFile(wb, `Template_Import_${type}.xlsx`);
+            console.log("DONE DOWNLOAD");
+        } catch (err) {
+            console.error("ERROR WRITING EXCEL:", err);
+        }
     });
 
     // 4. Upload Excel
@@ -460,7 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let dataHtml = '';
             headers.forEach(h => {
-                dataHtml += `<td>${row[h] || '-'}</td>`;
+                dataHtml += `<td>${item.row[h] || '-'}</td>`;
             });
 
             tr.innerHTML = `
@@ -489,7 +505,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 8 & 9. Import Data (Batch Processing)
-    btnImport.addEventListener('click', async () => {
+    btnImport.addEventListener('click', async (e) => {
+        e.preventDefault();
         if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
         
         const type = selectType.value;
@@ -650,7 +667,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof window.refreshDashboardStats === 'function') window.refreshDashboardStats();
     });
 
-    document.getElementById('btn-download-error-report').addEventListener('click', () => {
+    document.getElementById('btn-download-error-report').addEventListener('click', (e) => {
+        e.preventDefault();
         if (!window.lastFailedRows || window.lastFailedRows.length === 0) return;
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.json_to_sheet(window.lastFailedRows);
