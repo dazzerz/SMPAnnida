@@ -120,8 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const mapelNoGuru = subjects.filter(s => !s.guru_id).length;
             const kelasNoWali = classes.filter(c => !c.wali_kelas_id).length;
             
-            warnings += mapelNoGuru + kelasNoWali;
-            errors += guruNoMapel + guruNoKelas + siswaNoKelas;
+            warnings += mapelNoGuru + kelasNoWali + guruNoMapel;
+            errors += siswaNoKelas;
 
             // Check jadwal bentrok
             let bentrok = 0;
