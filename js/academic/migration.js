@@ -337,10 +337,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!nis) { status = 'error'; messages.push('NIS wajib'); }
                 if (!nama) { status = 'error'; messages.push('Nama wajib'); }
 
-                // FK Kelas - using nama_kelas
+                // FK Kelas
+                let cId = null;
                 if (kelasName) {
                     const c = masterKelas.find(x => x.nama_kelas.toLowerCase() === kelasName.toLowerCase());
-                    if (!c) { status = 'error'; messages.push(\Kelas '\' tidak ditemukan\); }
+                    if (c) cId = c.id;
+                    else { status = 'error'; messages.push(`Kelas '${kelasName}' tidak ditemukan`); }
                 }
 
                 const existing = masterSiswa.find(x => x.nis === nis);
@@ -350,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     payload.id = existing.id;
                 }
 
-                payload = { ...payload, nis, nisn, nama, jenis_kelamin: row['Jenis Kelamin'], kelas: kelasName, alamat: row['Alamat'], no_hp: row['No HP'], nama_orang_tua: row['Nama Orang Tua'], aktif: String(row['Aktif'] || '').toLowerCase() !== 'tidak' };
+                payload = { ...payload, nis, nisn, nama_lengkap: nama, jenis_kelamin: row['Jenis Kelamin'], kelas: kelasName, kelas_id: cId, alamat: row['Alamat'], no_hp_orang_tua: row['No HP Orang Tua'], nama_orang_tua: row['Nama Orang Tua'], aktif: String(row['Aktif'] || '').toLowerCase() !== 'tidak' };
             }
             else if (type === 'mapel') {
                 const kode = String(row['Kode'] || '').trim();
