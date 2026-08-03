@@ -49,17 +49,23 @@ document.addEventListener('DOMContentLoaded', () => {
         jadwal: ["Hari", "Jam Mulai", "Jam Selesai", "Kelas", "Guru", "Mapel", "Ruangan", "Status"]
     };
 
-    // Initialize Dashboard Stats
-    async function refreshValidationDashboard() {
+    // Initialize Dashboard Stats & Integrity Check
+    async function runIntegrityCheck() {
         try {
+            document.getElementById('db-readiness-status').innerHTML = '🔄 Mengaudit Database...';
+            document.getElementById('db-readiness-status').style.color = 'var(--text-muted)';
+            
             // Load all required data concurrently
-            const [rGuru, rSiswa, rMapel, rKelas, rJadwal, rTahun] = await Promise.all([
+            const [rGuru, rSiswa, rMapel, rKelas, rJadwal, rTahun, rAtt, rGrade, rJourn] = await Promise.all([
                 db.from('teachers').select('id, nip, nama, aktif, mata_pelajaran_id, is_wali_kelas'),
                 db.from('students').select('id, nis, nisn, kelas'),
                 db.from('subjects').select('id, kode_mapel, nama_mapel, guru_id'),
                 db.from('classes').select('id, nama_kelas, wali_kelas_id'),
                 db.from('class_schedules').select('id, teacher_id, class_id, subject_id, room, start_time, end_time, day_of_week'),
-                db.from('academic_years').select('id, aktif')
+                db.from('academic_years').select('id, aktif'),
+                db.from('attendance_students').select('id, student_id').limit(10), // just to check if exists for orphan logic
+                db.from('grades').select('id, student_id').limit(10),
+                db.from('teacher_journals').select('id, teacher_id').limit(10)
             ]);
 
             const teachers = rGuru.data || [];
@@ -69,23 +75,56 @@ document.addEventListener('DOMContentLoaded', () => {
             const schedules = rJadwal.data || [];
             const years = rTahun.data || [];
 
-            document.getElementById('dm-total-guru').innerText = teachers.length;
-            document.getElementById('dm-total-siswa').innerText = students.length;
-            document.getElementById('dm-total-mapel').innerText = subjects.length;
-            document.getElementById('dm-total-kelas').innerText = classes.length;
-            document.getElementById('dm-total-jadwal').innerText = schedules.length;
+            // Update Wizard Controller UI
+            const setOpt = (id, enabled) => {
+                const opt = document.getElementById(id);
+                if (opt) {
+                    opt.disabled = !enabled;
+                    if (enabled) opt.innerText = opt.innerText.replace(' (Locked)', '') + ' (Ready)';
+                    else if (!opt.innerText.includes('Locked')) opt.innerText = opt.innerText.replace(' (Ready)', '') + ' (Locked)';
+                }
+            };
+            
+            const hasTahun = years.length > 0;
+            const hasGuru = teachers.length > 0;
+            const hasMapel = subjects.length > 0;
+            const hasKelas = classes.length > 0;
+            const hasSiswa = students.length > 0;
+            const hasJadwal = schedules.length > 0;
+
+            setOpt('opt-tahun', true);
+            setOpt('opt-guru', hasTahun);
+            setOpt('opt-mapel', hasGuru);
+            setOpt('opt-kelas', hasGuru);
+            setOpt('opt-siswa', hasKelas);
+            setOpt('opt-jadwal', hasGuru && hasMapel && hasKelas && hasTahun);
+
+            // Update Health Checker Table
+            if(document.getElementById('hc-teachers')) {
+                document.getElementById('hc-teachers').innerText = teachers.length;
+                document.getElementById('hc-students').innerText = students.length;
+                document.getElementById('hc-subjects').innerText = subjects.length;
+                document.getElementById('hc-classes').innerText = classes.length;
+                document.getElementById('hc-schedules').innerText = schedules.length;
+                document.getElementById('hc-years').innerText = years.length;
+            }
+
+            let errors = 0;
+            let warnings = 0;
+            let orphans = 0;
+            let duplicates = 0;
 
             const guruNoMapel = teachers.filter(t => !t.mata_pelajaran_id).length;
-            // Guru tanpa kelas (wali kelas)
             const guruNoKelas = teachers.filter(t => !classes.find(c => c.wali_kelas_id === t.id)).length;
             const siswaNoKelas = students.filter(s => !s.kelas).length;
             const mapelNoGuru = subjects.filter(s => !s.guru_id).length;
             const kelasNoWali = classes.filter(c => !c.wali_kelas_id).length;
-            const tahunAktif = years.filter(y => y.aktif === true).length;
+            
+            warnings += mapelNoGuru + kelasNoWali;
+            errors += guruNoMapel + guruNoKelas + siswaNoKelas;
 
             // Check jadwal bentrok
             let bentrok = 0;
-            // Simple overlap check
             for (let i = 0; i < schedules.length; i++) {
                 for (let j = i + 1; j < schedules.length; j++) {
                     const s1 = schedules[i];
@@ -95,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         const t1e = parseInt(s1.end_time.replace(':', ''));
                         const t2s = parseInt(s2.start_time.replace(':', ''));
                         const t2e = parseInt(s2.end_time.replace(':', ''));
-                        
                         if ((t1s < t2e) && (t1e > t2s)) {
                             if (s1.teacher_id === s2.teacher_id || s1.class_id === s2.class_id || (s1.room && s1.room === s2.room)) {
                                 bentrok++;
@@ -104,28 +142,50 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+            errors += bentrok;
 
-            document.getElementById('dm-guru-no-mapel').innerText = guruNoMapel;
-            document.getElementById('dm-guru-no-kelas').innerText = guruNoKelas;
-            document.getElementById('dm-siswa-no-kelas').innerText = siswaNoKelas;
-            document.getElementById('dm-mapel-no-guru').innerText = mapelNoGuru;
-            document.getElementById('dm-kelas-no-wali').innerText = kelasNoWali;
-            document.getElementById('dm-tahun-aktif').innerText = tahunAktif;
-            document.getElementById('dm-jadwal-bentrok').innerText = bentrok;
+            // Update Banner
+            document.getElementById('rb-master-count').innerText = teachers.length + students.length + subjects.length + classes.length;
+            document.getElementById('rb-error-count').innerText = errors;
+            document.getElementById('rb-orphan-count').innerText = orphans;
+            document.getElementById('rb-duplicate-count').innerText = duplicates;
+
+            const banner = document.getElementById('db-readiness-banner');
+            const status = document.getElementById('db-readiness-status');
+
+            if (errors === 0 && warnings === 0 && hasTahun && hasGuru && hasMapel && hasKelas && hasSiswa && hasJadwal) {
+                banner.style.borderLeft = '5px solid var(--success)';
+                status.innerHTML = '🟢 DATABASE STATUS: PRODUCTION READY';
+                status.style.color = 'var(--success)';
+            } else if (hasGuru || hasSiswa) {
+                banner.style.borderLeft = '5px solid var(--warning)';
+                status.innerHTML = '🟡 DATABASE STATUS: PARTIALLY READY';
+                status.style.color = 'var(--warning)';
+            } else {
+                banner.style.borderLeft = '5px solid var(--danger)';
+                status.innerHTML = '🔴 DATABASE STATUS: NOT READY';
+                status.style.color = 'var(--danger)';
+            }
 
         } catch (err) {
-            console.error('Gagal memuat dashboard validasi:', err);
+            console.error('Gagal menjalankan Integrity Check:', err);
         }
     }
 
     // Call on load if hash is data-migration
     window.addEventListener('hashchange', () => {
         if (window.location.hash === '#data-migration') {
-            if (!window.isGuest) refreshValidationDashboard();
+            if (!window.isGuest) runIntegrityCheck();
         }
     });
     if (window.location.hash === '#data-migration') {
-        if (!window.isGuest) refreshValidationDashboard();
+        if (!window.isGuest) runIntegrityCheck();
+    }
+    
+    // Bind integrity button
+    const btnIntegrity = document.getElementById('btn-run-integrity');
+    if (btnIntegrity) {
+        btnIntegrity.addEventListener('click', runIntegrityCheck);
     }
 
     // Dropdown Type Change
@@ -135,10 +195,12 @@ document.addEventListener('DOMContentLoaded', () => {
             btnDownload.disabled = false;
             inputUpload.disabled = false;
             labelUpload.classList.remove('disabled');
+            document.getElementById('panel-import-action').style.display = 'block';
         } else {
             btnDownload.disabled = true;
             inputUpload.disabled = true;
             labelUpload.classList.add('disabled');
+            document.getElementById('panel-import-action').style.display = 'none';
         }
         clearPreview();
     });
@@ -500,6 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const chunkSize = 200;
         let successCount = 0;
         let failCount = 0;
+        let failedRows = [];
         const startTime = Date.now();
 
         for (let i = 0; i < toImport.length; i += chunkSize) {
@@ -517,6 +580,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 failCount += chunk.length;
                 const errDetail = err.message || JSON.stringify(err);
                 importLog.innerHTML += `<div style="color:var(--danger);">[ERROR] Chunk ${chunkNum} gagal (Data ke ${i+1}-${i+chunk.length}): ${escapeHTML(errDetail)}</div>`;
+                chunk.forEach((row, idx) => {
+                    failedRows.push({
+                        "Excel Row": i + idx + 1,
+                        "Database Table": tableName,
+                        "Reason": errDetail,
+                        "Field": "-",
+                        "Current Value": "-",
+                        "Expected Value": "-",
+                        "Suggestion": "Periksa tipe data, duplikasi unik, atau Foreign Key."
+                    });
+                });
             }
 
             // Update Progress
@@ -551,9 +625,33 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('Proses impor selesai', successCount > 0 ? 'success' : 'error');
         btnImport.disabled = false;
         btnClear.disabled = false;
+        
+        if (failedRows.length > 0) {
+            window.lastFailedRows = failedRows;
+            document.getElementById('btn-download-error-report').style.display = 'block';
+        } else {
+            document.getElementById('btn-download-error-report').style.display = 'none';
+        }
 
         // Refresh Data
-        refreshValidationDashboard();
+        await runIntegrityCheck();
+
+        // Auto Refresh Global Options & Lists
+        if (typeof window.loadGlobalGuruOptions === 'function') window.loadGlobalGuruOptions();
+        if (typeof window.loadGlobalMapelOptions === 'function') window.loadGlobalMapelOptions();
+        if (typeof window.loadGlobalKelasTahunOptions === 'function') window.loadGlobalKelasTahunOptions();
+        if (typeof window.loadDataSiswa === 'function') window.loadDataSiswa();
+        if (typeof window.loadDataGuru === 'function') window.loadDataGuru();
+        if (typeof window.loadDataJadwal === 'function') window.loadDataJadwal();
+        if (typeof window.refreshDashboardStats === 'function') window.refreshDashboardStats();
+    });
+
+    document.getElementById('btn-download-error-report').addEventListener('click', () => {
+        if (!window.lastFailedRows || window.lastFailedRows.length === 0) return;
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(window.lastFailedRows);
+        XLSX.utils.book_append_sheet(wb, ws, "Error Report");
+        XLSX.writeFile(wb, "Import_Error_Report.xlsx");
     });
 
 });
