@@ -654,7 +654,7 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 /* Ensure background color doesn't peek through the corners of the table container */
 .table-responsive {
   border-radius: 16px !important;
-  overflow: hidden !important;
+  overflow: auto !important;
   background: transparent !important;
 }
 
