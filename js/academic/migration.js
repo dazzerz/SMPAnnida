@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.aoa_to_sheet([headers]);
         XLSX.utils.book_append_sheet(wb, ws, 'Template ' + type.charAt(0).toUpperCase() + type.slice(1));
-        XLSX.writeFile(wb, \Template_Import_\.xlsx\);
+        XLSX.writeFile(wb, `Template_Import_${type}.xlsx`);
     });
 
     // 4. Upload Excel
@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function clearPreview() {
         parsedData = [];
         processedData = [];
-        prevTbody.innerHTML = '<tr><td colspan=\4\ style=\	ext-align: center;\>Pilih jenis data dan upload file Excel untuk melihat preview.</td></tr>';
+        prevTbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Pilih jenis data dan upload file Excel untuk melihat preview.</td></tr>';
         prevTotal.innerText = '0';
         prevValid.innerText = '0';
         prevUpdate.innerText = '0';
@@ -278,11 +278,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Build table header
         let thHtml = '<th>No</th><th>Status</th><th>Keterangan</th>';
         headers.forEach(h => {
-            thHtml += \<th>\</th>\;
+            thHtml += `<th>${h}</th>`;
         });
         prevThead.innerHTML = thHtml;
 
-        prevTbody.innerHTML = '<tr><td colspan=\4\ style=\	ext-align: center;\>Memvalidasi data...</td></tr>';
+        prevTbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Memvalidasi data...</td></tr>';
         
         let validCount = 0, errorCount = 0, dupCount = 0, updateCount = 0;
         processedData = [];
@@ -366,7 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (guruName) {
                     const g = masterGuru.find(x => x.nama.toLowerCase() === guruName.toLowerCase());
                     if (g) guruId = g.id;
-                    else { status = 'error'; messages.push(\Guru '\' tidak ditemukan\); }
+                    else { status = 'error'; messages.push(`Guru '${guruName}' tidak ditemukan`); }
                 }
 
                 const existing = masterMapel.find(x => x.kode_mapel === kode);
@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (waliName) {
                     const g = masterGuru.find(x => x.nama.toLowerCase() === waliName.toLowerCase());
                     if (g) waliId = g.id;
-                    else { status = 'error'; messages.push(\Guru '\' tidak ditemukan\); }
+                    else { status = 'error'; messages.push(`Guru '${waliName}' tidak ditemukan`); }
                 }
 
                 const existing = masterKelas.find(x => x.nama_kelas.toLowerCase() === namaK.toLowerCase());
@@ -427,13 +427,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 let cId=null, gId=null, mId=null;
                 
                 const c = masterKelas.find(x => x.nama_kelas.toLowerCase() === kelasName.toLowerCase());
-                if (c) cId = c.id; else { status = 'error'; messages.push(\Kelas '\' tidak ditemukan\); }
+                if (c) cId = c.id; else { status = 'error'; messages.push(`Kelas '${kelasName}' tidak ditemukan`); }
                 
                 const g = masterGuru.find(x => x.nama.toLowerCase() === guruName.toLowerCase());
-                if (g) gId = g.id; else { status = 'error'; messages.push(\Guru '\' tidak ditemukan\); }
+                if (g) gId = g.id; else { status = 'error'; messages.push(`Guru '${guruName}' tidak ditemukan`); }
                 
                 const m = masterMapel.find(x => x.nama_mapel.toLowerCase() === mapelName.toLowerCase());
-                if (m) mId = m.id; else { status = 'error'; messages.push(\Mapel '\' tidak ditemukan\); }
+                if (m) mId = m.id; else { status = 'error'; messages.push(`Mapel '${mapelName}' tidak ditemukan`); }
                 
                 payload = { day_of_week: hari, start_time: jamM, end_time: jamS, class_id: cId, teacher_id: gId, subject_id: mId, room: row['Ruangan'], active: row['Status'] || 'Aktif' };
             }
@@ -451,24 +451,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const tr = document.createElement('tr');
             
             let badge = '';
-            if (item.status === 'valid') badge = \<span style="color:white;background:var(--success);padding:2px 6px;border-radius:4px;font-size:0.8rem;">Valid</span>\;
-            else if (item.status === 'error') badge = \<span style="color:white;background:var(--danger);padding:2px 6px;border-radius:4px;font-size:0.8rem;">Error</span>\;
-            else if (item.status === 'duplicate') badge = \<span style="color:white;background:var(--text-muted);padding:2px 6px;border-radius:4px;font-size:0.8rem;">Duplicate</span>\;
+            if (item.status === 'valid') badge = `<span style="color:white;background:var(--success);padding:2px 6px;border-radius:4px;font-size:0.8rem;">Valid</span>`;
+            else if (item.status === 'error') badge = `<span style="color:white;background:var(--danger);padding:2px 6px;border-radius:4px;font-size:0.8rem;">Error</span>`;
+            else if (item.status === 'duplicate') badge = `<span style="color:white;background:var(--text-muted);padding:2px 6px;border-radius:4px;font-size:0.8rem;">Duplicate</span>`;
             
-            let msgHtml = item.messages.map(m => \<div>\</div>\).join('');
+            let msgHtml = item.messages.map(m => `<div>- ${m}</div>`).join('');
             if (!msgHtml) msgHtml = '-';
 
             let dataHtml = '';
             headers.forEach(h => {
-                dataHtml += \<td>\</td>\;
+                dataHtml += `<td>${row[h] || '-'}</td>`;
             });
 
-            tr.innerHTML = \
-                <td>\</td>
-                <td>\</td>
-                <td style="color:var(--danger);font-size:0.85rem;">\</td>
-                \
-            \;
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${badge}</td>
+                <td style="color:var(--danger);font-size:0.85rem;">${msgHtml}</td>
+                ${dataHtml}
+            `;
             prevTbody.appendChild(tr);
         });
 
@@ -537,17 +537,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return showToast('Tidak ada data valid yang dapat diimpor', 'warning');
         }
 
-        if (!confirm(\Yakin ingin mengimpor \ baris data?\)) return;
+        if (!confirm(`Yakin ingin mengimpor ${toImport.length} baris data?`)) return;
 
         // UI Reset
         btnImport.disabled = true;
         btnClear.disabled = true;
         progressContainer.style.display = 'block';
         importLog.style.display = 'block';
-        importLog.innerHTML = \<div>[\] Memulai import \ baris ke tabel \...</div>\;
+        importLog.innerHTML = `<div>[${new Date().toLocaleTimeString()}] Memulai import ${toImport.length} baris ke tabel ${tableName}...</div>`;
         progressBar.style.width = '0%';
         progressText.innerText = '0%';
-        progressStats.innerText = \  / \\;
+        progressStats.innerText = `0 / ${toImport.length}`;
 
         // DB table mapping
         const tableMap = {
