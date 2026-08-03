@@ -512,11 +512,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const type = selectType.value;
         const strategy = selectStrategy.value; // skip, update, cancel
 
-        // Import Order Validation
-        const tGuru = parseInt(document.getElementById('dm-total-guru').innerText) || 0;
-        const tMapel = parseInt(document.getElementById('dm-total-mapel').innerText) || 0;
-        const tKelas = parseInt(document.getElementById('dm-total-kelas').innerText) || 0;
-        const tTahun = document.getElementById('dm-tahun-aktif').innerText !== '-' ? parseInt(document.getElementById('dm-tahun-aktif').innerText) : 0;
+        // Import Order Validation — using existing Health Checker counters
+        const tGuru = parseInt(document.getElementById('hc-teachers')?.textContent) || 0;
+        const tMapel = parseInt(document.getElementById('hc-subjects')?.textContent) || 0;
+        const tKelas = parseInt(document.getElementById('hc-classes')?.textContent) || 0;
+        const tTahun = parseInt(document.getElementById('hc-years')?.textContent) || 0;
 
         if (type === 'guru' && tTahun === 0) return showToast('Mohon import Tahun Ajaran terlebih dahulu', 'error');
         if (type === 'mapel' && tGuru === 0) return showToast('Mohon import Guru terlebih dahulu', 'error');
