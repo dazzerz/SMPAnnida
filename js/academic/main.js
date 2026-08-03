@@ -36,10 +36,16 @@ window.escapeHTML = escapeHTML;
 
 async function checkAuth() {
     try {
-        // Use getUser() — consistent with root dashboard.html and Finance modules.
-        // getUser() makes a network request to verify the token is still valid,
-        // which is more reliable than getSession() which only reads from localStorage.
+        // === DIAGNOSTIC LOGGING — HAPUS SETELAH FIX ===
+        const sbKey = Object.keys(localStorage).find(k => k.startsWith('sb-') && k.endsWith('-auth-token'));
+        console.log('[AUTH-DIAG] localStorage isGuest:', localStorage.getItem('isGuest'));
+        console.log('[AUTH-DIAG] Supabase token key found:', sbKey);
+        console.log('[AUTH-DIAG] Supabase token value:', sbKey ? localStorage.getItem(sbKey)?.substring(0, 80) + '...' : 'TIDAK ADA');
+        // ====================================================
+
         const { data: { user }, error } = await db.auth.getUser();
+
+        console.log('[AUTH-DIAG] getUser() result → user:', user ? user.email : 'NULL', '| error:', error?.message || 'none');
 
         // Only AFTER we know the session status do we decide on isGuest.
         if (user) {
@@ -50,6 +56,8 @@ async function checkAuth() {
             // No valid session — check if user intentionally chose guest mode
             window.isGuest = localStorage.getItem('isGuest') === 'true';
         }
+
+        console.log('[AUTH-DIAG] Final window.isGuest:', window.isGuest, '| Redirecting:', !user && !window.isGuest);
 
         if (error || (!user && !window.isGuest)) {
             window.location.href = '../../index.html';
