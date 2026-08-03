@@ -64,7 +64,7 @@
   <script type="module">
     import { injectSidebar } from './js/core/layout.js';
     injectSidebar('sidebar', 'dashboard');
-    import { getOptionalUser, handleLogout } from './js/core/auth.js';
+    import { getOptionalUser, handleLogout } from './js/core/auth.js?v=2';
     import { fetchDashboardMetrics, formatCurrency } from './js/core/dashboard.js';
     
     async function init() {
