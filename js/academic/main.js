@@ -28,23 +28,30 @@ import supabaseClient from '../core/supabase.js';
 const db = supabaseClient;
 window.db = supabaseClient;
 
-// Cek Sesi (Auth)
-window.isGuest = localStorage.getItem('isGuest') === 'true';
+// NOTE: window.isGuest is set inside checkAuth() AFTER session is confirmed.
+// Do NOT set it here synchronously — that causes a race condition.
 
 import { escapeHTML } from '../core/utils.js';
 window.escapeHTML = escapeHTML;
 
 async function checkAuth() {
     try {
-        const { data: { session }, error } = await db.auth.getSession();
-        
-        // Self-heal: Prioritize valid session over stale guest flag
-        if (session && window.isGuest) {
+        // Use getUser() — consistent with root dashboard.html and Finance modules.
+        // getUser() makes a network request to verify the token is still valid,
+        // which is more reliable than getSession() which only reads from localStorage.
+        const { data: { user }, error } = await db.auth.getUser();
+
+        // Only AFTER we know the session status do we decide on isGuest.
+        if (user) {
+            // Valid session — override any stale isGuest flag
             window.isGuest = false;
             localStorage.removeItem('isGuest');
+        } else {
+            // No valid session — check if user intentionally chose guest mode
+            window.isGuest = localStorage.getItem('isGuest') === 'true';
         }
 
-        if (error || (!session && !window.isGuest)) {
+        if (error || (!user && !window.isGuest)) {
             window.location.href = '../../index.html';
             return;
         }
@@ -56,9 +63,32 @@ async function checkAuth() {
                 profileName.textContent = 'Guest (View Only)';
                 document.body.classList.add('guest-mode');
             } else {
-                profileName.textContent = 'Guru Admin';
+                profileName.textContent = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Guru Admin';
             }
         }
+
+        // Update sidebar user info jika tersedia
+        const navUserName = document.getElementById('nav-user-name');
+        const navUserEmail = document.getElementById('nav-user-email');
+        const userAvatar = document.getElementById('user-avatar');
+        if (user && navUserName) {
+            const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Admin';
+            navUserName.textContent = fullName;
+            if (navUserEmail) navUserEmail.textContent = user.email;
+            if (userAvatar) userAvatar.textContent = fullName.substring(0, 2).toUpperCase();
+        }
+
+        // Bind logout button
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                await db.auth.signOut();
+                localStorage.removeItem('isGuest');
+                sessionStorage.removeItem('guest_mode_active');
+                window.location.href = '../../index.html';
+            });
+        }
+
     } catch (err) {
         console.error("Auth check failed:", err);
         window.location.href = '../../index.html';
