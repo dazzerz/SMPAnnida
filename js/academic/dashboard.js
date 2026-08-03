@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         importStatus.textContent = 'Menyimpan...';
                         const cleanData = data.map(row => ({
                             nama_lengkap: row.nama_lengkap, nisn: row.nisn || null,
-                            kelas: row.kelas, status_aktif: row.status_aktif ? (row.status_aktif.toLowerCase() === 'true') : true
+                            kelas: row.kelas, aktif: row.status_aktif ? (row.status_aktif.toLowerCase() === 'true') : true
                         }));
 
                         const { error } = await db.from('students').insert(cleanData);
