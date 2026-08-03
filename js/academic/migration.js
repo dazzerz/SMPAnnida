@@ -1,4 +1,4 @@
-﻿import supabaseClient from '../core/supabase.js';
+import supabaseClient from '../core/supabase.js';
 import { escapeHTML, showToast } from '../core/utils.js';
 
 const db = supabaseClient;
@@ -431,6 +431,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const type = selectType.value;
         const strategy = selectStrategy.value; // skip, update, cancel
 
+        // Import Order Validation
+        const tGuru = parseInt(document.getElementById('dm-total-guru').innerText) || 0;
+        const tMapel = parseInt(document.getElementById('dm-total-mapel').innerText) || 0;
+        const tKelas = parseInt(document.getElementById('dm-total-kelas').innerText) || 0;
+        const tTahun = document.getElementById('dm-tahun-aktif').innerText !== '-' ? parseInt(document.getElementById('dm-tahun-aktif').innerText) : 0;
+
+        if (type === 'guru' && tTahun === 0) return showToast('Mohon import Tahun Ajaran terlebih dahulu', 'error');
+        if (type === 'mapel' && tGuru === 0) return showToast('Mohon import Guru terlebih dahulu', 'error');
+        if (type === 'kelas' && tGuru === 0) return showToast('Mohon import Guru terlebih dahulu', 'error');
+        if (type === 'siswa' && tKelas === 0) return showToast('Mohon import Kelas terlebih dahulu', 'error');
+        if (type === 'jadwal' && (tGuru === 0 || tMapel === 0 || tKelas === 0 || tTahun === 0)) {
+            return showToast('Mohon pastikan Tahun Ajaran, Guru, Mapel, dan Kelas sudah diimport sebelum Jadwal', 'error');
+        }
+
         // Check if strategy is cancel and duplicates exist
         const hasDups = processedData.some(d => d.status === 'duplicate');
         if (hasDups && strategy === 'cancel') {
@@ -486,38 +500,53 @@ document.addEventListener('DOMContentLoaded', () => {
         const chunkSize = 200;
         let successCount = 0;
         let failCount = 0;
+        const startTime = Date.now();
 
         for (let i = 0; i < toImport.length; i += chunkSize) {
             const chunk = toImport.slice(i, i + chunkSize);
+            const chunkNum = Math.floor(i/chunkSize) + 1;
             try {
                 // Upsert handles both insert and update if primary key (id) is provided
                 const { error } = await db.from(tableName).upsert(chunk);
                 if (error) throw error;
                 
                 successCount += chunk.length;
+                importLog.innerHTML += `<div style="color:var(--success);">[SUCCESS] Chunk ${chunkNum} (${chunk.length} data) tersimpan.</div>`;
             } catch (err) {
                 console.error('Batch error:', err);
                 failCount += chunk.length;
-                importLog.innerHTML += \<div style="color:var(--danger);">[ERROR] Gagal mengimpor batch \ - \.</div>\;
+                const errDetail = err.message || JSON.stringify(err);
+                importLog.innerHTML += `<div style="color:var(--danger);">[ERROR] Chunk ${chunkNum} gagal (Data ke ${i+1}-${i+chunk.length}): ${escapeHTML(errDetail)}</div>`;
             }
 
             // Update Progress
             const progress = Math.round(((i + chunk.length) / toImport.length) * 100);
-            progressBar.style.width = \\%\;
-            progressText.innerText = \\%\;
-            progressStats.innerText = \\ / \\;
+            progressBar.style.width = `${progress}%`;
+            progressText.innerText = `${progress}%`;
+            progressStats.innerText = `${Math.min(successCount + failCount, toImport.length)} / ${toImport.length}`;
+            
+            // Allow UI to update before next chunk
+            await new Promise(resolve => setTimeout(resolve, 50));
         }
 
+        const endTime = Date.now();
+        const durationSec = ((endTime - startTime) / 1000).toFixed(2);
+        const successRate = ((successCount / toImport.length) * 100).toFixed(1);
+        const insertC = successCount - updateC; // Estimate
+
         // 11. Final Log
-        importLog.innerHTML += \
+        importLog.innerHTML += `
             <div style="margin-top:10px; border-top:1px dashed #ccc; padding-top:10px;">
-                <strong>Hasil Akhir Import \:</strong><br>
-                Berhasil: \<br>
-                Gagal: \<br>
-                Lewati (Duplicate Skip): \<br>
-                Update (Upsert): \
+                <strong>Hasil Akhir Import ${type.toUpperCase()}:</strong><br>
+                ✅ Berhasil: ${successCount}<br>
+                ❌ Gagal: ${failCount}<br>
+                ⏭️ Duplicate (Skip): ${skipped}<br>
+                🔄 Update (Upsert): ${updateC}<br>
+                ➕ Insert Baru: ${insertC > 0 ? insertC : 0}<br>
+                ⏱️ Waktu Eksekusi: ${durationSec} detik<br>
+                🎯 Success Rate: ${successRate}%
             </div>
-        \;
+        `;
 
         showToast('Proses impor selesai', successCount > 0 ? 'success' : 'error');
         btnImport.disabled = false;
