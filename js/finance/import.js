@@ -341,71 +341,94 @@ Kembalikan hasil HANYA dalam bentuk array JSON string, di mana urutannya persis 
 Daftar Transaksi:
 ${descList}`;
 
-      try {
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: prompt }] }],
-              generationConfig: {
-                temperature: 0.1,
-                maxOutputTokens: 8192,
-                responseMimeType: "application/json"
-              }
-            }),
-          }
-        );
-        
-        if (response.ok) {
-          const data = await response.json();
-          const answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      const modelsToTry = [
+        "gemini-3.5-flash",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
+        "gemini-3-flash",
+        "gemini-3.1-flash-lite",
+        "gemini-3.5-flash-lite"
+      ];
+
+      let answer = null;
+      let lastErrData = null;
+      let lastErrMsg = null;
+
+      for (const model of modelsToTry) {
+        try {
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: {
+                  temperature: 0.1,
+                  maxOutputTokens: 8192,
+                  responseMimeType: "application/json"
+                }
+              }),
+            }
+          );
           
-          if (answer) {
-              let parsedArray = [];
-              try {
-                let cleanAnswer = answer.trim();
-                if (cleanAnswer.startsWith('```json')) cleanAnswer = cleanAnswer.substring(7);
-                else if (cleanAnswer.startsWith('```')) cleanAnswer = cleanAnswer.substring(3);
-                if (cleanAnswer.endsWith('```')) cleanAnswer = cleanAnswer.slice(0, -3);
-                cleanAnswer = cleanAnswer.trim();
-                if (!cleanAnswer.endsWith(']')) cleanAnswer += ']'; // Auto-fix missing bracket
-                
-                parsedArray = JSON.parse(cleanAnswer);
-              } catch (parseErr) {
-                console.warn("JSON parse gagal, mencoba regex fallback...", parseErr);
-                const matches = answer.match(/"([^"]+)"/g);
-                if (matches) {
-                  parsedArray = matches.map(m => m.slice(1, -1));
-                } else {
-                  console.error("Gagal parse JSON Gemini:", answer);
-                  alert("Gemini mengembalikan format yang salah, tapi koneksi berhasil. Silakan cek console.");
-                  return;
-                }
-              }
-              
-              unmatchedBatch.forEach((r, index) => {
-                const label = parsedArray[index];
-                if (label && label.toLowerCase() !== 'lainnya') {
-                  const matchedCategory = categories.find(c => c.name.toLowerCase() === label.toLowerCase());
-                  if (matchedCategory) {
-                    results[r.idx].categoryName = matchedCategory.name;
-                    results[r.idx].category_id = matchedCategory.id;
-                    results[r.idx].categoryIcon = matchedCategory.icon;
-                  }
-                }
-              });
+          if (response.ok) {
+            const data = await response.json();
+            answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (answer) {
+              console.log(`Berhasil menggunakan model: ${model}`);
+              break; // Sukses, keluar dari loop
+            }
+          } else {
+            lastErrData = await response.json().catch(() => null);
+            console.warn(`Gagal dengan model ${model}:`, lastErrData || response.statusText);
           }
-        } else {
-          const errData = await response.json();
-          console.error("Gemini API Error:", errData);
-          alert("Gagal memanggil Gemini AI: " + (errData.error?.message || response.statusText));
+        } catch (err) {
+          lastErrMsg = err.message;
+          console.warn(`Error koneksi dengan model ${model}:`, err);
         }
-      } catch (err) {
-        console.error("Gemini Fetch Error:", err);
-        alert("Gagal koneksi ke Gemini AI: " + err.message);
       }
+
+      if (!answer) {
+        console.error("Semua model Gemini gagal dihubungi.");
+        alert("Gagal memanggil Gemini AI (Semua model dicoba). Error terakhir: " + 
+          (lastErrData?.error?.message || lastErrMsg || "Unknown error"));
+        return; // Jangan lanjutkan mapping
+      }
+
+      let parsedArray = [];
+      try {
+        let cleanAnswer = answer.trim();
+        if (cleanAnswer.startsWith('```json')) cleanAnswer = cleanAnswer.substring(7);
+        else if (cleanAnswer.startsWith('```')) cleanAnswer = cleanAnswer.substring(3);
+        if (cleanAnswer.endsWith('```')) cleanAnswer = cleanAnswer.slice(0, -3);
+        cleanAnswer = cleanAnswer.trim();
+        if (!cleanAnswer.endsWith(']')) cleanAnswer += ']'; // Auto-fix missing bracket
+        
+        parsedArray = JSON.parse(cleanAnswer);
+      } catch (parseErr) {
+        console.warn("JSON parse gagal, mencoba regex fallback...", parseErr);
+        const matches = answer.match(/"([^"]+)"/g);
+        if (matches) {
+          parsedArray = matches.map(m => m.slice(1, -1));
+        } else {
+          console.error("Gagal parse JSON Gemini:", answer);
+          alert("Gemini mengembalikan format yang salah, tapi koneksi berhasil. Silakan cek console.");
+          return;
+        }
+      }
+      
+      unmatchedBatch.forEach((r, index) => {
+        const label = parsedArray[index];
+        if (label && label.toLowerCase() !== 'lainnya') {
+          const matchedCategory = categories.find(c => c.name.toLowerCase() === label.toLowerCase());
+          if (matchedCategory) {
+            results[r.idx].categoryName = matchedCategory.name;
+            results[r.idx].category_id = matchedCategory.id;
+            results[r.idx].categoryIcon = matchedCategory.icon;
+          }
+        }
+      });
     }
 
     // Panggil API secara paralel untuk Pemasukan dan Pengeluaran
