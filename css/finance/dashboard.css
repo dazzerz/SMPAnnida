@@ -1348,14 +1348,16 @@
 
 /* Import Preview Table */
 .import-preview-wrapper {
-  max-height: 300px;
+  max-height: 400px;
   overflow-y: auto;
+  overflow-x: auto;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
 }
 
 .import-preview-table {
   width: 100%;
+  min-width: 800px;
   border-collapse: collapse;
   font-size: 0.8rem;
 }
