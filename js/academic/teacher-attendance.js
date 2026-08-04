@@ -1,5 +1,5 @@
 import supabaseClient from '../core/supabase.js';
-import { showToast, escapeHTML, getUserEmail } from '../core/utils.js';
+import { showToast, escapeHTML } from '../core/utils.js';
 
 const db = supabaseClient;
 
