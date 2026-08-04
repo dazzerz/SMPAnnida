@@ -1,5 +1,5 @@
 import supabaseClient from '../core/supabase.js';
-import { showToast, formatDate, escapeHTML } from '../core/utils.js';
+import { showToast, escapeHTML, getUserEmail } from '../core/utils.js';
 
 const db = supabaseClient;
 
@@ -8,25 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const elCheckIn = document.getElementById('tg-checkin-time');
     const elCheckOut = document.getElementById('tg-checkout-time');
     
-    const previewPlaceholder = document.getElementById('tg-preview-placeholder');
+    const photoInContainer = document.getElementById('tg-photo-in-container');
+    const photoInPlaceholder = document.getElementById('tg-photo-in-placeholder');
+    const photoIn = document.getElementById('tg-photo-in');
+    
+    const photoOutContainer = document.getElementById('tg-photo-out-container');
+    const photoOutPlaceholder = document.getElementById('tg-photo-out-placeholder');
+    const photoOut = document.getElementById('tg-photo-out');
+    
+    const cameraContainer = document.getElementById('tg-camera-container');
     const video = document.getElementById('tg-video');
     const canvas = document.getElementById('tg-canvas');
-    const photo = document.getElementById('tg-photo');
     
     const btnCamera = document.getElementById('btn-tg-camera');
-    const btnUpload = document.getElementById('btn-tg-upload');
-    const fileInput = document.getElementById('tg-file-input');
-    
-    const btnCheckIn = document.getElementById('btn-tg-checkin');
-    const btnCheckOut = document.getElementById('btn-tg-checkout');
+    const statusText = document.getElementById('tg-status-text');
 
-    if (!elDate || !btnCheckIn) return;
+    if (!elDate || !btnCamera) return;
 
     let currentTeacherId = null;
-    let currentPhotoUrl = null;
     let stream = null;
     let isCameraOpen = false;
     let hasLoaded = false;
+    let attendanceRecord = null; // Store current record
     
     // YYYY-MM-DD local
     const getTodayStr = () => {
@@ -55,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadAttendance() {
         if (!currentTeacherId) return;
         elDate.innerHTML = escapeHTML(formatDate(today));
+        statusText.textContent = 'Memuat data...';
         
         try {
             const { data, error } = await db
@@ -67,35 +71,49 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
 
             resetUI();
+            attendanceRecord = (data && data.length > 0) ? data[0] : null;
 
-            if (data && data.length > 0) {
-                const record = data[0];
-                elCheckIn.innerHTML = escapeHTML(formatTime(record.check_in));
-                if (record.photo_url) {
-                    showPhoto(record.photo_url);
+            if (attendanceRecord) {
+                // Check In is present
+                elCheckIn.innerHTML = escapeHTML(formatTime(attendanceRecord.check_in));
+                if (attendanceRecord.photo_url_in) {
+                    photoInPlaceholder.style.display = 'none';
+                    photoIn.style.display = 'block';
+                    photoIn.src = attendanceRecord.photo_url_in;
                 }
                 
-                if (record.check_out) {
+                if (attendanceRecord.check_out) {
                     // Already checked out
-                    elCheckOut.innerHTML = escapeHTML(formatTime(record.check_out));
-                    disableAll();
+                    elCheckOut.innerHTML = escapeHTML(formatTime(attendanceRecord.check_out));
+                    if (attendanceRecord.photo_url_out) {
+                        photoOutPlaceholder.style.display = 'none';
+                        photoOut.style.display = 'block';
+                        photoOut.src = attendanceRecord.photo_url_out;
+                    }
+                    
+                    statusText.textContent = 'Anda sudah menyelesaikan absensi hari ini.';
+                    btnCamera.disabled = true;
+                    btnCamera.textContent = 'Absensi Selesai';
                 } else {
                     // Checked in, not checked out
-                    btnCamera.disabled = true;
-                    btnUpload.disabled = true;
-                    btnCheckIn.disabled = true;
-                    if (!window.isGuest) btnCheckOut.disabled = false;
+                    if (!window.isGuest) {
+                        btnCamera.disabled = false;
+                        btnCamera.textContent = 'Ambil Foto (Check Out)';
+                    }
+                    statusText.textContent = 'Jangan lupa absen pulang.';
                 }
             } else {
                 // Not checked in
                 if (!window.isGuest) {
                     btnCamera.disabled = false;
-                    btnUpload.disabled = false;
+                    btnCamera.textContent = 'Ambil Foto (Check In)';
                 }
+                statusText.textContent = 'Silakan lakukan absen kedatangan.';
             }
             hasLoaded = true;
         } catch (err) {
             console.error("Error loading attendance:", err);
+            statusText.textContent = 'Gagal memuat status absensi.';
             showToast('Gagal memuat status absensi', 'error');
         }
     }
@@ -104,50 +122,40 @@ document.addEventListener('DOMContentLoaded', () => {
         stopCamera();
         elCheckIn.innerHTML = '--:--';
         elCheckOut.innerHTML = '--:--';
-        previewPlaceholder.style.display = 'block';
-        video.style.display = 'none';
-        photo.style.display = 'none';
-        btnCamera.disabled = true;
-        btnUpload.disabled = true;
-        btnCheckIn.disabled = true;
-        btnCheckOut.disabled = true;
-        currentPhotoUrl = null;
-        btnCamera.textContent = 'Ambil Foto';
-        isCameraOpen = false;
-    }
+        
+        photoInPlaceholder.style.display = 'block';
+        photoIn.style.display = 'none';
+        photoIn.src = '';
+        
+        photoOutPlaceholder.style.display = 'block';
+        photoOut.style.display = 'none';
+        photoOut.src = '';
 
-    function disableAll() {
         btnCamera.disabled = true;
-        btnUpload.disabled = true;
-        btnCheckIn.disabled = true;
-        btnCheckOut.disabled = true;
-    }
-
-    function showPhoto(url) {
-        stopCamera();
-        previewPlaceholder.style.display = 'none';
-        video.style.display = 'none';
-        photo.style.display = 'block';
-        photo.src = url;
+        btnCamera.textContent = 'Memuat...';
     }
 
     async function toggleCamera() {
         if (isCameraOpen) {
-            // Capture
-            capturePhoto();
+            // Capture and Submit
+            captureAndSubmit();
         } else {
             // Open camera
             try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user' }, 
+                    audio: false 
+                });
                 video.srcObject = stream;
-                previewPlaceholder.style.display = 'none';
-                photo.style.display = 'none';
-                video.style.display = 'block';
+                cameraContainer.style.display = 'flex';
                 isCameraOpen = true;
-                btnCamera.textContent = 'Capture';
+                btnCamera.textContent = 'Jepret & Simpan Absen';
+                btnCamera.classList.replace('btn-primary', 'btn-success');
+                statusText.textContent = 'Kamera menyala. Sesuaikan posisi Anda.';
             } catch (err) {
-                console.error("Camera error:", err);
-                showToast('Tidak dapat mengakses kamera', 'error');
+                console.error("Error accessing camera:", err);
+                showToast('Gagal mengakses kamera. Pastikan memberikan izin akses.', 'error');
+                statusText.textContent = 'Akses kamera ditolak.';
             }
         }
     }
@@ -157,154 +165,115 @@ document.addEventListener('DOMContentLoaded', () => {
             stream.getTracks().forEach(track => track.stop());
             stream = null;
         }
+        cameraContainer.style.display = 'none';
         isCameraOpen = false;
+        btnCamera.classList.remove('btn-success');
+        btnCamera.classList.add('btn-primary');
     }
 
-    async function capturePhoto() {
-        if (!video.videoWidth) return;
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-        showPhoto(dataUrl);
-        btnCamera.textContent = 'Ambil Foto';
-        
-        canvas.toBlob(async (blob) => {
-            if (blob) {
-                await uploadBlob(blob);
-            }
-        }, 'image/jpeg', 0.8);
-    }
+    async function captureAndSubmit() {
+        if (!isCameraOpen) return;
 
-    btnUpload.addEventListener('click', () => {
-        fileInput.click();
-    });
-
-    fileInput.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        if (!file.type.startsWith('image/')) {
-            showToast('Hanya file gambar yang diperbolehkan', 'warning');
-            return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            showPhoto(ev.target.result);
-        };
-        reader.readAsDataURL(file);
-
-        await uploadBlob(file);
-        fileInput.value = '';
-    });
-
-    async function uploadBlob(blob) {
+        // Visual feedback
         btnCamera.disabled = true;
-        btnUpload.disabled = true;
-        const originalText = btnUpload.textContent;
-        btnUpload.textContent = 'Loading...';
-
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-        const fileName = `${currentTeacherId}/${timestamp}.jpg`;
+        const origText = btnCamera.textContent;
+        btnCamera.textContent = 'Memproses...';
+        statusText.textContent = 'Menyimpan absensi...';
 
         try {
-            const { error } = await db.storage
+            // Draw to canvas
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert to blob
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
+            if (!blob) throw new Error("Gagal mengambil gambar");
+
+            // Upload to Supabase Storage
+            const fileName = `teacher_${currentTeacherId}_${Date.now()}.jpg`;
+            const { error: uploadError } = await db.storage
                 .from('teacher-attendance')
                 .upload(fileName, blob, { contentType: 'image/jpeg' });
-            
-            if (error) throw error;
-            
+                
+            if (uploadError) throw uploadError;
+
             const { data: publicUrlData } = db.storage.from('teacher-attendance').getPublicUrl(fileName);
-            currentPhotoUrl = publicUrlData.publicUrl;
+            const photoUrl = publicUrlData.publicUrl;
+
+            // Save to Database
+            const now = new Date().toISOString();
             
-            showToast('Foto berhasil diunggah', 'success');
-            btnCheckIn.disabled = false;
+            if (!attendanceRecord) {
+                // Check In
+                const payload = {
+                    teacher_id: currentTeacherId,
+                    attendance_date: today,
+                    check_in: now,
+                    photo_url_in: photoUrl,
+                    status: 'Hadir'
+                };
+                const { error: dbError } = await db.from('teacher_attendance').insert(payload);
+                if (dbError) throw dbError;
+                showToast('Check In berhasil disimpan', 'success');
+            } else {
+                // Check Out
+                const payload = {
+                    check_out: now,
+                    photo_url_out: photoUrl
+                };
+                const { error: dbError } = await db.from('teacher_attendance')
+                    .update(payload)
+                    .eq('teacher_id', currentTeacherId)
+                    .eq('attendance_date', today);
+                if (dbError) throw dbError;
+                showToast('Check Out berhasil disimpan', 'success');
+            }
+
+            stopCamera();
+            await loadAttendance();
+
         } catch (err) {
-            console.error("Upload error:", err);
-            showToast('Gagal mengunggah foto', 'error');
-            resetUI();
+            console.error("Capture error:", err);
+            showToast('Gagal menyimpan absensi', 'error');
+            statusText.textContent = 'Terjadi kesalahan. Silakan coba lagi.';
             btnCamera.disabled = false;
-            btnUpload.disabled = false;
-        } finally {
-            btnUpload.textContent = originalText;
+            btnCamera.textContent = origText;
         }
     }
 
     btnCamera.addEventListener('click', toggleCamera);
 
-    btnCheckIn.addEventListener('click', async () => {
-        if (!currentPhotoUrl) return showToast('Foto wajib ada', 'warning');
-        
-        btnCheckIn.disabled = true;
-        const origText = btnCheckIn.textContent;
-        btnCheckIn.textContent = 'Menyimpan...';
-
-        const payload = {
-            teacher_id: currentTeacherId,
-            attendance_date: today,
-            check_in: new Date().toISOString(),
-            photo_url: currentPhotoUrl
-        };
-
-        try {
-            const { error } = await db
-                .from('teacher_attendance')
-                .insert(payload);
-                
-            if (error) throw error;
-            showToast('Check In berhasil', 'success');
-            loadAttendance();
-        } catch (err) {
-            console.error("Check in error:", err);
-            if (err.code === '23505') {
-                showToast('Anda sudah Check In hari ini', 'warning');
-            } else {
-                showToast('Gagal Check In', 'error');
+    // Initial load when section is shown
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.target.id === 'absensi-guru' && mutation.target.style.display !== 'none') {
+                if (!hasLoaded && currentTeacherId) loadAttendance();
+            } else if (mutation.target.id === 'absensi-guru' && mutation.target.style.display === 'none') {
+                stopCamera();
             }
-            btnCheckIn.disabled = false;
-        } finally {
-            btnCheckIn.textContent = origText;
-        }
+        });
     });
-
-    btnCheckOut.addEventListener('click', async () => {
-        btnCheckOut.disabled = true;
-        const origText = btnCheckOut.textContent;
-        btnCheckOut.textContent = 'Menyimpan...';
-
-        const payload = {
-            teacher_id: currentTeacherId,
-            attendance_date: today,
-            check_out: new Date().toISOString()
-        };
-
-        try {
-            const { error } = await db
-                .from('teacher_attendance')
-                .upsert(payload, { onConflict: 'teacher_id, attendance_date' });
-                
-            if (error) throw error;
-            showToast('Check Out berhasil', 'success');
-            loadAttendance();
-        } catch (err) {
-            console.error("Check out error:", err);
-            showToast('Gagal Check Out', 'error');
-            btnCheckOut.disabled = false;
-        } finally {
-            btnCheckOut.textContent = origText;
-        }
-    });
-
-    function checkHash() {
-        if (window.location.hash === '#absensi-guru') {
-            if (!hasLoaded) loadAttendance();
-        }
+    
+    const absensiSection = document.getElementById('absensi-guru');
+    if (absensiSection) {
+        observer.observe(absensiSection, { attributes: true, attributeFilter: ['style'] });
     }
 
+    // Initialize
+    const formatDate = (dateStr) => {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        const d = new Date(dateStr);
+        return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    };
+
     initAuth().then(() => {
-        window.addEventListener('hashchange', checkHash);
-        checkHash();
+        if (!currentTeacherId) {
+            // Maybe they are a teacher in the database, fetch by email fallback if needed, 
+            // but we removed FK so session.user.id is fine.
+        }
+        if (absensiSection && absensiSection.style.display !== 'none') {
+            loadAttendance();
+        }
     });
 });

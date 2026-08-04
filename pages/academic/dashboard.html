@@ -752,26 +752,36 @@
                             </div>
                         </div>
 
-                        <div id="tg-preview-container" style="background: var(--bg-secondary); border-radius: 8px; min-height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 1px dashed var(--border-color); overflow: hidden; position: relative;">
-                            <div id="tg-preview-placeholder" style="color: var(--text-muted); text-align: center;">
-                                <div style="font-size: 2rem; margin-bottom: 10px;">📸</div>
-                                <div>Preview Foto Kehadiran</div>
+                        <!-- Previews for saved photos -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Foto Check In</div>
+                                <div id="tg-photo-in-container" style="background: var(--bg-secondary); border-radius: 8px; height: 150px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--border-color); overflow: hidden;">
+                                    <span id="tg-photo-in-placeholder" style="color: var(--text-muted);">Belum ada foto</span>
+                                    <img id="tg-photo-in" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                                </div>
                             </div>
-                            <video id="tg-video" style="display: none; width: 100%; max-height: 300px; object-fit: cover;" autoplay playsinline></video>
-                            <canvas id="tg-canvas" style="display: none;"></canvas>
-                            <img id="tg-photo" style="display: none; width: 100%; max-height: 300px; object-fit: cover;" alt="Selfie">
+                            <div style="text-align: center;">
+                                <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Foto Check Out</div>
+                                <div id="tg-photo-out-container" style="background: var(--bg-secondary); border-radius: 8px; height: 150px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--border-color); overflow: hidden;">
+                                    <span id="tg-photo-out-placeholder" style="color: var(--text-muted);">Belum ada foto</span>
+                                    <img id="tg-photo-out" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                            </div>
                         </div>
 
-                        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                            <button id="btn-tg-camera" class="btn btn-outline" style="flex: 1;" disabled>Ambil Foto</button>
-                            <button id="btn-tg-upload" class="btn btn-outline" style="flex: 1;" disabled>Upload Foto</button>
+                        <!-- Camera View (Hidden by default) -->
+                        <div id="tg-camera-container" style="display: none; background: var(--bg-secondary); border-radius: 8px; min-height: 200px; align-items: center; justify-content: center; margin-bottom: 20px; overflow: hidden; position: relative;">
+                            <video id="tg-video" style="width: 100%; max-height: 300px; object-fit: cover;" autoplay playsinline></video>
+                            <canvas id="tg-canvas" style="display: none;"></canvas>
+                        </div>
+
+                        <!-- Actions -->
+                        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                            <button id="btn-tg-camera" class="btn btn-primary" style="flex: 1;" disabled>Nyalakan Kamera</button>
                             <input type="file" id="tg-file-input" accept="image/*" style="display: none;">
                         </div>
-
-                        <div style="display: flex; gap: 10px;">
-                            <button id="btn-tg-checkin" class="btn-primary" style="flex: 1; background-color: var(--success);" disabled>Check In</button>
-                            <button id="btn-tg-checkout" class="btn-primary" style="flex: 1; background-color: var(--danger);" disabled>Check Out</button>
-                        </div>
+                        <div id="tg-status-text" style="text-align: center; color: var(--text-muted); font-size: 0.9rem;">Memuat data absensi...</div>
                     </div>
                 </section>
 
