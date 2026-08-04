@@ -160,7 +160,8 @@ export function parseExcelFile(file) {
             
             let tanggal = row[wTIdx];
             if (typeof tanggal === 'string' && tanggal.includes('-')) {
-              const parts = tanggal.split(' ')[0].split('-');
+              const cleanTanggal = tanggal.split(/[\s\r\n]+/)[0];
+              const parts = cleanTanggal.split('-');
               if (parts.length === 3) tanggal = `${parts[2]}-${parts[1]}-${parts[0]}`;
             } else if (tanggal instanceof Date) {
               tanggal = new Date(tanggal.getTime() - (tanggal.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
