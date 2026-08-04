@@ -37,6 +37,11 @@ export function injectSidebar(containerId, activeMenuId, ignoredBasePath = '') {
         <div class="nav-group-title">Penerimaan (PPDB)</div>
         <a href="${basePath}pages/ppdb/index.html" class="nav-item ${activeMenuId === 'ppdb' ? 'active' : ''}">📝 Pendaftar Baru</a>
       </div>
+
+      <div class="nav-group">
+        <div class="nav-group-title">Sistem</div>
+        <a href="${basePath}pages/finance/settings.html" class="nav-item ${activeMenuId === 'settings' ? 'active' : ''}">⚙️ Pengaturan</a>
+      </div>
     </nav>
 
     <div style="margin-top:auto">

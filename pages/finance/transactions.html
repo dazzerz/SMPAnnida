@@ -228,6 +228,7 @@
                   <th>Tipe</th>
                   <th>Kategori</th>
                   <th style="text-align:right;">Jumlah</th>
+                  <th style="text-align:center;width:60px;">Aksi</th>
                 </tr>
               </thead>
               <tbody id="import-preview-tbody"></tbody>
@@ -596,7 +597,7 @@
 
           // Render preview table
           const tbody = document.getElementById('import-preview-tbody');
-          tbody.innerHTML = parsedRows.map(r => {
+          tbody.innerHTML = parsedRows.map((r, i) => {
             const hasErr = !r.valid && !r.errors.every(e => e.includes('tidak ditemukan'));
             const hasWarn = r.errors.some(e => e.includes('tidak ditemukan'));
             const rowClass = hasErr ? 'has-error' : (hasWarn ? 'has-warning' : '');
@@ -604,13 +605,16 @@
             const statusClass = hasErr ? 'err' : (hasWarn ? 'warn' : 'ok');
             const isIncome = r.type === 'income';
             const tooltip = r.errors.length ? r.errors.join(' | ') : '';
-            return `<tr class="${rowClass}" title="${tooltip}">
+            return `<tr class="${rowClass}" title="${tooltip}" id="import-row-${i}">
               <td><div class="row-status ${statusClass}">${statusIcon}</div></td>
-              <td>${r.date || '—'}</td>
-              <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.description || '—'}</td>
-              <td><span class="badge ${isIncome ? 'badge-income' : 'badge-expense'}" style="font-size:.7rem">${isIncome ? '↑ Masuk' : '↓ Keluar'}</span></td>
-              <td>${r.categoryIcon} ${r.categoryName}</td>
-              <td style="text-align:right;font-weight:600;color:var(--${isIncome?'income':'expense'}-color)">${isIncome?'+':'-'}${formatCurrency(r.amount)}</td>
+              <td id="preview-date-${i}">${r.date || '—'}</td>
+              <td id="preview-desc-${i}" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.description || '—'}</td>
+              <td id="preview-type-${i}"><span class="badge ${isIncome ? 'badge-income' : 'badge-expense'}" style="font-size:.7rem">${isIncome ? '↑ Masuk' : '↓ Keluar'}</span></td>
+              <td id="preview-cat-${i}">${r.categoryIcon} ${r.categoryName}</td>
+              <td id="preview-amount-${i}" style="text-align:right;font-weight:600;color:var(--${isIncome?'income':'expense'}-color)">${isIncome?'+':'-'}${formatCurrency(r.amount)}</td>
+              <td style="text-align:center;" id="preview-action-${i}">
+                <button type="button" class="btn-icon btn-ghost btn-sm" onclick="window.editImportRow(${i})" title="Edit">✏️</button>
+              </td>
             </tr>`;
           }).join('');
 
@@ -622,6 +626,125 @@
           showToast('Gagal baca file: ' + err.message, 'error');
         }
       }
+
+      // -- Fungsi Edit Baris Preview --
+      window.editImportRow = (idx) => {
+        const row = parsedRows[idx];
+        if (!row) return;
+
+        const dateTd = document.getElementById(`preview-date-${idx}`);
+        const descTd = document.getElementById(`preview-desc-${idx}`);
+        const typeTd = document.getElementById(`preview-type-${idx}`);
+        const catTd = document.getElementById(`preview-cat-${idx}`);
+        const amountTd = document.getElementById(`preview-amount-${idx}`);
+        const actionTd = document.getElementById(`preview-action-${idx}`);
+
+        // Buat dropdown kategori dari list yang sudah ada
+        const categories = getAllCategories();
+        const catOptions = categories.map(c => 
+          `<option value="${c.id}" ${row.category_id === c.id ? 'selected' : ''}>${c.icon} ${c.name}</option>`
+        ).join('');
+
+        dateTd.innerHTML = `<input type="date" id="edit-date-${idx}" value="${row.date}" style="width:110px; padding:2px; font-size:0.8rem;"/>`;
+        descTd.innerHTML = `<input type="text" id="edit-desc-${idx}" value="${row.description || ''}" style="width:100%; padding:2px; font-size:0.8rem;"/>`;
+        typeTd.innerHTML = `
+          <select id="edit-type-${idx}" style="width:100px; padding:2px; font-size:0.8rem;" onchange="
+            const isInc = this.value === 'income';
+            const catSel = document.getElementById('edit-cat-${idx}');
+            Array.from(catSel.options).forEach(o => {
+              // Hide options based on type if needed, but for simplicity keep all or refresh
+            });
+          ">
+            <option value="expense" ${row.type === 'expense' ? 'selected' : ''}>Pengeluaran</option>
+            <option value="income" ${row.type === 'income' ? 'selected' : ''}>Pemasukan</option>
+          </select>
+        `;
+        catTd.innerHTML = `<select id="edit-cat-${idx}" style="width:100%; padding:2px; font-size:0.8rem;"><option value="">- Kategori -</option>${catOptions}</select>`;
+        amountTd.innerHTML = `<input type="number" id="edit-amount-${idx}" value="${row.amount || ''}" style="width:80px; padding:2px; font-size:0.8rem; text-align:right;"/>`;
+        
+        actionTd.innerHTML = `<button type="button" class="btn-icon btn-ghost btn-sm" onclick="window.saveImportRow(${idx})" title="Simpan" style="color:var(--income-color);">💾</button>`;
+      };
+
+      window.saveImportRow = async (idx) => {
+        const row = parsedRows[idx];
+        if (!row) return;
+
+        const newDate = document.getElementById(`edit-date-${idx}`).value;
+        const newDesc = document.getElementById(`edit-desc-${idx}`).value;
+        const newType = document.getElementById(`edit-type-${idx}`).value;
+        const newCatId = document.getElementById(`edit-cat-${idx}`).value;
+        const newAmount = parseFloat(document.getElementById(`edit-amount-${idx}`).value);
+
+        // Update parsed row
+        row.date = newDate;
+        row.description = newDesc;
+        row.type = newType;
+        row.amount = newAmount;
+        row.category_id = newCatId;
+
+        const categories = getAllCategories();
+        const cat = categories.find(c => c.id === newCatId);
+        if (cat) {
+          row.categoryName = cat.name;
+          row.categoryIcon = cat.icon;
+        }
+
+        // Re-validate row manual
+        const errors = [];
+        if (!row.date) errors.push('Tanggal kosong');
+        if (!row.amount || row.amount <= 0) errors.push('Jumlah tidak valid');
+        if (!cat) errors.push('Kategori tidak valid');
+
+        row.errors = errors;
+        row.valid = errors.length === 0;
+
+        // Re-render preview tbody fully or refresh summary
+        // For simplicity, we just trigger validation & re-render on the whole table
+        document.getElementById('import-step-loading').style.display = 'block';
+        document.getElementById('import-step-2').style.display = 'none';
+        
+        setTimeout(() => {
+          // Recount & re-render UI
+          document.getElementById('import-step-loading').style.display = 'none';
+          document.getElementById('import-step-2').style.display = 'block';
+
+          const total = parsedRows.length;
+          const valid = parsedRows.filter(r => r.valid).length;
+          const warnings = parsedRows.filter(r => r.errors.some(e => e.includes('tidak ditemukan'))).length;
+          const errs = parsedRows.filter(r => !r.valid).length;
+          const importable = valid;
+
+          document.getElementById('summary-total').textContent = total;
+          document.getElementById('summary-valid').textContent = valid;
+          document.getElementById('summary-warning').textContent = warnings;
+          document.getElementById('summary-error').textContent = errs;
+          document.getElementById('import-count').textContent = importable;
+          document.getElementById('import-confirm-btn').style.display = importable > 0 ? 'flex' : 'none';
+
+          const tbody = document.getElementById('import-preview-tbody');
+          tbody.innerHTML = parsedRows.map((r, i) => {
+            const hasErr = !r.valid && !r.errors.every(e => e.includes('tidak ditemukan'));
+            const hasWarn = r.errors.some(e => e.includes('tidak ditemukan'));
+            const rowClass = hasErr ? 'has-error' : (hasWarn ? 'has-warning' : '');
+            const statusIcon = hasErr ? '❌' : (hasWarn ? '⚠️' : '✅');
+            const statusClass = hasErr ? 'err' : (hasWarn ? 'warn' : 'ok');
+            const isIncome = r.type === 'income';
+            const tooltip = r.errors.length ? r.errors.join(' | ') : '';
+            return `<tr class="${rowClass}" title="${tooltip}" id="import-row-${i}">
+              <td><div class="row-status ${statusClass}">${statusIcon}</div></td>
+              <td id="preview-date-${i}">${r.date || '—'}</td>
+              <td id="preview-desc-${i}" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.description || '—'}</td>
+              <td id="preview-type-${i}"><span class="badge ${isIncome ? 'badge-income' : 'badge-expense'}" style="font-size:.7rem">${isIncome ? '↑ Masuk' : '↓ Keluar'}</span></td>
+              <td id="preview-cat-${i}">${r.categoryIcon} ${r.categoryName}</td>
+              <td id="preview-amount-${i}" style="text-align:right;font-weight:600;color:var(--${isIncome?'income':'expense'}-color)">${isIncome?'+':'-'}${formatCurrency(r.amount)}</td>
+              <td style="text-align:center;" id="preview-action-${i}">
+                <button type="button" class="btn-icon btn-ghost btn-sm" onclick="window.editImportRow(${i})" title="Edit">✏️</button>
+              </td>
+            </tr>`;
+          }).join('');
+        }, 300);
+      };
+
 
       // Drag & drop
       const dropZone = document.getElementById('drop-zone');
