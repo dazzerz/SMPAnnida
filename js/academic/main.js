@@ -43,6 +43,25 @@ async function checkAuth() {
             // Valid session — override any stale isGuest flag
             window.isGuest = false;
             localStorage.removeItem('isGuest');
+
+            const ADMIN_EMAIL = 'daffa.al.akhdaan@gmail.com';
+            window.currentUser = user;
+            window.isAdmin = (user.email === ADMIN_EMAIL);
+
+            if (!window.isAdmin) {
+                const { data: teacherData } = await db
+                    .from('teachers')
+                    .select('id, nama, auth_email')
+                    .eq('auth_email', user.email)
+                    .maybeSingle();
+                
+                window.currentTeacher = teacherData || null;
+                if (!teacherData) {
+                    console.warn('Email ini tidak terdaftar sebagai guru:', user.email);
+                }
+            } else {
+                window.currentTeacher = null;
+            }
         } else {
             // No valid session — check if user intentionally chose guest mode
             window.isGuest = localStorage.getItem('isGuest') === 'true';

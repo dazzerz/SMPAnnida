@@ -208,100 +208,160 @@
 
                 <!-- Absensi Section -->
                 <section id="absensi" class="page-section" style="display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h1>Absensi Siswa</h1>
-                        <div style="display: flex; gap: 10px;">
-                            <button id="btn-attend-refresh" class="btn btn-outline">Refresh</button>
-                            <button id="btn-attend-save" class="btn-primary" disabled>Simpan</button>
-                        </div>
-                    </div>
                     
-                    <!-- Export Rekap Bulanan -->
-                    <div class="card glass" style="margin-bottom: 20px;">
-                        <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Export Rekap Absensi Bulanan</h2>
-                        <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end;">
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
-                                <label>Tahun Ajaran</label>
-                                <select id="export-tahun" class="input-control">
-                                    <option value="">-- Pilih Tahun --</option>
-                                </select>
+                    <!-- Header -->
+                    <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+                        <div>
+                            <h2 style="margin:0">📋 Absensi Siswa</h2>
+                            <p style="margin:0;color:var(--text-muted);font-size:0.9rem">Input absensi per jam pelajaran</p>
+                        </div>
+                        <input type="date" id="attend-date" class="input-control" style="width:auto">
+                    </div>
+
+                    <!-- Tab Navigation -->
+                    <div class="tab-nav" style="display:flex;gap:0.5rem;margin-bottom:1.5rem;border-bottom:2px solid var(--border-color)">
+                        <button class="tab-btn active" data-tab="input-absensi">📝 Input Absensi</button>
+                        <button class="tab-btn" data-tab="rekap-siswa">📊 Rekap Per Siswa</button>
+                        <button class="tab-btn" data-tab="pivot-absensi">📆 Rekap Harian</button>
+                        <button class="tab-btn" data-tab="export-absensi">📤 Export Excel</button>
+                    </div>
+
+                    <!-- TAB 1: Input Absensi -->
+                    <div id="tab-input-absensi" class="tab-content">
+                        <!-- Daftar Jadwal Hari Ini -->
+                        <div id="schedule-list"></div>
+
+                        <!-- Form Input Absensi (tersembunyi sampai jadwal dipilih) -->
+                        <div id="attend-form-panel" style="display:none">
+                            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+                                <button id="btn-attend-back" class="btn btn-outline btn-sm">← Kembali</button>
+                                <h3 id="attend-panel-title" style="margin:0;flex:1"></h3>
+                                <button id="btn-hadir-semua" class="btn btn-outline btn-sm">🟢 Hadir Semua</button>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
-                                <label>Semester</label>
-                                <select id="export-semester" class="input-control">
-                                    <option value="">-- Pilih Semester --</option>
-                                </select>
+                            <div class="card glass">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:40px">No</th>
+                                            <th>Nama Siswa</th>
+                                            <th style="width:140px">Status</th>
+                                            <th>Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="attend-tbody"></tbody>
+                                </table>
+                                <div style="padding:1rem;border-top:1px solid var(--border-color);margin-top:10px;">
+                                    <button id="btn-attend-save" class="btn btn-primary" disabled>💾 Simpan Absensi</button>
+                                </div>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
-                                <label>Bulan</label>
-                                <select id="export-bulan" class="input-control">
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <option value="4">April</option>
-                                    <option value="5">Mei</option>
-                                    <option value="6">Juni</option>
-                                    <option value="7">Juli</option>
-                                    <option value="8" selected>Agustus</option>
-                                    <option value="9">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
-                            </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
-                                <label>Kelas</label>
-                                <select id="export-kelas" class="input-control">
-                                    <option value="">-- Pilih Kelas --</option>
-                                </select>
-                            </div>
-                            <button id="btn-export-excel" class="btn btn-outline" style="color: var(--success); border-color: var(--success); height: 41px;">
-                                📥 Export Excel
-                            </button>
                         </div>
                     </div>
 
-                    <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Input Absensi Harian</h2>
-                    <div class="card glass">
-                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: flex-end;">
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
-                                <label>Tanggal</label>
-                                <input type="date" id="attend-date" class="input-control">
-                            </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
-                                <label>Kelas</label>
-                                <select id="attend-class" class="input-control">
-                                    <option value="">-- Pilih Kelas --</option>
-                                </select>
-                            </div>
-                            <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 200px;">
-                                <label>Cari Nama</label>
-                                <input type="text" id="attend-search" class="input-control" placeholder="Masukkan nama siswa...">
-                            </div>
+                    <!-- TAB 2: Rekap Per Siswa -->
+                    <div id="tab-rekap-siswa" class="tab-content" style="display:none">
+                        <!-- Filter + Tabel Rekap -->
+                        <div class="filter-bar" style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                            <select id="rekap-kelas" class="input-control">
+                                <option value="">-- Pilih Kelas --</option>
+                            </select>
+                            <select id="rekap-bulan" class="input-control">
+                                <option value="1">Januari</option>
+                                <option value="2">Februari</option>
+                                <option value="3">Maret</option>
+                                <option value="4">April</option>
+                                <option value="5">Mei</option>
+                                <option value="6">Juni</option>
+                                <option value="7">Juli</option>
+                                <option value="8" selected>Agustus</option>
+                                <option value="9">September</option>
+                                <option value="10">Oktober</option>
+                                <option value="11">November</option>
+                                <option value="12">Desember</option>
+                            </select>
+                            <select id="rekap-mapel-filter" class="input-control">
+                                <option value="">Semua Mapel</option>
+                            </select>
+                            <button id="btn-lihat-rekap-absensi-siswa" class="btn-primary">Lihat Rekap</button>
                         </div>
-
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50px;">No</th>
-                                        <th>Nama Siswa</th>
-                                        <th>NIS</th>
-                                        <th>Status</th>
-                                        <th>Keterangan</th>
-                                    </tr>
+                        <div class="card glass" style="overflow-x:auto">
+                            <table class="data-table" id="table-rekap-siswa">
+                                <thead id="thead-rekap-siswa">
+                                    <tr><th>Memuat...</th></tr>
                                 </thead>
-                                <tbody id="attend-tbody">
-                                    <tr>
-                                        <td colspan="5" style="text-align: center; padding: 30px;">
-                                            <div style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 10px;">Belum ada data.</div>
-                                            <div style="color: var(--text-muted); font-size: 0.9rem;">Silakan pilih tanggal dan kelas.</div>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                <tbody id="tbody-rekap-siswa"></tbody>
                             </table>
                         </div>
                     </div>
+
+                    <!-- TAB 3: Pivot Harian -->
+                    <div id="tab-pivot-absensi" class="tab-content" style="display:none">
+                        <!-- Filter + Grid Pivot -->
+                        <div class="filter-bar" style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                            <select id="filter-kelas-rekap-absensi" class="input-control"><option value="">-- Pilih Kelas --</option></select>
+                            <input type="date" id="filter-dari-absensi" class="input-control">
+                            <input type="date" id="filter-sampai-absensi" class="input-control">
+                            <select id="filter-mapel-pivot" class="input-control">
+                                <option value="">Semua Mapel</option>
+                            </select>
+                            <button id="btn-lihat-rekap-absensi-harian" class="btn-primary">Tampilkan</button>
+                        </div>
+                        <div class="card glass" style="overflow-x:auto">
+                            <table class="data-table">
+                                <thead id="thead-pivot-absensi">
+                                    <tr><th>Memuat...</th></tr>
+                                </thead>
+                                <tbody id="tbody-rekap-absensi"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: Export Excel (kode lama dipertahankan) -->
+                    <div id="tab-export-absensi" class="tab-content" style="display:none">
+                        <div class="card glass" style="margin-bottom: 20px;">
+                            <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Export Rekap Absensi Bulanan</h2>
+                            <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end;">
+                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                    <label>Tahun Ajaran</label>
+                                    <select id="export-tahun" class="input-control">
+                                        <option value="">-- Pilih Tahun --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                    <label>Semester</label>
+                                    <select id="export-semester" class="input-control">
+                                        <option value="">-- Pilih Semester --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                    <label>Bulan</label>
+                                    <select id="export-bulan" class="input-control">
+                                        <option value="1">Januari</option>
+                                        <option value="2">Februari</option>
+                                        <option value="3">Maret</option>
+                                        <option value="4">April</option>
+                                        <option value="5">Mei</option>
+                                        <option value="6">Juni</option>
+                                        <option value="7">Juli</option>
+                                        <option value="8" selected>Agustus</option>
+                                        <option value="9">September</option>
+                                        <option value="10">Oktober</option>
+                                        <option value="11">November</option>
+                                        <option value="12">Desember</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                    <label>Kelas</label>
+                                    <select id="export-kelas" class="input-control">
+                                        <option value="">-- Pilih Kelas --</option>
+                                    </select>
+                                </div>
+                                <button id="btn-export-excel" class="btn btn-outline" style="color: var(--success); border-color: var(--success); height: 41px;">
+                                    📥 Export Excel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                 </section>
 
                 <!-- Nilai Section -->
@@ -1472,7 +1532,6 @@
 
     <!-- Modular JS Logic -->
     <script type="module" src="../../js/academic/dashboard.js" defer></script>
-    <script type="module" src="../../js/academic/absensi.js" defer></script>
     <script type="module" src="../../js/academic/attendance.js" defer></script>
     <script type="module" src="../../js/academic/teacher-journal.js" defer></script>
     <script type="module" src="../../js/academic/teacher-attendance.js" defer></script>

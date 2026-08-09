@@ -1,363 +1,340 @@
 import supabaseClient from '../core/supabase.js';
+import { showToast, escapeHTML } from '../core/utils.js';
 const db = supabaseClient;
 
+const ADMIN_EMAIL = 'daffa.al.akhdaan@gmail.com';
+
+function getDateStr(date = new Date()) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+}
+
+async function loadSchedulesToday(date) {
+    const dayName = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][new Date(date + 'T00:00:00').getDay()];
+    
+    let query = db
+        .from('class_schedules')
+        .select(`
+            id, day_of_week, start_time, end_time, room, active,
+            classes(nama_kelas),
+            subjects(id, nama_mapel),
+            teachers(id, nama),
+            academic_years(tahun_ajaran, semester)
+        `)
+        .eq('day_of_week', dayName)
+        .eq('active', 'Aktif')
+        .order('start_time', { ascending: true });
+
+    if (!window.isAdmin && window.currentTeacher) {
+        query = query.eq('teacher_id', window.currentTeacher.id);
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+    return data || [];
+}
+
+async function getScheduleFillStatus(scheduleIds, date) {
+    if (!scheduleIds.length) return {};
+    const { data, error } = await db
+        .from('attendance_students')
+        .select('schedule_id')
+        .eq('attendance_date', date)
+        .in('schedule_id', scheduleIds);
+    
+    if (error) return {};
+    
+    const filled = new Set((data || []).map(r => r.schedule_id));
+    return scheduleIds.reduce((acc, id) => {
+        acc[id] = filled.has(id);
+        return acc;
+    }, {});
+}
+
+async function loadStudentsForSchedule(scheduleId, kelas, date) {
+    const [{ data: students, error: stuErr }, { data: attData, error: attErr }] = await Promise.all([
+        db.from('students')
+            .select('id, nama_lengkap, nisn, nis')
+            .eq('kelas', kelas)
+            .eq('aktif', true)
+            .order('nama_lengkap', { ascending: true }),
+        db.from('attendance_students')
+            .select('student_id, status, notes')
+            .eq('schedule_id', scheduleId)
+            .eq('attendance_date', date)
+    ]);
+
+    if (stuErr) throw stuErr;
+
+    const attMap = {};
+    (attData || []).forEach(a => { attMap[a.student_id] = a; });
+
+    return (students || []).map(s => ({
+        ...s,
+        status: attMap[s.id]?.status || 'Hadir',
+        notes: attMap[s.id]?.notes || '',
+        alreadyFilled: !!attMap[s.id]
+    }));
+}
+
+async function saveAttendance(schedule, date, studentsPayload) {
+    const teacherId = window.isAdmin
+        ? schedule.teachers?.id || null
+        : window.currentTeacher?.id || null;
+
+    const records = studentsPayload.map(s => ({
+        student_id:      s.id,
+        class_id:        schedule.classes?.nama_kelas,
+        attendance_date: date,
+        schedule_id:     schedule.id,
+        subject_id:      schedule.subjects?.id || null,
+        teacher_id:      teacherId,
+        jam_ke:          null,
+        start_time:      schedule.start_time,
+        end_time:        schedule.end_time,
+        status:          s.status,
+        notes:           s.notes || null
+    }));
+
+    const { error } = await db
+        .from('attendance_students')
+        .upsert(records, { onConflict: 'student_id,attendance_date,schedule_id' });
+
+    if (error) throw error;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    const attendDate = document.getElementById('attend-date');
-    const attendClass = document.getElementById('attend-class');
-    const attendSearch = document.getElementById('attend-search');
-    const attendTbody = document.getElementById('attend-tbody');
-    const btnRefresh = document.getElementById('btn-attend-refresh');
-    const btnSave = document.getElementById('btn-attend-save');
-
-    if (!attendDate || !attendClass || !attendTbody) return;
-
-    // Default state
-    attendDate.value = new Date().toISOString().split('T')[0];
+    const dateInput     = document.getElementById('attend-date');
+    const scheduleList  = document.getElementById('schedule-list');
+    const formPanel     = document.getElementById('attend-form-panel');
+    const attendTbody   = document.getElementById('attend-tbody');
+    const btnBack       = document.getElementById('btn-attend-back');
+    const btnSave       = document.getElementById('btn-attend-save');
+    const btnHadirSemua = document.getElementById('btn-hadir-semua');
+    const panelTitle    = document.getElementById('attend-panel-title');
+    
+    if (!dateInput || !scheduleList) return;
+    
+    dateInput.value = getDateStr();
+    
+    let activeSchedule = null;
     let currentStudents = [];
 
-    async function loadData() {
-        const date = attendDate.value;
-        const kelas = attendClass.value;
-
-        if (!kelas) {
-            attendTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 30px;">
-                <div style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 10px;">Belum ada data.</div>
-                <div style="color: var(--text-muted); font-size: 0.9rem;">Silakan pilih kelas terlebih dahulu.</div>
-            </td></tr>`;
-            btnSave.disabled = true;
-            currentStudents = [];
-            return;
-        }
-
-        attendTbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Memuat data...</td></tr>';
-        btnSave.disabled = true;
-
+    async function renderScheduleList() {
+        const date = dateInput.value;
+        scheduleList.innerHTML = '<div style="padding:20px;text-align:center;">Memuat jadwal...</div>';
+        formPanel.style.display = 'none';
+        
         try {
-            // Load students for the class
-            const { data: students, error: stuErr } = await db
-                .from('students')
-                .select('*')
-                .eq('kelas', kelas)
-                .order('nama_lengkap', { ascending: true });
+            const schedules = await loadSchedulesToday(date);
             
-            if (stuErr) throw stuErr;
-
-            if (!students || students.length === 0) {
-                attendTbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 30px;">
-                    <div style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 10px;">Kelas kosong.</div>
-                    <div style="color: var(--text-muted); font-size: 0.9rem;">Belum ada siswa yang terdaftar di kelas ini.</div>
-                </td></tr>`;
-                currentStudents = [];
+            if (!schedules.length) {
+                scheduleList.innerHTML = `
+                    <div style="text-align:center;padding:40px;">
+                        <div style="font-size:3rem;margin-bottom:10px;">📅</div>
+                        <h4 style="margin:0;">Tidak ada jadwal hari ini</h4>
+                        <div style="color:var(--text-muted);font-size:0.9rem;margin-top:5px;">
+                            ${window.isAdmin 
+                                ? 'Belum ada jadwal aktif untuk hari ini.'
+                                : 'Anda tidak memiliki jadwal mengajar hari ini.'}
+                        </div>
+                    </div>`;
                 return;
             }
 
-            // Load existing attendance
-            const { data: attData, error: attErr } = await db
-                .from('attendance_students')
-                .select('*')
-                .in('student_id', students.map(s => s.id))
-                .eq('attendance_date', date);
+            const scheduleIds = schedules.map(s => s.id);
+            const fillStatus = await getScheduleFillStatus(scheduleIds, date);
 
-            if (attErr) throw attErr;
+            scheduleList.innerHTML = schedules.map(s => {
+                const filled = fillStatus[s.id];
+                const jamMulai = s.start_time ? s.start_time.substring(0, 5) : '-';
+                const jamSelesai = s.end_time ? s.end_time.substring(0, 5) : '-';
+                const kelas = s.classes?.nama_kelas || '-';
+                const mapel = s.subjects?.nama_mapel || '-';
+                const guru  = s.teachers?.nama || '-';
 
-            // Map existing attendance
-            const attMap = {};
-            if (attData) {
-                attData.forEach(a => {
-                    attMap[a.student_id] = a;
+                return `
+                    <div class="schedule-card ${filled ? 'filled' : 'unfilled'}" 
+                         data-id="${s.id}">
+                        <div class="schedule-card-time">
+                            <span class="time-badge">${jamMulai} - ${jamSelesai}</span>
+                            <span class="fill-badge ${filled ? 'badge-filled' : 'badge-empty'}">
+                                ${filled ? '✅ Sudah diisi' : '⏳ Belum diisi'}
+                            </span>
+                        </div>
+                        <div class="schedule-card-info">
+                            <div class="schedule-mapel">${escapeHTML(mapel)}</div>
+                            <div class="schedule-meta">
+                                🏫 ${escapeHTML(kelas)} 
+                                ${window.isAdmin ? `• 👨‍🏫 ${escapeHTML(guru)}` : ''}
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-sm btn-input-absensi" data-schedule-id="${s.id}">
+                            ${filled ? '✏️ Edit' : '📝 Input'}
+                        </button>
+                    </div>`;
+            }).join('');
+
+            document.querySelectorAll('.btn-input-absensi').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const scheduleId = e.currentTarget.getAttribute('data-schedule-id');
+                    const schedule = schedules.find(s => s.id === scheduleId);
+                    if (schedule) await openAttendanceForm(schedule, date);
                 });
-            }
-
-            currentStudents = students.map(s => {
-                const exist = attMap[s.id] || {};
-                return {
-                    ...s,
-                    status_kehadiran: exist.status || 'Hadir',
-                    notes: exist.notes || ''
-                };
             });
 
-            renderTable();
-            if (!window.isGuest) btnSave.disabled = false;
         } catch (err) {
-            console.error("Error loading attendance:", err);
-            attendTbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--danger);">Gagal memuat data.</td></tr>';
+            console.error(err);
+            scheduleList.innerHTML = '<div style="color:red;text-align:center;">Gagal memuat jadwal.</div>';
         }
     }
 
-    function renderTable() {
-        if (currentStudents.length === 0) return;
-        
-        const filter = (attendSearch.value || '').toLowerCase();
-        const filtered = currentStudents.filter(s => s.nama_lengkap.toLowerCase().includes(filter));
+    async function openAttendanceForm(schedule, date) {
+        activeSchedule = schedule;
+        const kelas = schedule.classes?.nama_kelas || '-';
+        const mapel = schedule.subjects?.nama_mapel || '-';
+        const jamMulai = schedule.start_time?.substring(0, 5) || '-';
+        const jamSelesai = schedule.end_time?.substring(0, 5) || '-';
 
-        if (filtered.length === 0) {
-            attendTbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Tidak ada siswa yang cocok dengan pencarian.</td></tr>';
+        panelTitle.textContent = `${mapel} — ${kelas} (${jamMulai}–${jamSelesai})`;
+        formPanel.style.display = 'block';
+        scheduleList.style.display = 'none';
+        attendTbody.innerHTML = '<tr><td colspan="4" style="text-align:center">Memuat siswa...</td></tr>';
+
+        try {
+            currentStudents = await loadStudentsForSchedule(schedule.id, kelas, date);
+            renderAttendanceTable();
+            btnSave.disabled = false;
+        } catch (err) {
+            console.error(err);
+            attendTbody.innerHTML = '<tr><td colspan="4" style="color:var(--danger);text-align:center">Gagal memuat siswa.</td></tr>';
+        }
+    }
+
+    function renderAttendanceTable() {
+        if (!currentStudents.length) {
+            attendTbody.innerHTML = '<tr><td colspan="4" style="text-align:center">Tidak ada siswa di kelas ini.</td></tr>';
             return;
         }
 
         attendTbody.innerHTML = '';
-        filtered.forEach((student, index) => {
+        currentStudents.forEach((s, i) => {
+            const opts = ['Hadir', 'Sakit', 'Izin', 'Alpha'];
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${index + 1}</td>
-                <td><strong>${window.escapeHTML(student.nama_lengkap)}</strong></td>
-                <td>${window.escapeHTML(student.nisn) || '-'}</td>
+                <td style="text-align:center">${i + 1}</td>
                 <td>
-                    <select class="input-control status-select" data-id="${student.id}" style="min-width: 120px; padding: 4px; font-size: 14px;">
-                        <option value="Hadir" ${student.status_kehadiran === 'Hadir' ? 'selected' : ''}>Hadir</option>
-                        <option value="Izin" ${student.status_kehadiran === 'Izin' ? 'selected' : ''}>Izin</option>
-                        <option value="Sakit" ${student.status_kehadiran === 'Sakit' ? 'selected' : ''}>Sakit</option>
-                        <option value="Alpha" ${student.status_kehadiran === 'Alpha' ? 'selected' : ''}>Alpha</option>
+                    <strong>${escapeHTML(s.nama_lengkap)}</strong>
+                    <div style="font-size:0.8rem;color:var(--text-muted)">${escapeHTML(s.nis || s.nisn || '-')}</div>
+                </td>
+                <td>
+                    <select class="input-control status-select" data-id="${s.id}" style="min-width:110px">
+                        ${opts.map(o => `<option value="${o}" ${s.status === o ? 'selected' : ''}>${o}</option>`).join('')}
                     </select>
                 </td>
                 <td>
-                    <input type="text" class="input-control notes-input" data-id="${student.id}" value="${window.escapeHTML(student.notes || '')}" placeholder="Opsional" style="padding: 4px; font-size: 14px;">
-                </td>
-            `;
+                    <input type="text" class="input-control notes-input" data-id="${s.id}" 
+                        value="${escapeHTML(s.notes || '')}" 
+                        placeholder="Keterangan..." 
+                        style="width:100%;min-width:120px">
+                </td>`;
             attendTbody.appendChild(tr);
         });
 
-        // Add event listeners to update currentStudents on change
         document.querySelectorAll('.status-select').forEach(sel => {
-            sel.addEventListener('change', (e) => {
-                const id = e.target.getAttribute('data-id');
-                const st = currentStudents.find(s => s.id === id);
-                if (st) st.status_kehadiran = e.target.value;
+            sel.addEventListener('change', e => {
+                const st = currentStudents.find(s => s.id === e.target.getAttribute('data-id'));
+                if (st) st.status = e.target.value;
             });
         });
-
         document.querySelectorAll('.notes-input').forEach(inp => {
-            inp.addEventListener('input', (e) => {
-                const id = e.target.getAttribute('data-id');
-                const st = currentStudents.find(s => s.id === id);
+            inp.addEventListener('input', e => {
+                const st = currentStudents.find(s => s.id === e.target.getAttribute('data-id'));
                 if (st) st.notes = e.target.value;
             });
         });
     }
 
-    if (attendDate) attendDate.addEventListener('change', loadData);
-    if (attendClass) attendClass.addEventListener('change', loadData);
-    if (attendSearch) attendSearch.addEventListener('input', renderTable);
-    if (btnRefresh) btnRefresh.addEventListener('click', loadData);
+    if (btnHadirSemua) {
+        btnHadirSemua.addEventListener('click', () => {
+            currentStudents.forEach(s => s.status = 'Hadir');
+            document.querySelectorAll('.status-select').forEach(sel => sel.value = 'Hadir');
+            if (window.showToast) window.showToast('Semua siswa ditandai Hadir', 'success');
+        });
+    }
+
+    if (btnBack) {
+        btnBack.addEventListener('click', () => {
+            formPanel.style.display = 'none';
+            scheduleList.style.display = 'block';
+            activeSchedule = null;
+            currentStudents = [];
+            renderScheduleList();
+        });
+    }
 
     if (btnSave) {
         btnSave.addEventListener('click', async () => {
-            if (currentStudents.length === 0) return;
-            const date = attendDate.value;
-            const kelas = attendClass.value;
+            if (!activeSchedule || !currentStudents.length) return;
             
+            const date = dateInput.value;
+            const origText = btnSave.textContent;
             btnSave.disabled = true;
-            const originalText = btnSave.textContent;
             btnSave.textContent = 'Menyimpan...';
 
-            const payload = currentStudents.map(s => ({
-                student_id: s.id,
-                class_id: kelas,
-                attendance_date: date,
-                status: s.status_kehadiran,
-                notes: s.notes
-            }));
-
             try {
-                const { error } = await db
-                    .from('attendance_students')
-                    .upsert(payload, { onConflict: 'student_id, attendance_date' });
-                
-                if (error) throw error;
-                alert('Berhasil menyimpan data absensi!');
+                await saveAttendance(activeSchedule, date, currentStudents);
+                if (window.showToast) window.showToast(`Absensi berhasil disimpan! (${currentStudents.length} siswa)`, 'success');
+                setTimeout(() => {
+                    btnBack.click();
+                }, 1200);
             } catch (err) {
-                console.error("Error saving attendance:", err);
-                alert('Gagal menyimpan data absensi.');
+                console.error(err);
+                if (window.showToast) window.showToast('Gagal menyimpan: ' + err.message, 'error');
             } finally {
                 btnSave.disabled = false;
-                btnSave.textContent = originalText;
+                btnSave.textContent = origText;
             }
         });
     }
 
-    // ==========================================
-    // EXPORT EXCEL LOGIC
-    // ==========================================
-    const btnExport = document.getElementById('btn-export-excel');
-    const exportTahun = document.getElementById('export-tahun');
-    const exportSemester = document.getElementById('export-semester');
-    const exportBulan = document.getElementById('export-bulan');
-    const exportKelas = document.getElementById('export-kelas');
+    if (dateInput) {
+        dateInput.addEventListener('change', renderScheduleList);
+    }
 
-    if (btnExport) {
-        btnExport.addEventListener('click', async () => {
-            if (!exportKelas.value) {
-                if (window.showToast) window.showToast('Silakan pilih kelas terlebih dahulu.', 'warning');
-                else alert('Silakan pilih kelas terlebih dahulu.');
-                return;
-            }
+    // ── Tab Management ────────────────────────────────────────────
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.style.display = 'none');
+            btn.classList.add('active');
+            const target = document.getElementById('tab-' + btn.getAttribute('data-tab'));
+            if (target) target.style.display = 'block';
+        });
+    });
 
-            const origText = btnExport.textContent;
-            btnExport.disabled = true;
-            btnExport.textContent = 'Memproses...';
+    const initWhenReady = () => {
+        if (window.currentUser !== undefined) {
+            renderScheduleList();
+        } else {
+            setTimeout(initWhenReady, 100);
+        }
+    };
 
-            try {
-                const tahunStr = exportTahun.value; // e.g. "2026/2027"
-                const parts = tahunStr.split('/');
-                const bulanInt = parseInt(exportBulan.value, 10);
-                
-                // Determine actual year based on month (July-Dec = first year, Jan-June = second year)
-                let actualYear = parseInt(parts[0], 10);
-                if (bulanInt >= 1 && bulanInt <= 6) {
-                    actualYear = parseInt(parts[1], 10);
-                }
-
-                const daysInMonth = new Date(actualYear, bulanInt, 0).getDate();
-                const startDate = `${actualYear}-${String(bulanInt).padStart(2, '0')}-01`;
-                const endDate = `${actualYear}-${String(bulanInt).padStart(2, '0')}-${String(daysInMonth).padStart(2, '0')}`;
-
-                // Fetch Students
-                const { data: students, error: stuErr } = await db
-                    .from('students')
-                    .select('id, nama_lengkap, nisn')
-                    .eq('kelas', exportKelas.value)
-                    .order('nama_lengkap', { ascending: true });
-                
-                if (stuErr) throw stuErr;
-
-                if (!students || students.length === 0) {
-                    if (window.showToast) window.showToast('Tidak ada siswa di kelas ini.', 'warning');
-                    return;
-                }
-
-                // Fetch Attendance
-                const { data: attData, error: attErr } = await db
-                    .from('attendance_students')
-                    .select('student_id, attendance_date, status')
-                    .in('student_id', students.map(s => s.id))
-                    .gte('attendance_date', startDate)
-                    .lte('attendance_date', endDate);
-
-                if (attErr) throw attErr;
-
-                // Memory Mapping
-                const attMap = {}; // attMap[student_id][day] = status
-                if (attData) {
-                    attData.forEach(a => {
-                        if (!attMap[a.student_id]) attMap[a.student_id] = {};
-                        const day = parseInt(a.attendance_date.split('-')[2], 10);
-                        attMap[a.student_id][day] = a.status;
-                    });
-                }
-
-                // Building Matrix
-                const matrix = [];
-                const monthName = exportBulan.options[exportBulan.selectedIndex].text;
-                
-                const titleStyle = { font: { bold: true, sz: 14 }, alignment: { horizontal: 'center' } };
-                const headerStyle = { font: { bold: true }, alignment: { horizontal: 'center', vertical: 'center' }, border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } } };
-                const cellStyleCenter = { alignment: { horizontal: 'center' }, border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } } };
-                const cellStyleLeft = { border: { top: { style: 'thin' }, bottom: { style: 'thin' }, left: { style: 'thin' }, right: { style: 'thin' } } };
-
-                // Row 1 & 2
-                matrix.push([{ v: 'SMP ANNIDA', s: titleStyle }]);
-                matrix.push([{ v: 'REKAP ABSENSI SISWA', s: titleStyle }]);
-                matrix.push([]);
-                matrix.push([{ v: 'Tahun Ajaran', s: { font: { bold: true } } }, { v: `: ${tahunStr}` }, null, { v: 'Semester', s: { font: { bold: true } } }, { v: `: ${exportSemester.value}` }]);
-                matrix.push([{ v: 'Kelas', s: { font: { bold: true } } }, { v: `: ${exportKelas.value}` }, null, { v: 'Bulan', s: { font: { bold: true } } }, { v: `: ${monthName}` }]);
-                matrix.push([]);
-
-                // Headers (Row 7)
-                const headers = [
-                    { v: 'No', s: headerStyle },
-                    { v: 'Nama Siswa', s: headerStyle },
-                    { v: 'NIS', s: headerStyle }
-                ];
-                for (let d = 1; d <= 31; d++) {
-                    headers.push({ v: d, s: headerStyle });
-                }
-                headers.push(
-                    { v: 'Jumlah Hadir', s: headerStyle },
-                    { v: 'Jumlah Sakit', s: headerStyle },
-                    { v: 'Jumlah Izin', s: headerStyle },
-                    { v: 'Jumlah Alpha', s: headerStyle },
-                    { v: 'Persentase Kehadiran', s: headerStyle }
-                );
-                matrix.push(headers);
-
-                // Data Rows
-                students.forEach((s, idx) => {
-                    const row = [
-                        { v: idx + 1, s: cellStyleCenter },
-                        { v: s.nama_lengkap, s: cellStyleLeft },
-                        { v: s.nisn || '-', s: cellStyleCenter }
-                    ];
-
-                    let h = 0, sakit = 0, i = 0, a = 0;
-                    let totalTerisi = 0;
-
-                    for (let d = 1; d <= 31; d++) {
-                        let code = '';
-                        if (d <= daysInMonth) {
-                            const status = (attMap[s.id] && attMap[s.id][d]) ? attMap[s.id][d] : null;
-                            if (status === 'Hadir') { code = 'H'; h++; totalTerisi++; }
-                            else if (status === 'Sakit') { code = 'S'; sakit++; totalTerisi++; }
-                            else if (status === 'Izin') { code = 'I'; i++; totalTerisi++; }
-                            else if (status === 'Alpha') { code = 'A'; a++; totalTerisi++; }
-                        }
-                        row.push({ v: code, s: cellStyleCenter });
-                    }
-
-                    let pct = 0;
-                    if (totalTerisi > 0) {
-                        pct = Math.round((h / totalTerisi) * 100);
-                    }
-
-                    row.push(
-                        { v: h, s: cellStyleCenter },
-                        { v: sakit, s: cellStyleCenter },
-                        { v: i, s: cellStyleCenter },
-                        { v: a, s: cellStyleCenter },
-                        { v: `${pct}%`, s: cellStyleCenter }
-                    );
-
-                    matrix.push(row);
-                });
-
-                // Convert to Workbook
-                const ws = XLSX.utils.aoa_to_sheet(matrix);
-
-                // Merges for headers
-                const totalCols = 34 + 5; // 3 cols + 31 days + 5 sums
-                if (!ws['!merges']) ws['!merges'] = [];
-                ws['!merges'].push(
-                    { s: { r: 0, c: 0 }, e: { r: 0, c: totalCols - 1 } },
-                    { s: { r: 1, c: 0 }, e: { r: 1, c: totalCols - 1 } }
-                );
-
-                // Column widths
-                const wscols = [
-                    { wch: 5 },  // No
-                    { wch: 30 }, // Nama
-                    { wch: 15 }  // NIS
-                ];
-                for (let d = 1; d <= 31; d++) wscols.push({ wch: 4 });
-                wscols.push({ wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 12 }, { wch: 20 });
-                ws['!cols'] = wscols;
-
-                // Freeze Panes
-                ws['!freeze'] = { xSplit: 3, ySplit: 7, topLeftCell: "D8", activePane: "bottomRight" };
-
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, 'Rekap Absensi');
-
-                const fileName = `Absensi_${exportKelas.value}_${monthName}_${actualYear}.xlsx`;
-                XLSX.writeFile(wb, fileName);
-
-                if (window.showToast) window.showToast('Data absensi berhasil diexport!', 'success');
-            } catch (err) {
-                console.error("Export error:", err);
-                if (window.showToast) window.showToast('Gagal mengeksekusi export.', 'error');
-            } finally {
-                btnExport.disabled = false;
-                btnExport.textContent = origText;
+    const section = document.getElementById('absensi');
+    if (section) {
+        const observer = new MutationObserver(() => {
+            if (section.style.display !== 'none') {
+                initWhenReady();
             }
         });
+        observer.observe(section, { attributes: true, attributeFilter: ['style'] });
+        if (section.style.display !== 'none') initWhenReady();
     }
+
+    window.renderScheduleList = renderScheduleList;
 });

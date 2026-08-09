@@ -30,25 +30,33 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. Fetch Student Attendance (Today)
             const { data: studentAttToday, error: errStudentAtt } = await db
                 .from('attendance_students')
-                .select('student_id, class_id, status')
-                .eq('attendance_date', today);
+                .select('student_id, class_id, status, jam_ke')
+                .eq('attendance_date', today)
+                .order('jam_ke', { ascending: true, nullsFirst: false });
             if (errStudentAtt) throw errStudentAtt;
+
+            const deduped = {};
+            if (studentAttToday) {
+                studentAttToday.forEach(a => {
+                    if (!deduped[a.student_id]) {
+                        deduped[a.student_id] = a;
+                    }
+                });
+            }
 
             let hadir = 0, sakit = 0, izin = 0, alpha = 0;
             const attMap = {}; // for class stats
-            if (studentAttToday) {
-                studentAttToday.forEach(a => {
-                    const st = a.status || 'Hadir';
-                    if (st === 'Hadir') hadir++;
-                    else if (st === 'Sakit') sakit++;
-                    else if (st === 'Izin') izin++;
-                    else if (st === 'Alpha') alpha++;
-                    
-                    const c = a.class_id;
-                    if (!attMap[c]) attMap[c] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 };
-                    if (attMap[c][st] !== undefined) attMap[c][st]++;
-                });
-            }
+            Object.values(deduped).forEach(a => {
+                const st = a.status || 'Hadir';
+                if (st === 'Hadir') hadir++;
+                else if (st === 'Sakit') sakit++;
+                else if (st === 'Izin') izin++;
+                else if (st === 'Alpha') alpha++;
+                
+                const c = a.class_id;
+                if (!attMap[c]) attMap[c] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 };
+                if (attMap[c][st] !== undefined) attMap[c][st]++;
+            });
             
             document.getElementById('stat-siswa-hadir').innerText = hadir;
             document.getElementById('stat-siswa-sakit').innerText = sakit;
