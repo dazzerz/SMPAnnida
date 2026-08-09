@@ -623,34 +623,46 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                // Build Excel Data
-                const excelData = students.map((s, i) => {
-                    const r = rekap[s.id];
-                    return {
-                        "No": i + 1,
-                        "NISN": s.nisn || '-',
-                        "Nama Siswa": s.nama_lengkap,
-                        "Hadir": r.Hadir,
-                        "Sakit": r.Sakit,
-                        "Izin": r.Izin,
-                        "Alpha": r.Alpha,
-                        "Total (Diluar Hadir)": r.Sakit + r.Izin + r.Alpha
-                    };
-                });
-
-                // Gunakan SheetJS (window.XLSX harus tersedia di HTML)
-                if (typeof window.XLSX !== 'undefined') {
-                    const ws = window.XLSX.utils.json_to_sheet(excelData);
-                    const wb = window.XLSX.utils.book_new();
-                    window.XLSX.utils.book_append_sheet(wb, ws, "Rekap");
-                    
-                    const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"][parseInt(bulan)-1];
-                    const filename = `Rekap_Absensi_${kelas}_${namaBulan}_${tahun.replace('/','-')}_SMT${semester}.xlsx`;
-                    window.XLSX.writeFile(wb, filename);
-                    window.showToast?.('Berhasil di-export', 'success');
-                } else {
+                // Gunakan SheetJS
+                if (typeof window.XLSX === 'undefined') {
                     throw new Error("Library SheetJS tidak ditemukan");
                 }
+
+                // Fetch template
+                const response = await fetch('../../docs/Template_Rekap_Siswa.xlsx');
+                if (!response.ok) throw new Error("Gagal mengambil file template Excel dari server");
+                const arrayBuffer = await response.arrayBuffer();
+                
+                // Read template
+                const wb = window.XLSX.read(arrayBuffer, { type: 'array' });
+                const ws = wb.Sheets[wb.SheetNames[0]];
+                
+                const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"][parseInt(bulan)-1];
+
+                // Ganti placeholder di template
+                // [Mapel] di F1
+                window.XLSX.utils.sheet_add_aoa(ws, [[`Kelas ${kelas} - ${namaBulan} ${tahun}`]], { origin: "F1" });
+                // [Guru Mapel] di A2
+                window.XLSX.utils.sheet_add_aoa(ws, [[`Rekapitulasi Absensi (SMT ${semester})`]], { origin: "A2" });
+
+                // Build Excel Data untuk disisipkan mulai dari baris ke-4 (A4)
+                const rows = students.map((s, i) => {
+                    const r = rekap[s.id];
+                    // Array dengan 29 kolom: 0(No), 1(Nama), 2-25(Kosong untuk tanggal), 26(A), 27(I), 28(S)
+                    const rowData = new Array(29).fill('');
+                    rowData[0] = i + 1;
+                    rowData[1] = s.nama_lengkap;
+                    rowData[26] = r.Alpha;
+                    rowData[27] = r.Izin;
+                    rowData[28] = r.Sakit;
+                    return rowData;
+                });
+
+                window.XLSX.utils.sheet_add_aoa(ws, rows, { origin: "A4" });
+
+                const filename = `Rekap_Absensi_${kelas}_${namaBulan}_${tahun.replace('/','-')}_SMT${semester}.xlsx`;
+                window.XLSX.writeFile(wb, filename);
+                window.showToast?.('Berhasil di-export', 'success');
 
             } catch (err) {
                 console.error(err);
