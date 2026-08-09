@@ -207,8 +207,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Upload to Supabase Storage
             let tName = 'Guru';
-            if (window.currentTeacher && window.currentTeacher.nama) {
-                tName = window.currentTeacher.nama.replace(/\s+/g, '_');
+            try {
+                const { data: { session } } = await db.auth.getSession();
+                if (session && session.user && session.user.email) {
+                    const { data: tData } = await db.from('teachers')
+                        .select('nama')
+                        .ilike('email', session.user.email)
+                        .maybeSingle();
+                        
+                    if (tData && tData.nama) {
+                        tName = tData.nama.replace(/\s+/g, '_');
+                    } else if (session.user.email === 'daffa.al.akhdaan@gmail.com') {
+                        tName = 'Admin';
+                    } else if (session.user.user_metadata && session.user.user_metadata.full_name) {
+                        tName = session.user.user_metadata.full_name.replace(/\s+/g, '_');
+                    } else {
+                        tName = session.user.email.split('@')[0];
+                    }
+                }
+            } catch (e) {
+                console.error("Gagal mendapatkan nama guru:", e);
             }
             const fileName = `${tName}_${currentTeacherId}_${Date.now()}.jpg`;
             const { error: uploadError } = await db.storage
