@@ -51,16 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const { data: { session } } = await db.auth.getSession();
         if (session && session.user) {
             currentTeacherId = session.user.id;
+            // Cek admin secara langsung untuk menghindari race condition dengan main.js
+            if (session.user.email === 'daffa.al.akhdaan@gmail.com') {
+                if (btnTabRekap) btnTabRekap.style.display = 'inline-block';
+                if (dateRekap) {
+                    dateRekap.value = today;
+                    dateRekap.addEventListener('change', loadRekap);
+                }
+            }
         } else if (window.isGuest) {
             currentTeacherId = '00000000-0000-0000-0000-000000000000';
-        }
-        
-        if (window.isAdmin) {
-            if (btnTabRekap) btnTabRekap.style.display = 'inline-block';
-            if (dateRekap) {
-                dateRekap.value = today;
-                dateRekap.addEventListener('change', loadRekap);
-            }
         }
     }
 
@@ -284,7 +284,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadRekap() {
-        if (!window.isAdmin) return;
+        const { data: { session } } = await db.auth.getSession();
+        if (!session || session.user.email !== 'daffa.al.akhdaan@gmail.com') return;
+
         const d = dateRekap.value || today;
         if (tbodyRekap) tbodyRekap.innerHTML = '<tr><td colspan="7" style="text-align: center;">Memuat data...</td></tr>';
         
