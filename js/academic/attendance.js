@@ -27,13 +27,18 @@ async function loadSchedulesToday(date) {
         .eq('active', 'Aktif')
         .order('start_time', { ascending: true });
 
-    if (!window.isAdmin && window.currentTeacher) {
-        query = query.eq('teacher_id', window.currentTeacher.id);
-    }
-
     const { data, error } = await query;
     if (error) throw error;
-    return data || [];
+    
+    let result = data || [];
+    if (!window.isAdmin && window.currentTeacher) {
+        result = result.filter(s => {
+            const isMySchedule = s.teachers?.id === window.currentTeacher.id;
+            const isDewanGuru = s.teachers?.nama?.toLowerCase().includes('dewan guru');
+            return isMySchedule || isDewanGuru;
+        });
+    }
+    return result;
 }
 
 async function getScheduleFillStatus(scheduleIds, date) {
@@ -416,12 +421,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 subjectsData = data || [];
             } else if (window.currentTeacher) {
                 const { data } = await db.from('class_schedules')
-                    .select('subjects(id, nama_mapel)')
-                    .eq('teacher_id', window.currentTeacher.id);
+                    .select('teacher_id, subjects(id, nama_mapel), teachers(id, nama)');
                 if (data) {
                     const map = new Map();
                     data.forEach(d => {
-                        if (d.subjects) map.set(d.subjects.id, d.subjects);
+                        const isMySubject = d.teacher_id === window.currentTeacher.id;
+                        const isDewanGuru = d.teachers?.nama?.toLowerCase().includes('dewan guru');
+                        if (d.subjects && (isMySubject || isDewanGuru)) {
+                            map.set(d.subjects.id, d.subjects);
+                        }
                     });
                     subjectsData = Array.from(map.values()).sort((a,b) => a.nama_mapel.localeCompare(b.nama_mapel));
                 }
