@@ -3,6 +3,9 @@
 -- Menambahkan semua guru yang memiliki email ke tabel auth.users
 -- ================================================================
 
+-- 0. Pastikan kolom auth_email sudah ada di tabel teachers
+ALTER TABLE public.teachers ADD COLUMN IF NOT EXISTS auth_email VARCHAR(255);
+
 -- 1. Tambahkan ke auth.users (Pastikan ekstensi pgcrypto aktif, default Supabase sudah aktif)
 INSERT INTO auth.users (
   instance_id, 
