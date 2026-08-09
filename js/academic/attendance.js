@@ -18,7 +18,7 @@ async function loadSchedulesToday(date) {
         .from('class_schedules')
         .select(`
             id, day_of_week, start_time, end_time, room, active,
-            classes(nama_kelas),
+            classes(id, nama_kelas),
             subjects(id, nama_mapel),
             teachers(id, nama),
             academic_years(tahun_ajaran, semester)
@@ -86,7 +86,7 @@ async function saveAttendance(schedule, date, studentsPayload) {
 
     const records = studentsPayload.map(s => ({
         student_id:      s.id,
-        class_id:        schedule.classes?.nama_kelas,
+        class_id:        schedule.classes?.id || null,
         attendance_date: date,
         schedule_id:     schedule.id,
         subject_id:      schedule.subjects?.id || null,
