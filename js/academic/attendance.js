@@ -410,12 +410,37 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Load Subjects
-            const { data: subjects } = await db.from('subjects').select('id, nama_mapel').order('nama_mapel');
-            if (subjects) {
-                const subjectOptions = '<option value="">Semua Mapel</option>' + subjects.map(s => `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`).join('');
+            let subjectsData = [];
+            if (window.isAdmin) {
+                const { data } = await db.from('subjects').select('id, nama_mapel').order('nama_mapel');
+                subjectsData = data || [];
+            } else if (window.currentTeacher) {
+                const { data } = await db.from('class_schedules')
+                    .select('subjects(id, nama_mapel)')
+                    .eq('teacher_id', window.currentTeacher.id);
+                if (data) {
+                    const map = new Map();
+                    data.forEach(d => {
+                        if (d.subjects) map.set(d.subjects.id, d.subjects);
+                    });
+                    subjectsData = Array.from(map.values()).sort((a,b) => a.nama_mapel.localeCompare(b.nama_mapel));
+                }
+            }
+
+            if (subjectsData.length > 0) {
+                const defaultOpt = window.isAdmin ? '<option value="">Semua Mapel</option>' : '';
+                const defaultExportOpt = window.isAdmin ? '<option value="">Semua Mapel (Harian)</option>' : '';
+                const subjectOptions = defaultOpt + subjectsData.map(s => `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`).join('');
+                const exportOptions = defaultExportOpt + subjectsData.map(s => `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`).join('');
+                
                 if (filterMapelRekap) filterMapelRekap.innerHTML = subjectOptions;
                 if (filterMapelPivot) filterMapelPivot.innerHTML = subjectOptions;
-                if (exportMapel) exportMapel.innerHTML = '<option value="">Semua Mapel (Harian)</option>' + subjects.map(s => `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`).join('');
+                if (exportMapel) exportMapel.innerHTML = exportOptions;
+            } else if (!window.isAdmin) {
+                const emptyOpt = '<option value="">-- Tidak Ada Mapel --</option>';
+                if (filterMapelRekap) filterMapelRekap.innerHTML = emptyOpt;
+                if (filterMapelPivot) filterMapelPivot.innerHTML = emptyOpt;
+                if (exportMapel) exportMapel.innerHTML = emptyOpt;
             }
 
             // Load Academic Years for Export
