@@ -243,11 +243,17 @@ document.addEventListener('DOMContentLoaded', () => {
             let nisnVal = document.getElementById('siswa-nisn').value.trim();
             if (nisnVal === '') nisnVal = null; // Important: null for unique constraints
 
+            let nisVal = document.getElementById('siswa-nis').value.trim();
+            if (nisVal === '') nisVal = null; // Mencegah error Unique Constraint jika kosong
+
+            let jkVal = document.getElementById('siswa-jk').value;
+            if (jkVal !== 'L' && jkVal !== 'P') jkVal = null; // Mencegah error Check Constraint
+
             const payload = {
-                nis: document.getElementById('siswa-nis').value.trim(),
+                nis: nisVal,
                 nisn: nisnVal,
                 nama_lengkap: document.getElementById('siswa-nama').value.trim(),
-                jenis_kelamin: document.getElementById('siswa-jk').value,
+                jenis_kelamin: jkVal,
                 kelas: kelasVal || null,
                 kelas_id: cObj ? cObj.id : null,
                 nama_orang_tua: document.getElementById('siswa-ortu').value.trim() || null,
