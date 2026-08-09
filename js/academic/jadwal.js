@@ -389,12 +389,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial Load - Menunggu cache siap
-    setTimeout(() => {
-        if (document.getElementById('jadwal').style.display !== 'none') {
-            loadJadwal();
-        }
-    }, 1000); // delay ensures masters are loaded
+    // Use MutationObserver to load data when section is shown
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.target.id === 'jadwal' && mutation.target.style.display !== 'none') {
+                if (allSchedules.length === 0) loadJadwal();
+            }
+        });
+    });
+    
+    const jadwalSection = document.getElementById('jadwal');
+    if (jadwalSection) {
+        observer.observe(jadwalSection, { attributes: true, attributeFilter: ['style'] });
+        if (jadwalSection.style.display !== 'none') loadJadwal();
+    }
 
     // Attach to global scope for nav links to trigger
     window.loadDataJadwal = loadJadwal;
