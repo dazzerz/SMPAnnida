@@ -51,8 +51,8 @@ async function checkAuth() {
             if (!window.isAdmin) {
                 const { data: teacherData } = await db
                     .from('teachers')
-                    .select('id, nama, auth_email')
-                    .eq('auth_email', user.email)
+                    .select('id, nama, email')
+                    .ilike('email', user.email)
                     .maybeSingle();
                 
                 window.currentTeacher = teacherData || null;
