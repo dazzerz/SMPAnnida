@@ -53,16 +53,17 @@ async function getScheduleFillStatus(scheduleIds, date) {
     }, {});
 }
 
-async function loadStudentsForSchedule(scheduleId, kelas, date) {
-    const [{ data: students, error: stuErr }, { data: attData, error: attErr }] = await Promise.all([
+async function loadStudentsForSchedule(schedule, kelas, date) {
+    const scheduleIds = schedule.grouped_ids || [schedule.id];
+    const [ { data: students, error: stuErr }, { data: attData } ] = await Promise.all([
         db.from('students')
-            .select('id, nama_lengkap, nisn, nis')
+            .select('id, nama_lengkap, nis, nisn, status')
             .eq('kelas', kelas)
             .or('aktif.eq.true,aktif.is.null')
             .order('nama_lengkap', { ascending: true }),
         db.from('attendance_students')
             .select('student_id, status, notes')
-            .eq('schedule_id', scheduleId)
+            .in('schedule_id', scheduleIds)
             .eq('attendance_date', date)
     ]);
 
@@ -84,19 +85,26 @@ async function saveAttendance(schedule, date, studentsPayload) {
         ? schedule.teachers?.id || null
         : window.currentTeacher?.id || null;
 
-    const records = studentsPayload.map(s => ({
-        student_id:      s.id,
-        class_id:        schedule.classes?.id || null,
-        attendance_date: date,
-        schedule_id:     schedule.id,
-        subject_id:      schedule.subjects?.id || null,
-        teacher_id:      teacherId,
-        jam_ke:          null,
-        start_time:      schedule.start_time,
-        end_time:        schedule.end_time,
-        status:          s.status,
-        notes:           s.notes || null
-    }));
+    const records = [];
+    const originalSchedules = schedule.original_schedules || [schedule];
+
+    for (const origSched of originalSchedules) {
+        for (const s of studentsPayload) {
+            records.push({
+                student_id:      s.id,
+                class_id:        origSched.classes?.id || null,
+                attendance_date: date,
+                schedule_id:     origSched.id,
+                subject_id:      origSched.subjects?.id || null,
+                teacher_id:      teacherId,
+                jam_ke:          null,
+                start_time:      origSched.start_time,
+                end_time:        origSched.end_time,
+                status:          s.status,
+                notes:           s.notes || null
+            });
+        }
+    }
 
     const { error } = await db
         .from('attendance_students')
@@ -147,8 +155,35 @@ document.addEventListener('DOMContentLoaded', () => {
             const scheduleIds = schedules.map(s => s.id);
             const fillStatus = await getScheduleFillStatus(scheduleIds, date);
 
-            scheduleList.innerHTML = schedules.map(s => {
-                const filled = fillStatus[s.id];
+            // Group consecutive schedules
+            const groupedSchedules = [];
+            for (const current of schedules) {
+                if (groupedSchedules.length > 0) {
+                    const lastGroup = groupedSchedules[groupedSchedules.length - 1];
+                    const sameClass = current.classes?.id === lastGroup.classes?.id;
+                    const sameSubject = current.subjects?.id === lastGroup.subjects?.id;
+                    const sameTeacher = current.teachers?.id === lastGroup.teachers?.id;
+                    
+                    if (sameClass && sameSubject && sameTeacher) {
+                        lastGroup.grouped_ids.push(current.id);
+                        lastGroup.end_time = current.end_time;
+                        lastGroup.original_schedules.push(current);
+                        // Group is considered filled if ALL of its parts are filled
+                        lastGroup.is_filled = lastGroup.is_filled && fillStatus[current.id];
+                        continue;
+                    }
+                }
+                
+                groupedSchedules.push({
+                    ...current,
+                    grouped_ids: [current.id],
+                    original_schedules: [current],
+                    is_filled: fillStatus[current.id]
+                });
+            }
+
+            scheduleList.innerHTML = groupedSchedules.map(s => {
+                const filled = s.is_filled;
                 const jamMulai = s.start_time ? s.start_time.substring(0, 5) : '-';
                 const jamSelesai = s.end_time ? s.end_time.substring(0, 5) : '-';
                 const kelas = s.classes?.nama_kelas || '-';
@@ -157,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 return `
                     <div class="schedule-card ${filled ? 'filled' : 'unfilled'}" 
-                         data-id="${s.id}">
+                         data-id="${s.grouped_ids.join(',')}">
                         <div class="schedule-card-time">
                             <span class="time-badge">${jamMulai} - ${jamSelesai}</span>
                             <span class="fill-badge ${filled ? 'badge-filled' : 'badge-empty'}">
@@ -165,13 +200,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             </span>
                         </div>
                         <div class="schedule-card-info">
-                            <div class="schedule-mapel">${escapeHTML(mapel)}</div>
+                            <div class="schedule-mapel">${escapeHTML(mapel)}${s.grouped_ids.length > 1 ? ` (${s.grouped_ids.length} Jam)` : ''}</div>
                             <div class="schedule-meta">
                                 🏫 ${escapeHTML(kelas)} 
                                 ${window.isAdmin ? `• 👨‍🏫 ${escapeHTML(guru)}` : ''}
                             </div>
                         </div>
-                        <button class="btn btn-primary btn-sm btn-input-absensi" data-schedule-id="${s.id}">
+                        <button class="btn btn-primary btn-sm btn-input-absensi" data-schedule-id="${s.grouped_ids.join(',')}">
                             ${filled ? '✏️ Edit' : '📝 Input'}
                         </button>
                     </div>`;
@@ -179,8 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.querySelectorAll('.btn-input-absensi').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
-                    const scheduleId = e.currentTarget.getAttribute('data-schedule-id');
-                    const schedule = schedules.find(s => s.id === scheduleId);
+                    const scheduleIdStr = e.currentTarget.getAttribute('data-schedule-id');
+                    const schedule = groupedSchedules.find(s => s.grouped_ids.join(',') === scheduleIdStr);
                     if (schedule) await openAttendanceForm(schedule, date);
                 });
             });
@@ -204,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         attendTbody.innerHTML = '<tr><td colspan="4" style="text-align:center">Memuat siswa...</td></tr>';
 
         try {
-            currentStudents = await loadStudentsForSchedule(schedule.id, kelas, date);
+            currentStudents = await loadStudentsForSchedule(schedule, kelas, date);
             renderAttendanceTable();
             btnSave.disabled = false;
         } catch (err) {
