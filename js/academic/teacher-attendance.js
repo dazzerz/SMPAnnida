@@ -23,6 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCamera = document.getElementById('btn-tg-camera');
     const statusText = document.getElementById('tg-status-text');
 
+    const btnTabPribadi = document.getElementById('btn-tg-tab-pribadi');
+    const btnTabRekap = document.getElementById('btn-tg-tab-rekap');
+    const tabPribadi = document.getElementById('tab-tg-pribadi');
+    const tabRekap = document.getElementById('tab-tg-rekap');
+    const dateRekap = document.getElementById('tg-rekap-date');
+    const tbodyRekap = document.getElementById('tg-rekap-tbody');
+
     if (!elDate || !btnCamera) return;
 
     let currentTeacherId = null;
@@ -46,6 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
             currentTeacherId = session.user.id;
         } else if (window.isGuest) {
             currentTeacherId = '00000000-0000-0000-0000-000000000000';
+        }
+        
+        if (window.isAdmin) {
+            if (btnTabRekap) btnTabRekap.style.display = 'inline-block';
+            if (dateRekap) {
+                dateRekap.value = today;
+                dateRekap.addEventListener('change', loadRekap);
+            }
         }
     }
 
@@ -191,7 +206,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!blob) throw new Error("Gagal mengambil gambar");
 
             // Upload to Supabase Storage
-            const fileName = `teacher_${currentTeacherId}_${Date.now()}.jpg`;
+            let tName = 'Guru';
+            if (window.currentTeacher && window.currentTeacher.nama) {
+                tName = window.currentTeacher.nama.replace(/\s+/g, '_');
+            }
+            const fileName = `${tName}_${currentTeacherId}_${Date.now()}.jpg`;
             const { error: uploadError } = await db.storage
                 .from('teacher-attendance')
                 .upload(fileName, blob, { contentType: 'image/jpeg' });
@@ -243,6 +262,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     btnCamera.addEventListener('click', toggleCamera);
+
+    if (btnTabPribadi && btnTabRekap) {
+        btnTabPribadi.addEventListener('click', () => {
+            btnTabPribadi.classList.add('active');
+            btnTabRekap.classList.remove('active');
+            tabPribadi.style.display = 'block';
+            tabRekap.style.display = 'none';
+            if (dateRekap) dateRekap.style.display = 'none';
+        });
+        btnTabRekap.addEventListener('click', () => {
+            btnTabRekap.classList.add('active');
+            btnTabPribadi.classList.remove('active');
+            tabRekap.style.display = 'block';
+            tabPribadi.style.display = 'none';
+            if (dateRekap) {
+                dateRekap.style.display = 'inline-block';
+                loadRekap();
+            }
+        });
+    }
+
+    async function loadRekap() {
+        if (!window.isAdmin) return;
+        const d = dateRekap.value || today;
+        if (tbodyRekap) tbodyRekap.innerHTML = '<tr><td colspan="7" style="text-align: center;">Memuat data...</td></tr>';
+        
+        try {
+            // 1. Fetch teachers to map user_id to name
+            const { data: tData } = await db.from('teachers').select('user_id, nama');
+            const teacherMap = {};
+            if (tData) tData.forEach(t => { if (t.user_id) teacherMap[t.user_id] = t.nama; });
+
+            // 2. Fetch attendance
+            const { data, error } = await db.from('teacher_attendance')
+                .select('*')
+                .eq('attendance_date', d)
+                .order('check_in', { ascending: true });
+                
+            if (error) throw error;
+            
+            if (!data || data.length === 0) {
+                if (tbodyRekap) tbodyRekap.innerHTML = '<tr><td colspan="7" style="text-align: center;">Belum ada absensi guru pada tanggal ini.</td></tr>';
+                return;
+            }
+            
+            if (tbodyRekap) tbodyRekap.innerHTML = data.map((r, i) => {
+                const nama = teacherMap[r.teacher_id] || 'Admin / Tidak Dikenal';
+                const jamIn = formatTime(r.check_in);
+                const jamOut = formatTime(r.check_out);
+                const imgIn = r.photo_url_in ? `<a href="${r.photo_url_in}" target="_blank"><img src="${r.photo_url_in}" style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover;"></a>` : '-';
+                const imgOut = r.photo_url_out ? `<a href="${r.photo_url_out}" target="_blank"><img src="${r.photo_url_out}" style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover;"></a>` : '-';
+                const st = r.status === 'Hadir' ? `<span style="color: var(--success);">Hadir</span>` : escapeHTML(r.status);
+                
+                return `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td><strong>${escapeHTML(nama)}</strong></td>
+                        <td style="text-align: center;">${jamIn}</td>
+                        <td style="text-align: center;">${imgIn}</td>
+                        <td style="text-align: center;">${jamOut}</td>
+                        <td style="text-align: center;">${imgOut}</td>
+                        <td style="text-align: center;">${st}</td>
+                    </tr>
+                `;
+            }).join('');
+            
+        } catch(err) {
+            console.error(err);
+            if (tbodyRekap) tbodyRekap.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--danger);">Gagal memuat rekap.</td></tr>';
+        }
+    }
 
     // Initial load when section is shown
     const observer = new MutationObserver((mutations) => {
