@@ -359,6 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportSemester = document.getElementById('export-semester');
     const exportBulan = document.getElementById('export-bulan');
     const exportKelas = document.getElementById('export-kelas');
+    const exportMapel = document.getElementById('export-mapel');
     const btnExportExcel = document.getElementById('btn-export-excel');
 
     // Populate Filters
@@ -379,6 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const subjectOptions = '<option value="">Semua Mapel</option>' + subjects.map(s => `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`).join('');
                 if (filterMapelRekap) filterMapelRekap.innerHTML = subjectOptions;
                 if (filterMapelPivot) filterMapelPivot.innerHTML = subjectOptions;
+                if (exportMapel) exportMapel.innerHTML = '<option value="">Semua Mapel (Harian)</option>' + subjects.map(s => `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`).join('');
             }
 
             // Load Academic Years for Export
@@ -586,6 +588,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const semester = exportSemester?.value;
             const bulan = exportBulan?.value;
             const kelas = exportKelas?.value;
+            const mapelId = exportMapel?.value;
 
             if (!tahun || !semester || !bulan || !kelas) {
                 window.showToast?.('Pilih Tahun, Semester, Bulan, dan Kelas', 'error');
@@ -603,23 +606,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!students || students.length === 0) throw new Error("Tidak ada siswa di kelas ini");
 
                 // Get attendance
-                const { data: attData, error: errAtt } = await db.from('attendance_students')
-                    .select('student_id, status, attendance_date')
+                let query = db.from('attendance_students')
+                    .select('student_id, status, attendance_date, subject_id, subjects(nama_mapel), teachers(nama)')
                     .in('student_id', students.map(s => s.id));
+                if (mapelId) query = query.eq('subject_id', mapelId);
+
+                const { data: attDataRaw, error: errAtt } = await query;
                 if (errAtt) throw errAtt;
 
                 // Filter by month
-                const filteredAtt = (attData || []).filter(a => {
+                const attData = (attDataRaw || []).filter(a => {
                     const d = new Date(a.attendance_date);
                     return (d.getMonth() + 1) === parseInt(bulan);
                 });
 
-                // Group
-                const rekap = {};
-                students.forEach(s => rekap[s.id] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 });
-                filteredAtt.forEach(a => {
-                    if (rekap[a.student_id] && rekap[a.student_id][a.status] !== undefined) {
-                        rekap[a.student_id][a.status]++;
+                let mapelName = mapelId ? (attData.length > 0 && attData[0].subjects ? attData[0].subjects.nama_mapel : 'Mapel') : 'Semua Mapel';
+                let teacherName = mapelId ? (attData.length > 0 && attData[0].teachers ? attData[0].teachers.nama : 'Guru') : 'Semua Guru';
+
+                // Extract unique dates that have attendance and sort them
+                let uniqueDates = [...new Set(attData.map(a => a.attendance_date))];
+                uniqueDates.sort();
+
+                // If mapelId is empty (Semua Mapel), group by student_id and date, taking worst status
+                const statusValue = { 'Alpha': 4, 'Izin': 3, 'Sakit': 2, 'Hadir': 1 };
+                
+                const attMap = {}; // { student_id: { date: status } }
+                const rekap = {};  // { student_id: { Hadir, Sakit, Izin, Alpha } }
+                
+                students.forEach(s => {
+                    attMap[s.id] = {};
+                    rekap[s.id] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 };
+                });
+
+                attData.forEach(a => {
+                    if (attMap[a.student_id]) {
+                        const current = attMap[a.student_id][a.attendance_date];
+                        if (!current || statusValue[a.status] > statusValue[current]) {
+                            attMap[a.student_id][a.attendance_date] = a.status;
+                        }
+                    }
+                });
+
+                // Calculate rekap from the daily statuses
+                students.forEach(s => {
+                    for (const d of uniqueDates) {
+                        const st = attMap[s.id][d];
+                        if (st && rekap[s.id][st] !== undefined) {
+                            rekap[s.id][st]++;
+                        }
                     }
                 });
 
@@ -643,7 +677,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 // [Mapel] di F1
                 window.XLSX.utils.sheet_add_aoa(ws, [[`Kelas ${kelas} - ${namaBulan} ${tahun}`]], { origin: "F1" });
                 // [Guru Mapel] di A2
-                window.XLSX.utils.sheet_add_aoa(ws, [[`Rekapitulasi Absensi (SMT ${semester})`]], { origin: "A2" });
+                window.XLSX.utils.sheet_add_aoa(ws, [[`Rekapitulasi Absensi [${mapelName}] (SMT ${semester})`]], { origin: "A2" });
+
+                // Fill Dates in Row 3 (Index 2, origin: C3)
+                const dateHeaders = uniqueDates.slice(0, 24).map(d => {
+                    const dt = new Date(d + 'T00:00:00');
+                    return `${dt.getDate()}-${namaBulan.substring(0,3)}`; // e.g., 8-Aug
+                });
+                if (dateHeaders.length > 0) {
+                    window.XLSX.utils.sheet_add_aoa(ws, [dateHeaders], { origin: "C3" });
+                }
 
                 // Build Excel Data untuk disisipkan mulai dari baris ke-4 (A4)
                 const rows = students.map((s, i) => {
@@ -652,15 +695,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     const rowData = new Array(29).fill('');
                     rowData[0] = i + 1;
                     rowData[1] = s.nama_lengkap;
-                    rowData[26] = r.Alpha;
-                    rowData[27] = r.Izin;
-                    rowData[28] = r.Sakit;
+                    
+                    // Fill daily statuses
+                    uniqueDates.slice(0, 24).forEach((d, idx) => {
+                        const st = attMap[s.id][d];
+                        rowData[2 + idx] = st ? st.toLowerCase() : '';
+                    });
+
+                    rowData[26] = r.Alpha || 0;
+                    rowData[27] = r.Izin || 0;
+                    rowData[28] = r.Sakit || 0;
                     return rowData;
                 });
 
                 window.XLSX.utils.sheet_add_aoa(ws, rows, { origin: "A4" });
 
-                const filename = `Rekap_Absensi_${kelas}_${namaBulan}_${tahun.replace('/','-')}_SMT${semester}.xlsx`;
+                const mapelFileSuffix = mapelId ? '_' + mapelName.replace(/[^a-zA-Z0-9]/g, '') : '_Harian';
+                const filename = `Rekap_Absensi_${kelas}_${namaBulan}_${tahun.replace('/','-')}_SMT${semester}${mapelFileSuffix}.xlsx`;
                 window.XLSX.writeFile(wb, filename);
                 window.showToast?.('Berhasil di-export', 'success');
 
