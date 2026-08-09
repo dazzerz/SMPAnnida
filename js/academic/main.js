@@ -165,23 +165,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial load
     handleHashChange();
 
-    // Toggle Sidebar
+    // Toggle Sidebar – delegates to layout.js helpers if available
     const menuToggle = document.getElementById('menu-toggle');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.createElement('div');
-    overlay.className = 'overlay';
-    document.body.appendChild(overlay);
-
     if(menuToggle) {
         menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
+            if (window._openSidebar && window._closeSidebar) {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar && sidebar.classList.contains('open')) {
+                    window._closeSidebar();
+                } else {
+                    window._openSidebar();
+                }
+            }
         });
     }
 
-    overlay.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('active');
+    // Also close sidebar when nav link is clicked on mobile
+    document.querySelectorAll('.nav-item.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768 && window._closeSidebar) {
+                window._closeSidebar();
+            }
+        });
     });
 
 

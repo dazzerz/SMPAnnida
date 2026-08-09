@@ -1,10 +1,17 @@
-export function injectSidebar(containerId, activeMenuId, ignoredBasePath = '') {
+/**
+ * layout.js – Unified Sidebar & Topbar injection
+ * - Sidebar uses class "open" to show/hide
+ * - Overlay closes sidebar when tapped
+ * - Mobile hamburger button toggles sidebar
+ * - X button inside sidebar also closes it
+ */
+
+export function injectSidebar(containerId, activeMenuId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
     const path = window.location.pathname;
     const basePath = path.includes('/pages/') ? '../../' : './';
-
 
     container.innerHTML = `
     <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
@@ -12,7 +19,7 @@ export function injectSidebar(containerId, activeMenuId, ignoredBasePath = '') {
         <div class="sidebar-logo-icon">🏫</div>
         <div class="sidebar-brand">SMPAnnida</div>
       </div>
-      <button class="theme-toggle" style="background:transparent; border:none; font-size:1.2rem; cursor:pointer;" aria-label="Toggle Theme">☀️</button>
+      <button class="sidebar-close-btn" id="sidebar-close-btn" aria-label="Tutup menu">✕</button>
     </div>
 
     <nav>
@@ -48,45 +55,92 @@ export function injectSidebar(containerId, activeMenuId, ignoredBasePath = '') {
       <div class="user-widget">
         <div class="user-avatar" id="user-avatar">G</div>
         <div style="flex:1;overflow:hidden;">
-          <div style="font-weight:600;font-size:0.9rem;white-space:nowrap;text-overflow:ellipsis;" id="nav-user-name">Guest</div>
-          <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;text-overflow:ellipsis;" id="nav-user-email">Belum Login</div>
+          <div style="font-weight:600;font-size:0.9rem;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;" id="nav-user-name">Guest</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;text-overflow:ellipsis;overflow:hidden;" id="nav-user-email">Belum Login</div>
         </div>
       </div>
       <button class="btn btn-outline" style="width:100%;margin-top:1rem;" id="logout-btn">Keluar</button>
     </div>
     `;
-}
 
-export function injectTopbar(containerId, options) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    
-    const greeting = options.greeting || '';
-    const title = options.title || '';
-    const rightHtml = options.rightHtml || '';
-    
-    container.innerHTML = `
-        <div class="flex items-center gap-md">
-          <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
-          <div class="topbar-left">
-            <div class="topbar-greeting">${greeting}</div>
-            <div class="topbar-title">${title}</div>
-          </div>
-        </div>
-        <div class="topbar-right">
-          <button class="theme-toggle" id="theme-toggle">☀️</button>
-          ${rightHtml}
-        </div>
-    `;
+    // Create overlay if it doesn't exist
+    let overlay = document.getElementById('sidebar-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'sidebar-overlay';
+        overlay.className = 'sidebar-overlay';
+        document.body.appendChild(overlay);
+    }
 
-    // Automatically bind the hamburger menu to the sidebar
-    const menuBtn = document.getElementById('mobile-menu-btn');
-    if (menuBtn) {
-        menuBtn.addEventListener('click', () => {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar) {
-                sidebar.classList.toggle('active');
+    // Helper: open sidebar
+    function openSidebar() {
+        container.classList.add('open');
+        overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Helper: close sidebar
+    function closeSidebar() {
+        container.classList.remove('open');
+        overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    // X button inside sidebar
+    const closeBtn = document.getElementById('sidebar-close-btn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeSidebar);
+    }
+
+    // Overlay click closes sidebar
+    overlay.addEventListener('click', closeSidebar);
+
+    // Hamburger from topbar
+    document.addEventListener('click', function(e) {
+        if (e.target && (e.target.id === 'mobile-menu-btn' || e.target.closest('#mobile-menu-btn'))) {
+            if (container.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+    });
+
+    // Also bind old menu-toggle (for academic module)
+    const oldToggle = document.getElementById('menu-toggle');
+    if (oldToggle) {
+        oldToggle.addEventListener('click', () => {
+            if (container.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
             }
         });
     }
+
+    // Expose closeSidebar globally for other scripts
+    window._closeSidebar = closeSidebar;
+    window._openSidebar = openSidebar;
+}
+
+export function injectTopbar(containerId, options = {}) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const greeting = options.greeting || '';
+    const title = options.title || '';
+    const rightHtml = options.rightHtml || '';
+
+    container.innerHTML = `
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Buka menu">☰</button>
+          <div class="topbar-left">
+            ${greeting ? `<div class="topbar-greeting">${greeting}</div>` : ''}
+            ${title ? `<div class="topbar-title">${title}</div>` : ''}
+          </div>
+        </div>
+        <div class="topbar-right">
+          ${rightHtml}
+        </div>
+    `;
 }
