@@ -74,6 +74,13 @@
         return;
       }
 
+      // Proteksi Akses: Jika bukan Admin, tendang ke Akademik
+      const ADMIN_EMAIL = 'daffa.al.akhdaan@gmail.com';
+      if (user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+        window.location.href = 'pages/academic/dashboard.html';
+        return;
+      }
+
       const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Pengguna';
       document.getElementById('nav-user-name').textContent = fullName;
       document.getElementById('nav-user-email').textContent = user.email;

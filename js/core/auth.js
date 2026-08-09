@@ -42,7 +42,13 @@ export async function handleLogin(e) {
   showAuthMessage('Login berhasil! Mengalihkan...', 'success');
   localStorage.removeItem('isGuest');
   sessionStorage.removeItem('guest_mode_active');
-  setTimeout(() => { window.location.href = './dashboard.html'; }, 800);
+  setTimeout(() => { 
+    if (email.toLowerCase() === 'daffa.al.akhdaan@gmail.com') {
+      window.location.href = './dashboard.html'; 
+    } else {
+      window.location.href = './pages/academic/dashboard.html'; 
+    }
+  }, 800);
 }
 
 // ── REGISTER ──────────────────────────────────────
