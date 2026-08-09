@@ -58,7 +58,7 @@ async function loadStudentsForSchedule(scheduleId, kelas, date) {
         db.from('students')
             .select('id, nama_lengkap, nisn, nis')
             .eq('kelas', kelas)
-            .eq('aktif', true)
+            .or('aktif.eq.true,aktif.is.null')
             .order('nama_lengkap', { ascending: true }),
         db.from('attendance_students')
             .select('student_id, status, notes')
