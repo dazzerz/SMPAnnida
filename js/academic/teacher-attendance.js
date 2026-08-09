@@ -217,11 +217,10 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
             
-            // Convert to blob
-            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
-            if (!blob) throw new Error("Gagal mengambil gambar");
+            // Convert to Base64 directly
+            const base64Image = canvas.toDataURL('image/jpeg', 0.8);
 
-            // Upload to Supabase Storage
+            // Construct file name
             let tName = 'Guru';
             try {
                 const { data: { session } } = await db.auth.getSession();
@@ -245,14 +244,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error("Gagal mendapatkan nama guru:", e);
             }
             const fileName = `${tName}_${currentTeacherId}_${Date.now()}.jpg`;
-            const { error: uploadError } = await db.storage
-                .from('teacher-attendance')
-                .upload(fileName, blob, { contentType: 'image/jpeg' });
-                
-            if (uploadError) throw uploadError;
 
-            const { data: publicUrlData } = db.storage.from('teacher-attendance').getPublicUrl(fileName);
-            const photoUrl = publicUrlData.publicUrl;
+            // Upload to Google Drive via GAS Web App
+            statusText.textContent = 'Mengunggah ke Drive...';
+            const gasUrl = 'https://script.google.com/macros/s/AKfycbwgrN_Q75I06zGRygrivLYAJm7MC1p9n1H_sZFrmEexS5xfS5tYtwjQSd2zNef_xBxR/exec';
+            
+            // Note: Google Apps Script Web App standard mode doesn't strictly adhere to CORS, 
+            // `mode: 'no-cors'` might be needed if it fails, but then we can't read the response JSON.
+            // A properly configured GAS Web App returns proper JSON. Let's try standard fetch first.
+            const response = await fetch(gasUrl, {
+                method: 'POST',
+                // Content-Type text/plain is used because GAS handles it better without CORS preflight issues sometimes
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: JSON.stringify({
+                    filename: fileName,
+                    image: base64Image
+                })
+            });
+            
+            const result = await response.json();
+            if (result.status !== 'success') {
+                throw new Error(result.message || 'Gagal mengunggah ke Google Drive');
+            }
+            
+            const photoUrl = result.url;
 
             // Save to Database
             const now = new Date().toISOString();
