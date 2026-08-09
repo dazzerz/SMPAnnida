@@ -70,7 +70,25 @@ WHERE NOT EXISTS (
   SELECT 1 FROM auth.identities i WHERE i.user_id = u.id
 );
 
--- 3. (Opsional tapi direkomendasikan) 
+-- 3. Tambahkan ke public.profiles (jika sistem Anda menggunakan tabel profiles untuk data pengguna)
+INSERT INTO public.profiles (
+  id, 
+  full_name, 
+  avatar_url, 
+  currency
+)
+SELECT 
+  u.id, 
+  t.nama, 
+  NULL, 
+  'IDR'
+FROM auth.users u
+JOIN public.teachers t ON u.email = t.email
+WHERE NOT EXISTS (
+  SELECT 1 FROM public.profiles p WHERE p.id = u.id
+);
+
+-- 4. (Opsional tapi direkomendasikan) 
 -- Update kolom auth_email di tabel teachers dengan email yang terdaftar
 UPDATE public.teachers 
 SET auth_email = email 
