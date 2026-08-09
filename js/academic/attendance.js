@@ -57,7 +57,7 @@ async function loadStudentsForSchedule(schedule, kelas, date) {
     const scheduleIds = schedule.grouped_ids || [schedule.id];
     const [ { data: students, error: stuErr }, { data: attData } ] = await Promise.all([
         db.from('students')
-            .select('id, nama_lengkap, nis, nisn, status')
+            .select('id, nama_lengkap, nis, nisn')
             .eq('kelas', kelas)
             .or('aktif.eq.true,aktif.is.null')
             .order('nama_lengkap', { ascending: true }),
