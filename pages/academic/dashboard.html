@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="../../css/academic/jadwal.css?v=3">
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js?v=6" defer></script>
     <!-- Supabase CDN -->
     <!-- PapaParse CDN for CSV Parsing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
@@ -857,7 +859,12 @@
                     <!-- TAB REKAP (ADMIN ONLY) -->
                     <div id="tab-tg-rekap" class="tab-content" style="display: none;">
                         <div class="card glass">
-                            <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Rekap Absensi Guru (Harian)</h2>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                                <h2 style="font-size: 1.2rem; margin: 0;">Rekap Absensi Guru (Harian)</h2>
+                                <button id="btn-tg-export-excel" class="btn btn-outline" style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 1.1rem;">📊</span> Export Excel
+                                </button>
+                            </div>
                             <div class="table-responsive">
                                 <table class="data-table">
                                     <thead>

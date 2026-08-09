@@ -399,6 +399,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    const btnExportExcel = document.getElementById('btn-tg-export-excel');
+    if (btnExportExcel) {
+        btnExportExcel.addEventListener('click', () => {
+            if (!tbodyRekap || !window.XLSX) return;
+            // Hanya export tabel yang tampil
+            // Kita bisa mengekstrak data dari tabel secara langsung untuk kesederhanaan, atau re-fetch.
+            // Paling mudah menggunakan SheetJS table_to_book
+            const table = document.querySelector('#tab-tg-rekap table');
+            if (!table) return;
+
+            try {
+                // Clone tabel untuk memanipulasi teks jika ada gambar/ikon sebelum di-export
+                const cloneTable = table.cloneNode(true);
+                // Ganti img/link dengan teks alternatif
+                cloneTable.querySelectorAll('img').forEach(img => {
+                    const parent = img.parentElement;
+                    if(parent) parent.innerHTML = 'Ada Foto';
+                });
+                cloneTable.querySelectorAll('a').forEach(a => {
+                    if (a.textContent.includes('Maps')) {
+                        a.parentElement.innerHTML = 'Ada Lokasi';
+                    }
+                });
+
+                const wb = window.XLSX.utils.table_to_book(cloneTable, { sheet: "Rekap_Guru" });
+                const d = dateRekap ? dateRekap.value : today;
+                window.XLSX.writeFile(wb, `Rekap_Absensi_Guru_${d}.xlsx`);
+                showToast('Data berhasil diexport', 'success');
+            } catch (err) {
+                console.error("Gagal export:", err);
+                showToast('Gagal melakukan export excel', 'error');
+            }
+        });
+    }
+
     // Initial load when section is shown
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
