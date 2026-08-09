@@ -336,5 +336,331 @@ document.addEventListener('DOMContentLoaded', () => {
         if (section.style.display !== 'none') initWhenReady();
     }
 
+    // ── Logika Rekap & Export (Tambahan) ────────────────────────────────────────────
+    
+    // Elemen UI Filter
+    const filterKelasRekap = document.getElementById('rekap-kelas');
+    const filterBulanRekap = document.getElementById('rekap-bulan');
+    const filterMapelRekap = document.getElementById('rekap-mapel-filter');
+    const btnLihatRekap = document.getElementById('btn-lihat-rekap-absensi-siswa');
+    const tableRekapSiswa = document.getElementById('table-rekap-siswa');
+    const theadRekapSiswa = document.getElementById('thead-rekap-siswa');
+    const tbodyRekapSiswa = document.getElementById('tbody-rekap-siswa');
+
+    const filterKelasPivot = document.getElementById('filter-kelas-rekap-absensi');
+    const filterDariPivot = document.getElementById('filter-dari-absensi');
+    const filterSampaiPivot = document.getElementById('filter-sampai-absensi');
+    const filterMapelPivot = document.getElementById('filter-mapel-pivot');
+    const btnLihatPivot = document.getElementById('btn-lihat-rekap-absensi-harian');
+    const theadPivot = document.getElementById('thead-pivot-absensi');
+    const tbodyPivot = document.getElementById('tbody-rekap-absensi');
+
+    const exportTahun = document.getElementById('export-tahun');
+    const exportSemester = document.getElementById('export-semester');
+    const exportBulan = document.getElementById('export-bulan');
+    const exportKelas = document.getElementById('export-kelas');
+    const btnExportExcel = document.getElementById('btn-export-excel');
+
+    // Populate Filters
+    async function populateFilters() {
+        try {
+            // Load Classes
+            const { data: classes } = await db.from('classes').select('id, nama_kelas').order('nama_kelas');
+            if (classes) {
+                const classOptions = '<option value="">-- Pilih Kelas --</option>' + classes.map(c => `<option value="${c.nama_kelas}">${escapeHTML(c.nama_kelas)}</option>`).join('');
+                if (filterKelasRekap) filterKelasRekap.innerHTML = classOptions;
+                if (filterKelasPivot) filterKelasPivot.innerHTML = classOptions;
+                if (exportKelas) exportKelas.innerHTML = classOptions;
+            }
+
+            // Load Subjects
+            const { data: subjects } = await db.from('subjects').select('id, nama_mapel').order('nama_mapel');
+            if (subjects) {
+                const subjectOptions = '<option value="">Semua Mapel</option>' + subjects.map(s => `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`).join('');
+                if (filterMapelRekap) filterMapelRekap.innerHTML = subjectOptions;
+                if (filterMapelPivot) filterMapelPivot.innerHTML = subjectOptions;
+            }
+
+            // Load Academic Years for Export
+            const { data: academicYears } = await db.from('academic_years').select('tahun_ajaran, semester').order('tahun_ajaran', { ascending: false });
+            if (academicYears) {
+                const tahuns = [...new Set(academicYears.map(a => a.tahun_ajaran))];
+                if (exportTahun) {
+                    exportTahun.innerHTML = '<option value="">-- Pilih Tahun --</option>' + tahuns.map(t => `<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`).join('');
+                }
+                const semesters = [...new Set(academicYears.map(a => a.semester))];
+                if (exportSemester) {
+                    exportSemester.innerHTML = '<option value="">-- Pilih Semester --</option>' + semesters.map(s => `<option value="${s}">${s}</option>`).join('');
+                }
+            }
+
+            // Set default date range for Pivot
+            if (filterDariPivot && filterSampaiPivot) {
+                const todayStr = getDateStr();
+                const firstDayStr = todayStr.substring(0, 8) + '01';
+                filterDariPivot.value = firstDayStr;
+                filterSampaiPivot.value = todayStr;
+            }
+        } catch (err) {
+            console.error("Gagal memuat filter:", err);
+        }
+    }
+
+    // Panggil populateFilters saat halaman siap
+    populateFilters();
+
+    // 1. REKAP PER SISWA
+    if (btnLihatRekap) {
+        btnLihatRekap.addEventListener('click', async () => {
+            const kelas = filterKelasRekap.value;
+            const bulan = filterBulanRekap.value;
+            const mapel = filterMapelRekap.value;
+
+            if (!kelas) {
+                window.showToast?.('Pilih kelas terlebih dahulu', 'error');
+                return;
+            }
+
+            tbodyRekapSiswa.innerHTML = '<tr><td colspan="8" style="text-align:center;">Memuat data...</td></tr>';
+            theadRekapSiswa.innerHTML = '<tr><th style="width:50px">No</th><th>NIS</th><th>Nama Siswa</th><th style="text-align:center">Hadir</th><th style="text-align:center">Sakit</th><th style="text-align:center">Izin</th><th style="text-align:center">Alpha</th><th style="text-align:center">Total Pertemuan</th></tr>';
+
+            try {
+                // Get students in this class
+                const { data: students, error: errStu } = await db.from('students').select('id, nama_lengkap, nisn').eq('kelas', kelas).order('nama_lengkap');
+                if (errStu) throw errStu;
+                
+                if (!students || students.length === 0) {
+                    tbodyRekapSiswa.innerHTML = '<tr><td colspan="8" style="text-align:center;">Tidak ada siswa di kelas ini.</td></tr>';
+                    return;
+                }
+
+                // Build query for attendance
+                let query = db.from('attendance_students').select('student_id, status, attendance_date').in('student_id', students.map(s => s.id));
+                if (mapel) query = query.eq('subject_id', mapel);
+                
+                const { data: attData, error: errAtt } = await query;
+                if (errAtt) throw errAtt;
+
+                // Filter by month
+                const filteredAtt = (attData || []).filter(a => {
+                    const d = new Date(a.attendance_date);
+                    return (d.getMonth() + 1) === parseInt(bulan);
+                });
+
+                // Group by student
+                const rekap = {};
+                students.forEach(s => {
+                    rekap[s.id] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0, Total: 0 };
+                });
+
+                filteredAtt.forEach(a => {
+                    if (rekap[a.student_id] && rekap[a.student_id][a.status] !== undefined) {
+                        rekap[a.student_id][a.status]++;
+                        rekap[a.student_id].Total++;
+                    }
+                });
+
+                tbodyRekapSiswa.innerHTML = students.map((s, i) => {
+                    const r = rekap[s.id];
+                    return `
+                        <tr>
+                            <td style="text-align:center">${i + 1}</td>
+                            <td>${escapeHTML(s.nisn || '-')}</td>
+                            <td><strong>${escapeHTML(s.nama_lengkap)}</strong></td>
+                            <td style="text-align:center; color:var(--success); font-weight:bold">${r.Hadir}</td>
+                            <td style="text-align:center; color:var(--warning); font-weight:bold">${r.Sakit}</td>
+                            <td style="text-align:center; color:#0dcaf0; font-weight:bold">${r.Izin}</td>
+                            <td style="text-align:center; color:var(--danger); font-weight:bold">${r.Alpha}</td>
+                            <td style="text-align:center">${r.Total}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+            } catch (err) {
+                console.error(err);
+                tbodyRekapSiswa.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--danger)">Gagal memuat rekap.</td></tr>';
+            }
+        });
+    }
+
+    // 2. REKAP HARIAN (PIVOT)
+    if (btnLihatPivot) {
+        btnLihatPivot.addEventListener('click', async () => {
+            const kelas = filterKelasPivot.value;
+            const dari = filterDariPivot.value;
+            const sampai = filterSampaiPivot.value;
+            const mapel = filterMapelPivot.value;
+
+            if (!kelas || !dari || !sampai) {
+                window.showToast?.('Pilih kelas, dari, dan sampai tanggal', 'error');
+                return;
+            }
+
+            tbodyPivot.innerHTML = '<tr><td style="text-align:center;">Memuat data...</td></tr>';
+
+            try {
+                // Get students
+                const { data: students, error: errStu } = await db.from('students').select('id, nama_lengkap, nisn').eq('kelas', kelas).order('nama_lengkap');
+                if (errStu) throw errStu;
+
+                if (!students || students.length === 0) {
+                    theadPivot.innerHTML = '<tr><th>Informasi</th></tr>';
+                    tbodyPivot.innerHTML = '<tr><td style="text-align:center;">Tidak ada siswa di kelas ini.</td></tr>';
+                    return;
+                }
+
+                // Get dates in range
+                const startDate = new Date(dari);
+                const endDate = new Date(sampai);
+                const dates = [];
+                for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
+                    // Make sure format is YYYY-MM-DD local time, avoiding timezone offset issues
+                    const y = d.getFullYear();
+                    const m = String(d.getMonth() + 1).padStart(2, '0');
+                    const day = String(d.getDate()).padStart(2, '0');
+                    dates.push(`${y}-${m}-${day}`);
+                }
+
+                // Get attendance
+                let query = db.from('attendance_students').select('student_id, status, attendance_date').in('student_id', students.map(s => s.id)).gte('attendance_date', dari).lte('attendance_date', sampai);
+                if (mapel) query = query.eq('subject_id', mapel);
+                
+                const { data: attData, error: errAtt } = await query;
+                if (errAtt) throw errAtt;
+
+                // Group: student_id -> date -> worst status
+                // Status priority: Alpha (4) > Izin (3) > Sakit (2) > Hadir (1)
+                const statusValue = { 'Alpha': 4, 'Izin': 3, 'Sakit': 2, 'Hadir': 1 };
+                const getAbbr = (st) => {
+                    if (st === 'Alpha') return { a: 'A', c: 'var(--danger)' };
+                    if (st === 'Izin') return { a: 'I', c: '#0dcaf0' };
+                    if (st === 'Sakit') return { a: 'S', c: 'var(--warning)' };
+                    if (st === 'Hadir') return { a: 'H', c: 'var(--success)' };
+                    return { a: '-', c: 'var(--text-muted)' };
+                };
+
+                const attMap = {};
+                students.forEach(s => attMap[s.id] = {});
+
+                (attData || []).forEach(a => {
+                    if (attMap[a.student_id]) {
+                        const current = attMap[a.student_id][a.attendance_date];
+                        if (!current || statusValue[a.status] > statusValue[current]) {
+                            attMap[a.student_id][a.attendance_date] = a.status;
+                        }
+                    }
+                });
+
+                // Render Header
+                const shortDays = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+                let headerHtml = '<tr><th style="min-width:40px">No</th><th style="min-width:180px;">Nama Siswa</th>';
+                dates.forEach(d => {
+                    const dt = new Date(d + 'T00:00:00'); // Force local interpretation
+                    headerHtml += `<th style="text-align:center; min-width:40px; font-size:11px;">${shortDays[dt.getDay()]}<br>${dt.getDate()}/${dt.getMonth()+1}</th>`;
+                });
+                headerHtml += '</tr>';
+                theadPivot.innerHTML = headerHtml;
+
+                // Render Body
+                tbodyPivot.innerHTML = students.map((s, i) => {
+                    let rowHtml = `<td style="text-align:center">${i + 1}</td><td><strong>${escapeHTML(s.nama_lengkap)}</strong></td>`;
+                    dates.forEach(d => {
+                        const st = attMap[s.id][d];
+                        const abbr = getAbbr(st);
+                        rowHtml += `<td style="text-align:center; font-weight:bold; color:${abbr.c};">${abbr.a}</td>`;
+                    });
+                    return `<tr>${rowHtml}</tr>`;
+                }).join('');
+
+            } catch (err) {
+                console.error(err);
+                tbodyPivot.innerHTML = '<tr><td style="text-align:center; color:var(--danger)">Gagal memuat pivot.</td></tr>';
+            }
+        });
+    }
+
+    // 3. EXPORT EXCEL
+    if (btnExportExcel) {
+        btnExportExcel.addEventListener('click', async () => {
+            const tahun = exportTahun?.value;
+            const semester = exportSemester?.value;
+            const bulan = exportBulan?.value;
+            const kelas = exportKelas?.value;
+
+            if (!tahun || !semester || !bulan || !kelas) {
+                window.showToast?.('Pilih Tahun, Semester, Bulan, dan Kelas', 'error');
+                return;
+            }
+
+            const origText = btnExportExcel.textContent;
+            btnExportExcel.disabled = true;
+            btnExportExcel.textContent = 'Memproses...';
+
+            try {
+                // Get students
+                const { data: students, error: errStu } = await db.from('students').select('id, nama_lengkap, nisn').eq('kelas', kelas).order('nama_lengkap');
+                if (errStu) throw errStu;
+                if (!students || students.length === 0) throw new Error("Tidak ada siswa di kelas ini");
+
+                // Get attendance
+                const { data: attData, error: errAtt } = await db.from('attendance_students')
+                    .select('student_id, status, attendance_date')
+                    .in('student_id', students.map(s => s.id));
+                if (errAtt) throw errAtt;
+
+                // Filter by month
+                const filteredAtt = (attData || []).filter(a => {
+                    const d = new Date(a.attendance_date);
+                    return (d.getMonth() + 1) === parseInt(bulan);
+                });
+
+                // Group
+                const rekap = {};
+                students.forEach(s => rekap[s.id] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 });
+                filteredAtt.forEach(a => {
+                    if (rekap[a.student_id] && rekap[a.student_id][a.status] !== undefined) {
+                        rekap[a.student_id][a.status]++;
+                    }
+                });
+
+                // Build Excel Data
+                const excelData = students.map((s, i) => {
+                    const r = rekap[s.id];
+                    return {
+                        "No": i + 1,
+                        "NISN": s.nisn || '-',
+                        "Nama Siswa": s.nama_lengkap,
+                        "Hadir": r.Hadir,
+                        "Sakit": r.Sakit,
+                        "Izin": r.Izin,
+                        "Alpha": r.Alpha,
+                        "Total (Diluar Hadir)": r.Sakit + r.Izin + r.Alpha
+                    };
+                });
+
+                // Gunakan SheetJS (window.XLSX harus tersedia di HTML)
+                if (typeof window.XLSX !== 'undefined') {
+                    const ws = window.XLSX.utils.json_to_sheet(excelData);
+                    const wb = window.XLSX.utils.book_new();
+                    window.XLSX.utils.book_append_sheet(wb, ws, "Rekap");
+                    
+                    const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"][parseInt(bulan)-1];
+                    const filename = `Rekap_Absensi_${kelas}_${namaBulan}_${tahun.replace('/','-')}_SMT${semester}.xlsx`;
+                    window.XLSX.writeFile(wb, filename);
+                    window.showToast?.('Berhasil di-export', 'success');
+                } else {
+                    throw new Error("Library SheetJS tidak ditemukan");
+                }
+
+            } catch (err) {
+                console.error(err);
+                window.showToast?.(err.message || 'Gagal export', 'error');
+            } finally {
+                btnExportExcel.disabled = false;
+                btnExportExcel.innerHTML = '📥 Export Excel';
+            }
+        });
+    }
+
     window.renderScheduleList = renderScheduleList;
 });
