@@ -33,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!elDate || !btnCamera) return;
 
     let currentTeacherId = null;
+    let currentLat = null;
+    let currentLng = null;
     let stream = null;
     let isCameraOpen = false;
     let hasLoaded = false;
@@ -157,6 +159,20 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // Open camera
             try {
+                // Request location
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            currentLat = position.coords.latitude;
+                            currentLng = position.coords.longitude;
+                        },
+                        (error) => {
+                            console.warn("Location error:", error);
+                        },
+                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                    );
+                }
+
                 stream = await navigator.mediaDevices.getUserMedia({ 
                     video: { facingMode: 'user' }, 
                     audio: false 
@@ -248,6 +264,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     attendance_date: today,
                     check_in: now,
                     photo_url_in: photoUrl,
+                    latitude: currentLat,
+                    longitude: currentLng,
                     status: 'Hadir'
                 };
                 const { error: dbError } = await db.from('teacher_attendance').insert(payload);
@@ -257,7 +275,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Check Out
                 const payload = {
                     check_out: now,
-                    photo_url_out: photoUrl
+                    photo_url_out: photoUrl,
+                    latitude: currentLat || attendanceRecord.latitude,
+                    longitude: currentLng || attendanceRecord.longitude
                 };
                 const { error: dbError } = await db.from('teacher_attendance')
                     .update(payload)
@@ -355,6 +375,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const imgOut = r.photo_url_out ? `<a href="${r.photo_url_out}" target="_blank"><img src="${r.photo_url_out}" style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);"></a>` : '-';
                 const st = r.status === 'Hadir' ? `<span style="padding: 4px 8px; background: rgba(40,167,69,0.15); color: var(--success); border-radius: 4px; font-size: 12px; border: 1px solid rgba(40,167,69,0.3);">Hadir</span>` : escapeHTML(r.status);
                 
+                const loc = (r.latitude && r.longitude) 
+                    ? `<a href="https://www.google.com/maps?q=${r.latitude},${r.longitude}" target="_blank" style="padding: 4px 8px; background: rgba(13,110,253,0.1); color: #4da6ff; border-radius: 4px; font-size: 12px; border: 1px solid rgba(13,110,253,0.3); text-decoration: none;">📍 Maps</a>` 
+                    : '-';
+
                 return `
                     <tr style="background: rgba(255,255,255,0.02); transition: all 0.3s ease;">
                         <td>${i + 1}</td>
@@ -363,6 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td style="text-align: center;">${imgIn}</td>
                         <td style="text-align: center;">${jamOut}</td>
                         <td style="text-align: center;">${imgOut}</td>
+                        <td style="text-align: center;">${loc}</td>
                         <td style="text-align: center;">${st}</td>
                     </tr>
                 `;
