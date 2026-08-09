@@ -674,10 +674,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"][parseInt(bulan)-1];
 
                 // Ganti placeholder di template
+                const headerF1 = mapelId ? `${teacherName} - Kelas ${kelas} - ${namaBulan} ${tahun}` : `Kelas ${kelas} - ${namaBulan} ${tahun}`;
+                const headerA2 = mapelId ? `Rekapitulasi Absensi ${mapelName} (SMT ${semester})` : `Rekapitulasi Absensi (SMT ${semester})`;
+
                 // [Mapel] di F1
-                window.XLSX.utils.sheet_add_aoa(ws, [[`Kelas ${kelas} - ${namaBulan} ${tahun}`]], { origin: "F1" });
+                window.XLSX.utils.sheet_add_aoa(ws, [[headerF1]], { origin: "F1" });
                 // [Guru Mapel] di A2
-                window.XLSX.utils.sheet_add_aoa(ws, [[`Rekapitulasi Absensi [${mapelName}] (SMT ${semester})`]], { origin: "A2" });
+                window.XLSX.utils.sheet_add_aoa(ws, [[headerA2]], { origin: "A2" });
 
                 // Fill Dates in Row 3 (Index 2, origin: C3)
                 const dateHeaders = uniqueDates.slice(0, 24).map(d => {
