@@ -8,7 +8,7 @@ injectTopbar('topbar', {
 injectSidebar('sidebar', 'academic');
 
 // Modify the Academic nav-group to inject the sub-navigation menus
-const academicNavGroup = document.querySelectorAll('.nav-group')[1];
+const academicNavGroup = document.getElementById('nav-group-academic');
 if (academicNavGroup) {
     academicNavGroup.innerHTML = `
         <div class="nav-group-title">Akademik & Kesiswaan</div>
@@ -59,6 +59,13 @@ async function checkAuth() {
                 if (!teacherData) {
                     console.warn('Email ini tidak terdaftar sebagai guru:', user.email);
                 }
+
+                // Sembunyikan menu non-akademik untuk Guru
+                const restrictedGroups = ['nav-group-main', 'nav-group-finance', 'nav-group-ppdb', 'nav-group-system'];
+                restrictedGroups.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = 'none';
+                });
             } else {
                 window.currentTeacher = null;
             }

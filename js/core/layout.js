@@ -16,29 +16,29 @@ export function injectSidebar(containerId, activeMenuId, ignoredBasePath = '') {
     </div>
 
     <nav>
-      <div class="nav-group">
+      <div class="nav-group" id="nav-group-main">
         <div class="nav-group-title">Main</div>
         <a href="${basePath}dashboard.html" class="nav-item ${activeMenuId === 'dashboard' ? 'active' : ''}">📊 Super Dashboard</a>
       </div>
 
-      <div class="nav-group">
+      <div class="nav-group" id="nav-group-academic">
         <div class="nav-group-title">Akademik & Kesiswaan</div>
         <a href="${basePath}pages/academic/dashboard.html" class="nav-item ${activeMenuId === 'academic' ? 'active' : ''}">👨‍🎓 Data Siswa</a>
       </div>
 
-      <div class="nav-group">
+      <div class="nav-group" id="nav-group-finance">
         <div class="nav-group-title">Keuangan</div>
         <a href="${basePath}pages/finance/transactions.html" class="nav-item ${activeMenuId === 'transactions' ? 'active' : ''}">💸 Transaksi Kas</a>
         <a href="${basePath}pages/finance/budget.html" class="nav-item ${activeMenuId === 'budget' ? 'active' : ''}">🎯 Budget Bulanan</a>
         <a href="${basePath}pages/finance/rab.html" class="nav-item ${activeMenuId === 'rab' ? 'active' : ''}">📋 RAB Kelas</a>
       </div>
 
-      <div class="nav-group">
+      <div class="nav-group" id="nav-group-ppdb">
         <div class="nav-group-title">Penerimaan (PPDB)</div>
         <a href="${basePath}pages/ppdb/index.html" class="nav-item ${activeMenuId === 'ppdb' ? 'active' : ''}">📝 Pendaftar Baru</a>
       </div>
 
-      <div class="nav-group">
+      <div class="nav-group" id="nav-group-system">
         <div class="nav-group-title">Sistem</div>
         <a href="${basePath}pages/finance/settings.html" class="nav-item ${activeMenuId === 'settings' ? 'active' : ''}">⚙️ Pengaturan</a>
       </div>
