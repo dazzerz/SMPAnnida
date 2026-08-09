@@ -266,12 +266,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 if (id) {
-                    payload.updated_at = new Date().toISOString();
                     const { error } = await db.from('students').update(payload).eq('id', id);
                     if (error) throw error;
                     showToast('Data siswa berhasil diperbarui', 'success');
                 } else {
-                    payload.created_at = new Date().toISOString();
                     const { error } = await db.from('students').insert([payload]);
                     if (error) throw error;
                     showToast('Siswa berhasil ditambahkan', 'success');
