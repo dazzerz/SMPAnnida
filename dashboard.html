@@ -12,6 +12,7 @@
   <aside class="sidebar" id="sidebar"></aside>
 <!-- Main Content -->
   <main class="main-content">
+    <header class="topbar" id="topbar"></header>
     <div class="page-header">
       <div>
         <h1 class="page-title">Executive Dashboard</h1>
@@ -62,8 +63,9 @@
   </main>
 
   <script type="module">
-    import { injectSidebar } from './js/core/layout.js';
+    import { injectSidebar, injectTopbar } from './js/core/layout.js';
     injectSidebar('sidebar', 'dashboard');
+    injectTopbar('topbar', { title: 'Executive Dashboard' });
     import { getOptionalUser, handleLogout } from './js/core/auth.js?v=2';
     import { fetchDashboardMetrics, formatCurrency } from './js/core/dashboard.js';
     

@@ -758,3 +758,40 @@ option {
 .theme-toggle, #theme-toggle, [aria-label='Toggle Theme'] {
   display: none !important;
 }
+
+/* Topbar Styles (Global) */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  margin-bottom: 2rem;
+  border-radius: 12px;
+  position: sticky;
+  top: 1rem;
+  z-index: 100;
+}
+.topbar-left, .topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block !important;
+  }
+  .topbar {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    top: 0;
+    border-radius: 0;
+  }
+}

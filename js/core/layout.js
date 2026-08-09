@@ -78,4 +78,15 @@ export function injectTopbar(containerId, options) {
           ${rightHtml}
         </div>
     `;
+
+    // Automatically bind the hamburger menu to the sidebar
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    if (menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.classList.toggle('active');
+            }
+        });
+    }
 }
