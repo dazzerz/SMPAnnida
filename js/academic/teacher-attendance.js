@@ -72,6 +72,15 @@ document.addEventListener('DOMContentLoaded', () => {
         return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
     }
 
+    // Helper to convert Google Drive viewer link to direct image link for <img> tags
+    function getDisplayImageUrl(url) {
+        if (!url) return '';
+        if (url.includes('drive.google.com/uc?export=view&id=')) {
+            return url.replace('uc?export=view&id=', 'thumbnail?id=') + '&sz=w1000';
+        }
+        return url;
+    }
+
     async function loadAttendance() {
         if (!currentTeacherId) return;
         elDate.innerHTML = escapeHTML(formatDate(today));
@@ -96,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (attendanceRecord.photo_url_in) {
                     photoInPlaceholder.style.display = 'none';
                     photoIn.style.display = 'block';
-                    photoIn.src = attendanceRecord.photo_url_in;
+                    photoIn.src = getDisplayImageUrl(attendanceRecord.photo_url_in);
                 }
                 
                 if (attendanceRecord.check_out) {
@@ -105,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (attendanceRecord.photo_url_out) {
                         photoOutPlaceholder.style.display = 'none';
                         photoOut.style.display = 'block';
-                        photoOut.src = attendanceRecord.photo_url_out;
+                        photoOut.src = getDisplayImageUrl(attendanceRecord.photo_url_out);
                     }
                     
                     statusText.textContent = 'Anda sudah menyelesaikan absensi hari ini.';
@@ -388,8 +397,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const jamIn = formatTime(r.check_in);
                 const jamOut = formatTime(r.check_out);
-                const imgIn = r.photo_url_in ? `<a href="${r.photo_url_in}" target="_blank"><img src="${r.photo_url_in}" style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);"></a>` : '-';
-                const imgOut = r.photo_url_out ? `<a href="${r.photo_url_out}" target="_blank"><img src="${r.photo_url_out}" style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);"></a>` : '-';
+                const dispIn = getDisplayImageUrl(r.photo_url_in);
+                const dispOut = getDisplayImageUrl(r.photo_url_out);
+                
+                const imgIn = r.photo_url_in ? `<a href="${r.photo_url_in}" target="_blank"><img src="${dispIn}" style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);"></a>` : '-';
+                const imgOut = r.photo_url_out ? `<a href="${r.photo_url_out}" target="_blank"><img src="${dispOut}" style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);"></a>` : '-';
                 const st = r.status === 'Hadir' ? `<span style="padding: 4px 8px; background: rgba(40,167,69,0.15); color: var(--success); border-radius: 4px; font-size: 12px; border: 1px solid rgba(40,167,69,0.3);">Hadir</span>` : escapeHTML(r.status);
                 
                 const loc = (r.latitude && r.longitude) 
