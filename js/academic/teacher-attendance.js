@@ -328,15 +328,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             if (tbodyRekap) tbodyRekap.innerHTML = data.map((r, i) => {
-                const nama = teacherMap[r.teacher_id] || 'Admin / Tidak Dikenal';
+                let nama = 'Guru';
+                
+                // Ekstrak nama dari URL foto masuk jika ada
+                if (r.photo_url_in) {
+                    try {
+                        const urlParts = r.photo_url_in.split('/');
+                        let filename = decodeURIComponent(urlParts[urlParts.length - 1]);
+                        // Hapus ekstensi file
+                        filename = filename.replace(/\.[^/.]+$/, "");
+                        
+                        const parts = filename.split('_');
+                        if (parts.length >= 3) {
+                            parts.pop(); // buang timestamp
+                            parts.pop(); // buang UUID
+                            nama = parts.join(' '); // sisa string adalah nama yang digabung kembali dengan spasi
+                        }
+                    } catch(e) {
+                        console.error("Gagal parse nama dari URL", e);
+                    }
+                }
+
                 const jamIn = formatTime(r.check_in);
                 const jamOut = formatTime(r.check_out);
-                const imgIn = r.photo_url_in ? `<a href="${r.photo_url_in}" target="_blank"><img src="${r.photo_url_in}" style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover;"></a>` : '-';
-                const imgOut = r.photo_url_out ? `<a href="${r.photo_url_out}" target="_blank"><img src="${r.photo_url_out}" style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover;"></a>` : '-';
-                const st = r.status === 'Hadir' ? `<span style="color: var(--success);">Hadir</span>` : escapeHTML(r.status);
+                const imgIn = r.photo_url_in ? `<a href="${r.photo_url_in}" target="_blank"><img src="${r.photo_url_in}" style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);"></a>` : '-';
+                const imgOut = r.photo_url_out ? `<a href="${r.photo_url_out}" target="_blank"><img src="${r.photo_url_out}" style="height: 40px; width: 40px; border-radius: 4px; object-fit: cover; border: 1px solid rgba(255,255,255,0.2);"></a>` : '-';
+                const st = r.status === 'Hadir' ? `<span style="padding: 4px 8px; background: rgba(40,167,69,0.15); color: var(--success); border-radius: 4px; font-size: 12px; border: 1px solid rgba(40,167,69,0.3);">Hadir</span>` : escapeHTML(r.status);
                 
                 return `
-                    <tr>
+                    <tr style="background: rgba(255,255,255,0.02); transition: all 0.3s ease;">
                         <td>${i + 1}</td>
                         <td><strong>${escapeHTML(nama)}</strong></td>
                         <td style="text-align: center;">${jamIn}</td>
