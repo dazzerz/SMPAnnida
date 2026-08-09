@@ -514,8 +514,7 @@
 }
 
 .chart-legend {
-  display: flex;
-  gap: 1rem;
+  display:flex;flex-wrap:wrap;gap: 1rem;
 }
 
 .legend-item {
@@ -742,8 +741,7 @@
 
 /* Filter Bar */
 .filter-bar {
-  display: flex;
-  gap: 0.875rem;
+  display:flex;flex-wrap:wrap;gap: 0.875rem;
   align-items: center;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
@@ -864,8 +862,7 @@
 }
 
 .table-actions {
-  display: flex;
-  gap: 0.375rem;
+  display:flex;flex-wrap:wrap;gap: 0.375rem;
   justify-content: flex-end;
 }
 
@@ -911,8 +908,7 @@
 }
 
 .pagination-controls {
-  display: flex;
-  gap: 0.375rem;
+  display:flex;flex-wrap:wrap;gap: 0.375rem;
 }
 
 .page-btn {
@@ -1080,8 +1076,7 @@
    REPORTS PAGE
    ===================================================== */
 .reports-controls {
-  display: flex;
-  gap: 1rem;
+  display:flex;flex-wrap:wrap;gap: 1rem;
   align-items: center;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -1120,7 +1115,7 @@
 
 .report-chart-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.25rem;
   margin-bottom: 1.5rem;
 }
@@ -1296,8 +1291,7 @@
 
 /* Import Steps */
 .import-steps {
-  display: flex;
-  gap: 0.5rem;
+  display:flex;flex-wrap:wrap;gap: 0.5rem;
   align-items: center;
   margin-bottom: 1.5rem;
 }
@@ -1404,8 +1398,7 @@
 
 /* Import Summary */
 .import-summary {
-  display: flex;
-  gap: 1rem;
+  display:flex;flex-wrap:wrap;gap: 1rem;
   padding: 1rem;
   background: var(--bg-secondary);
   border-radius: var(--radius-md);

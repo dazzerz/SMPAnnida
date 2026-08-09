@@ -22,8 +22,7 @@
         
         /* Split view styling for Doc Verification */
         .split-view {
-            display: flex;
-            gap: 30px;
+            display:flex;flex-wrap:wrap;gap: 30px;
             margin-top: 20px;
         }
         .split-left {
@@ -196,7 +195,7 @@
                         <textarea class="form-control" rows="2" placeholder="Tulis catatan jika dokumen ditolak/revisi"></textarea>
                     </div>
                     
-                    <div style="display:flex; gap:15px;">
+                    <div style="display:flex;flex-wrap:wrap;gap:15px;">
                         <button class="btn btn-primary" onclick="verifyDocumentAction('Approve')" style="flex:1;">Setujui Berkas</button>
                         <button class="btn btn-outline" onclick="verifyDocumentAction('Reject')" style="flex:1; border-color:#e53e3e; color:#e53e3e;">Tolak / Butuh Revisi</button>
                     </div>

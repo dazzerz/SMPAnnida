@@ -244,8 +244,7 @@ p {
 
 .hero-actions {
     margin-top: 30px;
-    display: flex;
-    gap: 15px;
+    display:flex;flex-wrap:wrap;gap: 15px;
 }
 
 .image-placeholder {
@@ -701,7 +700,7 @@ footer p {
 
 .form-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
 }
 

@@ -8,7 +8,7 @@
 
 @media (min-width: 768px) {
   .rab-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 }
 

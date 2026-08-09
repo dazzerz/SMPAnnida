@@ -8,7 +8,7 @@
 .auth-page {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   position: relative;
   overflow: hidden;
 }
@@ -110,8 +110,7 @@
 }
 
 .stats-mini {
-  display: flex;
-  gap: 1rem;
+  display:flex;flex-wrap:wrap;gap: 1rem;
   margin-bottom: 1rem;
 }
 

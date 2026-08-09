@@ -198,7 +198,7 @@
                             Unggah file .csv yang berisi kolom nama_lengkap, nisn, kelas, dan status_aktif.<br>
                             <a href="docs/Format_Import_Siswa.csv" download="Format_Import_Siswa.csv" style="color: var(--primary); font-weight: 500; text-decoration: none; margin-top: 5px; display: inline-block;">⬇️ Unduh Format CSV</a>
                         </p>
-                        <div style="display: flex; gap: 10px; align-items: center;">
+                        <div style="display:flex;flex-wrap:wrap;gap: 10px; align-items: center;">
                             <input type="file" id="file-import-siswa" accept=".csv" class="input-control" style="flex: 1;">
                             <button id="btn-import-siswa" class="btn-primary">Import Data</button>
                         </div>
@@ -260,7 +260,7 @@
                     <!-- TAB 2: Rekap Per Siswa -->
                     <div id="tab-rekap-siswa" class="tab-content" style="display:none">
                         <!-- Filter + Tabel Rekap -->
-                        <div class="filter-bar" style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div class="filter-bar" style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
                             <select id="rekap-kelas" class="input-control">
                                 <option value="">-- Pilih Kelas --</option>
                             </select>
@@ -296,7 +296,7 @@
                     <!-- TAB 3: Pivot Harian -->
                     <div id="tab-pivot-absensi" class="tab-content" style="display:none">
                         <!-- Filter + Grid Pivot -->
-                        <div class="filter-bar" style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div class="filter-bar" style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
                             <select id="filter-kelas-rekap-absensi" class="input-control"><option value="">-- Pilih Kelas --</option></select>
                             <input type="date" id="filter-dari-absensi" class="input-control">
                             <input type="date" id="filter-sampai-absensi" class="input-control">
@@ -319,7 +319,7 @@
                     <div id="tab-export-absensi" class="tab-content" style="display:none">
                         <div class="card glass" style="margin-bottom: 20px;">
                             <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Export Rekap Absensi Bulanan</h2>
-                            <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end;">
+                            <div style="display:flex;flex-wrap:wrap;gap: 15px; flex-wrap: wrap; align-items: flex-end;">
                                 <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                     <label>Tahun Ajaran</label>
                                     <select id="export-tahun" class="input-control">
@@ -411,7 +411,7 @@
                     <!-- Tampilan Rapor Sederhana -->
                     <div class="card glass">
                         <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Lihat Rekap Nilai Siswa (Rapor)</h2>
-                        <div style="display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; align-items: flex-end;">
+                        <div style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 15px; flex-wrap: wrap; align-items: flex-end;">
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Kelas</label>
                                 <select id="filter-kelas-rekap" class="input-control">
@@ -536,7 +536,7 @@
 
                     <div class="card glass">
                         <!-- Filters -->
-                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Status</label>
                                 <select id="filter-status-siswa" class="input-control">
@@ -579,7 +579,7 @@
                         <!-- Pagination -->
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 0.9rem;">
                             <div id="siswa-info">Menampilkan 0 dari 0 data</div>
-                            <div style="display: flex; gap: 5px;" id="siswa-pagination">
+                            <div style="display:flex;flex-wrap:wrap;gap: 5px;" id="siswa-pagination">
                                 <!-- Pagination buttons generated by JS -->
                             </div>
                         </div>
@@ -658,7 +658,7 @@
                                     <div style="flex: 0 0 80px;"></div>
                                 </div>
                                 
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; font-size: 14px;">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; margin-bottom: 20px; font-size: 14px;">
                                     <div>
                                         <table style="width: 100%;">
                                             <tr><td style="width: 120px;">Nama Siswa</td><td>: <strong id="rapor-nama">-</strong></td></tr>
@@ -691,7 +691,7 @@
                                 </table>
 
                                 <!-- Statistik & Kehadiran -->
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 14px; margin-bottom: 20px;">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; font-size: 14px; margin-bottom: 20px;">
                                     <!-- Kiri: Statistik Nilai -->
                                     <div>
                                         <h4 style="margin: 0 0 10px 0; font-size: 14px; border-bottom: 1px solid #000; display: inline-block;">Ringkasan Nilai</h4>
@@ -722,7 +722,7 @@
                                 </div>
 
                                 <!-- Tanda Tangan -->
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; font-size: 14px; text-align: center; margin-top: 30px;">
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; font-size: 14px; text-align: center; margin-top: 30px;">
                                     <div>
                                         <p style="margin: 0 0 60px 0;">Mengetahui,<br>Orang Tua / Wali Siswa</p>
                                         <p style="margin: 0; font-weight: bold; text-decoration: underline;">( ........................................... )</p>
@@ -805,7 +805,7 @@
                     <!-- TAB PRIBADI -->
                     <div id="tab-tg-pribadi" class="tab-content" style="display: block;">
                         <div class="card glass" style="max-width: 600px; margin: 0 auto;">
-                            <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 25px;">
+                            <div style="display:flex;flex-wrap:wrap;gap: 15px; justify-content: center; margin-bottom: 25px;">
                                 <div style="text-align: center; flex: 1;">
                                     <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Tanggal</div>
                                     <div id="tg-date" style="font-size: 1.2rem; font-weight: 600;">-</div>
@@ -843,7 +843,7 @@
                             </div>
 
                             <div style="text-align: center;">
-                                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                <div style="display:flex;flex-wrap:wrap;gap: 10px; margin-bottom: 10px;">
                                     <button id="btn-tg-camera" class="btn btn-primary" style="flex: 1;" disabled>Nyalakan Kamera</button>
                                     <input type="file" id="tg-file-input" accept="image/*" style="display: none;">
                                 </div>
@@ -888,7 +888,7 @@
 
                     <div class="card glass">
                         <!-- Filters -->
-                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Status</label>
                                 <select id="filter-status-guru" class="input-control">
@@ -945,7 +945,7 @@
 
                     <div class="card glass">
                         <!-- Filters -->
-                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
                             <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                 <label>Status</label>
                                 <select id="filter-status-mapel" class="input-control">
@@ -1038,7 +1038,7 @@
                             </div>
                             <div class="card glass">
                                 <!-- Filters -->
-                                <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                                <div style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
                                     <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
                                         <label>Tingkat</label>
                                         <select id="filter-tingkat-kelas" class="input-control">
@@ -1130,7 +1130,7 @@
                         <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Import Wizard</h2>
                         <p style="margin-bottom: 20px; font-size: 0.9rem; color: var(--text-muted);">Import harus dilakukan secara berurutan. Pilih file Excel Anda untuk memulai.</p>
                         
-                        <div style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color);">
+                        <div style="display:flex;flex-wrap:wrap;gap: 15px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color);">
                             <div class="form-group" style="margin-bottom: 0; min-width: 250px;">
                                 <label>Pilih Tahap Import</label>
                                 <select id="dm-type" class="input-control">
@@ -1154,7 +1154,7 @@
                         <div id="panel-import-action" style="display: none;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                                 <h3 style="font-size: 1rem; margin: 0;">Preview Data</h3>
-                                <div style="display: flex; gap: 10px;">
+                                <div style="display:flex;flex-wrap:wrap;gap: 10px;">
                                     <button id="btn-dm-clear" class="btn btn-outline">Clear Preview</button>
                                     <button id="btn-dm-import" class="btn-primary">Import Data Sekarang</button>
                                 </div>
@@ -1169,7 +1169,7 @@
                                 </select>
                             </div>
 
-                            <div style="display: flex; gap: 15px; font-size: 0.9rem; margin-bottom: 15px;">
+                            <div style="display:flex;flex-wrap:wrap;gap: 15px; font-size: 0.9rem; margin-bottom: 15px;">
                                 <span>Total: <strong id="prev-total">0</strong></span>
                                 <span style="color: var(--success);">Valid: <strong id="prev-valid">0</strong></span>
                                 <span style="color: var(--warning);">Update: <strong id="prev-update">0</strong></span>
@@ -1214,7 +1214,7 @@
             <form id="form-guru">
                 <input type="hidden" id="guru-id">
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px;">
                     <div class="form-group">
                         <label>NIP</label>
                         <input type="text" id="guru-nip" class="input-control" placeholder="Nomor Induk Pegawai" required>
@@ -1282,7 +1282,7 @@
             <form id="form-mapel">
                 <input type="hidden" id="mapel-id">
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px;">
                     <div class="form-group">
                         <label>Kode Mapel</label>
                         <input type="text" id="mapel-kode" class="input-control" placeholder="Contoh: MTK01" required>
@@ -1374,7 +1374,7 @@
             <form id="form-kelas">
                 <input type="hidden" id="kelas-id">
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px;">
                     <div class="form-group">
                         <label>Nama Kelas</label>
                         <input type="text" id="kelas-nama" class="input-control" placeholder="Contoh: 7A" required>
@@ -1425,7 +1425,7 @@
             <form id="form-jadwal">
                 <input type="hidden" id="jadwal-id">
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px;">
                     <div class="form-group">
                         <label>Tahun Ajaran</label>
                         <select id="jadwal-academic-year" class="input-control" required>
@@ -1504,7 +1504,7 @@
             <form id="form-siswa">
                 <input type="hidden" id="siswa-id">
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px;">
                     <div class="form-group">
                         <label>NIS</label>
                         <input type="text" id="siswa-nis" class="input-control" required>

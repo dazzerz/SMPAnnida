@@ -504,8 +504,7 @@ img {
 }
 
 .modal-footer {
-  display: flex;
-  gap: var(--space-md);
+  display:flex;flex-wrap:wrap;gap: var(--space-md);
   justify-content: flex-end;
   padding: var(--space-lg) var(--space-xl);
   border-top: 1px solid var(--border-color);

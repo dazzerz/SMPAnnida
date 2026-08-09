@@ -1,4 +1,4 @@
-.attendance-toggle { display: flex; gap: 8px; flex-wrap: wrap; }
+.attendance-toggle { display:flex;flex-wrap:wrap;gap: 8px; flex-wrap: wrap; }
 .attendance-toggle label { cursor: pointer; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); font-size: 13px; font-weight: 500; transition: all 0.2s; user-select: none; }
 .attendance-toggle input[type="radio"] { display: none; }
 .attendance-toggle input[value="Hadir"]:checked + label { background-color: var(--success); color: white; border-color: var(--success); }
