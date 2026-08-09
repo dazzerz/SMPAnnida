@@ -5,6 +5,7 @@
 /* Tab Navigation Styles */
 .tab-nav {
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 25px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
