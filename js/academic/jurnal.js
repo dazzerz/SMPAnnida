@@ -51,6 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
+    let currentDaySchedules = [];
+
     async function initJurnal() {
         if (isInit) return;
         isInit = true;
@@ -59,13 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const { data: { session } } = await db.auth.getSession();
             authUserId = session?.user?.id;
 
-            await loadDropdowns();
             await loadHistory();
+            await loadSchedulesForDate();
             
             // Event Listeners
             btnSave.addEventListener('click', saveJurnal);
-            btnSave.disabled = false;
-
+            
             if (elFilterMonth) elFilterMonth.addEventListener('change', loadHistory);
             if (btnExport) btnExport.addEventListener('click', exportToExcel);
             
@@ -75,7 +76,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnSave.disabled = !isValid;
             };
 
-            [elDate, elClass, elSubject].forEach(el => el.addEventListener('change', validate));
+            elDate.addEventListener('change', async () => {
+                await loadSchedulesForDate();
+                validate();
+            });
+
+            elClass.addEventListener('change', () => {
+                populateSubjects();
+                validate();
+            });
+
+            elSubject.addEventListener('change', () => {
+                populateTime();
+                validate();
+            });
+
             [elTime, elMaterial].forEach(el => el.addEventListener('input', validate));
 
         } catch (e) {
@@ -83,50 +98,86 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function loadDropdowns() {
+    async function loadSchedulesForDate() {
+        if (!elDate.value) return;
+        const dayName = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][new Date(elDate.value + 'T00:00:00').getDay()];
+        
         try {
-            // Load Classes
-            const { data: clsData } = await db.from('classes').select('id, nama_kelas').order('nama_kelas');
-            if (clsData) {
-                elClass.innerHTML = '<option value="">-- Pilih Kelas --</option>' + 
-                    clsData.map(c => {
-                        classesMap[c.id] = c.nama_kelas;
-                        return `<option value="${c.id}">${escapeHTML(c.nama_kelas)}</option>`;
-                    }).join('');
-            }
+            let query = db.from('class_schedules')
+                .select('start_time, end_time, teacher_id, classes(id, nama_kelas), subjects(id, nama_mapel), teachers(nama)')
+                .eq('day_of_week', dayName)
+                .eq('active', 'Aktif')
+                .order('start_time', { ascending: true });
 
-            // Load Subjects (Admin gets all, Teacher gets theirs)
-            let subjData = [];
-            if (window.isAdmin) {
-                const { data } = await db.from('subjects').select('id, nama_mapel').order('nama_mapel');
-                subjData = data || [];
-            } else if (window.currentTeacher) {
-                const { data } = await db.from('class_schedules')
-                    .select('teacher_id, subjects(id, nama_mapel), teachers(nama)');
-                
-                if (data) {
-                    const map = new Map();
-                    data.forEach(d => {
-                        const isMySubject = d.teacher_id === window.currentTeacher.id;
-                        const isDewanGuru = d.teachers && d.teachers.nama && d.teachers.nama.toLowerCase().includes('dewan guru');
-                        if (d.subjects && (isMySubject || isDewanGuru)) {
-                            map.set(d.subjects.id, d.subjects);
-                        }
-                    });
-                    subjData = Array.from(map.values()).sort((a,b) => a.nama_mapel.localeCompare(b.nama_mapel));
+            const { data, error } = await query;
+            if (error) throw error;
+            
+            currentDaySchedules = data || [];
+            
+            // Load Classes based on schedules
+            let classMap = new Map();
+            currentDaySchedules.forEach(d => {
+                if (window.isAdmin) {
+                    if (d.classes) classMap.set(d.classes.id, d.classes);
+                } else if (window.currentTeacher) {
+                    const isMySubject = d.teacher_id === authUserId;
+                    const isDewanGuru = d.teachers && d.teachers.nama && d.teachers.nama.toLowerCase().includes('dewan guru');
+                    if (d.classes && (isMySubject || isDewanGuru)) {
+                        classMap.set(d.classes.id, d.classes);
+                    }
                 }
-            }
+            });
 
-            if (subjData.length > 0) {
-                elSubject.innerHTML = '<option value="">-- Pilih Mapel --</option>' + 
-                    subjData.map(s => {
-                        subjectsMap[s.id] = s.nama_mapel;
-                        return `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`;
-                    }).join('');
-            }
+            const clsData = Array.from(classMap.values()).sort((a,b) => a.nama_kelas.localeCompare(b.nama_kelas));
+            
+            elClass.innerHTML = '<option value="">-- Pilih Kelas --</option>' + 
+                clsData.map(c => `<option value="${c.id}">${escapeHTML(c.nama_kelas)}</option>`).join('');
+                
+            elSubject.innerHTML = '<option value="">-- Pilih Mapel --</option>';
+            elTime.value = '';
 
         } catch (e) {
-            console.error("Failed to load dropdowns:", e);
+            console.error("Failed to load schedules for date:", e);
+        }
+    }
+
+    function populateSubjects() {
+        elSubject.innerHTML = '<option value="">-- Pilih Mapel --</option>';
+        elTime.value = '';
+        if (!elClass.value) return;
+
+        let subjMap = new Map();
+        currentDaySchedules.forEach(d => {
+            if (d.classes && d.classes.id === elClass.value) {
+                if (window.isAdmin) {
+                    if (d.subjects) subjMap.set(d.subjects.id, d.subjects);
+                } else if (window.currentTeacher) {
+                    const isMySubject = d.teacher_id === authUserId;
+                    const isDewanGuru = d.teachers && d.teachers.nama && d.teachers.nama.toLowerCase().includes('dewan guru');
+                    if (d.subjects && (isMySubject || isDewanGuru)) {
+                        subjMap.set(d.subjects.id, d.subjects);
+                    }
+                }
+            }
+        });
+
+        const subjData = Array.from(subjMap.values()).sort((a,b) => a.nama_mapel.localeCompare(b.nama_mapel));
+        elSubject.innerHTML += subjData.map(s => `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`).join('');
+    }
+
+    function populateTime() {
+        elTime.value = '';
+        if (!elClass.value || !elSubject.value) return;
+
+        const schedule = currentDaySchedules.find(d => 
+            d.classes && d.classes.id === elClass.value && 
+            d.subjects && d.subjects.id === elSubject.value
+        );
+
+        if (schedule && schedule.start_time && schedule.end_time) {
+            const startStr = schedule.start_time.substring(0, 5);
+            const endStr = schedule.end_time.substring(0, 5);
+            elTime.value = `${startStr} - ${endStr}`;
         }
     }
 
