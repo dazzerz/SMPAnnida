@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     db.from('students').select('id, nama_lengkap, nisn').eq('kelas', kelas),
                     db.from('grades').select('student_id, mata_pelajaran, nilai').eq('semester', semester).eq('tahun_ajaran', yearStr),
                     db.from('attendance_students').select('status').eq('student_id', studentId).gte('attendance_date', startDate).lte('attendance_date', endDate),
-                    db.from('teacher_journals').select('*', { count: 'exact', head: true }).eq('class_id', kelas).gte('journal_date', startDate).lte('journal_date', endDate),
+                    db.from('teacher_journals').select('id, classes!inner(nama_kelas)', { count: 'exact', head: true }).eq('classes.nama_kelas', kelas).gte('date', startDate).lte('date', endDate),
                     db.from('classes').select('nama_kelas, teachers(nama)').eq('nama_kelas', kelas).single()
                 ]);
 

@@ -794,11 +794,45 @@
                         </div>
                         
                         <div class="form-group" style="margin-bottom: 0;">
-                            <label>Catatan Kegiatan / Hambatan</label>
-                            <textarea id="jurnal-notes" class="input-control" rows="4" placeholder="Masukkan rincian kegiatan atau catatan khusus..." style="resize: vertical;"></textarea>
-                        </div>
-                    </div>
-                </section>
+                              <label>Catatan Kegiatan / Hambatan</label>
+                              <textarea id="jurnal-notes" class="input-control" rows="4" placeholder="Masukkan rincian kegiatan atau catatan khusus..." style="resize: vertical;"></textarea>
+                          </div>
+                      </div>
+
+                      <!-- Riwayat Jurnal -->
+                      <div class="card glass" style="margin-top: 25px;">
+                          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                              <h2 style="font-size: 1.2rem; margin: 0;">Riwayat Jurnal (Bulan Ini)</h2>
+                              <div style="display: flex; gap: 10px;">
+                                  <input type="month" id="jurnal-filter-month" class="input-control" style="width: auto;">
+                                  <button id="btn-jurnal-export" class="btn-primary" style="background-color: var(--success); border-color: var(--success);">
+                                      📊 Export Excel
+                                  </button>
+                              </div>
+                          </div>
+                          
+                          <div class="table-responsive">
+                              <table class="data-table">
+                                  <thead>
+                                      <tr>
+                                          <th>Tanggal</th>
+                                          <th>Guru</th>
+                                          <th>Kelas</th>
+                                          <th>Mapel</th>
+                                          <th>Jam Ke-</th>
+                                          <th>Materi Pokok</th>
+                                          <th style="width: 100px; text-align: center;">Aksi</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="jurnal-history-tbody">
+                                      <tr>
+                                          <td colspan="7" style="text-align: center; color: var(--text-muted);">Memuat riwayat jurnal...</td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </section>
 
                 <!-- Absensi Guru Section -->
                 <section id="absensi-guru" class="page-section" style="display: none;">
@@ -1591,6 +1625,7 @@
     <script type="module" src="../../js/academic/kelas.js" defer></script>
     <script type="module" src="../../js/academic/siswa.js" defer></script>
     <script type="module" src="../../js/academic/migration.js?v=7" defer></script>
+    <script type="module" src="../../js/academic/jurnal.js?v=1" defer></script>
     
     <div id="toast-container"></div>
     <script type="module" src="../../js/academic/main.js?v=8" defer></script>
