@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const tbodyHistory = document.getElementById('jurnal-history-tbody');
     const elFilterMonth = document.getElementById('jurnal-filter-month');
+    const elFilterTeacher = document.getElementById('jurnal-filter-teacher');
     const btnExport = document.getElementById('btn-jurnal-export');
 
     let isInit = false;
@@ -66,6 +67,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const { data: { session } } = await db.auth.getSession();
             authUserId = session?.user?.id;
 
+            if (window.isAdmin) {
+                if (elFilterTeacher) {
+                    elFilterTeacher.style.display = 'block';
+                    elFilterTeacher.addEventListener('change', loadHistory);
+                    await loadAdminTeachers();
+                }
+                const thColTeacher = document.getElementById('jurnal-col-teacher');
+                if (thColTeacher) thColTeacher.style.display = '';
+            }
+
             await loadHistory();
             await loadSchedulesForDate();
             
@@ -100,6 +111,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (e) {
             console.error("Init Jurnal Error:", e);
+        }
+    }
+
+    async function loadAdminTeachers() {
+        try {
+            const { data } = await db.from('profiles').select('id, full_name, role').order('full_name');
+            if (data && elFilterTeacher) {
+                data.filter(p => p.role !== 'admin' && p.role !== 'siswa').forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t.id;
+                    opt.textContent = t.full_name;
+                    elFilterTeacher.appendChild(opt);
+                });
+            }
+        } catch (e) {
+            console.error("Failed to load teachers for filter:", e);
         }
     }
 
@@ -208,7 +235,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 .lte('date', endDate)
                 .order('date', { ascending: false });
 
-            if (!window.isAdmin && authUserId) {
+            if (window.isAdmin && elFilterTeacher && elFilterTeacher.value) {
+                query = query.eq('teacher_id', elFilterTeacher.value);
+            } else if (!window.isAdmin && authUserId) {
                 query = query.eq('teacher_id', authUserId);
             }
 
@@ -239,10 +268,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                 }
 
+                const teacherColHtml = window.isAdmin ? `<td><strong>${escapeHTML(pName)}</strong></td>` : '';
+
                 return `
                     <tr style="background: rgba(255,255,255,0.02);">
                         <td>${escapeHTML(dFormatted)}</td>
-                        <td><strong>${escapeHTML(pName)}</strong></td>
+                        ${teacherColHtml}
                         <td>${escapeHTML(cName)}</td>
                         <td>${escapeHTML(sName)}</td>
                         <td>${escapeHTML(j.jam_pelajaran)}</td>
@@ -300,6 +331,23 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSave.textContent = 'Menyimpan...';
 
         try {
+            // Anti-duplicate check
+            const { data: existing, error: errExist } = await db.from('teacher_journals')
+                .select('id, profiles(full_name)')
+                .eq('date', payload.date)
+                .eq('class_id', payload.class_id)
+                .eq('jam_pelajaran', payload.jam_pelajaran)
+                .eq('subject_id', payload.subject_id)
+                .maybeSingle();
+
+            if (existing) {
+                const existingTeacherName = existing.profiles?.full_name || 'Guru lain';
+                showToast(`Gagal: Jurnal untuk jam ini sudah diisi oleh ${existingTeacherName}`, 'error');
+                btnSave.disabled = false;
+                btnSave.textContent = 'Simpan Jurnal';
+                return;
+            }
+
             const { error } = await db.from('teacher_journals').insert(payload);
             if (error) throw error;
             
