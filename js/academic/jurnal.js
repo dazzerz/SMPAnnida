@@ -31,12 +31,21 @@ document.addEventListener('DOMContentLoaded', () => {
         elDate.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     }
 
+    const tryInitJurnal = () => {
+        if (isInit) return;
+        if (window.currentUser !== undefined) {
+            if (window.isAdmin || window.currentTeacher) {
+                initJurnal();
+            }
+        } else {
+            setTimeout(tryInitJurnal, 100);
+        }
+    };
+
     const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
             if (mutation.target.id === 'jurnal-guru' && mutation.target.style.display !== 'none') {
-                if (!isInit && (window.isAdmin || window.currentTeacher)) {
-                    initJurnal();
-                }
+                tryInitJurnal();
             }
         });
     });
@@ -44,11 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(section, { attributes: true, attributeFilter: ['style'] });
 
     if (section.style.display !== 'none') {
-        setTimeout(() => {
-            if (window.isAdmin || window.currentTeacher) {
-                initJurnal();
-            }
-        }, 1000);
+        tryInitJurnal();
     }
 
     let currentDaySchedules = [];
@@ -120,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (window.isAdmin) {
                     if (d.classes) classMap.set(d.classes.id, d.classes);
                 } else if (window.currentTeacher) {
-                    const isMySubject = d.teacher_id === authUserId;
+                    const isMySubject = d.teacher_id === window.currentTeacher.id;
                     const isDewanGuru = d.teachers && d.teachers.nama && d.teachers.nama.toLowerCase().includes('dewan guru');
                     if (d.classes && (isMySubject || isDewanGuru)) {
                         classMap.set(d.classes.id, d.classes);
@@ -152,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (window.isAdmin) {
                     if (d.subjects) subjMap.set(d.subjects.id, d.subjects);
                 } else if (window.currentTeacher) {
-                    const isMySubject = d.teacher_id === authUserId;
+                    const isMySubject = d.teacher_id === window.currentTeacher.id;
                     const isDewanGuru = d.teachers && d.teachers.nama && d.teachers.nama.toLowerCase().includes('dewan guru');
                     if (d.subjects && (isMySubject || isDewanGuru)) {
                         subjMap.set(d.subjects.id, d.subjects);
