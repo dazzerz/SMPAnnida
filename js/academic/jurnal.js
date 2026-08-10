@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isInit = false;
     let classesMap = {};
     let subjectsMap = {};
+    let authUserId = null;
 
     // Default current month filter
     const today = new Date();
@@ -55,6 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
         isInit = true;
 
         try {
+            const { data: { session } } = await db.auth.getSession();
+            authUserId = session?.user?.id;
+
             await loadDropdowns();
             await loadHistory();
             
@@ -148,8 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 .lte('date', endDate)
                 .order('date', { ascending: false });
 
-            if (!window.isAdmin && window.currentTeacher) {
-                query = query.eq('teacher_id', window.currentTeacher.id);
+            if (!window.isAdmin && authUserId) {
+                query = query.eq('teacher_id', authUserId);
             }
 
             const { data, error } = await query;
@@ -169,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const parts = j.date.split('-');
                 const dFormatted = parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : j.date;
 
-                const isOwner = window.currentTeacher && j.teacher_id === window.currentTeacher.id;
+                const isOwner = !window.isAdmin && j.teacher_id === authUserId;
                 const canDelete = window.isAdmin || isOwner;
 
                 let actionHtml = '';
@@ -227,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const payload = {
-            teacher_id: window.currentTeacher ? window.currentTeacher.id : (await db.auth.getSession()).data.session.user.id,
+            teacher_id: authUserId,
             date: elDate.value,
             class_id: elClass.value,
             subject_id: elSubject.value,
@@ -291,8 +295,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 .lte('date', endDate)
                 .order('date', { ascending: true });
 
-            if (!window.isAdmin && window.currentTeacher) {
-                query = query.eq('teacher_id', window.currentTeacher.id);
+            if (!window.isAdmin && authUserId) {
+                query = query.eq('teacher_id', authUserId);
             }
 
             const { data, error } = await query;
