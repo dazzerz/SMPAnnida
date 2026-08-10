@@ -355,10 +355,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tbodyRekap) tbodyRekap.innerHTML = '<tr><td colspan="7" style="text-align: center;">Memuat data...</td></tr>';
         
         try {
-            // 1. Fetch teachers to map user_id to name
-            const { data: tData } = await db.from('teachers').select('user_id, nama');
+            // 1. Fetch teachers to map id to name
+            const { data: tData } = await db.from('teachers').select('id, nama');
             const teacherMap = {};
-            if (tData) tData.forEach(t => { if (t.user_id) teacherMap[t.user_id] = t.nama; });
+            if (tData) tData.forEach(t => { if (t.id) teacherMap[t.id] = t.nama; });
 
             // 2. Fetch attendance
             const { data, error } = await db.from('teacher_attendance')
@@ -374,10 +374,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             if (tbodyRekap) tbodyRekap.innerHTML = data.map((r, i) => {
-                let nama = 'Guru';
+                let nama = teacherMap[r.teacher_id] || 'Guru';
                 
                 // Ekstrak nama dari URL foto masuk jika ada
-                if (r.photo_url_in) {
+                if (nama === 'Guru' && r.photo_url_in) {
                     try {
                         const urlParts = r.photo_url_in.split('/');
                         let filename = decodeURIComponent(urlParts[urlParts.length - 1]);
