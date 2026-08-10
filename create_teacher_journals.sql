@@ -1,3 +1,6 @@
+-- Drop existing table if it exists to ensure schema is fresh
+DROP TABLE IF EXISTS public.teacher_journals CASCADE;
+
 -- Create teacher_journals table
 CREATE TABLE IF NOT EXISTS public.teacher_journals (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -20,7 +23,7 @@ CREATE POLICY "Admins can view all journals"
 ON public.teacher_journals 
 FOR SELECT 
 USING (
-  (SELECT email FROM auth.users WHERE id = auth.uid()) = 'daffa.al.akhdaan@gmail.com'
+  (auth.jwt() ->> 'email') = 'daffa.al.akhdaan@gmail.com'
 );
 
 -- Admin can insert, update, delete all journals
@@ -28,21 +31,21 @@ CREATE POLICY "Admins can insert journals"
 ON public.teacher_journals 
 FOR INSERT 
 WITH CHECK (
-  (SELECT email FROM auth.users WHERE id = auth.uid()) = 'daffa.al.akhdaan@gmail.com'
+  (auth.jwt() ->> 'email') = 'daffa.al.akhdaan@gmail.com'
 );
 
 CREATE POLICY "Admins can update journals" 
 ON public.teacher_journals 
 FOR UPDATE 
 USING (
-  (SELECT email FROM auth.users WHERE id = auth.uid()) = 'daffa.al.akhdaan@gmail.com'
+  (auth.jwt() ->> 'email') = 'daffa.al.akhdaan@gmail.com'
 );
 
 CREATE POLICY "Admins can delete journals" 
 ON public.teacher_journals 
 FOR DELETE 
 USING (
-  (SELECT email FROM auth.users WHERE id = auth.uid()) = 'daffa.al.akhdaan@gmail.com'
+  (auth.jwt() ->> 'email') = 'daffa.al.akhdaan@gmail.com'
 );
 
 -- Teachers can view their own journals
