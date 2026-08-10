@@ -804,7 +804,7 @@
                           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                               <h2 style="font-size: 1.2rem; margin: 0;">Riwayat Jurnal (Bulan Ini)</h2>
                               <div style="display: flex; gap: 10px;">
-                                  <input type="month" id="jurnal-filter-month" class="input-control" style="width: auto;">
+                                  <select id="jurnal-filter-teacher" class="input-control" style="width: auto; display: none;"><option value="">Semua Guru</option></select><input type="month" id="jurnal-filter-month" class="input-control" style="width: auto;">
                                   <button id="btn-jurnal-export" class="btn-primary" style="background-color: var(--success); border-color: var(--success);">
                                       📊 Export Excel
                                   </button>
@@ -1624,7 +1624,7 @@
     <script type="module" src="../../js/academic/kelas.js" defer></script>
     <script type="module" src="../../js/academic/siswa.js" defer></script>
     <script type="module" src="../../js/academic/migration.js?v=7" defer></script>
-    <script type="module" src="../../js/academic/jurnal.js?v=4" defer></script>
+    <script type="module" src="../../js/academic/jurnal.js?v=5" defer></script>
     
     <div id="toast-container"></div>
     <script type="module" src="../../js/academic/main.js?v=8" defer></script>

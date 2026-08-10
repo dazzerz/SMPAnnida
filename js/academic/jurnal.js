@@ -268,12 +268,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                 }
 
-                const teacherColHtml = window.isAdmin ? `<td><strong>${escapeHTML(pName)}</strong></td>` : '';
-
                 return `
                     <tr style="background: rgba(255,255,255,0.02);">
                         <td>${escapeHTML(dFormatted)}</td>
-                        ${teacherColHtml}
+                        <td><strong>${escapeHTML(pName)}</strong></td>
                         <td>${escapeHTML(cName)}</td>
                         <td>${escapeHTML(sName)}</td>
                         <td>${escapeHTML(j.jam_pelajaran)}</td>
