@@ -48,11 +48,11 @@ USING (
   (auth.jwt() ->> 'email') = 'daffa.al.akhdaan@gmail.com'
 );
 
--- Teachers can view their own journals
-CREATE POLICY "Teachers can view own journals" 
+-- Teachers can view all journals
+CREATE POLICY "Authenticated users can view all journals" 
 ON public.teacher_journals 
 FOR SELECT 
-USING (auth.uid() = teacher_id);
+USING (auth.role() = 'authenticated');
 
 -- Teachers can insert their own journals
 CREATE POLICY "Teachers can insert own journals" 
