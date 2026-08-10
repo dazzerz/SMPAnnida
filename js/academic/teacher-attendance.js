@@ -355,10 +355,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tbodyRekap) tbodyRekap.innerHTML = '<tr><td colspan="7" style="text-align: center;">Memuat data...</td></tr>';
         
         try {
-            // 1. Fetch teachers to map id to name
-            const { data: tData } = await db.from('teachers').select('id, nama');
+            // 1. Fetch profiles to map id to full_name
+            const { data: pData } = await db.from('profiles').select('id, full_name');
             const teacherMap = {};
-            if (tData) tData.forEach(t => { if (t.id) teacherMap[t.id] = t.nama; });
+            if (pData) pData.forEach(p => { if (p.id) teacherMap[p.id] = p.full_name; });
 
             // 2. Fetch attendance
             const { data, error } = await db.from('teacher_attendance')
