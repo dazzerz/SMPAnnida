@@ -94,26 +94,8 @@ function initSection(sectionId) {
 // ── Inject SPA sidebar ─────────────────────────────
 function injectFinanceSidebar() {
   injectSidebar('sidebar', 'transactions');
-
-  const financeNavGroup = document.getElementById('nav-group-finance');
-  if (financeNavGroup) {
-    financeNavGroup.innerHTML = `
-      <div class="nav-group-title">Keuangan</div>
-      <a href="#transactions" class="nav-item active" data-target="transactions">💸 Transaksi Kas</a>
-      <a href="#budget" class="nav-item" data-target="budget">🎯 Budget Bulanan</a>
-      <a href="#rab" class="nav-item" data-target="rab">📋 RAB Kelas</a>
-      <a href="#reports" class="nav-item" data-target="reports">📄 Laporan</a>
-      <a href="#settings" class="nav-item" data-target="settings">⚙️ Pengaturan</a>
-    `;
-
-    // SPA click handler
-    financeNavGroup.addEventListener('click', (e) => {
-      const link = e.target.closest('[data-target]');
-      if (!link) return;
-      e.preventDefault();
-      navigateTo(link.getAttribute('data-target'));
-    });
-  }
+  // We rely on core/layout.js for the sidebar HTML.
+  // Native hash navigation will trigger our window hashchange listener.
 }
 
 // ══════════════════════════════════════════════════════
