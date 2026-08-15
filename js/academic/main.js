@@ -44,9 +44,11 @@ async function checkAuth() {
             window.isGuest = false;
             localStorage.removeItem('isGuest');
 
-            const ADMIN_EMAIL = 'daffa.al.akhdaan@gmail.com';
             window.currentUser = user;
-            window.isAdmin = (user.email === ADMIN_EMAIL);
+
+            // P0 Fix: Dynamic Admin Check via user_roles table
+            const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
+            window.isAdmin = (roleData && roleData.role === 'admin');
 
             if (!window.isAdmin) {
                 const { data: teacherData } = await db
