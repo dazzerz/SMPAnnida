@@ -229,7 +229,7 @@
    MAIN CONTENT AREA
    ===================================================== */
 .main-content {
-  margin-left: var(--sidebar-width);
+  margin-left: var(--sidebar-width) !important;
   flex: 1;
   min-height: 100vh;
   display: flex;
