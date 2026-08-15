@@ -30,7 +30,15 @@ export function injectSidebar(containerId, activeMenuId) {
 
       <div class="nav-group" id="nav-group-academic">
         <div class="nav-group-title">Akademik & Kesiswaan</div>
-        <a href="${basePath}pages/academic/dashboard.html" class="nav-item ${activeMenuId === 'academic' ? 'active' : ''}">👨‍🎓 Data Siswa</a>
+        <a href="${basePath}pages/academic/dashboard.html#dashboard" class="nav-item nav-link" data-target="dashboard">📊 Dashboard</a>
+        <a href="${basePath}pages/academic/dashboard.html#data-siswa" class="nav-item nav-link" data-target="data-siswa">👨‍🎓 Data Siswa</a>
+        <a href="${basePath}pages/academic/dashboard.html#jadwal" class="nav-item nav-link" data-target="jadwal">📅 Jadwal</a>
+        <a href="${basePath}pages/academic/dashboard.html#nilai" class="nav-item nav-link" data-target="nilai">📝 Nilai</a>
+        <a href="${basePath}pages/academic/dashboard.html#rapor" class="nav-item nav-link" data-target="rapor">📄 Rapor</a>
+        <a href="${basePath}pages/academic/dashboard.html#absensi" class="nav-item nav-link" data-target="absensi">📋 Absensi Siswa</a>
+        <a href="${basePath}pages/academic/dashboard.html#jurnal-guru" class="nav-item nav-link" data-target="jurnal-guru">📓 Jurnal Guru</a>
+        <a href="${basePath}pages/academic/dashboard.html#absensi-guru" class="nav-item nav-link" data-target="absensi-guru">👨‍🏫 Absensi Guru</a>
+        <a href="${basePath}pages/academic/dashboard.html#data-migration" class="nav-item nav-link" data-target="data-migration">📥 Data Migration</a>
       </div>
 
       <div class="nav-group" id="nav-group-finance">
