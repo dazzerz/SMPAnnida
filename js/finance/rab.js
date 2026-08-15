@@ -1,11 +1,4 @@
-import { injectSidebar, injectTopbar } from '../core/layout.js';
-injectTopbar('topbar', {
-  greeting: 'Perencanaan',
-  title: 'RAB Kelas Annida 2',
-  rightHtml: ``
-});
-
-injectSidebar('sidebar', 'rab');
+// Layout injection removed — handled by entry.js SPA controller
 
 import supabaseClient from '../core/supabase.js';
 import { formatCurrency } from '../core/utils.js';

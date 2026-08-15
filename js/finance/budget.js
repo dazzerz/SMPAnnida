@@ -1,10 +1,4 @@
-import { injectSidebar, injectTopbar } from '../core/layout.js';
-injectSidebar('sidebar', 'budget');
-injectTopbar('topbar', {
-  greeting: 'Kelola',
-  title: 'Budget Bulanan',
-  rightHtml: '<button class="btn btn-primary btn-sm" id="add-budget-btn">＋ Tambah Budget</button>'
-});
+// Layout injection removed — handled by entry.js SPA controller
 
 // =====================================================
 // ANNIDA2FINANCE - Budget Module

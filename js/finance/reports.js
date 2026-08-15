@@ -1,11 +1,4 @@
-import { injectSidebar, injectTopbar } from '../core/layout.js';
-injectTopbar('topbar', {
-  greeting: 'Lihat &amp; Export',
-  title: 'Laporan Keuangan',
-  rightHtml: `<button class="btn btn-success btn-sm" id="export-pdf-btn" style="gap:0.4rem;"> 📄 Export PDF </button>`
-});
-
-injectSidebar('sidebar', 'reports');
+// Layout injection removed — handled by entry.js SPA controller
 
 // =====================================================
 // ANNIDA2FINANCE - Reports Module

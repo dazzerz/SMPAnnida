@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keuangan - SMP Annida</title>
+  <link rel="icon" href="../../assets/logo/1.png" type="image/png">
+  <link rel="stylesheet" href="../../css/finance/global.css">
+  <link rel="stylesheet" href="../../css/finance/dashboard.css">
+  <link rel="stylesheet" href="../../css/finance/rab.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/mobile.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .page-section { display: none; }
+    .page-section.active { display: block; }
+    .settings-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      max-width: 600px;
+    }
+    .settings-group { margin-bottom: 1.5rem; }
+    .settings-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .settings-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-body);
+      color: var(--text-primary);
+      border-radius: var(--radius-md);
+      font-family: monospace;
+    }
+    .settings-hint {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main-content">
+      <header class="topbar" id="topbar"></header>
+      <main class="page-content">
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SECTION: TRANSACTIONS -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section id="sec-transactions" class="page-section active">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Semua Transaksi</h1>
+              <p class="page-subtitle">Catat dan pantau setiap pemasukan & pengeluaranmu</p>
+            </div>
+          </div>
+          <div class="filter-bar">
+            <div class="search-input-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="search-input" id="search-input" placeholder="Cari keterangan transaksi..." />
+            </div>
+            <select class="filter-select" id="filter-type">
+              <option value="">Semua Tipe</option>
+              <option value="income">💚 Pemasukan</option>
+              <option value="expense">🔴 Pengeluaran</option>
+            </select>
+            <select class="filter-select" id="filter-category"><option value="">Semua Kategori</option></select>
+            <select class="filter-select" id="filter-month"><option value="">Semua Bulan</option></select>
+            <select class="filter-select" id="filter-sumber-dana">
+              <option value="">Semua Sumber</option>
+              <option value="bank">🏦 Bank</option>
+              <option value="kas">💵 Kas Tunai</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" id="clear-filter-btn">✕ Reset</button>
+          </div>
+          <div class="transactions-table-wrapper">
+            <table class="transactions-table" aria-label="Daftar transaksi">
+              <thead>
+                <tr>
+                  <th style="width:48px;"></th>
+                  <th style="width:35%;">Keterangan</th>
+                  <th>Tanggal</th>
+                  <th>Kategori</th>
+                  <th>Tipe</th>
+                  <th>Sumber</th>
+                  <th>Jumlah</th>
+                  <th style="width:90px;text-align:right;" id="th-aksi">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="transactions-tbody">
+                <tr><td colspan="8"><div class="empty-state" style="padding:3rem;"><div class="spinner spinner-lg"></div><div class="empty-state-title">Memuat transaksi...</div></div></td></tr>
+              </tbody>
+            </table>
+            <div class="pagination">
+              <div class="pagination-info" id="pagination-info">—</div>
+              <div class="pagination-controls" id="pagination-controls"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SECTION: BUDGET -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section id="sec-budget" class="page-section">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Anggaran Bulanan</h1>
+              <p class="page-subtitle">Atur berapa banyak kamu boleh belanjakan per kategori</p>
+            </div>
+            <div class="flex items-center gap-md">
+              <input type="month" class="filter-select" id="budget-month" style="color:var(--text-secondary);" />
+            </div>
+          </div>
+          <div class="budget-summary" id="budget-banner">
+            <div class="budget-summary-title">Total Budget Bulan Ini</div>
+            <div class="budget-summary-value" id="budget-total-amount">Rp0</div>
+            <div class="budget-summary-sub" id="budget-total-spent">Rp0 telah digunakan</div>
+          </div>
+          <div class="budget-grid stagger" id="budget-grid">
+            <div class="empty-state" style="grid-column:1/-1;padding:3rem;">
+              <div class="spinner spinner-lg"></div>
+              <div class="empty-state-title">Memuat budget...</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SECTION: RAB -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section id="sec-rab" class="page-section">
+          <!-- Copy the FULL main content from rab.html here -->
+          <!-- This is the dashboard-container with all RAB cards -->
+          <div class="dashboard-container" style="max-width:1200px;margin:0 auto;padding-bottom:4rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+              <h2 style="font-size:1.2rem; font-weight:700;">Pengaturan Parameter RAB</h2>
+              <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                <button class="btn btn-outline btn-sm" id="btn-export-excel" style="gap:0.4rem; background: #10b981; color: white; border-color: #10b981;">📊 Export Excel</button>
+                <button class="btn btn-outline btn-sm" id="btn-save-rab" style="gap:0.4rem;">💾 Simpan ke Database</button>
+                <button class="btn btn-primary btn-sm" id="btn-sync-budget" style="gap:0.4rem;">🔄 Sinkronkan ke Budget</button>
+              </div>
+            </div>
+            <div class="rab-grid">
+              <div class="rab-card">
+                <div class="rab-card-header">A. Data Siswa</div>
+                <div class="rab-card-body">
+                  <div class="form-group row"><label>Siswa Laki-laki</label><input type="number" id="siswa-l" class="form-input" value="8" min="0" /></div>
+                  <div class="form-group row"><label>Siswa Perempuan</label><input type="number" id="siswa-p" class="form-input" value="14" min="0" /></div>
+                  <div class="form-group row total-row"><label>Total Siswa</label><span id="total-siswa" class="rab-val">22</span></div>
+                </div>
+              </div>
+              <div class="rab-card">
+                <div class="rab-card-header">D. Total Modal Awal</div>
+                <div class="rab-card-body">
+                  <div class="form-group row"><label>Modal Laki-laki</label><span id="modal-l" class="rab-val">4.284.000</span></div>
+                  <div class="form-group row"><label>Modal Perempuan</label><span id="modal-p" class="rab-val">7.497.000</span></div>
+                  <div class="form-group row"><label>Total Modal Anak</label><span id="total-modal-anak" class="rab-val">11.781.000</span></div>
+                  <div class="form-group row"><label>Dana Darurat (30%)</label><span id="dana-darurat" class="rab-val">3.534.300</span></div>
+                  <div class="form-group row total-row mt-md"><label>Total Modal + Darurat</label><span id="total-modal-all" class="rab-val text-expense">15.315.300</span></div>
+                </div>
+              </div>
+              <div class="rab-card">
+                <div class="rab-card-header">B. Pemasukan Awal Pendaftaran</div>
+                <div class="rab-card-body" style="overflow-x:auto;">
+                  <table class="rab-table">
+                    <thead><tr><th>Keterangan</th><th width="80">Qty</th><th width="120">Nilai (Rp)</th></tr></thead>
+                    <tbody id="pendaftaran-tbody">
+                      <tr><td>Siswa Full Bayar</td><td><input type="number" class="form-input qty" value="3" data-target="full" /></td><td><input type="number" class="form-input val" value="2500000" data-target="full" /></td></tr>
+                      <tr><td>Siswa Bayar Sebagian</td><td><input type="number" class="form-input qty" value="3" data-target="sebagian" /></td><td><input type="number" class="form-input val" value="2500000" data-target="sebagian" /></td></tr>
+                      <tr><td>Siswa Bayar Khusus</td><td><input type="number" class="form-input qty" value="6" data-target="khusus" /></td><td><input type="number" class="form-input val" value="1850000" data-target="khusus" /></td></tr>
+                      <tr><td>Siswa Gratis</td><td><input type="number" class="form-input qty" value="10" data-target="gratis" /></td><td><input type="number" class="form-input val" value="0" data-target="gratis" /></td></tr>
+                    </tbody>
+                    <tfoot><tr class="total-row"><td colspan="2" align="right">Total Pemasukan Awal</td><td id="total-pendaftaran" class="rab-val text-income text-right" align="right">26.100.000</td></tr></tfoot>
+                  </table>
+                </div>
+              </div>
+              <div class="rab-card">
+                <div class="rab-card-header">C. Modal Pengadaan Siswa</div>
+                <div class="rab-card-body" style="overflow-x:auto;">
+                  <table class="rab-table">
+                    <thead><tr><th>Uraian</th><th width="150">Biaya/Siswa (Rp)</th></tr></thead>
+                    <tbody id="modal-tbody">
+                      <tr><td>Pendaftaran</td><td><input type="number" class="form-input val" value="50000" /></td></tr>
+                      <tr><td>Kitab</td><td><input type="number" class="form-input val" value="25000" /></td></tr>
+                      <tr><td>Buku LKS</td><td><input type="number" class="form-input val" value="66000" /></td></tr>
+                      <tr><td>Foto & Kartu Pelajar</td><td><input type="number" class="form-input val" value="50000" /></td></tr>
+                      <tr><td>Rapor</td><td><input type="number" class="form-input val" value="75000" /></td></tr>
+                      <tr><td>Seragam Batik</td><td><input type="number" class="form-input val" value="65000" /></td></tr>
+                      <tr><td>Seragam Olahraga</td><td><input type="number" class="form-input val" value="95000" /></td></tr>
+                      <tr><td>Bet & Lokasi</td><td><input type="number" class="form-input val" value="7500" /></td></tr>
+                      <tr><td>Baju Muslim</td><td><input type="number" class="form-input val" value="80000" /></td></tr>
+                      <tr><td>Dasi</td><td><input type="number" class="form-input val" value="12000" /></td></tr>
+                      <tr><td>Gesper</td><td><input type="number" class="form-input val" value="10000" /></td></tr>
+                    </tbody>
+                    <tfoot><tr class="total-row"><td align="right">Total Biaya per Anak</td><td id="total-per-anak" class="rab-val text-right" align="right">535.500</td></tr></tfoot>
+                  </table>
+                </div>
+              </div>
+              <div class="rab-card">
+                <div class="rab-card-header">E. Operasional Tahunan</div>
+                <div class="rab-card-body">
+                  <div style="display:flex; flex-direction:column; gap:1.5rem;">
+                    <div>
+                      <h4 style="margin-bottom:1rem;color:var(--text-secondary);">Operasional Bulanan</h4>
+                      <table class="rab-table">
+                        <thead><tr><th>Uraian</th><th width="150">Biaya/Bulan (Rp)</th></tr></thead>
+                        <tbody id="ops-bulan-tbody">
+                          <tr><td>Listrik</td><td><input type="number" class="form-input val ops-bulan" value="150000" /></td></tr>
+                          <tr><td>Air</td><td><input type="number" class="form-input val ops-bulan" value="200000" /></td></tr>
+                          <tr><td>Kebersihan</td><td><input type="number" class="form-input val ops-bulan" value="100000" /></td></tr>
+                          <tr><td>ATK</td><td><input type="number" class="form-input val ops-bulan" value="250000" /></td></tr>
+                        </tbody>
+                        <tfoot>
+                          <tr class="total-row"><td align="right">Total / Bulan</td><td id="total-ops-bulan" class="rab-val text-right" align="right">700.000</td></tr>
+                          <tr class="total-row"><td align="right">Total 12 Bulan</td><td id="total-ops-12bulan" class="rab-val text-expense text-right" align="right">8.400.000</td></tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                    <div>
+                      <h4 style="margin-bottom:1rem;color:var(--text-secondary);">Pembelian Isi Kelas (Tahunan)</h4>
+                      <table class="rab-table">
+                        <thead><tr><th>Uraian</th><th width="150">Biaya (Rp)</th></tr></thead>
+                        <tbody id="ops-tahunan-tbody">
+                          <tr><td>Bingkai Presiden dkk</td><td><input type="number" class="form-input val ops-tahunan" value="75000" /></td></tr>
+                          <tr><td>Sapu Set Pengki</td><td><input type="number" class="form-input val ops-tahunan" value="40000" /></td></tr>
+                          <tr><td>Pel + Ember</td><td><input type="number" class="form-input val ops-tahunan" value="84000" /></td></tr>
+                        </tbody>
+                        <tfoot><tr class="total-row"><td align="right">Total Isi Kelas (Thn)</td><td id="total-isi-kelas" class="rab-val text-expense text-right" align="right">199.000</td></tr></tfoot>
+                      </table>
+                      <div style="margin-top:1rem; padding:1rem; background:var(--bg-lighter); border-radius:var(--radius-md);">
+                        <div class="form-group row"><label>Total Pengeluaran Tahunan</label><span id="total-pengeluaran-tahunan" class="rab-val text-expense">8.599.000</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:1.5rem;">
+                <div class="rab-card">
+                  <div class="rab-card-header">F. Pemasukan SPP Tahunan</div>
+                  <div class="rab-card-body">
+                    <div class="form-group row"><label>Jumlah Anak Bayar SPP</label><input type="number" id="spp-anak" class="form-input" value="9" min="0" /></div>
+                    <div class="form-group row"><label>SPP / Bulan / Anak (Rp)</label><input type="number" id="spp-nominal" class="form-input" value="150000" min="0" /></div>
+                    <div class="form-group row mt-md"><label>Total SPP / Bulan</label><span id="total-spp-bulan" class="rab-val">1.350.000</span></div>
+                    <div class="form-group row total-row mt-md"><label>Total SPP Tahunan</label><span id="total-spp-tahunan" class="rab-val text-income">16.200.000</span></div>
+                  </div>
+                </div>
+                <div class="rab-card">
+                  <div class="rab-card-header" style="background:var(--gradient-primary); color:white; border-bottom:none;">G. Ringkasan RAB</div>
+                  <div class="rab-card-body">
+                    <div class="form-group row"><label>Pemasukan Pendaftaran</label><span id="ringkasan-pendaftaran" class="rab-val">26.100.000</span></div>
+                    <div class="form-group row"><label>Pemasukan SPP (1 Thn)</label><span id="ringkasan-spp" class="rab-val">16.200.000</span></div>
+                    <div class="form-group row total-row" style="border-bottom:1px solid var(--border-color); padding-bottom:1rem;"><label>TOTAL PEMASUKAN</label><span id="ringkasan-total-pemasukan" class="rab-val text-income" style="font-size:1.2rem;">42.300.000</span></div>
+                    <div class="form-group row mt-md"><label>Modal Awal + Darurat</label><span id="ringkasan-modal" class="rab-val">15.315.300</span></div>
+                    <div class="form-group row"><label>Operasional Tahunan</label><span id="ringkasan-ops" class="rab-val">8.599.000</span></div>
+                    <div class="form-group row total-row" style="border-bottom:1px solid var(--border-color); padding-bottom:1rem;"><label>TOTAL PENGELUARAN</label><span id="ringkasan-total-pengeluaran" class="rab-val text-expense" style="font-size:1.2rem;">23.914.300</span></div>
+                    <div class="form-group row total-row mt-md"><label>SISA SALDO / SURPLUS</label><span id="ringkasan-surplus" class="rab-val" style="font-size:1.4rem; color:var(--income-color);">18.385.700</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SECTION: REPORTS -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section id="sec-reports" class="page-section">
+          <div class="page-header">
+            <div>
+              <h1 class="page-title">Laporan Keuangan</h1>
+              <p class="page-subtitle">Pilih periode dan export laporan lengkap ke PDF</p>
+            </div>
+          </div>
+          <div class="reports-controls">
+            <div class="form-group" style="flex:1;min-width:150px;">
+              <label class="form-label">Bulan</label>
+              <select class="form-select" id="report-month"><option value="">Semua Bulan (All Time)</option></select>
+            </div>
+            <button class="btn btn-primary" id="generate-report-btn" style="align-self:flex-end;">🔄 Tampilkan Laporan</button>
+            <button class="btn btn-success" id="export-pdf-btn-2" style="align-self:flex-end;">📄 Export PDF</button>
+          </div>
+          <div class="report-summary-grid stagger">
+            <div class="report-summary-card"><div class="report-summary-value" id="report-income" style="color:var(--income-color);">Rp0</div><div class="report-summary-label">Total Pemasukan</div></div>
+            <div class="report-summary-card"><div class="report-summary-value" id="report-expense" style="color:var(--expense-color);">Rp0</div><div class="report-summary-label">Total Pengeluaran</div></div>
+            <div class="report-summary-card"><div class="report-summary-value" id="report-balance" style="color:var(--accent-primary);">Rp0</div><div class="report-summary-label">Saldo Bersih</div></div>
+          </div>
+          <div class="report-chart-grid">
+            <div class="chart-card"><div class="chart-header"><div class="chart-title">Tren 6 Bulan Terakhir</div></div><div class="chart-canvas-wrapper" style="height:220px;"><canvas id="report-bar-chart"></canvas></div></div>
+            <div class="chart-card"><div class="chart-header"><div class="chart-title">Pengeluaran per Kategori</div></div><div class="chart-canvas-wrapper" style="height:220px;"><canvas id="report-donut-chart"></canvas></div></div>
+          </div>
+          <div class="export-section">
+            <div class="export-header"><div class="export-title">Rincian Transaksi</div><span style="font-size:0.8rem;color:var(--text-muted);" id="report-period-label">—</span></div>
+            <div id="report-transactions-list"><div class="empty-state" style="padding:2rem;"><div class="empty-state-icon">📊</div><div class="empty-state-title">Pilih periode dan klik "Tampilkan Laporan"</div></div></div>
+            <div id="report-pagination" style="display:flex;justify-content:center;gap:0.5rem;margin-top:1.5rem;"></div>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════ -->
+        <!-- SECTION: SETTINGS -->
+        <!-- ═══════════════════════════════════════════ -->
+        <section id="sec-settings" class="page-section">
+          <div class="settings-container">
+            <h2>Integrasi AI (Google Gemini)</h2>
+            <p class="text-secondary" style="margin-bottom: 1.5rem;">Atur koneksi ke server Google Gemini untuk auto-klasifikasi transaksi yang super akurat.</p>
+            <form id="settings-form">
+              <div class="settings-group">
+                <label for="gemini-key">Google Gemini API Key (Wajib)</label>
+                <input type="password" id="gemini-key" placeholder="AIzaSy............................." required />
+                <span class="settings-hint">Dapatkan kunci API gratis dari <a href="https://aistudio.google.com/" target="_blank" style="color:var(--text-accent);">Google AI Studio</a>. Kunci ini hanya disimpan di browsermu.</span>
+              </div>
+              <div class="settings-group">
+                <label for="whatsapp-number">Nomor WhatsApp (Integrasi Bot)</label>
+                <input type="text" id="whatsapp-number" placeholder="Contoh: 628123456789" />
+                <span class="settings-hint">Masukkan nomor WhatsApp Anda dengan format kode negara (misal: 62 untuk Indonesia) tanpa tanda "+" atau spasi.</span>
+              </div>
+              <button type="submit" class="btn btn-primary">Simpan Pengaturan</button>
+            </form>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ── TRANSACTION MODAL ── -->
+  <div class="modal-overlay" id="transaction-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 style="font-size:1.1rem;font-weight:700;" id="modal-title">Tambah Transaksi</h2>
+        <button class="btn-icon btn-ghost" id="modal-close-btn" aria-label="Tutup">✕</button>
+      </div>
+      <form id="transaction-form">
+        <div class="modal-body">
+          <div class="form-group"><label class="form-label" for="modal-type">Tipe</label><select class="form-select" id="modal-type" required><option value="expense">💸 Pengeluaran</option><option value="income">💚 Pemasukan</option></select></div>
+          <div class="form-group"><label class="form-label" for="modal-category">Kategori</label><select class="form-select" id="modal-category"><option value="">-- Pilih Kategori --</option></select></div>
+          <div class="form-group"><label class="form-label" for="modal-description">Keterangan</label><input type="text" class="form-input" id="modal-description" placeholder="Contoh: Makan siang" /></div>
+          <div class="form-group"><label class="form-label" for="modal-amount">Jumlah (Rp) *</label><input type="number" class="form-input" id="modal-amount" placeholder="0" min="1" step="any" required /></div>
+          <div class="form-group"><label class="form-label" for="modal-date">Tanggal *</label><input type="date" class="form-input" id="modal-date" required /></div>
+          <div class="form-group"><label class="form-label" for="modal-sumber-dana">Sumber Dana *</label><select class="form-select" id="modal-sumber-dana" required><option value="bank">🏦 Bank</option><option value="kas">💵 Kas Tunai</option></select></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="modal-cancel-btn">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── BUDGET MODAL ── -->
+  <div class="modal-overlay" id="budget-modal" role="dialog" aria-modal="true" aria-labelledby="budget-modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 style="font-size:1.1rem;font-weight:700;" id="budget-modal-title">Tambah Budget</h2>
+        <button class="btn-icon btn-ghost" id="budget-modal-close" aria-label="Tutup">✕</button>
+      </div>
+      <form id="budget-form">
+        <div class="modal-body">
+          <div class="form-group"><label class="form-label" for="budget-category-select">Kategori Pengeluaran</label><select class="form-select" id="budget-category-select" required><option value="">-- Pilih Kategori --</option></select></div>
+          <div class="form-group"><label class="form-label" for="budget-amount">Batas Budget (Rp) *</label><input type="number" class="form-input" id="budget-amount" placeholder="Contoh: 500000" min="1000" step="any" required /></div>
+          <div style="font-size:0.8rem;color:var(--text-muted);padding:0.5rem 0;">💡 Jika budget untuk kategori ini sudah ada di bulan yang dipilih, nilai akan diperbarui.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="budget-modal-cancel">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Budget</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── IMPORT EXCEL MODAL ── -->
+  <div class="modal-overlay" id="import-modal" role="dialog" aria-modal="true" aria-labelledby="import-modal-title">
+    <div class="modal" style="max-width:680px;">
+      <div class="modal-header">
+        <h2 style="font-size:1.1rem;font-weight:700;" id="import-modal-title">📥 Import dari Excel</h2>
+        <button class="btn-icon btn-ghost" id="import-modal-close" aria-label="Tutup">✕</button>
+      </div>
+      <div class="modal-body" id="import-modal-body">
+        <div class="import-steps">
+          <div class="import-step active" id="step-1"><div class="step-num">1</div> Upload File</div>
+          <div class="step-divider"></div>
+          <div class="import-step" id="step-2"><div class="step-num">2</div> Preview</div>
+          <div class="step-divider"></div>
+          <div class="import-step" id="step-3"><div class="step-num">3</div> Selesai</div>
+        </div>
+        <div id="import-step-1">
+          <div class="template-banner" style="margin-bottom:1.25rem;">
+            <div class="template-banner-text"><strong>📋 Belum punya template?</strong> Download template Excel, isi datanya, lalu upload kembali di sini.</div>
+            <button class="btn btn-outline btn-sm" id="download-template-btn" style="gap:0.4rem;">📥 Download Template</button>
+          </div>
+          <div class="upload-area" id="upload-area">
+            <div class="upload-icon">📂</div>
+            <div class="upload-text">Drag & drop file Excel di sini</div>
+            <div class="upload-hint">atau klik untuk memilih file (.xlsx, .xls)</div>
+            <input type="file" id="import-file-input" accept=".xlsx,.xls" style="display:none;" />
+          </div>
+        </div>
+        <div id="import-step-loading" style="display:none; text-align:center; padding:2rem;">
+          <div class="spinner spinner-lg"></div>
+          <div style="margin-top:1rem; color:var(--text-secondary);">Membaca dan menganalisa file...</div>
+        </div>
+        <div id="import-step-2" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+            <div><strong id="import-count">0</strong> transaksi siap diimport</div>
+            <div style="display:flex;gap:0.5rem;">
+              <button class="btn btn-ghost btn-sm" id="import-back-btn">← Kembali</button>
+              <button class="btn btn-primary btn-sm" id="import-confirm-btn">✅ Import Sekarang</button>
+            </div>
+          </div>
+          <div style="max-height:350px;overflow:auto;border:1px solid var(--border-color);border-radius:var(--radius-md);">
+            <table class="transactions-table" style="font-size:0.8rem;">
+              <thead><tr><th>Tanggal</th><th>Keterangan</th><th>Tipe</th><th>Kategori</th><th>Jumlah</th><th style="text-align:center;">Aksi</th></tr></thead>
+              <tbody id="import-preview-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="import-step-3" style="display:none; text-align:center; padding:2rem;">
+          <div style="font-size:3rem;margin-bottom:1rem;">✅</div>
+          <div style="font-weight:600;font-size:1.1rem;margin-bottom:0.5rem;">Import Berhasil!</div>
+          <div style="color:var(--text-secondary);margin-bottom:1.5rem;" id="import-result-text">0 transaksi telah ditambahkan.</div>
+          <button class="btn btn-primary" id="import-done-btn">Selesai</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <script type="module" src="../../js/finance/entry.js"></script>
+</body>
+</html>

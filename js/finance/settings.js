@@ -1,11 +1,4 @@
-import { injectSidebar, injectTopbar } from '../core/layout.js';
-injectTopbar('topbar', {
-  greeting: 'Kelola',
-  title: 'Pengaturan',
-  rightHtml: ``
-});
-
-injectSidebar('sidebar', 'settings');
+// Layout injection removed — handled by entry.js SPA controller
 
 import supabaseClient from '../core/supabase.js';
 import { requireAuth, handleLogout } from '../core/auth.js';

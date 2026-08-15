@@ -35,9 +35,9 @@ export function injectSidebar(containerId, activeMenuId) {
 
       <div class="nav-group" id="nav-group-finance">
         <div class="nav-group-title">Keuangan</div>
-        <a href="${basePath}pages/finance/transactions.html" class="nav-item ${activeMenuId === 'transactions' ? 'active' : ''}">💸 Transaksi Kas</a>
-        <a href="${basePath}pages/finance/budget.html" class="nav-item ${activeMenuId === 'budget' ? 'active' : ''}">🎯 Budget Bulanan</a>
-        <a href="${basePath}pages/finance/rab.html" class="nav-item ${activeMenuId === 'rab' ? 'active' : ''}">📋 RAB Kelas</a>
+        <a href="${basePath}pages/finance/dashboard.html#transactions" class="nav-item ${activeMenuId === 'transactions' ? 'active' : ''}">💸 Transaksi Kas</a>
+        <a href="${basePath}pages/finance/dashboard.html#budget" class="nav-item ${activeMenuId === 'budget' ? 'active' : ''}">🎯 Budget Bulanan</a>
+        <a href="${basePath}pages/finance/dashboard.html#rab" class="nav-item ${activeMenuId === 'rab' ? 'active' : ''}">📋 RAB Kelas</a>
       </div>
 
       <div class="nav-group" id="nav-group-ppdb">
@@ -47,7 +47,7 @@ export function injectSidebar(containerId, activeMenuId) {
 
       <div class="nav-group" id="nav-group-system">
         <div class="nav-group-title">Sistem</div>
-        <a href="${basePath}pages/finance/settings.html" class="nav-item ${activeMenuId === 'settings' ? 'active' : ''}">⚙️ Pengaturan</a>
+        <a href="${basePath}pages/finance/dashboard.html#settings" class="nav-item ${activeMenuId === 'settings' ? 'active' : ''}">⚙️ Pengaturan</a>
       </div>
     </nav>
 
