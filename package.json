@@ -1,0 +1,36 @@
+{
+  "name": "smpannida",
+  "version": "1.0.0",
+  "description": "Sistem Informasi Manajemen Terpadu SMP Annida yang mencakup tiga modul utama: Keuangan (Finance), Akademik, dan Penerimaan Peserta Didik Baru (PPDB). Dibangun untuk mengotomatisasi pencatatan dan pengelolaan operasional sekolah dengan arsitektur Serverless.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dazzerz/SMPAnnida.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/dazzerz/SMPAnnida/issues"
+  },
+  "homepage": "https://github.com/dazzerz/SMPAnnida#readme",
+  "devDependencies": {
+    "vite": "^8.2.1"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.112.3",
+    "chart.js": "^4.5.1",
+    "jspdf": "^4.2.1",
+    "papaparse": "^5.6.0",
+    "xlsx": "^0.18.5",
+    "xlsx-js-style": "^1.2.0"
+  }
+}

@@ -4,6 +4,13 @@
 import supabaseClient from '../core/supabase.js';
 import { requireAuth, handleLogout } from '../core/auth.js';
 import { injectLayout } from './layout.js';
+import Chart from 'chart.js/auto';
+import { jsPDF } from 'jspdf';
+import * as XLSX from 'xlsx';
+
+window.Chart = Chart;
+window.jspdf = { jsPDF };
+window.XLSX = XLSX;
 import { formatCurrency, formatDate, getMonthYear, showToast, setupThemeToggle, applySavedTheme } from '../core/utils.js';
 import {
   fetchCategories, fetchMonthlySummary, fetchMonthlyTrend, fetchCategoryBreakdown,

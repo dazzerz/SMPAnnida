@@ -1,6 +1,8 @@
 import { authState } from './authState.js';
 import db from '../core/supabase.js';
 import { showToast, escapeHTML } from '../core/utils.js';
+import * as XLSX from 'xlsx';
+import Papa from 'papaparse';
 
 document.addEventListener('DOMContentLoaded', () => {
     // UI Elements

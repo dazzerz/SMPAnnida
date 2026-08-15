@@ -8,7 +8,8 @@
 /* =====================================================
    CSS CUSTOM PROPERTIES (DESIGN TOKENS)
    ===================================================== */
---bg-primary: #0a0f12; /* Darker near-black for green contrast */
+:root {
+  --bg-primary: #0a0f12; /* Darker near-black for green contrast */
   --bg-secondary: #10161a;
   --bg-card: #141c21;
   --bg-card-hover: #19242a;
@@ -98,10 +99,10 @@
   --sidebar-collapsed: 72px;
   --header-height: 70px;
 }
-*/
 
 /* Light Theme Override */
---border-color: rgba(0, 0, 0, 0.08);
+.light-theme {
+  --border-color: rgba(0, 0, 0, 0.08);
   --border-focus: rgba(124, 237, 80, 0.4);
 
   --text-primary: #0f172a;
@@ -123,7 +124,6 @@
   --glass-border: rgba(255, 255, 255, 0.2);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
 }
-*/
 
 /* =====================================================
    RESET & BASE
