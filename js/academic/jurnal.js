@@ -1,8 +1,8 @@
 import { authState } from './authState.js';
 import db from '../core/supabase.js';
 import { showToast, escapeHTML } from '../core/utils.js';
-import * as XLSX from 'xlsx';
-import Papa from 'papaparse';
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // UI Elements
@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function exportToExcel() {
-        if (!window.XLSX) {
+        const XLSX = await import('xlsx'); if (false) {
             showToast('Library Excel belum siap', 'error');
             return;
         }
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Catatan / Hambatan': j.catatan || ''
             }));
 
-            const ws = window.XLSX.utils.json_to_sheet(excelData);
+            const ws = XLSX.utils.json_to_sheet(excelData);
             
             // Adjust column widths
             const colWidths = [
@@ -466,10 +466,10 @@ document.addEventListener('DOMContentLoaded', () => {
             ];
             ws['!cols'] = colWidths;
 
-            const wb = window.XLSX.utils.book_new();
-            window.XLSX.utils.book_append_sheet(wb, ws, "Jurnal_Guru");
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Jurnal_Guru");
             
-            window.XLSX.writeFile(wb, `Jurnal_Guru_${monthStr}.xlsx`);
+            XLSX.writeFile(wb, `Jurnal_Guru_${monthStr}.xlsx`);
             
             btnExport.innerHTML = btnOrig;
             btnExport.disabled = false;

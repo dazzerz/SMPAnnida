@@ -1,0 +1,12 @@
+import './dashboard.js';
+import './attendance.js';
+import './teacher-attendance.js';
+import './nilai.js';
+import './jadwal.js';
+import './guru.js';
+import './mapel.js';
+import './kelas.js';
+import './siswa.js';
+import './migration.js';
+import './jurnal.js';
+import './main.js';

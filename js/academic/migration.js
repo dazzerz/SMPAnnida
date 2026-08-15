@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 3. Download Template
-    btnDownload.addEventListener('click', (e) => {
+    btnDownload.addEventListener('click', async (e) => {
         e.preventDefault();
         console.log("CLICK DOWNLOAD TEMPLATE");
         
@@ -225,6 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
+            const XLSX = await import('xlsx');
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet([headers]);
             XLSX.utils.book_append_sheet(wb, ws, 'Template ' + type.charAt(0).toUpperCase() + type.slice(1));
@@ -242,9 +243,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!file) return;
 
         const reader = new FileReader();
-        reader.onload = (evt) => {
+        reader.onload = async (evt) => {
             try {
                 const data = evt.target.result;
+                const XLSX = await import('xlsx');
                 const workbook = XLSX.read(data, { type: 'binary' });
                 const firstSheet = workbook.SheetNames[0];
                 const rows = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet], { defval: '' });
@@ -668,10 +670,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof window.refreshDashboardStats === 'function') window.refreshDashboardStats();
     });
 
-    document.getElementById('btn-download-error-report').addEventListener('click', (e) => {
+    document.getElementById('btn-download-error-report').addEventListener('click', async (e) => {
         e.preventDefault();
         if (!window.lastFailedRows || window.lastFailedRows.length === 0) return;
-        const wb = XLSX.utils.book_new();
+        const XLSX = await import('xlsx'); const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.json_to_sheet(window.lastFailedRows);
         XLSX.utils.book_append_sheet(wb, ws, "Error Report");
         XLSX.writeFile(wb, "Import_Error_Report.xlsx");

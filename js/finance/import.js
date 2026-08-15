@@ -5,8 +5,8 @@
 import supabaseClient from '../core/supabase.js';
 
 // ── Generate & download template Excel ────────────
-export function downloadTemplate(categories) {
-  const XLSX = window.XLSX;
+export async function downloadTemplate(categories) {
+  const XLSX = await import('xlsx');
   if (!XLSX) { alert('Library Excel belum siap, coba refresh halaman.'); return; }
 
   // Sheet 1: Template transaksi
@@ -67,9 +67,9 @@ export function downloadTemplate(categories) {
 }
 
 // ── Parse file Excel yang diupload ────────────────
-export function parseExcelFile(file) {
+export async function parseExcelFile(file) {
+  const XLSX = await import('xlsx');
   return new Promise((resolve, reject) => {
-    const XLSX = window.XLSX;
     if (!XLSX) { reject(new Error('Library XLSX belum dimuat')); return; }
 
     const reader = new FileReader();
@@ -355,12 +355,15 @@ ${descList}`;
       let lastErrMsg = null;
 
       for (const model of modelsToTry) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
         try {
           const response = await fetch(
             `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
+              signal: controller.signal,
               body: JSON.stringify({
                 contents: [{ parts: [{ text: prompt }] }],
                 generationConfig: {
@@ -371,6 +374,7 @@ ${descList}`;
               }),
             }
           );
+          clearTimeout(timeoutId);
           
           if (response.ok) {
             const data = await response.json();

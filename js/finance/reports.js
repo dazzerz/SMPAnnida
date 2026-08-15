@@ -13,7 +13,7 @@ injectSidebar('sidebar', 'reports');
 import { formatCurrency, formatDate, escapeHTML } from '../core/utils.js';
 
 export async function exportToPDF(reportData) {
-  const { jsPDF } = window.jspdf;
+  const { jsPDF } = await import('jspdf');
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
   const { period, userName, income, expense, balance, transactions, categoryBreakdown } = reportData;
   const pageWidth = doc.internal.pageSize.getWidth();

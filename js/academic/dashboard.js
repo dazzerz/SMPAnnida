@@ -364,14 +364,14 @@ document.addEventListener('DOMContentLoaded', () => {
             btnImportSiswa.disabled = true;
             if(fileImportSiswa) fileImportSiswa.disabled = true;
         }
-        btnImportSiswa.addEventListener('click', () => {
+        btnImportSiswa.addEventListener('click', async () => {
             const file = fileImportSiswa.files[0];
             if (!file) { importStatus.textContent = 'Pilih file CSV.'; importStatus.style.color = 'var(--danger)'; return; }
 
             importStatus.textContent = 'Membaca file...'; importStatus.style.color = 'var(--text-muted)';
             btnImportSiswa.disabled = true;
 
-            Papa.parse(file, {
+            const { default: Papa } = await import('papaparse'); Papa.parse(file, {
                 header: true, skipEmptyLines: true,
                 complete: async function(results) {
                     try {

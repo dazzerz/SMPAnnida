@@ -13,14 +13,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         sessionUser = await getOptionalUser();
         if (sessionUser) {
             userId = sessionUser.id;
-            localStorage.setItem('user_id', userId);
-            localStorage.setItem('user_email', sessionUser.email);
         } else {
-            userId = localStorage.getItem('user_id');
+            // Kick guest to login if not authenticated but trying to access dashboard
+            if (window.location.pathname.includes('dashboard-')) {
+                window.location.href = 'login.html';
+                return;
+            }
         }
     } catch (e) {
-        console.warn("Autentikasi offline / local-only");
-        userId = localStorage.getItem('user_id');
+        console.warn("Autentikasi gagal:", e);
+        if (window.location.pathname.includes('dashboard-')) {
+            window.location.href = 'login.html';
+            return;
+        }
     }
 
     // ==========================================
@@ -67,9 +72,9 @@ async function loadSiswaData(userId) {
         if (error) throw error;
 
         if (pendaftaran) {
-            localStorage.setItem('pendaftaran_id', pendaftaran.id);
-            localStorage.setItem('no_pendaftaran', pendaftaran.no_pendaftaran);
-            localStorage.setItem('tipe_pendaftaran', pendaftaran.tipe_pendaftaran);
+            
+            
+            
             
             // Update UI pendaftaran
             const regNo = document.querySelector('.page-header p strong');
@@ -77,7 +82,7 @@ async function loadSiswaData(userId) {
             
             const displayTipe = document.getElementById('display-tipe-pendaftaran');
             if (displayTipe) {
-                displayTipe.innerText = pendaftaran.tipe_pendaftaran === 'pondok' ? 'Sekolah + Pondok (Boarding)' : 'Hanya Sekolah (Non-Pondok)';
+                displayTipe.innerText = pendaftaran.tipe_pendaftaran === 'pondok' ? 'Sekolah + Pondok (Boarding)' : 'Hanya Sekolah (Non-Pondok)'; const invoiceTipe = document.getElementById('invoice-tipe'); const invoiceNominal = document.getElementById('invoice-nominal'); if (invoiceTipe) invoiceTipe.innerText = displayTipe.innerText; if (invoiceNominal) invoiceNominal.innerText = pendaftaran.tipe_pendaftaran === 'pondok' ? 'Rp 500.000' : 'Rp 250.000';
             }
 
             const selectTipe = document.getElementById('tipe_pendaftaran_dashboard');

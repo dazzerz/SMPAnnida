@@ -1,10 +1,5 @@
 import { authState } from './authState.js';
 import { injectSidebar, injectTopbar } from '../core/layout.js';
-import * as XLSX from 'xlsx';
-import Papa from 'papaparse';
-
-window.XLSX = XLSX;
-window.Papa = Papa;
 injectTopbar('topbar', {
   greeting: '',
   title: '',

@@ -728,9 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 // Gunakan SheetJS
-                if (typeof window.XLSX === 'undefined') {
-                    throw new Error("Library SheetJS tidak ditemukan");
-                }
+                const XLSX = await import('xlsx');
 
                 // Fetch template
                 const response = await fetch('../../docs/Template_Rekap_Siswa.xlsx');
@@ -738,7 +736,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const arrayBuffer = await response.arrayBuffer();
                 
                 // Read template
-                const wb = window.XLSX.read(arrayBuffer, { type: 'array' });
+                const wb = XLSX.read(arrayBuffer, { type: 'array' });
                 const ws = wb.Sheets[wb.SheetNames[0]];
                 
                 const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"][parseInt(bulan)-1];
@@ -748,9 +746,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const headerA2 = mapelId ? `Rekapitulasi Absensi ${mapelName} (SMT ${semester})` : `Rekapitulasi Absensi (SMT ${semester})`;
 
                 // [Mapel] di F1
-                window.XLSX.utils.sheet_add_aoa(ws, [[headerF1]], { origin: "F1" });
+                XLSX.utils.sheet_add_aoa(ws, [[headerF1]], { origin: "F1" });
                 // [Guru Mapel] di A2
-                window.XLSX.utils.sheet_add_aoa(ws, [[headerA2]], { origin: "A2" });
+                XLSX.utils.sheet_add_aoa(ws, [[headerA2]], { origin: "A2" });
 
                 // Fill Dates in Row 3 (Index 2, origin: C3)
                 const dateHeaders = uniqueDates.slice(0, 24).map(d => {
@@ -758,7 +756,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return `${dt.getDate()}-${namaBulan.substring(0,3)}`; // e.g., 8-Aug
                 });
                 if (dateHeaders.length > 0) {
-                    window.XLSX.utils.sheet_add_aoa(ws, [dateHeaders], { origin: "C3" });
+                    XLSX.utils.sheet_add_aoa(ws, [dateHeaders], { origin: "C3" });
                 }
 
                 // Build Excel Data untuk disisipkan mulai dari baris ke-4 (A4)
@@ -781,11 +779,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     return rowData;
                 });
 
-                window.XLSX.utils.sheet_add_aoa(ws, rows, { origin: "A4" });
+                XLSX.utils.sheet_add_aoa(ws, rows, { origin: "A4" });
 
                 const mapelFileSuffix = mapelId ? '_' + mapelName.replace(/[^a-zA-Z0-9]/g, '') : '_Harian';
                 const filename = `Rekap_Absensi_${kelas}_${namaBulan}_${tahun.replace('/','-')}_SMT${semester}${mapelFileSuffix}.xlsx`;
-                window.XLSX.writeFile(wb, filename);
+                XLSX.writeFile(wb, filename);
                 window.showToast?.('Berhasil di-export', 'success');
 
             } catch (err) {

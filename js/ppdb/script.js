@@ -153,21 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFileSimulator('file-skl', 'skl-status', 'skl-name');
 
     // 5. Payment Details Setup & Confirmation
-    const displayTipe = document.getElementById('display-tipe-pendaftaran');
-    const invoiceTipe = document.getElementById('invoice-tipe');
-    const invoiceNominal = document.getElementById('invoice-nominal');
-
-    const savedTipe = localStorage.getItem('tipe_pendaftaran') || 'sekolah';
-    
-    if (displayTipe) {
-        displayTipe.innerText = savedTipe === 'pondok' ? 'Sekolah + Pondok (Boarding)' : 'Hanya Sekolah (Non-Pondok)';
-    }
-    if (invoiceTipe) {
-        invoiceTipe.innerText = savedTipe === 'pondok' ? 'Sekolah + Pondok (Boarding)' : 'Hanya Sekolah (Non-Pondok)';
-    }
-    if (invoiceNominal) {
-        invoiceNominal.innerText = savedTipe === 'pondok' ? 'Rp 500.000' : 'Rp 250.000';
-    }
+    // 5. Payment Details Setup & Confirmation
+    // (UI tipe pendaftaran di-handle oleh db.js secara asinkron dari Supabase)
 
     const paymentForm = document.getElementById('paymentForm');
     const paymentSuccessMsg = document.getElementById('payment-success-msg');

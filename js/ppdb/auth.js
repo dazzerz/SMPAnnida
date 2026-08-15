@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // Simpan email di localStorage untuk referensi UI
-                localStorage.setItem('user_email', email);
-                localStorage.setItem('user_id', data.user.id);
+                
+                
 
                 // Cek apakah admin atau calon siswa
                 if (email.includes('admin')) {
@@ -99,12 +99,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     // Simpan state cadangan ke localStorage
-                    localStorage.setItem('user_email', email);
-                    localStorage.setItem('user_id', user.id);
-                    localStorage.setItem('tipe_pendaftaran', tipe);
-                    localStorage.setItem('no_pendaftaran', noPendaftaran);
-                    localStorage.setItem('nama_lengkap', fullname);
-                    localStorage.setItem('no_whatsapp', phone);
+                    
+                    
+                    
+                    
+                    
+                    
 
                     alert(`Registrasi Berhasil!\nNomor Pendaftaran Anda: ${noPendaftaran}`);
                     window.location.href = 'dashboard-siswa.html';

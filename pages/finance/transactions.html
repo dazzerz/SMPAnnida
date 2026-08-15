@@ -303,39 +303,48 @@
       renderPagination(count, currentPage);
     }
 
-    // Global pagination handler
-    window.goToPage = (page) => {
-      currentPage = page;
-      loadTransactions();
-    };
-
-    // Edit
-    window.editTransaction = async (id) => {
-      const { data } = await supabaseClient.from('transactions').select('*').eq('id', id).single();
-      if (!data) return;
-      editingId = id;
-      document.getElementById('modal-title').textContent = 'Edit Transaksi';
-      document.getElementById('modal-type').value = data.type;
-      document.getElementById('modal-description').value = data.description || '';
-      document.getElementById('modal-amount').value = data.amount;
-      document.getElementById('modal-date').value = data.date;
-      document.getElementById('modal-sumber-dana').value = data.sumber_dana || 'bank';
-      populateCategoryDropdown(data.type);
-      setTimeout(() => { document.getElementById('modal-category').value = data.category_id || ''; }, 50);
-      document.getElementById('transaction-modal').classList.add('active');
-    };
-
-    // Delete
-    window.confirmDeleteTransaction = async (id) => {
-      if (!confirm('Hapus transaksi ini?')) return;
-      try {
-        await deleteTransaction(id);
-        showToast('Transaksi dihapus.', 'success');
+    // Event Delegation untuk pagination
+    document.getElementById('pagination').addEventListener('click', (e) => {
+      const pageBtn = e.target.closest('[data-action="goto-page"]');
+      if (pageBtn) {
+        currentPage = parseInt(pageBtn.getAttribute('data-page'));
         loadTransactions();
-      } catch (e) {
-        showToast('Gagal menghapus: ' + e.message, 'error');
       }
-    };
+    });
+
+    // Event Delegation untuk tabel transaksi
+    document.getElementById('transactions-tbody').addEventListener('click', async (e) => {
+      const editBtn = e.target.closest('[data-action="edit"]');
+      const deleteBtn = e.target.closest('[data-action="delete"]');
+
+      if (editBtn) {
+        const id = editBtn.getAttribute('data-id');
+        const { data } = await supabaseClient.from('transactions').select('*').eq('id', id).single();
+        if (!data) return;
+        editingId = id;
+        document.getElementById('modal-title').textContent = 'Edit Transaksi';
+        document.getElementById('modal-type').value = data.type;
+        document.getElementById('modal-description').value = data.description || '';
+        document.getElementById('modal-amount').value = data.amount;
+        document.getElementById('modal-date').value = data.date;
+        document.getElementById('modal-sumber-dana').value = data.sumber_dana || 'bank';
+        populateCategoryDropdown(data.type);
+        setTimeout(() => { document.getElementById('modal-category').value = data.category_id || ''; }, 50);
+        document.getElementById('transaction-modal').classList.add('active');
+      }
+
+      if (deleteBtn) {
+        const id = deleteBtn.getAttribute('data-id');
+        if (!confirm('Hapus transaksi ini?')) return;
+        try {
+          await deleteTransaction(id);
+          showToast('Transaksi dihapus.', 'success');
+          loadTransactions();
+        } catch (err) {
+          showToast('Gagal menghapus: ' + err.message, 'error');
+        }
+      }
+    });
 
     function openModal() {
       editingId = null;
@@ -596,7 +605,7 @@
           document.getElementById('import-count').textContent = importable;
 
           // Render preview table
-          const tbody = document.getElementById('import-preview-tbody');
+          const tbody = document.getElementById('import-preview-tbody'); if (!tbody.dataset.listenerAdded) { tbody.addEventListener('click', async (e) => { const editBtn = e.target.closest('[data-action="edit-import"]'); const saveBtn = e.target.closest('[data-action="save-import"]'); if (editBtn) await editImportRow(parseInt(editBtn.getAttribute('data-idx'))); if (saveBtn) await saveImportRow(parseInt(saveBtn.getAttribute('data-idx'))); }); tbody.dataset.listenerAdded = "true"; }
           tbody.innerHTML = parsedRows.map((r, i) => {
             const hasErr = !r.valid && !r.errors.every(e => e.includes('tidak ditemukan'));
             const hasWarn = r.errors.some(e => e.includes('tidak ditemukan'));
@@ -613,7 +622,7 @@
               <td id="preview-cat-${i}">${r.categoryIcon} ${r.categoryName}</td>
               <td id="preview-amount-${i}" style="text-align:right;font-weight:600;color:var(--${isIncome?'income':'expense'}-color)">${isIncome?'+':'-'}${formatCurrency(r.amount)}</td>
               <td style="text-align:center;" id="preview-action-${i}">
-                <button type="button" class="btn-icon btn-ghost btn-sm" onclick="window.editImportRow(${i})" title="Edit">✏️</button>
+                <button type="button" class="btn-icon btn-ghost btn-sm" data-action="edit-import" data-idx="${i}" title="Edit">✏️</button>
               </td>
             </tr>`;
           }).join('');
@@ -628,7 +637,7 @@
       }
 
       // -- Fungsi Edit Baris Preview --
-      window.editImportRow = (idx) => {
+      async function editImportRow(idx) {
         const row = parsedRows[idx];
         if (!row) return;
 
@@ -662,10 +671,10 @@
         catTd.innerHTML = `<select id="edit-cat-${idx}" style="width:100%; padding:2px; font-size:0.8rem;"><option value="">- Kategori -</option>${catOptions}</select>`;
         amountTd.innerHTML = `<input type="number" id="edit-amount-${idx}" value="${row.amount || ''}" style="width:80px; padding:2px; font-size:0.8rem; text-align:right;"/>`;
         
-        actionTd.innerHTML = `<button type="button" class="btn-icon btn-ghost btn-sm" onclick="window.saveImportRow(${idx})" title="Simpan" style="color:var(--income-color);">💾</button>`;
+        actionTd.innerHTML = `<button type="button" class="btn-icon btn-ghost btn-sm" data-action="save-import" data-idx="${idx}" title="Simpan" style="color:var(--income-color);">💾</button>`;
       };
 
-      window.saveImportRow = async (idx) => {
+      async function saveImportRow(idx) {
         const row = parsedRows[idx];
         if (!row) return;
 
@@ -721,7 +730,7 @@
           document.getElementById('import-count').textContent = importable;
           document.getElementById('import-confirm-btn').style.display = importable > 0 ? 'flex' : 'none';
 
-          const tbody = document.getElementById('import-preview-tbody');
+          const tbody = document.getElementById('import-preview-tbody'); if (!tbody.dataset.listenerAdded) { tbody.addEventListener('click', async (e) => { const editBtn = e.target.closest('[data-action="edit-import"]'); const saveBtn = e.target.closest('[data-action="save-import"]'); if (editBtn) await editImportRow(parseInt(editBtn.getAttribute('data-idx'))); if (saveBtn) await saveImportRow(parseInt(saveBtn.getAttribute('data-idx'))); }); tbody.dataset.listenerAdded = "true"; }
           tbody.innerHTML = parsedRows.map((r, i) => {
             const hasErr = !r.valid && !r.errors.every(e => e.includes('tidak ditemukan'));
             const hasWarn = r.errors.some(e => e.includes('tidak ditemukan'));
@@ -738,7 +747,7 @@
               <td id="preview-cat-${i}">${r.categoryIcon} ${r.categoryName}</td>
               <td id="preview-amount-${i}" style="text-align:right;font-weight:600;color:var(--${isIncome?'income':'expense'}-color)">${isIncome?'+':'-'}${formatCurrency(r.amount)}</td>
               <td style="text-align:center;" id="preview-action-${i}">
-                <button type="button" class="btn-icon btn-ghost btn-sm" onclick="window.editImportRow(${i})" title="Edit">✏️</button>
+                <button type="button" class="btn-icon btn-ghost btn-sm" data-action="edit-import" data-idx="${i}" title="Edit">✏️</button>
               </td>
             </tr>`;
           }).join('');

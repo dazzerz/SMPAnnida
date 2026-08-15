@@ -175,8 +175,8 @@ export function renderTransactionsTable(transactions, canEdit = true) {
     const cat = t.categories;
     const isIncome = t.type === 'income';
     const actionHtml = canEdit ? `<td><div class="table-actions">
-        <button class="table-action-btn edit" onclick="editTransaction('${t.id}')" title="Edit">✏️</button>
-        <button class="table-action-btn delete" onclick="confirmDeleteTransaction('${t.id}')" title="Hapus">🗑️</button>
+        <button class="table-action-btn edit" data-action="edit" data-id="${t.id}" title="Edit">✏️</button>
+        <button class="table-action-btn delete" data-action="delete" data-id="${t.id}" title="Hapus">🗑️</button>
       </div></td>` : '';
       
     return `<tr>
@@ -202,10 +202,10 @@ export function renderPagination(total, page) {
   const to = Math.min(page * PAGE_SIZE, total);
   info.textContent = `Menampilkan ${from}–${to} dari ${total} transaksi`;
   controls.innerHTML = `
-    <button class="page-btn" ${page <= 1 ? 'disabled' : ''} onclick="goToPage(${page - 1})">‹</button>
+    <button class="page-btn" ${page <= 1 ? 'disabled' : ''} data-action="goto-page" data-page="${page - 1}">‹</button>
     ${Array.from({ length: totalPages }, (_, i) => i + 1).filter(p => Math.abs(p - page) <= 2)
-      .map(p => `<button class="page-btn ${p === page ? 'active' : ''}" onclick="goToPage(${p})">${p}</button>`).join('')}
-    <button class="page-btn" ${page >= totalPages ? 'disabled' : ''} onclick="goToPage(${page + 1})">›</button>`;
+      .map(p => `<button class="page-btn ${p === page ? 'active' : ''}" data-action="goto-page" data-page="${p}">${p}</button>`).join('')}
+    <button class="page-btn" ${page >= totalPages ? 'disabled' : ''} data-action="goto-page" data-page="${page + 1}">›</button>`;
 }
 
 // ── Populate category dropdown ────────────────────

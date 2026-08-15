@@ -431,8 +431,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const btnExportExcel = document.getElementById('btn-tg-export-excel');
     if (btnExportExcel) {
-        btnExportExcel.addEventListener('click', () => {
-            if (!tbodyRekap || !window.XLSX) return;
+        btnExportExcel.addEventListener('click', async () => {
+            if (!tbodyRekap) return; const XLSX = await import('xlsx');
             // Hanya export tabel yang tampil
             // Kita bisa mengekstrak data dari tabel secara langsung untuk kesederhanaan, atau re-fetch.
             // Paling mudah menggunakan SheetJS table_to_book
@@ -453,9 +453,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
 
-                const wb = window.XLSX.utils.table_to_book(cloneTable, { sheet: "Rekap_Guru" });
+                const wb = XLSX.utils.table_to_book(cloneTable, { sheet: "Rekap_Guru" });
                 const d = dateRekap ? dateRekap.value : today;
-                window.XLSX.writeFile(wb, `Rekap_Absensi_Guru_${d}.xlsx`);
+                XLSX.writeFile(wb, `Rekap_Absensi_Guru_${d}.xlsx`);
                 showToast('Data berhasil diexport', 'success');
             } catch (err) {
                 console.error("Gagal export:", err);
