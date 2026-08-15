@@ -361,7 +361,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.currentUser !== undefined) {
             renderScheduleList();
         } else {
-            setTimeout(initWhenReady, 100);
+            // P1 Fix: Use Event Listener instead of setTimeout polling
+            window.addEventListener('authLoaded', renderScheduleList, { once: true });
         }
     };
 

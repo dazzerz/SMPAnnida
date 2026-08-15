@@ -39,7 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 initJurnal();
             }
         } else {
-            setTimeout(tryInitJurnal, 100);
+            // P1 Fix: Use Event Listener instead of setTimeout polling
+            window.addEventListener('authLoaded', () => {
+                if (!isInit && (window.isAdmin || window.currentTeacher)) {
+                    initJurnal();
+                }
+            }, { once: true });
         }
     };
 

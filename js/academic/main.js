@@ -114,6 +114,9 @@ async function checkAuth() {
             });
         }
 
+        // P1 Fix: Dispatch event so other modules don't need to poll with setTimeout
+        window.dispatchEvent(new CustomEvent('authLoaded'));
+
     } catch (err) {
         console.error("Auth check failed:", err);
         window.location.href = '../../index.html';

@@ -149,17 +149,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     endDate = `${parseInt(yearStr)+1}-06-30`;
                 }
 
-                // 5 Bulk Queries using Promise.all
-                const [resStudents, resGrades, resAttendance, resJournals, resClass] = await Promise.all([
+                // P1 Fix: Use RPC for ranking, and only fetch grades for the specific student
+                const [resStudents, resRanking, resStudentGrades, resAttendance, resJournals, resClass] = await Promise.all([
                     db.from('students').select('id, nama_lengkap, nisn').eq('kelas', kelas),
-                    db.from('grades').select('student_id, mata_pelajaran, nilai').eq('semester', semester).eq('tahun_ajaran', yearStr),
+                    db.rpc('get_class_ranking', { p_kelas: kelas, p_tahun_ajaran: yearStr, p_semester: semester }),
+                    db.from('grades').select('student_id, mata_pelajaran, nilai').eq('student_id', studentId).eq('semester', semester).eq('tahun_ajaran', yearStr),
                     db.from('attendance_students').select('status').eq('student_id', studentId).gte('attendance_date', startDate).lte('attendance_date', endDate),
                     db.from('teacher_journals').select('id, classes!inner(nama_kelas)', { count: 'exact', head: true }).eq('classes.nama_kelas', kelas).gte('date', startDate).lte('date', endDate),
                     db.from('classes').select('nama_kelas, teachers(nama)').eq('nama_kelas', kelas).single()
                 ]);
 
                 if (resStudents.error) throw resStudents.error;
-                if (resGrades.error) throw resGrades.error;
+                if (resRanking.error) throw resRanking.error;
+                if (resStudentGrades.error) throw resStudentGrades.error;
                 if (resAttendance.error) throw resAttendance.error;
                 if (resJournals.error) throw resJournals.error;
                 if (resClass.error && resClass.error.code !== 'PGRST116') throw resClass.error;
@@ -167,34 +169,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const classStudents = resStudents.data;
                 const student = classStudents.find(s => s.id === studentId);
                 if (!student) throw new Error("Siswa tidak ditemukan dalam kelas.");
-                const classStudentIds = classStudents.map(s => s.id);
-                
-                // Filter grades only for the students currently in the class
-                const allGrades = resGrades.data.filter(g => classStudentIds.includes(g.student_id));
 
-                // Kalkulasi Ranking
-                const studentAverages = {};
-                classStudentIds.forEach(id => { studentAverages[id] = { total: 0, count: 0, avg: 0 }; });
-
-                allGrades.forEach(g => {
-                    studentAverages[g.student_id].total += g.nilai;
-                    studentAverages[g.student_id].count++;
-                });
-
-                const rankingList = [];
-                for (const id in studentAverages) {
-                    if (studentAverages[id].count > 0) {
-                        studentAverages[id].avg = studentAverages[id].total / studentAverages[id].count;
-                    }
-                    rankingList.push({ id, avg: studentAverages[id].avg });
-                }
-
-                rankingList.sort((a, b) => b.avg - a.avg);
-                const currentRank = rankingList.findIndex(r => r.id === studentId) + 1;
-                const totalStudentsWithGrades = rankingList.filter(r => r.avg > 0).length;
+                // Kalkulasi Ranking dari RPC
+                const rankingData = resRanking.data || [];
+                const studentRankData = rankingData.find(r => r.student_id === studentId);
+                const currentRank = studentRankData ? parseInt(studentRankData.rank) : '-';
+                const totalStudentsWithGrades = rankingData.filter(r => parseFloat(r.avg_nilai) > 0).length;
 
                 // Proses Nilai Siswa
-                const studentGrades = allGrades.filter(g => g.student_id === studentId);
+                const studentGrades = resStudentGrades.data || [];
                 const mapelMap = {};
                 let overallTotal = 0, overallCount = 0;
                 let maxNilai = -Infinity, minNilai = Infinity;
