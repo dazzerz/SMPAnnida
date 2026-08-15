@@ -304,7 +304,7 @@
     }
 
     // Event Delegation untuk pagination
-    document.getElementById('pagination').addEventListener('click', (e) => {
+    document.getElementById('pagination-controls').addEventListener('click', (e) => {
       const pageBtn = e.target.closest('[data-action="goto-page"]');
       if (pageBtn) {
         currentPage = parseInt(pageBtn.getAttribute('data-page'));
@@ -400,7 +400,7 @@
               </div>
             `;
           }
-          const pagination = document.getElementById('pagination');
+          const pagination = document.querySelector('.pagination');
           if (pagination) pagination.style.display = 'none';
           
           return; // Jangan lanjutkan muat data
