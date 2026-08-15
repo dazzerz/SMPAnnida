@@ -28,6 +28,7 @@ USING (auth.role() = 'authenticated');
 -- Hapus policy lama yang rentan
 DROP POLICY IF EXISTS "Admins can view all journals" ON public.teacher_journals;
 DROP POLICY IF EXISTS "Admin can insert, update, delete all journals" ON public.teacher_journals;
+DROP POLICY IF EXISTS "Admins can insert journals" ON public.teacher_journals;
 DROP POLICY IF EXISTS "Admins can update journals" ON public.teacher_journals;
 DROP POLICY IF EXISTS "Admins can delete journals" ON public.teacher_journals;
 
