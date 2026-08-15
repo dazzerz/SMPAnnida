@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { showToast, escapeHTML } from '../core/utils.js';
 
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentData = [];
 
     // Guest Mode Protection
-    if (window.isGuest && btnAddGuru) {
+    if (authState.isGuest && btnAddGuru) {
         btnAddGuru.style.display = 'none';
     }
 
@@ -92,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Bind Edit Buttons
         document.querySelectorAll('.btn-edit-guru').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 const teacher = currentData.find(t => t.id == id);
                 if (teacher) openModal(teacher);
@@ -102,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Bind Delete Buttons
         document.querySelectorAll('.btn-del-guru').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 if (confirm('Yakin ingin menghapus guru ini?')) {
                     try {
@@ -144,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnAddGuru) {
         btnAddGuru.addEventListener('click', () => {
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModal();
         });
     }
@@ -159,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formGuru) {
         formGuru.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             
             const btnSave = document.getElementById('btn-save-guru');
             const originalText = btnSave.textContent;
@@ -261,3 +262,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+

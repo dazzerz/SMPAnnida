@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 const db = supabaseClient;
 window.db = supabaseClient;
@@ -41,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     tbodyAbsensi.appendChild(tr);
                 });
 
-                if (window.isGuest) {
+                if (authState.isGuest) {
                     btnSimpanAbsensi.disabled = true;
                     btnSimpanAbsensi.title = "Guest (View Only)";
                     document.querySelectorAll('.attendance-toggle input').forEach(el => el.disabled = true);
@@ -201,3 +202,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+

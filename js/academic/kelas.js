@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { showToast, escapeHTML } from '../core/utils.js';
 
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentKelasData = [];
 
     // Guest protection
-    if (window.isGuest) {
+    if (authState.isGuest) {
         if (btnAddTahun) btnAddTahun.style.display = 'none';
         if (btnAddKelas) btnAddKelas.style.display = 'none';
     }
@@ -85,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Edit
         document.querySelectorAll('.btn-edit-tahun').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 const t = currentTahunData.find(x => x.id == id);
                 if (t) openModalTahun(t);
@@ -95,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Delete
         document.querySelectorAll('.btn-del-tahun').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 if (confirm('Yakin ingin menghapus tahun ajaran ini?')) {
                     try {
@@ -131,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnAddTahun) {
         btnAddTahun.addEventListener('click', () => {
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModalTahun();
         });
     }
@@ -145,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formTahun) {
         formTahun.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             
             const btnSave = document.getElementById('btn-save-tahun');
             const originalText = btnSave.textContent;
@@ -265,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Edit
         document.querySelectorAll('.btn-edit-kelas').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 const k = currentKelasData.find(x => x.id == id);
                 if (k) openModalKelas(k);
@@ -275,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Delete
         document.querySelectorAll('.btn-del-kelas').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 if (confirm('Yakin ingin menghapus kelas ini?')) {
                     try {
@@ -314,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnAddKelas) {
         btnAddKelas.addEventListener('click', () => {
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModalKelas();
         });
     }
@@ -328,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formKelas) {
         formKelas.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             
             const btnSave = document.getElementById('btn-save-kelas');
             const originalText = btnSave.textContent;
@@ -498,3 +499,4 @@ document.addEventListener('DOMContentLoaded', () => {
     initPage();
     window.addEventListener('hashchange', initPage);
 });
+

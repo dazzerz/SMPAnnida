@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { showToast, escapeHTML } from '../core/utils.js';
 
@@ -24,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentData = [];
 
     // Guest Mode Protection
-    if (window.isGuest && btnAddMapel) {
+    if (authState.isGuest && btnAddMapel) {
         btnAddMapel.style.display = 'none';
     }
 
@@ -105,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Bind Edit Buttons
         document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 const mapel = currentData.find(x => x.id == id);
                 if (mapel) openModal(mapel);
@@ -115,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Bind Delete Buttons
         document.querySelectorAll('.btn-del-mapel').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 if (confirm('Yakin ingin menghapus mata pelajaran ini?')) {
                     try {
@@ -157,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnAddMapel) {
         btnAddMapel.addEventListener('click', () => {
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModal();
         });
     }
@@ -172,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formMapel) {
         formMapel.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             
             const btnSave = document.getElementById('btn-save-mapel');
             const originalText = btnSave.textContent;
@@ -269,3 +270,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+

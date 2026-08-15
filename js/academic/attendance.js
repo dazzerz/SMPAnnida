@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { showToast, escapeHTML } from '../core/utils.js';
 const db = supabaseClient;
@@ -31,9 +32,9 @@ async function loadSchedulesToday(date) {
     if (error) throw error;
     
     let result = data || [];
-    if (!window.isAdmin && window.currentTeacher) {
+    if (!authState.isAdmin && authState.currentTeacher) {
         result = result.filter(s => {
-            const isMySchedule = s.teachers?.id === window.currentTeacher.id;
+            const isMySchedule = s.teachers?.id === authState.currentTeacher.id;
             const isDewanGuru = s.teachers?.nama?.toLowerCase().includes('dewan guru');
             return isMySchedule || isDewanGuru;
         });
@@ -86,9 +87,9 @@ async function loadStudentsForSchedule(schedule, kelas, date) {
 }
 
 async function saveAttendance(schedule, date, studentsPayload) {
-    const teacherId = window.isAdmin
+    const teacherId = authState.isAdmin
         ? schedule.teachers?.id || null
-        : window.currentTeacher?.id || null;
+        : authState.currentTeacher?.id || null;
 
     const records = [];
     const originalSchedules = schedule.original_schedules || [schedule];
@@ -149,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div style="font-size:3rem;margin-bottom:10px;">📅</div>
                         <h4 style="margin:0;">Tidak ada jadwal hari ini</h4>
                         <div style="color:var(--text-muted);font-size:0.9rem;margin-top:5px;">
-                            ${window.isAdmin 
+                            ${authState.isAdmin 
                                 ? 'Belum ada jadwal aktif untuk hari ini.'
                                 : 'Anda tidak memiliki jadwal mengajar hari ini.'}
                         </div>
@@ -208,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="schedule-mapel">${escapeHTML(mapel)}${s.grouped_ids.length > 1 ? ` (${s.grouped_ids.length} Jam)` : ''}</div>
                             <div class="schedule-meta">
                                 🏫 ${escapeHTML(kelas)} 
-                                ${window.isAdmin ? `• 👨‍🏫 ${escapeHTML(guru)}` : ''}
+                                ${authState.isAdmin ? `• 👨‍🏫 ${escapeHTML(guru)}` : ''}
                             </div>
                         </div>
                         <button class="btn btn-primary btn-sm btn-input-absensi" data-schedule-id="${s.grouped_ids.join(',')}">
@@ -358,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const initWhenReady = () => {
-        if (window.currentUser !== undefined) {
+        if (authState.currentUser !== undefined) {
             renderScheduleList();
         } else {
             // P1 Fix: Use Event Listener instead of setTimeout polling
@@ -417,16 +418,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Load Subjects
             let subjectsData = [];
-            if (window.isAdmin) {
+            if (authState.isAdmin) {
                 const { data } = await db.from('subjects').select('id, nama_mapel').order('nama_mapel');
                 subjectsData = data || [];
-            } else if (window.currentTeacher) {
+            } else if (authState.currentTeacher) {
                 const { data } = await db.from('class_schedules')
                     .select('teacher_id, subjects(id, nama_mapel), teachers(id, nama)');
                 if (data) {
                     const map = new Map();
                     data.forEach(d => {
-                        const isMySubject = d.teacher_id === window.currentTeacher.id;
+                        const isMySubject = d.teacher_id === authState.currentTeacher.id;
                         const isDewanGuru = d.teachers?.nama?.toLowerCase().includes('dewan guru');
                         if (d.subjects && (isMySubject || isDewanGuru)) {
                             map.set(d.subjects.id, d.subjects);
@@ -437,15 +438,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (subjectsData.length > 0) {
-                const defaultOpt = window.isAdmin ? '<option value="">Semua Mapel</option>' : '';
-                const defaultExportOpt = window.isAdmin ? '<option value="">Semua Mapel (Harian)</option>' : '';
+                const defaultOpt = authState.isAdmin ? '<option value="">Semua Mapel</option>' : '';
+                const defaultExportOpt = authState.isAdmin ? '<option value="">Semua Mapel (Harian)</option>' : '';
                 const subjectOptions = defaultOpt + subjectsData.map(s => `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`).join('');
                 const exportOptions = defaultExportOpt + subjectsData.map(s => `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`).join('');
                 
                 if (filterMapelRekap) filterMapelRekap.innerHTML = subjectOptions;
                 if (filterMapelPivot) filterMapelPivot.innerHTML = subjectOptions;
                 if (exportMapel) exportMapel.innerHTML = exportOptions;
-            } else if (!window.isAdmin) {
+            } else if (!authState.isAdmin) {
                 const emptyOpt = '<option value="">-- Tidak Ada Mapel --</option>';
                 if (filterMapelRekap) filterMapelRekap.innerHTML = emptyOpt;
                 if (filterMapelPivot) filterMapelPivot.innerHTML = emptyOpt;
@@ -799,3 +800,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.renderScheduleList = renderScheduleList;
 });
+

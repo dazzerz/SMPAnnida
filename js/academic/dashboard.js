@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { escapeHTML } from '../core/utils.js';
 const db = supabaseClient;
@@ -359,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const importStatus = document.getElementById('import-status');
 
     if(btnImportSiswa) {
-        if (window.isGuest) {
+        if (authState.isGuest) {
             btnImportSiswa.disabled = true;
             if(fileImportSiswa) fileImportSiswa.disabled = true;
         }
@@ -400,3 +401,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+

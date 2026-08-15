@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { showToast, escapeHTML } from '../core/utils.js';
 
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemsPerPage = 20;
 
     // Guest Mode Protection
-    if (window.isGuest && btnAddSiswa) {
+    if (authState.isGuest && btnAddSiswa) {
         btnAddSiswa.style.display = 'none';
     }
 
@@ -132,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Bind Edit Buttons
         document.querySelectorAll('.btn-edit-siswa').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 const student = currentData.find(st => st.id == id);
                 if (student) openModal(student);
@@ -142,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Bind Delete Buttons
         document.querySelectorAll('.btn-del-siswa').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 if (confirm('Yakin ingin menghapus siswa ini?')) {
                     try {
@@ -215,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnAddSiswa) {
         btnAddSiswa.addEventListener('click', () => {
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModal();
         });
     }
@@ -230,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formSiswa) {
         formSiswa.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             
             const btnSave = document.getElementById('btn-save-siswa');
             const originalText = btnSave.textContent;
@@ -313,3 +314,4 @@ document.addEventListener('DOMContentLoaded', () => {
         if (siswaSection.style.display !== 'none') loadData();
     }
 });
+

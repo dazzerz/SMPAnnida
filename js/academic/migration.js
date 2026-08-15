@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { escapeHTML, showToast } from '../core/utils.js';
 
@@ -175,11 +176,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Call on load if hash is data-migration
     window.addEventListener('hashchange', () => {
         if (window.location.hash === '#data-migration') {
-            if (!window.isGuest) runIntegrityCheck();
+            if (!authState.isGuest) runIntegrityCheck();
         }
     });
     if (window.location.hash === '#data-migration') {
-        if (!window.isGuest) runIntegrityCheck();
+        if (!authState.isGuest) runIntegrityCheck();
     }
     
     // Bind integrity button
@@ -210,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         console.log("CLICK DOWNLOAD TEMPLATE");
         
-        if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+        if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
         
         const type = selectType.value;
         console.log("Type selected:", type);
@@ -236,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Upload Excel
     inputUpload.addEventListener('change', (e) => {
-        if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+        if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
         const file = e.target.files[0];
         if (!file) return;
 
@@ -507,7 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 8 & 9. Import Data (Batch Processing)
     btnImport.addEventListener('click', async (e) => {
         e.preventDefault();
-        if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+        if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
         
         const type = selectType.value;
         const strategy = selectStrategy.value; // skip, update, cancel
@@ -677,3 +678,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+

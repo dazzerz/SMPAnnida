@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { escapeHTML, showToast } from '../core/utils.js';
 const db = supabaseClient;
@@ -198,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function attachActionEvents() {
         document.querySelectorAll('.btn-edit-jadwal').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 const j = allSchedules.find(x => x.id === id);
                 if (j) openModal(j);
@@ -207,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelectorAll('.btn-delete-jadwal').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 if (!confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) return;
                 
                 const id = e.target.getAttribute('data-id');
@@ -263,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnTambahJadwal) {
         btnTambahJadwal.addEventListener('click', () => {
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModal();
         });
     }
@@ -295,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (formJadwal) {
         formJadwal.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (window.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
 
             const id = jadwalId.value;
             const tYear = inputTahun.value;
@@ -407,3 +408,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Attach to global scope for nav links to trigger
     window.loadDataJadwal = loadJadwal;
 });
+

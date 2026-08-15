@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import db from '../core/supabase.js';
 import { showToast, escapeHTML } from '../core/utils.js';
 
@@ -34,14 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tryInitJurnal = () => {
         if (isInit) return;
-        if (window.currentUser !== undefined) {
-            if (window.isAdmin || window.currentTeacher) {
+        if (authState.currentUser !== undefined) {
+            if (authState.isAdmin || authState.currentTeacher) {
                 initJurnal();
             }
         } else {
             // P1 Fix: Use Event Listener instead of setTimeout polling
             window.addEventListener('authLoaded', () => {
-                if (!isInit && (window.isAdmin || window.currentTeacher)) {
+                if (!isInit && (authState.isAdmin || authState.currentTeacher)) {
                     initJurnal();
                 }
             }, { once: true });
@@ -64,6 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentDaySchedules = [];
 
+    // P2 Fix: Pagination variables
+    let currentPage = 1;
+    const PAGE_SIZE = 50;
+
     async function initJurnal() {
         if (isInit) return;
         isInit = true;
@@ -72,10 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const { data: { session } } = await db.auth.getSession();
             authUserId = session?.user?.id;
 
-            if (window.isAdmin) {
+            if (authState.isAdmin) {
                 if (elFilterTeacher) {
                     elFilterTeacher.style.display = 'block';
-                    elFilterTeacher.addEventListener('change', loadHistory);
+                    elFilterTeacher.addEventListener('change', () => { currentPage = 1; loadHistory(); });
                     await loadAdminTeachers();
                 }
                 const thColTeacher = document.getElementById('jurnal-col-teacher');
@@ -88,8 +93,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Event Listeners
             btnSave.addEventListener('click', saveJurnal);
             
-            if (elFilterMonth) elFilterMonth.addEventListener('change', loadHistory);
+            if (elFilterMonth) elFilterMonth.addEventListener('change', () => { currentPage = 1; loadHistory(); });
             if (btnExport) btnExport.addEventListener('click', exportToExcel);
+
+            // P2 Fix: Pagination button listeners
+            const btnPrev = document.getElementById('btn-jurnal-prev');
+            const btnNext = document.getElementById('btn-jurnal-next');
+            if (btnPrev) btnPrev.addEventListener('click', () => { if (currentPage > 1) { currentPage--; loadHistory(); } });
+            if (btnNext) btnNext.addEventListener('click', () => { currentPage++; loadHistory(); });
             
             // Validate inputs on change
             const validate = () => {
@@ -154,10 +165,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Load Classes based on schedules
             let classMap = new Map();
             currentDaySchedules.forEach(d => {
-                if (window.isAdmin) {
+                if (authState.isAdmin) {
                     if (d.classes) classMap.set(d.classes.id, d.classes);
-                } else if (window.currentTeacher) {
-                    const isMySubject = d.teacher_id === window.currentTeacher.id;
+                } else if (authState.currentTeacher) {
+                    const isMySubject = d.teacher_id === authState.currentTeacher.id;
                     const isDewanGuru = d.teachers && d.teachers.nama && d.teachers.nama.toLowerCase().includes('dewan guru');
                     if (d.classes && (isMySubject || isDewanGuru)) {
                         classMap.set(d.classes.id, d.classes);
@@ -186,10 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let subjMap = new Map();
         currentDaySchedules.forEach(d => {
             if (d.classes && d.classes.id === elClass.value) {
-                if (window.isAdmin) {
+                if (authState.isAdmin) {
                     if (d.subjects) subjMap.set(d.subjects.id, d.subjects);
-                } else if (window.currentTeacher) {
-                    const isMySubject = d.teacher_id === window.currentTeacher.id;
+                } else if (authState.currentTeacher) {
+                    const isMySubject = d.teacher_id === authState.currentTeacher.id;
                     const isDewanGuru = d.teachers && d.teachers.nama && d.teachers.nama.toLowerCase().includes('dewan guru');
                     if (d.subjects && (isMySubject || isDewanGuru)) {
                         subjMap.set(d.subjects.id, d.subjects);
@@ -235,19 +246,36 @@ document.addEventListener('DOMContentLoaded', () => {
                     classes(nama_kelas),
                     subjects(nama_mapel),
                     profiles(full_name)
-                `)
+                `, { count: 'exact' })
                 .gte('date', startDate)
                 .lte('date', endDate)
                 .order('date', { ascending: false });
 
-            if (window.isAdmin && elFilterTeacher && elFilterTeacher.value) {
+            if (authState.isAdmin && elFilterTeacher && elFilterTeacher.value) {
                 query = query.eq('teacher_id', elFilterTeacher.value);
-            } else if (!window.isAdmin && authUserId) {
+            } else if (!authState.isAdmin && authUserId) {
                 query = query.eq('teacher_id', authUserId);
             }
 
-            const { data, error } = await query;
+            // P2 Fix: Apply Pagination
+            const from = (currentPage - 1) * PAGE_SIZE;
+            const to = from + PAGE_SIZE - 1;
+            query = query.range(from, to);
+
+            const { data, error, count } = await query;
             if (error) throw error;
+
+            // P2 Fix: Update Pagination UI
+            const btnPrev = document.getElementById('btn-jurnal-prev');
+            const btnNext = document.getElementById('btn-jurnal-next');
+            const pageInfo = document.getElementById('jurnal-pagination-info');
+            
+            if (pageInfo) {
+                const totalPages = Math.ceil(count / PAGE_SIZE) || 1;
+                pageInfo.textContent = `Halaman ${currentPage} dari ${totalPages} (Total: ${count} jurnal)`;
+                if (btnPrev) btnPrev.disabled = currentPage <= 1;
+                if (btnNext) btnNext.disabled = currentPage >= totalPages;
+            }
 
             if (!data || data.length === 0) {
                 tbodyHistory.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Belum ada jurnal yang terisi pada bulan ini.</td></tr>';
@@ -263,8 +291,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const parts = j.date.split('-');
                 const dFormatted = parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : j.date;
 
-                const isOwner = !window.isAdmin && j.teacher_id === authUserId;
-                const canDelete = window.isAdmin || isOwner;
+                const isOwner = !authState.isAdmin && j.teacher_id === authUserId;
+                const canDelete = authState.isAdmin || isOwner;
 
                 let actionHtml = '';
                 if (canDelete) {
@@ -402,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .lte('date', endDate)
                 .order('date', { ascending: true });
 
-            if (!window.isAdmin && authUserId) {
+            if (!authState.isAdmin && authUserId) {
                 query = query.eq('teacher_id', authUserId);
             }
 
@@ -453,3 +481,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+

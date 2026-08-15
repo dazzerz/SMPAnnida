@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import { injectSidebar, injectTopbar } from '../core/layout.js';
 injectTopbar('topbar', {
   greeting: '',
@@ -38,26 +39,31 @@ async function checkAuth() {
     try {
         const { data: { user }, error } = await db.auth.getUser();
 
+        let _user = null;
+        let _teacher = null;
+        let _admin = false;
+        let _guest = false;
+
         // Only AFTER we know the session status do we decide on isGuest.
         if (user) {
-            // Valid session — override any stale isGuest flag
-            window.isGuest = false;
+            // Valid session - override any stale isGuest flag
+            _guest = false;
             localStorage.removeItem('isGuest');
 
-            window.currentUser = user;
+            _user = user;
 
             // P0 Fix: Dynamic Admin Check via user_roles table
             const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
-            window.isAdmin = (roleData && roleData.role === 'admin');
+            _admin = (roleData && roleData.role === 'admin');
 
-            if (!window.isAdmin) {
+            if (!_admin) {
                 const { data: teacherData } = await db
                     .from('teachers')
                     .select('id, nama, email')
                     .ilike('email', user.email)
                     .maybeSingle();
                 
-                window.currentTeacher = teacherData || null;
+                _teacher = teacherData || null;
                 if (!teacherData) {
                     console.warn('Email ini tidak terdaftar sebagai guru:', user.email);
                 }
@@ -69,14 +75,17 @@ async function checkAuth() {
                     if (el) el.style.display = 'none';
                 });
             } else {
-                window.currentTeacher = null;
+                _teacher = null;
             }
         } else {
-            // No valid session — check if user intentionally chose guest mode
-            window.isGuest = localStorage.getItem('isGuest') === 'true';
+            // No valid session - check if user intentionally chose guest mode
+            _guest = localStorage.getItem('isGuest') === 'true';
         }
 
-        if (error || (!user && !window.isGuest)) {
+        // Commit to auth module
+        authState.setAuth(_user, _teacher, _admin, _guest);
+
+        if (error || (!user && !_guest)) {
             window.location.href = '../../index.html';
             return;
         }
@@ -84,7 +93,7 @@ async function checkAuth() {
         // Update profil UI
         const profileName = document.querySelector('.user-profile span');
         if (profileName) {
-            if (window.isGuest) {
+            if (authState.isGuest) {
                 profileName.textContent = 'Guest (View Only)';
                 document.body.classList.add('guest-mode');
             } else {

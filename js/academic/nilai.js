@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { escapeHTML } from '../core/utils.js';
 const db = supabaseClient;
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(filterKelasRekap) filterKelasRekap.addEventListener('change', (e) => e.target.value ? populateStudentsDropdown(e.target.value, filterSiswaRekap) : (filterSiswaRekap.innerHTML = '<option value="">-- Pilih Siswa --</option>', filterSiswaRekap.disabled = true));
 
     if(btnSimpanNilai) {
-        if (window.isGuest) {
+        if (authState.isGuest) {
             btnSimpanNilai.disabled = true;
             btnSimpanNilai.title = "Guest (View Only)";
             document.getElementById('input-mapel-nilai').disabled = true;
@@ -291,3 +292,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+

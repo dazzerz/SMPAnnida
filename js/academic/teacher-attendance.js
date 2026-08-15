@@ -1,3 +1,4 @@
+import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { showToast, escapeHTML } from '../core/utils.js';
 
@@ -61,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     dateRekap.addEventListener('change', loadRekap);
                 }
             }
-        } else if (window.isGuest) {
+        } else if (authState.isGuest) {
             currentTeacherId = '00000000-0000-0000-0000-000000000000';
         }
     }
@@ -122,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     btnCamera.textContent = 'Absensi Selesai';
                 } else {
                     // Checked in, not checked out
-                    if (!window.isGuest) {
+                    if (!authState.isGuest) {
                         btnCamera.disabled = false;
                         btnCamera.textContent = 'Ambil Foto (Check Out)';
                     }
@@ -130,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } else {
                 // Not checked in
-                if (!window.isGuest) {
+                if (!authState.isGuest) {
                     btnCamera.disabled = false;
                     btnCamera.textContent = 'Ambil Foto (Check In)';
                 }
@@ -496,3 +497,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
