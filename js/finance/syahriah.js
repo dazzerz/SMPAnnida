@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Get generated slips for this period
             const { data: slips, error: sErr } = await db
                 .from('salary_slips')
-                .select('*, salary_slip_items(*, salary_components(name, type, sort_order))')
+                .select('*, salary_slip_items(*, salary_components(name, sort_order))')
                 .eq('period_month', month)
                 .eq('period_year', year);
             if (sErr) throw sErr;
