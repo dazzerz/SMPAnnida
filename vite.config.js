@@ -18,7 +18,6 @@ export default defineConfig({
         superDashboard: resolve(root, 'dashboard.html'),
         academicDashboard: resolve(root, 'pages/academic/dashboard.html'),
         financeDashboard: resolve(root, 'pages/finance/dashboard.html'),
-        financeSyahriah: resolve(root, 'pages/finance/syahriah.html'),
         ppdbAbout: resolve(root, 'pages/ppdb/about.html'),
         ppdbDashboardAdmin: resolve(root, 'pages/ppdb/dashboard-admin.html'),
         ppdbDashboardSiswa: resolve(root, 'pages/ppdb/dashboard-siswa.html'),
