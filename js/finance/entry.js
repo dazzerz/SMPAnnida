@@ -17,6 +17,7 @@ import {
   fetchBudgets, fetchBudgetSpending, upsertBudget, deleteBudget,
   renderBudgetCards, updateBudgetSummary
 } from './budget.js';
+import { initSyahriah } from './syahriah.js';
 
 // ── State ──────────────────────────────────────────
 let userId = null;
@@ -88,6 +89,7 @@ function initSection(sectionId) {
     case 'rab': initRab(); break;
     case 'reports': initReports(); break;
     case 'settings': initSettings(); break;
+    case 'syahriah': initSyahriah(); break;
   }
 }
 
@@ -699,7 +701,7 @@ async function main() {
   await fetchCategories(userId);
 
   // Navigate to initial section
-  const validSections = ['transactions', 'budget', 'rab', 'reports', 'settings'];
+  const validSections = ['transactions', 'budget', 'rab', 'reports', 'settings', 'syahriah'];
   const startSection = validSections.includes(initialHash) ? initialHash : 'transactions';
 
   // Show initial section
