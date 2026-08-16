@@ -495,4 +495,3 @@ export async function initSyahriah() {
             });
         }
     }
-}
