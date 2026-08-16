@@ -39,7 +39,7 @@ export async function initSyahriah() {
     const btnGenerate = document.getElementById('btn-generate');
     const btnSettings = document.getElementById('btn-settings'); // Asumsi ada ID ini
     const btnLoadData = document.getElementById('btn-load-data');
-    const filterMonth = document.getElementById('filter-month');
+    const filterMonth = document.getElementById('syahriah-filter-month');
     const filterYear = document.getElementById('filter-year');
     const grid = document.getElementById('syahriah-grid');
     const summaryTotal = document.getElementById('summary-total');
