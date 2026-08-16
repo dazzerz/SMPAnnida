@@ -44,3 +44,110 @@
     display: none !important;
   }
 }
+/* Card Grid Layout */
+.syahriah-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.slip-card {
+  background: var(--bg-card, #ffffff);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.slip-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.slip-card-header {
+  padding: 1.25rem;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.slip-card-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-primary, #1e293b);
+  margin: 0 0 0.25rem 0;
+}
+
+.slip-card-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted, #64748b);
+}
+
+.slip-card-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.slip-card-status.draft { background: #fef3c7; color: #b45309; }
+.slip-card-status.finalized { background: #e0e7ff; color: #4338ca; }
+.slip-card-status.paid { background: #dcfce3; color: #15803d; }
+
+.slip-card-body {
+  padding: 1.25rem;
+  flex: 1;
+}
+
+.slip-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.slip-detail-table th, .slip-detail-table td {
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--border-color, #e2e8f0);
+}
+
+.slip-detail-table tr:last-child th, .slip-detail-table tr:last-child td {
+  border-bottom: none;
+}
+
+.slip-detail-table td:nth-child(2) {
+  text-align: center;
+  color: var(--text-muted, #64748b);
+}
+
+.slip-detail-table td:nth-child(3) {
+  text-align: right;
+  font-weight: 500;
+}
+
+.slip-card-footer {
+  padding: 1.25rem;
+  background: rgba(0, 0, 0, 0.01);
+  border-top: 1px solid var(--border-color, #e2e8f0);
+}
+
+.slip-card-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--income-color, #10b981);
+  margin-bottom: 1rem;
+}
+
+.slip-card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.slip-card-actions button {
+  flex: 1;
+}

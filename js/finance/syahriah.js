@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnLoadData = document.getElementById('btn-load-data');
     const filterMonth = document.getElementById('filter-month');
     const filterYear = document.getElementById('filter-year');
-    const tbody = document.getElementById('syahriah-tbody');
+    const grid = document.getElementById('syahriah-grid');
     const summaryTotal = document.getElementById('summary-total');
     const summaryGuru = document.getElementById('summary-guru');
 
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const month = parseInt(filterMonth.value);
         const year = parseInt(filterYear.value);
         
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Memuat data...</td></tr>';
+        grid.innerHTML = '<div class="empty-state" style="padding:3rem; grid-column: 1 / -1; text-align: center;"><div class="empty-state-title">Memuat data...</div></div>';
         
         try {
             // Get all teachers
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Get generated slips for this period
             const { data: slips, error: sErr } = await db
                 .from('salary_slips')
-                .select('*, salary_slip_items(*)')
+                .select('*, salary_slip_items(*, salary_components(name, type, sort_order))')
                 .eq('period_month', month)
                 .eq('period_year', year);
             if (sErr) throw sErr;
@@ -97,37 +97,75 @@ document.addEventListener('DOMContentLoaded', async () => {
             let html = '';
 
             if (currentData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state">Belum ada slip digenerate untuk bulan ini. Klik Generate Slip.</div></td></tr>';
+                grid.innerHTML = '<div class="empty-state" style="padding:3rem; grid-column: 1 / -1; text-align: center;"><div class="empty-state-title">Belum ada slip digenerate untuk bulan ini. Klik Generate Slip.</div></div>';
                 summaryTotal.textContent = 'Rp 0';
                 summaryGuru.textContent = '0 Guru';
                 return;
             }
 
-            currentData.forEach((slip, index) => {
+            currentData.forEach((slip) => {
                 const teacher = teachers.find(t => t.id === slip.teacher_id);
                 const teacherName = teacher ? teacher.nama : 'Unknown';
                 totalPengeluaran += slip.total_amount;
 
-                let statusBadge = '';
-                if(slip.status === 'draft') statusBadge = '<span class="badge" style="background:var(--warning-color)">Draft</span>';
-                if(slip.status === 'finalized') statusBadge = '<span class="badge" style="background:var(--primary-color)">Final</span>';
-                if(slip.status === 'paid') statusBadge = '<span class="badge" style="background:var(--success-color)">Lunas</span>';
+                let statusClass = 'draft';
+                let statusLabel = 'Draft';
+                if(slip.status === 'finalized') { statusClass = 'finalized'; statusLabel = 'Final'; }
+                if(slip.status === 'paid') { statusClass = 'paid'; statusLabel = 'Lunas'; }
+
+                let items = slip.salary_slip_items || [];
+                items.sort((a, b) => {
+                    const orderA = a.salary_components ? a.salary_components.sort_order : 99;
+                    const orderB = b.salary_components ? b.salary_components.sort_order : 99;
+                    return orderA - orderB;
+                });
+
+                let detailRows = '';
+                items.forEach(item => {
+                    if (item.subtotal > 0 || (item.quantity > 0 && item.rate > 0)) {
+                        const compName = item.salary_components ? item.salary_components.name : 'Unknown';
+                        detailRows += `
+                            <tr>
+                                <td>${compName}</td>
+                                <td>${item.quantity} x ${formatRp(item.rate)}</td>
+                                <td>${formatRp(item.subtotal)}</td>
+                            </tr>
+                        `;
+                    }
+                });
+                
+                if (!detailRows) {
+                    detailRows = '<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Tidak ada rincian</td></tr>';
+                }
 
                 html += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${teacherName}</td>
-                        <td>${month}/${year}</td>
-                        <td>${formatRp(slip.total_amount)}</td>
-                        <td>${statusBadge}</td>
-                        <td style="text-align:right;">
-                            <button class="btn btn-outline btn-sm btn-view-slip" data-id="${slip.id}">Lihat Slip</button>
-                        </td>
-                    </tr>
+                    <div class="slip-card">
+                        <div class="slip-card-header">
+                            <div>
+                                <h3 class="slip-card-title">${teacherName}</h3>
+                                <div class="slip-card-subtitle">Periode: ${month}/${year}</div>
+                            </div>
+                            <span class="slip-card-status ${statusClass}">${statusLabel}</span>
+                        </div>
+                        <div class="slip-card-body">
+                            <table class="slip-detail-table">
+                                ${detailRows}
+                            </table>
+                        </div>
+                        <div class="slip-card-footer">
+                            <div class="slip-card-total">
+                                <span>Total</span>
+                                <span>${formatRp(slip.total_amount)}</span>
+                            </div>
+                            <div class="slip-card-actions">
+                                <button class="btn btn-outline btn-sm btn-view-slip" data-id="${slip.id}">Lihat Slip Lengkap</button>
+                            </div>
+                        </div>
+                    </div>
                 `;
             });
 
-            tbody.innerHTML = html;
+            grid.innerHTML = html;
             summaryTotal.textContent = formatRp(totalPengeluaran);
             summaryGuru.textContent = `${currentData.length} Guru`;
 

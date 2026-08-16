@@ -62,22 +62,10 @@
             <button class="btn btn-outline btn-sm" id="btn-export-excel">📥 Export Excel</button>
           </div>
 
-          <div class="transactions-table-wrapper card">
-            <table class="transactions-table" aria-label="Daftar Syahriah">
-              <thead>
-                <tr>
-                  <th style="width:50px;">No</th>
-                  <th>Nama Guru</th>
-                  <th>Periode</th>
-                  <th>Total Gaji</th>
-                  <th>Status</th>
-                  <th style="width:200px; text-align:right;">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="syahriah-tbody">
-                <tr><td colspan="6"><div class="empty-state" style="padding:3rem;"><div class="empty-state-title">Pilih bulan dan klik Load Data</div></div></td></tr>
-              </tbody>
-            </table>
+          <div class="syahriah-grid" id="syahriah-grid">
+            <div class="empty-state" style="padding:3rem; grid-column: 1 / -1; text-align: center;">
+              <div class="empty-state-title">Pilih bulan dan klik Load Data</div>
+            </div>
           </div>
         </section>
 
