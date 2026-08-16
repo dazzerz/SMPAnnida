@@ -18,6 +18,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
     const isAdmin = roleData && roleData.role === 'admin';
 
+    // Update Sidebar Profile
+    const userNameEl = document.getElementById('sidebar-user-name');
+    const userRoleEl = document.getElementById('sidebar-user-role');
+    if (userNameEl) {
+        const { data: tData } = await db.from('teachers').select('nama').eq('email', user.email).maybeSingle();
+        userNameEl.textContent = tData ? tData.nama : (user.user_metadata?.full_name || user.email.split('@')[0]);
+    }
+    if (userRoleEl) {
+        userRoleEl.textContent = isAdmin ? 'Admin Keuangan' : 'Guru / Karyawan';
+    }
+
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+    }
+
     const btnGenerate = document.getElementById('btn-generate');
     const btnSettings = document.getElementById('btn-settings'); // Asumsi ada ID ini
     const btnLoadData = document.getElementById('btn-load-data');
@@ -58,7 +74,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         try {
             // Get all teachers
-            const { data: teachers, error: tErr } = await db.from('teachers').select('*').eq('is_active', true);
+            const { data: teachers, error: tErr } = await db.from('teachers').select('*').eq('aktif', true);
             if (tErr) throw tErr;
 
             // Get generated slips for this period
@@ -197,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         try {
             // 1. Get all active teachers
-            const { data: teachers } = await db.from('teachers').select('*').eq('is_active', true);
+            const { data: teachers } = await db.from('teachers').select('*').eq('aktif', true);
             
             // 2. Get master components
             const { data: components } = await db.from('salary_components').select('*');
