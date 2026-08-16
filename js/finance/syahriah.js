@@ -272,6 +272,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .select('*')
                 .gte('attendance_date', startDate)
                 .lt('attendance_date', endDate);
+                
+            // 4. Get profiles mapping for matching UUIDs
+            const { data: profiles } = await db.from('profiles').select('id, full_name');
             
             for (let teacher of teachers) {
                 // Kalkulasi per guru berdasarkan instruksi
@@ -294,7 +297,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 }
                 
-                const tAttendances = attendances ? attendances.filter(a => a.teacher_id === teacher.id) : [];
+                // Match profile by name to get correct UUID for attendance
+                const profile = profiles ? profiles.find(p => p.full_name === teacher.nama) : null;
+                const tAttendances = (attendances && profile) ? attendances.filter(a => a.teacher_id === profile.id) : [];
                 
                 let qtyMengajar = 0;
                 let qtyTransport = 0;
