@@ -108,6 +108,9 @@ export function injectSidebar(containerId, activeMenuId) {
           <a href="${basePath}pages/finance/dashboard.html#reports" class="nav-item" data-target="reports">
             <i class="ph ph-chart-pie-slice nav-icon"></i> Laporan
           </a>
+          <a href="${basePath}pages/finance/syahriah.html" class="nav-item" data-target="syahriah">
+            <i class="ph ph-wallet nav-icon"></i> Syahriah Guru
+          </a>
         </div>
       </div>
 
