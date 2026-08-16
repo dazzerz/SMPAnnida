@@ -69,6 +69,7 @@
     injectTopbar('topbar', { title: 'Executive Dashboard' });
     import { getOptionalUser, handleLogout } from './js/core/auth.js?v=2';
     import { fetchDashboardMetrics, formatCurrency } from './js/core/dashboard.js';
+    import supabaseClient from './js/core/supabase.js';
     
     async function init() {
       const user = await getOptionalUser();
@@ -77,9 +78,12 @@
         return;
       }
 
-      // Proteksi Akses: Jika bukan Admin, tendang ke Akademik
-      const ADMIN_EMAIL = 'daffa.al.akhdaan@gmail.com';
-      if (user.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+      // Proteksi Akses: Jika bukan Admin atau Pembina, tendang ke Akademik
+      const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
+      const isAdmin = roleData && roleData.role === 'admin';
+      const isPembina = roleData && roleData.role === 'pembina';
+
+      if (!isAdmin && !isPembina) {
         window.location.href = 'pages/academic/dashboard.html';
         return;
       }
