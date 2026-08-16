@@ -101,7 +101,7 @@ export async function parseExcelFile(file) {
         }
         
         let headerRowIdx = -1;
-        let templateType = 'standard'; // 'standard' | 'bsi'
+        let templateType = 'standard'; // 'standard' | 'bsi' | 'english_bank'
         
         // Cari baris header
         for (let i = 0; i < aoa.length; i++) {
@@ -109,6 +109,10 @@ export async function parseExcelFile(file) {
           if (rowStr.includes('waktu transaksi') && rowStr.includes('deskripsi')) {
             headerRowIdx = i;
             templateType = 'bsi';
+            break;
+          } else if (rowStr.includes('date') && rowStr.includes('description') && rowStr.includes('amount')) {
+            headerRowIdx = i;
+            templateType = 'english_bank';
             break;
           } else if (rowStr.includes('tanggal') && rowStr.includes('keterangan')) {
             headerRowIdx = i;
@@ -185,6 +189,58 @@ export async function parseExcelFile(file) {
                 kategori: '', // kosong, biarkan user mapping jika perlu, atau jadi 'Lainnya'
                 jumlah: jumlah,
                 sumber_dana: 'bank' // Mutasi bank pasti 'bank'
+              });
+            }
+          });
+        } else if (templateType === 'english_bank') {
+          // Mutasi Bank Berbahasa Inggris (e.g. Statement yang baru di-upload)
+          const dateIdx = headers.findIndex(h => h.toLowerCase() === 'date');
+          const descIdx = headers.findIndex(h => h.toLowerCase() === 'description');
+          const amountIdx = headers.findIndex(h => h.toLowerCase() === 'amount');
+          const dbIdx = headers.findIndex(h => h.toLowerCase() === 'db');
+          const crIdx = headers.findIndex(h => h.toLowerCase() === 'cr');
+
+          const simplifyEnglishDescription = (desc) => {
+            if (!desc) return '';
+            let s = String(desc).trim();
+            if (s.includes('Trf Ke -')) {
+              return s.split('Trf Ke -')[1].trim();
+            }
+            if (s.includes('Trf Dari -')) {
+              return s.split('Trf Dari -')[1].trim();
+            }
+            return s;
+          };
+
+          dataRows.forEach(row => {
+            if (!row[dateIdx] && !row[descIdx]) return;
+            
+            let tanggal = row[dateIdx];
+            if (typeof tanggal === 'string') {
+              // Misal "2026-08-01 10:44:08" -> "2026-08-01"
+              tanggal = tanggal.split(' ')[0];
+            } else if (tanggal instanceof Date) {
+              tanggal = new Date(tanggal.getTime() - (tanggal.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+            }
+
+            const amountStr = String(row[amountIdx] || '').replace(/[^0-9.]/g, '');
+            const jumlah = parseFloat(amountStr) || 0;
+
+            const isDb = String(row[dbIdx] || '').toUpperCase() === 'DB';
+            const isCr = String(row[crIdx] || '').toUpperCase() === 'CR';
+
+            let tipe = '';
+            if (isDb) { tipe = 'pengeluaran'; }
+            else if (isCr) { tipe = 'pemasukan'; }
+
+            if (jumlah > 0 && tipe !== '') {
+              mappedRows.push({
+                tanggal: tanggal,
+                keterangan: simplifyEnglishDescription(row[descIdx]),
+                tipe: tipe,
+                kategori: '', // kosong, biarkan user mapping
+                jumlah: jumlah,
+                sumber_dana: 'bank'
               });
             }
           });
