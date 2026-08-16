@@ -203,13 +203,13 @@ export async function initSyahriah() {
                     const isEmpty = item.subtotal === 0;
                     itemsHtml += `
                         <tr class="${isEmpty ? 'row-empty' : ''}">
-                            <td style="border:1px solid #000; padding:0.5rem; text-align:center;">${rowCount++}</td>
-                            <td style="border:1px solid #000; padding:0.5rem;">${comp.name}</td>
-                            <td style="border:1px solid #000; padding:0.5rem; text-align:right;">${formatRp(item.rate)}</td>
-                            <td style="border:1px solid #000; padding:0.5rem; text-align:center;">
+                            <td style="color:#000; border:1px solid #000; padding:0.5rem; text-align:center;">${rowCount++}</td>
+                            <td style="color:#000; border:1px solid #000; padding:0.5rem;">${comp.name}</td>
+                            <td style="color:#000; border:1px solid #000; padding:0.5rem; text-align:right;">${formatRp(item.rate)}</td>
+                            <td style="color:#000; border:1px solid #000; padding:0.5rem; text-align:center;">
                                 ${isAdmin ? `<input type="number" class="edit-slip-qty form-input" data-itemid="${item.id}" data-rate="${item.rate}" data-slipid="${slip.id}" value="${item.quantity}" style="width:60px; text-align:center; padding:0.2rem; color:black;">` : item.quantity}
                             </td>
-                            <td style="border:1px solid #000; padding:0.5rem; text-align:right;" class="edit-slip-subtotal" data-itemid="${item.id}">${formatRp(item.subtotal)}</td>
+                            <td style="color:#000; border:1px solid #000; padding:0.5rem; text-align:right;" class="edit-slip-subtotal" data-itemid="${item.id}">${formatRp(item.subtotal)}</td>
                         </tr>
                     `;
                 }
@@ -220,11 +220,11 @@ export async function initSyahriah() {
         while(rowCount <= 8) {
              itemsHtml += `
                 <tr class="row-empty">
-                    <td style="border:1px solid #000; padding:0.5rem; text-align:center;">${rowCount++}</td>
-                    <td style="border:1px solid #000; padding:0.5rem;">-</td>
-                    <td style="border:1px solid #000; padding:0.5rem; text-align:right;">-</td>
-                    <td style="border:1px solid #000; padding:0.5rem; text-align:center;">-</td>
-                    <td style="border:1px solid #000; padding:0.5rem; text-align:right;">-</td>
+                    <td style="color:#000; border:1px solid #000; padding:0.5rem; text-align:center;">${rowCount++}</td>
+                    <td style="color:#000; border:1px solid #000; padding:0.5rem;">-</td>
+                    <td style="color:#000; border:1px solid #000; padding:0.5rem; text-align:right;">-</td>
+                    <td style="color:#000; border:1px solid #000; padding:0.5rem; text-align:center;">-</td>
+                    <td style="color:#000; border:1px solid #000; padding:0.5rem; text-align:right;">-</td>
                 </tr>
             `;
         }
