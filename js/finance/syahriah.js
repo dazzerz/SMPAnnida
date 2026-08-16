@@ -20,16 +20,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const isPembina = roleData && roleData.role === 'pembina';
 
     // Update Sidebar Profile
-    const userNameEl = document.getElementById('sidebar-user-name');
-    const userRoleEl = document.getElementById('sidebar-user-role');
+    const userNameEl = document.getElementById('nav-user-name');
+    const userEmailEl = document.getElementById('nav-user-email');
+    const userAvatarEl = document.getElementById('user-avatar');
     if (userNameEl) {
         const { data: tData } = await db.from('teachers').select('nama').eq('email', user.email).maybeSingle();
-        userNameEl.textContent = tData ? tData.nama : (user.user_metadata?.full_name || user.email.split('@')[0]);
-    }
-    if (userRoleEl) {
-        if (isAdmin) userRoleEl.textContent = 'Admin Keuangan';
-        else if (isPembina) userRoleEl.textContent = 'Pembina';
-        else userRoleEl.textContent = 'Guru / Karyawan';
+        const finalName = tData ? tData.nama : (user.user_metadata?.full_name || user.email.split('@')[0]);
+        userNameEl.textContent = finalName;
+        if (userEmailEl) userEmailEl.textContent = isAdmin ? 'Admin' : (isPembina ? 'Pembina' : 'Guru');
+        if (userAvatarEl) userAvatarEl.textContent = finalName.charAt(0).toUpperCase();
     }
 
     const logoutBtn = document.getElementById('logout-btn');
