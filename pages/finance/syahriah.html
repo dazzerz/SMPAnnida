@@ -128,5 +128,42 @@
   </div>
 
   <script type="module" src="../../js/finance/syahriah.js"></script>
+
+
+  <!-- MODAL PENGATURAN RATE -->
+  <div id="settings-modal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center;">
+    <div class="modal-content" style="background:var(--bg-card); width:100%; max-width:600px; border-radius:var(--radius-lg); padding:2rem; position:relative;">
+      <button class="close-modal" id="btn-close-settings" style="position:absolute; right:1rem; top:1rem; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-primary);">?</button>
+      <h2 style="margin-bottom: 1rem; font-size: 1.25rem;">Pengaturan Rate & Komponen</h2>
+      
+      <div style="max-height: 400px; overflow-y: auto; margin-bottom: 1rem;">
+        <table class="transactions-table">
+          <thead>
+            <tr>
+              <th>Nama Komponen</th>
+              <th>Rate (Rp)</th>
+              <th style="width:100px;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="settings-tbody">
+            <tr><td colspan="3">Memuat data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div style="background: rgba(0,0,0,0.05); padding: 1rem; border-radius: 8px;">
+        <h4 style="margin-bottom: 0.5rem;">Tambah Komponen Baru</h4>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <input type="text" id="new-comp-code" class="form-input" placeholder="Kode Unik (ex: bensin)" style="flex: 1; min-width: 120px;">
+          <input type="text" id="new-comp-name" class="form-input" placeholder="Nama Komponen" style="flex: 2; min-width: 150px;">
+          <input type="number" id="new-comp-rate" class="form-input" placeholder="Rate (Rp)" style="flex: 1; min-width: 100px;">
+          <button class="btn btn-primary" id="btn-add-comp">Tambah</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
 </body>
 </html>

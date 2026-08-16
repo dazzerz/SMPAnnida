@@ -262,21 +262,66 @@ document.addEventListener('DOMContentLoaded', async () => {
             // 2. Get master components
             const { data: components } = await db.from('salary_components').select('*');
             
+            // 3. Get attendance for the month
+            const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
+            const nextMonth = month === 12 ? 1 : month + 1;
+            const nextYear = month === 12 ? year + 1 : year;
+            const endDate = `${nextYear}-${String(nextMonth).padStart(2, '0')}-01`;
+            
+            const { data: attendances } = await db.from('teacher_attendance')
+                .select('*')
+                .gte('attendance_date', startDate)
+                .lt('attendance_date', endDate);
+            
             for (let teacher of teachers) {
-                // Kalkulasi per guru (Contoh dummy sederhana dulu untuk skeleton)
-                // Seharusnya: fetch teacher_attendance, hitung quantity
+                // Kalkulasi per guru berdasarkan instruksi
                 let totalAmount = 0;
                 let itemsToInsert = [];
                 
                 // Cek apakah slip sudah ada
                 const { data: existingSlip } = await db.from('salary_slips')
-                    .select('id')
+                    .select('id, status')
                     .eq('teacher_id', teacher.id)
                     .eq('period_month', month)
                     .eq('period_year', year)
                     .maybeSingle();
                     
-                if (existingSlip) continue; // Skip jika sudah ada
+                if (existingSlip) {
+                    if (existingSlip.status === 'draft') {
+                        await db.from('salary_slips').delete().eq('id', existingSlip.id);
+                    } else {
+                        continue; // Skip jika sudah final/paid
+                    }
+                }
+                
+                const tAttendances = attendances ? attendances.filter(a => a.teacher_id === teacher.id) : [];
+                
+                let qtyMengajar = 0;
+                let qtyTransport = 0;
+                let qtyInsentifHadir = 0;
+                let qtyInsentifPagi = 0;
+                
+                tAttendances.forEach(att => {
+                    const hasCheckIn = !!att.check_in;
+                    const hasCheckOut = !!att.check_out;
+                    
+                    // Mengajar: jika absen in diitung 1 hari
+                    if (hasCheckIn) {
+                        qtyMengajar++;
+                        
+                        // Insentif Pagi: jika absen in max sebelum jam 7 pagi
+                        const checkInTime = new Date(att.check_in);
+                        if (checkInTime.getHours() < 7) {
+                            qtyInsentifPagi++;
+                        }
+                    }
+                    
+                    // Transport & Insentif Hadir: jika absen in dan out
+                    if (hasCheckIn && hasCheckOut) {
+                        qtyTransport++;
+                        qtyInsentifHadir++;
+                    }
+                });
                 
                 // Insert Header
                 const { data: newSlip, error: headerErr } = await db.from('salary_slips')
@@ -289,10 +334,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                     
                 if (headerErr) throw headerErr;
                 
-                // Loop components and insert (Dummy quantity = 0 for now)
+                // Loop components and assign qty
                 for (let comp of components) {
                     let qty = 0;
-                    if(comp.code === 'tunj_kepsek' && teacher.nama.includes('Kepsek')) qty = 1;
+                    if (comp.code === 'mengajar') qty = qtyMengajar;
+                    else if (comp.code === 'transport') qty = qtyTransport;
+                    else if (comp.code === 'insentif_hadir') qty = qtyInsentifHadir;
+                    else if (comp.code === 'insentif_pagi') qty = qtyInsentifPagi;
+                    else if (comp.code === 'tunj_kepsek' && teacher.nama.toLowerCase().includes('kepsek')) qty = 1;
+                    else if (comp.code === 'tunj_wali_kelas' && teacher.nama.toLowerCase().includes('wali kelas')) qty = 1;
+                    else if (comp.code === 'tata_usaha' && teacher.nama.toLowerCase().includes('tata usaha')) qty = 1;
+                    
+                    // Mengajar Pesantren, Ins. Tdrs/upcr, Badal Mengajar dikunci 0
+                    if (['mengajar_pesantren', 'ins_tdrs', 'badal_mengajar'].includes(comp.code)) {
+                        qty = 0;
+                    }
                     
                     const subtotal = qty * comp.default_rate;
                     totalAmount += subtotal;
@@ -324,6 +380,91 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // Init load
-    loadData();
+    // --- PENGATURAN RATE ---
+    const settingsModal = document.getElementById('settings-modal');
+    const btnCloseSettings = document.getElementById('btn-close-settings');
+    const settingsTbody = document.getElementById('settings-tbody');
+    const btnAddComp = document.getElementById('btn-add-comp');
+
+    if (btnSettings && settingsModal) {
+        btnSettings.addEventListener('click', async () => {
+            settingsModal.style.display = 'flex';
+            await loadSettings();
+        });
+
+        btnCloseSettings.addEventListener('click', () => {
+            settingsModal.style.display = 'none';
+        });
+
+        async function loadSettings() {
+            settingsTbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Memuat data...</td></tr>';
+            const { data, error } = await db.from('salary_components').select('*').order('sort_order');
+            if (error) {
+                settingsTbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:red;">Gagal memuat data</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            data.forEach(comp => {
+                html += `
+                    <tr>
+                        <td>${comp.name}</td>
+                        <td>
+                            <input type="number" class="form-input comp-rate-input" data-id="${comp.id}" value="${comp.default_rate}" style="width: 100px; padding: 0.25rem;">
+                        </td>
+                        <td>
+                            <button class="btn btn-primary btn-sm btn-save-comp" data-id="${comp.id}">Simpan</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            settingsTbody.innerHTML = html;
+
+            document.querySelectorAll('.btn-save-comp').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const id = e.target.dataset.id;
+                    const input = document.querySelector(`.comp-rate-input[data-id="${id}"]`);
+                    const newRate = parseInt(input.value);
+                    
+                    const { error: updErr } = await db.from('salary_components').update({ default_rate: newRate }).eq('id', id);
+                    if (updErr) {
+                        showToast('Gagal update rate', 'error');
+                    } else {
+                        showToast('Rate berhasil diupdate!', 'success');
+                    }
+                });
+            });
+        }
+
+        if (btnAddComp) {
+            btnAddComp.addEventListener('click', async () => {
+                const code = document.getElementById('new-comp-code').value.trim();
+                const name = document.getElementById('new-comp-name').value.trim();
+                const rate = parseInt(document.getElementById('new-comp-rate').value || 0);
+
+                if (!code || !name) {
+                    showToast('Kode dan Nama harus diisi', 'error');
+                    return;
+                }
+
+                const { error: insErr } = await db.from('salary_components').insert({
+                    code: code,
+                    name: name,
+                    default_rate: rate,
+                    calculation_type: 'flat'
+                });
+
+                if (insErr) {
+                    showToast('Gagal tambah komponen: ' + insErr.message, 'error');
+                } else {
+                    showToast('Komponen berhasil ditambahkan!', 'success');
+                    document.getElementById('new-comp-code').value = '';
+                    document.getElementById('new-comp-name').value = '';
+                    document.getElementById('new-comp-rate').value = '';
+                    loadSettings();
+                }
+            });
+        }
+    }
 });
+

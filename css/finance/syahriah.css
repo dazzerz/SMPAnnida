@@ -52,39 +52,42 @@
 }
 
 .slip-card {
-  background: var(--bg-card, #ffffff);
-  border: 1px solid var(--border-color, #e2e8f0);
+  background: rgba(20, 25, 30, 0.7);
+  border: 1px solid var(--border-color, #334155);
   border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: transform 0.2s, box-shadow 0.2s;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
 }
 
 .slip-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
 }
 
 .slip-card-header {
   padding: 1.25rem;
-  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  border-bottom: 1px solid var(--border-color, #334155);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .slip-card-title {
   font-weight: 600;
   font-size: 1.1rem;
-  color: var(--text-primary, #1e293b);
+  color: #fff;
   margin: 0 0 0.25rem 0;
 }
 
 .slip-card-subtitle {
   font-size: 0.85rem;
-  color: var(--text-muted, #64748b);
+  color: #94a3b8;
 }
 
 .slip-card-status {
@@ -119,7 +122,7 @@
 
 .slip-detail-table td:nth-child(2) {
   text-align: center;
-  color: var(--text-muted, #64748b);
+  color: #94a3b8;
 }
 
 .slip-detail-table td:nth-child(3) {
@@ -129,8 +132,8 @@
 
 .slip-card-footer {
   padding: 1.25rem;
-  background: rgba(0, 0, 0, 0.01);
-  border-top: 1px solid var(--border-color, #e2e8f0);
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid var(--border-color, #334155);
 }
 
 .slip-card-total {
