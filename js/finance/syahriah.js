@@ -278,7 +278,7 @@ export async function initSyahriah() {
                     
                     // Refresh data
                     loadData();
-                    slipModal.style.display = 'none';
+                    slipModal.style.display = 'none'; slipModal.style.opacity = '0'; slipModal.style.pointerEvents = 'none';
                 } catch(err) {
                     console.error(err);
                     showToast('Gagal menyimpan slip', 'error');
@@ -290,10 +290,14 @@ export async function initSyahriah() {
         }
         
         slipModal.style.display = 'flex';
+        slipModal.style.opacity = '1';
+        slipModal.style.pointerEvents = 'all';
     }
 
     btnCloseSlip.addEventListener('click', () => {
-        slipModal.style.display = 'none';
+        slipModal.style.display = 'none'; slipModal.style.opacity = '0'; slipModal.style.pointerEvents = 'none';
+        slipModal.style.opacity = '0';
+        slipModal.style.pointerEvents = 'none';
     });
 
     btnPrintSlip.addEventListener('click', () => {
