@@ -5,7 +5,7 @@ export async function fetchDashboardMetrics() {
     // 1. Total Siswa Aktif
     const { count: studentCount } = await supabaseClient
       .from('students')
-      .select('*', { count: 'exact', head: true });
+      .select('id', { count: 'exact' });
 
     // 2. Total Kas (Pemasukan - Pengeluaran)
     const { data: transactions } = await supabaseClient
@@ -23,7 +23,7 @@ export async function fetchDashboardMetrics() {
     // 3. Pendaftar PPDB
     const { count: ppdbCount } = await supabaseClient
       .from('pendaftaran')
-      .select('*', { count: 'exact', head: true });
+      .select('id', { count: 'exact' });
 
     // 4. Open Amount (Estimasi Sederhana: 12 bulan SPP @ 100rb per siswa - total income SPP)
     // Untuk tahap ini kita buat kalkulasi dasar
