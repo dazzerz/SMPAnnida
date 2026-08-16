@@ -13,6 +13,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = '../../index.html';
         return;
     }
+    
+    // Auth Guard: Hanya Admin yang bisa akses
+    const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).single();
+    if (!roleData || roleData.role !== 'admin') {
+        showToast('Anda tidak memiliki akses ke halaman ini', 'error');
+        setTimeout(() => window.location.href = '../../pages/academic/dashboard.html', 1500);
+        return;
+    }
 
     const btnGenerate = document.getElementById('btn-generate');
     const btnLoadData = document.getElementById('btn-load-data');
