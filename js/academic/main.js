@@ -28,6 +28,7 @@ async function checkAuth() {
         let _user = null;
         let _teacher = null;
         let _admin = false;
+        let _pembina = false;
         let _guest = false;
 
         // Only AFTER we know the session status do we decide on isGuest.
@@ -41,7 +42,7 @@ async function checkAuth() {
             // P0 Fix: Dynamic Admin Check via user_roles table
             const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
             _admin = (roleData && roleData.role === 'admin');
-            const _pembina = (roleData && roleData.role === 'pembina');
+            _pembina = (roleData && roleData.role === 'pembina');
 
             if (!_admin && !_pembina) {
                 const { data: teacherData } = await db
