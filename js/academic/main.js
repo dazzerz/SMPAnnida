@@ -41,8 +41,9 @@ async function checkAuth() {
             // P0 Fix: Dynamic Admin Check via user_roles table
             const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
             _admin = (roleData && roleData.role === 'admin');
+            const _pembina = (roleData && roleData.role === 'pembina');
 
-            if (!_admin) {
+            if (!_admin && !_pembina) {
                 const { data: teacherData } = await db
                     .from('teachers')
                     .select('id, nama, email')
@@ -62,6 +63,17 @@ async function checkAuth() {
                 });
             } else {
                 _teacher = null;
+                
+                if (_pembina) {
+                    // Inject CSS to hide all action buttons in Academic globally
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        .action-cell, .action-buttons, .td-aksi, .th-aksi, [data-action="edit"], [data-action="delete"] { display: none !important; }
+                        button[onclick*="add"], button[onclick*="edit"], button[onclick*="delete"], 
+                        button[onclick*="save"], button[type="submit"], #btn-tambah { display: none !important; }
+                    `;
+                    document.head.appendChild(style);
+                }
             }
         } else {
             // No valid session - check if user intentionally chose guest mode
@@ -69,7 +81,7 @@ async function checkAuth() {
         }
 
         // Commit to auth module
-        authState.setAuth(_user, _teacher, _admin, _guest);
+        authState.setAuth(_user, _teacher, _admin, _guest, _pembina || false);
 
         if (error || (!user && !_guest)) {
             window.location.href = '../../index.html';

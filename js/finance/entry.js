@@ -638,11 +638,45 @@ async function main() {
 
   // Set user info
   const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Pengguna';
+  
+  // Role check for topbar & sidebar role text
+  let roleLabel = 'Guru / Karyawan';
+  const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
+  if (roleData) {
+      if (roleData.role === 'admin') roleLabel = 'Admin Keuangan';
+      else if (roleData.role === 'pembina') {
+          roleLabel = 'Pembina';
+          // Hide add buttons
+          TOPBAR_CONFIG.transactions.rightHtml = '';
+          TOPBAR_CONFIG.budget.rightHtml = '';
+          // Also hide settings save button later
+          const saveSettingsBtn = document.querySelector('#settings-form button[type="submit"]');
+          if (saveSettingsBtn) saveSettingsBtn.style.display = 'none';
+
+          // Inject CSS to hide all action buttons and columns globally
+          const style = document.createElement('style');
+          style.textContent = `
+              .table-actions { display: none !important; }
+              #transactions-table th:last-child, #transactions-table td:last-child, 
+              #budget-table th:last-child, #budget-table td:last-child { display: none !important; }
+              #add-transaction-btn, #add-budget-btn, #import-excel-btn, #generate-report-btn { display: none !important; }
+              #settings-form button[type="submit"] { display: none !important; }
+          `;
+          document.head.appendChild(style);
+      }
+  }
+
+  // Update TOPBAR again just in case it was already injected
+  const newConfig = TOPBAR_CONFIG[initialHash] || TOPBAR_CONFIG.transactions;
+  injectTopbar('topbar', newConfig);
+
   const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
   set('user-avatar', initials);
   set('nav-user-name', fullName);
   set('nav-user-email', user.email);
+  set('sidebar-user-name', fullName);
+  set('sidebar-user-role', roleLabel);
   document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
 
   // Mobile sidebar toggle

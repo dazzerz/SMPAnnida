@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Cek Role
     const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
     const isAdmin = roleData && roleData.role === 'admin';
+    const isPembina = roleData && roleData.role === 'pembina';
 
     // Update Sidebar Profile
     const userNameEl = document.getElementById('sidebar-user-name');
@@ -26,7 +27,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         userNameEl.textContent = tData ? tData.nama : (user.user_metadata?.full_name || user.email.split('@')[0]);
     }
     if (userRoleEl) {
-        userRoleEl.textContent = isAdmin ? 'Admin Keuangan' : 'Guru / Karyawan';
+        if (isAdmin) userRoleEl.textContent = 'Admin Keuangan';
+        else if (isPembina) userRoleEl.textContent = 'Pembina';
+        else userRoleEl.textContent = 'Guru / Karyawan';
     }
 
     const logoutBtn = document.getElementById('logout-btn');
@@ -43,13 +46,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const summaryTotal = document.getElementById('summary-total');
     const summaryGuru = document.getElementById('summary-guru');
 
-    // Hide admin controls for teachers
+    // Hide admin controls for teachers and pembina
     if (!isAdmin) {
         if(btnGenerate) btnGenerate.style.display = 'none';
         if(btnSettings) btnSettings.style.display = 'none';
-        // Ubah label summary karena hanya melihat diri sendiri
-        const summaryGuruLabel = summaryGuru.previousElementSibling;
-        if (summaryGuruLabel) summaryGuruLabel.textContent = 'Status Guru';
+        
+        // Ubah label summary karena hanya melihat diri sendiri jika bukan pembina
+        if (!isPembina) {
+            document.querySelector('.summary-card:nth-child(1) .text-sm').textContent = 'Total Syahriah Anda Bulan Ini';
+            document.querySelector('.summary-card:nth-child(2)').style.display = 'none'; // Sembunyikan total guru
+        }
     }
 
     const slipModal = document.getElementById('slip-modal');
