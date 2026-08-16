@@ -168,10 +168,6 @@ export async function initSyahriah() {
             summaryTotal.textContent = formatRp(totalPengeluaran);
             summaryGuru.textContent = `${currentData.length} Guru`;
 
-            document.querySelectorAll('.btn-view-slip').forEach(btn => {
-                btn.addEventListener('click', (e) => viewSlip(e.currentTarget.dataset.id));
-            });
-
         } catch (error) {
             console.error("Error loading data:", error);
             showToast('Gagal memuat data syahriah', 'error');
@@ -305,6 +301,15 @@ export async function initSyahriah() {
     });
 
     btnLoadData.addEventListener('click', loadData);
+    
+    // Event delegation for view slip buttons
+    grid.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-view-slip');
+        if (btn) {
+            console.log("Membuka slip dengan ID:", btn.dataset.id);
+            viewSlip(btn.dataset.id);
+        }
+    });
     
     btnGenerate.addEventListener('click', async () => {
         if(!confirm('Generate slip untuk semua guru di bulan ini? Aksi ini membutuhkan waktu memproses data absensi.')) return;
