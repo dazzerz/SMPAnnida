@@ -42,8 +42,14 @@ export async function handleLogin(e) {
   showAuthMessage('Login berhasil! Mengalihkan...', 'success');
   localStorage.removeItem('isGuest');
   sessionStorage.removeItem('guest_mode_active');
+  
+  // P0 Fix: Periksa role untuk menentukan halaman redirect
+  const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', data.user.id).maybeSingle();
+  const isAdmin = roleData && roleData.role === 'admin';
+  const isPembina = roleData && roleData.role === 'pembina';
+
   setTimeout(() => { 
-    if (email.toLowerCase() === 'daffa.al.akhdaan@gmail.com') {
+    if (isAdmin || isPembina) {
       window.location.href = './dashboard.html'; 
     } else {
       window.location.href = './pages/academic/dashboard.html'; 
