@@ -14,21 +14,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
     
-    // Auth Guard: Hanya Admin yang bisa akses
-    const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).single();
-    if (!roleData || roleData.role !== 'admin') {
-        showToast('Anda tidak memiliki akses ke halaman ini', 'error');
-        setTimeout(() => window.location.href = '../../pages/academic/dashboard.html', 1500);
-        return;
-    }
+    // Cek Role
+    const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
+    const isAdmin = roleData && roleData.role === 'admin';
 
     const btnGenerate = document.getElementById('btn-generate');
+    const btnSettings = document.getElementById('btn-settings'); // Asumsi ada ID ini
     const btnLoadData = document.getElementById('btn-load-data');
     const filterMonth = document.getElementById('filter-month');
     const filterYear = document.getElementById('filter-year');
     const tbody = document.getElementById('syahriah-tbody');
     const summaryTotal = document.getElementById('summary-total');
     const summaryGuru = document.getElementById('summary-guru');
+
+    // Hide admin controls for teachers
+    if (!isAdmin) {
+        if(btnGenerate) btnGenerate.style.display = 'none';
+        if(btnSettings) btnSettings.style.display = 'none';
+        // Ubah label summary karena hanya melihat diri sendiri
+        const summaryGuruLabel = summaryGuru.previousElementSibling;
+        if (summaryGuruLabel) summaryGuruLabel.textContent = 'Status Guru';
+    }
 
     const slipModal = document.getElementById('slip-modal');
     const btnCloseSlip = document.getElementById('btn-close-slip');
