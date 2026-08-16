@@ -211,8 +211,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <td style="border:1px solid #000; padding:0.5rem; text-align:center;">${rowCount++}</td>
                             <td style="border:1px solid #000; padding:0.5rem;">${comp.name}</td>
                             <td style="border:1px solid #000; padding:0.5rem; text-align:right;">${formatRp(item.rate)}</td>
-                            <td style="border:1px solid #000; padding:0.5rem; text-align:center;">${item.quantity}</td>
-                            <td style="border:1px solid #000; padding:0.5rem; text-align:right;">${formatRp(item.subtotal)}</td>
+                            <td style="border:1px solid #000; padding:0.5rem; text-align:center;">
+                                ${isAdmin ? `<input type="number" class="edit-slip-qty form-input" data-itemid="${item.id}" data-rate="${item.rate}" data-slipid="${slip.id}" value="${item.quantity}" style="width:60px; text-align:center; padding:0.2rem; color:black;">` : item.quantity}
+                            </td>
+                            <td style="border:1px solid #000; padding:0.5rem; text-align:right;" class="edit-slip-subtotal" data-itemid="${item.id}">${formatRp(item.subtotal)}</td>
                         </tr>
                     `;
                 }
@@ -233,6 +235,65 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         document.getElementById('slip-items-tbody').innerHTML = itemsHtml;
+        
+        const btnSaveSlip = document.getElementById('btn-save-slip');
+        if (isAdmin && btnSaveSlip) {
+            btnSaveSlip.style.display = 'inline-block';
+            
+            // Auto calculate subtotal on input change
+            document.querySelectorAll('.edit-slip-qty').forEach(input => {
+                input.addEventListener('input', (e) => {
+                    const qty = parseInt(e.target.value) || 0;
+                    const rate = parseInt(e.target.dataset.rate) || 0;
+                    const subtotal = qty * rate;
+                    const itemId = e.target.dataset.itemid;
+                    const subtotalCell = document.querySelector(`.edit-slip-subtotal[data-itemid="${itemId}"]`);
+                    if (subtotalCell) subtotalCell.textContent = formatRp(subtotal);
+                    
+                    // Recalculate Total
+                    let newTotal = 0;
+                    document.querySelectorAll('.edit-slip-qty').forEach(inp => {
+                        newTotal += (parseInt(inp.value) || 0) * (parseInt(inp.dataset.rate) || 0);
+                    });
+                    document.getElementById('slip-total-amount').textContent = formatRp(newTotal);
+                });
+            });
+            
+            // Bind Save
+            btnSaveSlip.onclick = async () => {
+                btnSaveSlip.disabled = true;
+                btnSaveSlip.textContent = 'Menyimpan...';
+                
+                try {
+                    let finalTotal = 0;
+                    const inputs = document.querySelectorAll('.edit-slip-qty');
+                    for (const inp of inputs) {
+                        const qty = parseInt(inp.value) || 0;
+                        const rate = parseInt(inp.dataset.rate) || 0;
+                        const subtotal = qty * rate;
+                        finalTotal += subtotal;
+                        
+                        await db.from('salary_slip_items')
+                            .update({ quantity: qty, subtotal: subtotal })
+                            .eq('id', inp.dataset.itemid);
+                    }
+                    
+                    await db.from('salary_slips').update({ total_amount: finalTotal }).eq('id', slipId);
+                    showToast('Slip berhasil diperbarui', 'success');
+                    
+                    // Refresh data
+                    loadData();
+                    slipModal.style.display = 'none';
+                } catch(err) {
+                    console.error(err);
+                    showToast('Gagal menyimpan slip', 'error');
+                } finally {
+                    btnSaveSlip.disabled = false;
+                    btnSaveSlip.textContent = '💾 Simpan Perubahan';
+                }
+            };
+        }
+        
         slipModal.style.display = 'flex';
     }
 

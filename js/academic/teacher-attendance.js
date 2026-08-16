@@ -413,19 +413,55 @@ document.addEventListener('DOMContentLoaded', () => {
                     <tr style="background: rgba(255,255,255,0.02); transition: all 0.3s ease;">
                         <td>${i + 1}</td>
                         <td><strong>${escapeHTML(nama)}</strong></td>
-                        <td style="text-align: center;">${jamIn}</td>
+                        <td style="text-align: center;">
+                            <input type="time" class="edit-checkin form-input" data-id="${r.id}" value="${jamIn !== '--:--' ? jamIn : ''}" style="width:100px; text-align:center; padding:0.2rem; color:black; font-size:0.9rem;">
+                        </td>
                         <td style="text-align: center;">${imgIn}</td>
-                        <td style="text-align: center;">${jamOut}</td>
+                        <td style="text-align: center;">
+                            <input type="time" class="edit-checkout form-input" data-id="${r.id}" value="${jamOut !== '--:--' ? jamOut : ''}" style="width:100px; text-align:center; padding:0.2rem; color:black; font-size:0.9rem;">
+                        </td>
                         <td style="text-align: center;">${imgOut}</td>
                         <td style="text-align: center;">${loc}</td>
                         <td style="text-align: center;">${st}</td>
+                        <td style="text-align: center;">
+                            <button class="btn btn-sm btn-success btn-save-att" data-id="${r.id}" data-date="${r.attendance_date}" style="padding: 0.2rem 0.5rem; font-size: 0.8rem; background-color:#10b981; color:white; border:none; border-radius:4px; cursor:pointer;">💾 Simpan</button>
+                        </td>
                     </tr>
                 `;
             }).join('');
             
+            // Bind save buttons
+            document.querySelectorAll('.btn-save-att').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const id = e.target.dataset.id;
+                    const date = e.target.dataset.date;
+                    const inInput = document.querySelector(`.edit-checkin[data-id="${id}"]`).value;
+                    const outInput = document.querySelector(`.edit-checkout[data-id="${id}"]`).value;
+                    
+                    try {
+                        e.target.textContent = '...';
+                        let updateData = {};
+                        if (inInput) updateData.check_in = `${date}T${inInput}:00+07:00`;
+                        if (outInput) updateData.check_out = `${date}T${outInput}:00+07:00`;
+                        
+                        if (Object.keys(updateData).length > 0) {
+                            await db.from('teacher_attendance').update(updateData).eq('id', id);
+                            showToast('Jam absensi berhasil diperbarui!', 'success');
+                        } else {
+                            showToast('Tidak ada yang diupdate', 'info');
+                        }
+                    } catch(err) {
+                        console.error(err);
+                        showToast('Gagal update absensi', 'error');
+                    } finally {
+                        e.target.textContent = '💾 Simpan';
+                    }
+                });
+            });
+            
         } catch(err) {
             console.error(err);
-            if (tbodyRekap) tbodyRekap.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--danger);">Gagal memuat rekap.</td></tr>';
+            if (tbodyRekap) tbodyRekap.innerHTML = '<tr><td colspan="9" style="text-align: center; color: var(--danger);">Gagal memuat rekap.</td></tr>';
         }
     }
 
