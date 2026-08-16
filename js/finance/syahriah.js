@@ -169,7 +169,7 @@ export async function initSyahriah() {
             summaryGuru.textContent = `${currentData.length} Guru`;
 
             document.querySelectorAll('.btn-view-slip').forEach(btn => {
-                btn.addEventListener('click', (e) => viewSlip(e.target.dataset.id));
+                btn.addEventListener('click', (e) => viewSlip(e.currentTarget.dataset.id));
             });
 
         } catch (error) {
@@ -179,11 +179,11 @@ export async function initSyahriah() {
     }
 
     async function viewSlip(slipId) {
-        const slip = currentData.find(s => s.id === slipId);
+        const slip = currentData.find(s => s.id == slipId);
         if (!slip) return;
         
         // Load teacher name
-        const { data: tData } = await db.from('teachers').select('nama').eq('id', slip.teacher_id).single();
+        const { data: tData } = await db.from('teachers').select('nama').eq('id', slip.teacher_id).maybeSingle();
         
         document.getElementById('slip-teacher-name').textContent = tData ? tData.nama : 'Unknown';
         document.getElementById('slip-period').textContent = `${slip.period_month}/${slip.period_year}`;
@@ -395,7 +395,7 @@ export async function initSyahriah() {
                         period_month: month,
                         period_year: year,
                         total_amount: 0 // Update nanti
-                    }).select().single();
+                    }).select().maybeSingle();
                     
                 if (headerErr) throw headerErr;
                 
@@ -487,7 +487,7 @@ export async function initSyahriah() {
 
             document.querySelectorAll('.btn-save-comp').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
-                    const id = e.target.dataset.id;
+                    const id = e.currentTarget.dataset.id;
                     const input = document.querySelector(`.comp-rate-input[data-id="${id}"]`);
                     const newRate = parseInt(input.value);
                     
