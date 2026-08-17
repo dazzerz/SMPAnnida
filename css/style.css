@@ -722,3 +722,48 @@ option {
 }
 /* Note: .topbar, .mobile-menu-btn, .sidebar-overlay, .sidebar-close-btn → see css/mobile.css */
 
+
+/* Accordion Styles (Global for Sidebar) */
+.accordion-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted, #94a3b8);
+  padding: 0.75rem 0.5rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: color var(--transition-fast, 0.2s);
+}
+
+.accordion-toggle:hover {
+  color: var(--text-primary, #f8fafc);
+}
+
+.accordion-icon {
+  font-size: 0.8rem;
+  transition: transform var(--transition-fast, 0.2s);
+}
+
+.accordion-group.active .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.nav-group-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+  overflow: hidden;
+}
+
+.accordion-group.active .nav-group-content {
+  grid-template-rows: 1fr;
+}
+
+.nav-group-content > * {
+  min-height: 0;
+  overflow: hidden;
+}

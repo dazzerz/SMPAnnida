@@ -266,6 +266,16 @@ export function injectSidebar(containerId, activeMenuId) {
         });
     }
 
+    // Close sidebar on mobile when a nav item is clicked
+    const navItems = container.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                closeSidebar();
+            }
+        });
+    });
+
     // Expose closeSidebar globally for other scripts
     window._closeSidebar = closeSidebar;
     window._openSidebar = openSidebar;
