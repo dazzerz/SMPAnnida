@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnBack) {
         btnBack.addEventListener('click', () => {
             formPanel.style.display = 'none';
-            scheduleList.style.display = 'block';
+            scheduleList.style.display = '';
             activeSchedule = null;
             currentStudents = [];
             renderScheduleList();
