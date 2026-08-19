@@ -411,16 +411,20 @@ body {
   margin-bottom: 1.5rem;
 }
 .sidebar-logo-icon {
-    width: 32px;
+  width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: transparent;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  color: white;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.sidebar-logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .sidebar-brand {
   font-size: 1.15rem;

@@ -24,7 +24,7 @@ export function injectSidebar(containerId) {
     container.innerHTML = `
     <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
       <div style="display:flex; align-items:center; gap:0.75rem;">
-        <div class="sidebar-logo-icon"><i class="ph ph-graduation-cap"></i></div>
+        <div class="sidebar-logo-icon"><img src="${basePath}1.png" alt="Logo Annida"></div>
         <div class="sidebar-brand">SMPAnnida</div>
       </div>
       <button class="sidebar-mini-toggle" id="sidebar-mini-toggle" aria-label="Toggle Sidebar"><i class="ph ph-caret-left"></i></button>
