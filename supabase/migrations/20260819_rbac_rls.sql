@@ -17,7 +17,7 @@ BEGIN
 END;
 $$;
 
--- 3. Enable RLS on all relevant tables
+-- 3. Enable RLS on all relevant tables (If they exist)
 ALTER TABLE IF EXISTS transactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS budgets ENABLE ROW LEVEL SECURITY;
@@ -36,11 +36,6 @@ ALTER TABLE IF EXISTS attendance_students ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS grades ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS teacher_journals ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS teacher_attendance ENABLE ROW LEVEL SECURITY;
-
-ALTER TABLE IF EXISTS pendaftaran ENABLE ROW LEVEL SECURITY;
-ALTER TABLE IF EXISTS biodata_siswa ENABLE ROW LEVEL SECURITY;
-ALTER TABLE IF EXISTS data_orangtua ENABLE ROW LEVEL SECURITY;
-ALTER TABLE IF EXISTS sekolah_asal ENABLE ROW LEVEL SECURITY;
 
 ---------------------------------------------
 -- FINANCE TABLES POLICIES
@@ -129,42 +124,52 @@ CREATE POLICY "Academic Write" ON teacher_journals FOR ALL USING (get_user_role(
 CREATE POLICY "Academic Write" ON teacher_attendance FOR ALL USING (get_user_role() IN ('admin', 'teacher'));
 
 ---------------------------------------------
--- PPDB TABLES POLICIES
+-- PPDB TABLES POLICIES (DYNAMIC EXECUTION IF TABLES EXIST)
 ---------------------------------------------
--- Read access for Admin, Pembina, and the owning calon_siswa
-DROP POLICY IF EXISTS "PPDB Select" ON pendaftaran;
-DROP POLICY IF EXISTS "PPDB Select" ON biodata_siswa;
-DROP POLICY IF EXISTS "PPDB Select" ON data_orangtua;
-DROP POLICY IF EXISTS "PPDB Select" ON sekolah_asal;
+DO $$
+BEGIN
+  -- Execute policies only if PPDB tables exist in the database
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = 'pendaftaran') THEN
+    ALTER TABLE IF EXISTS pendaftaran ENABLE ROW LEVEL SECURITY;
+    ALTER TABLE IF EXISTS biodata_siswa ENABLE ROW LEVEL SECURITY;
+    ALTER TABLE IF EXISTS data_orangtua ENABLE ROW LEVEL SECURITY;
+    ALTER TABLE IF EXISTS sekolah_asal ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "PPDB Select" ON pendaftaran FOR SELECT USING (
-  get_user_role() IN ('admin', 'pembina') OR user_id = auth.uid()
-);
-CREATE POLICY "PPDB Select" ON biodata_siswa FOR SELECT USING (
-  get_user_role() IN ('admin', 'pembina') OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
-);
-CREATE POLICY "PPDB Select" ON data_orangtua FOR SELECT USING (
-  get_user_role() IN ('admin', 'pembina') OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
-);
-CREATE POLICY "PPDB Select" ON sekolah_asal FOR SELECT USING (
-  get_user_role() IN ('admin', 'pembina') OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
-);
+    DROP POLICY IF EXISTS "PPDB Select" ON pendaftaran;
+    DROP POLICY IF EXISTS "PPDB Select" ON biodata_siswa;
+    DROP POLICY IF EXISTS "PPDB Select" ON data_orangtua;
+    DROP POLICY IF EXISTS "PPDB Select" ON sekolah_asal;
 
--- Write access for Admin and the owning calon_siswa ONLY
-DROP POLICY IF EXISTS "PPDB Write" ON pendaftaran;
-DROP POLICY IF EXISTS "PPDB Write" ON biodata_siswa;
-DROP POLICY IF EXISTS "PPDB Write" ON data_orangtua;
-DROP POLICY IF EXISTS "PPDB Write" ON sekolah_asal;
+    CREATE POLICY "PPDB Select" ON pendaftaran FOR SELECT USING (
+      get_user_role() IN ('admin', 'pembina') OR user_id = auth.uid()
+    );
+    CREATE POLICY "PPDB Select" ON biodata_siswa FOR SELECT USING (
+      get_user_role() IN ('admin', 'pembina') OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
+    );
+    CREATE POLICY "PPDB Select" ON data_orangtua FOR SELECT USING (
+      get_user_role() IN ('admin', 'pembina') OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
+    );
+    CREATE POLICY "PPDB Select" ON sekolah_asal FOR SELECT USING (
+      get_user_role() IN ('admin', 'pembina') OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
+    );
 
-CREATE POLICY "PPDB Write" ON pendaftaran FOR ALL USING (
-  get_user_role() = 'admin' OR user_id = auth.uid()
-);
-CREATE POLICY "PPDB Write" ON biodata_siswa FOR ALL USING (
-  get_user_role() = 'admin' OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
-);
-CREATE POLICY "PPDB Write" ON data_orangtua FOR ALL USING (
-  get_user_role() = 'admin' OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
-);
-CREATE POLICY "PPDB Write" ON sekolah_asal FOR ALL USING (
-  get_user_role() = 'admin' OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
-);
+    DROP POLICY IF EXISTS "PPDB Write" ON pendaftaran;
+    DROP POLICY IF EXISTS "PPDB Write" ON biodata_siswa;
+    DROP POLICY IF EXISTS "PPDB Write" ON data_orangtua;
+    DROP POLICY IF EXISTS "PPDB Write" ON sekolah_asal;
+
+    CREATE POLICY "PPDB Write" ON pendaftaran FOR ALL USING (
+      get_user_role() = 'admin' OR user_id = auth.uid()
+    );
+    CREATE POLICY "PPDB Write" ON biodata_siswa FOR ALL USING (
+      get_user_role() = 'admin' OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
+    );
+    CREATE POLICY "PPDB Write" ON data_orangtua FOR ALL USING (
+      get_user_role() = 'admin' OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
+    );
+    CREATE POLICY "PPDB Write" ON sekolah_asal FOR ALL USING (
+      get_user_role() = 'admin' OR pendaftaran_id IN (SELECT id FROM pendaftaran WHERE user_id = auth.uid())
+    );
+  END IF;
+END
+$$;
