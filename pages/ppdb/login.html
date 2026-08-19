@@ -15,7 +15,7 @@
       overflow: hidden;
     }
 
-    /* GEDUNG DI KIRI */
+    /* AREA KIRI: FOTO GEDUNG SAJA (60% LEBAR LAYAR) */
     .building-mask {
       position: absolute;
       left: 0; top: 0;
@@ -24,9 +24,13 @@
       /* MASUKKAN FOTO GEDUNG DI SINI */
       background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0) 50%), url('../../assets/images/gedung_sekolah.jpg') center center / cover no-repeat;
       
-      /* INI KUNCINYA: Memotong sisi kanan gedung dengan SVG */
-      clip-path: url(#potong-gedung);
-      -webkit-clip-path: url(#potong-gedung);
+      /* Lekukan halus ke dalam di sudut kanan atas dan bawah */
+      border-top-right-radius: 60px;
+      border-bottom-right-radius: 60px;
+      
+      /* Bayangan drop shadow tebal agar menimpa sisi kanan */
+      box-shadow: 15px 0 35px rgba(0, 0, 0, 0.5);
+      z-index: 2;
       
       display: flex;
       align-items: flex-end; /* Teks di bawah */
@@ -37,30 +41,32 @@
     .hero-text h1 { font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.1; color: #ffffff !important; }
     .hero-text p { font-size: 1.2rem; opacity: 0.9; }
 
-    /* AREA FORM DI KANAN */
+    /* AREA FORM DI KANAN (40% LEBAR LAYAR) */
     .login-right-area {
       position: absolute;
       right: 0; top: 0;
-      width: 45vw;
+      width: 40vw;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 3rem;
+      z-index: 1;
       /* TANPA BACKGROUND! Agar tembus ke daun global di belakangnya */
     }
 
-    /* KARTU KACA GLASSMORPHISM */
+    /* KARTU KACA GLASSMORPHISM PREMIUM */
     .glass-login {
       width: 100%;
       max-width: 420px;
-      background: rgba(15, 20, 15, 0.65); /* Hijau gelap transparan */
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 40px;
+      background: rgba(10, 26, 15, 0.45) !important; /* Hijau gelap transparan */
+      backdrop-filter: blur(15px) !important;
+      -webkit-backdrop-filter: blur(15px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Garis batas putih tipis */
+      border-radius: 20px !important;
+      padding: 40px !important;
       color: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
     }
 
     /* 5. EFEK GLOWING INPUT & TOMBOL */
@@ -151,9 +157,11 @@
       .building-mask {
         position: relative;
         width: 100% !important;
-        height: 35vh;
-        clip-path: none !important;
-        -webkit-clip-path: none !important;
+        height: 38vh;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 24px;
+        border-bottom-left-radius: 24px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         padding: 2rem 1.5rem;
         display: flex;
         flex-direction: column;
@@ -175,7 +183,7 @@
       .login-right-area {
         position: relative;
         width: 100% !important;
-        height: 65vh;
+        height: 62vh;
         padding: 2rem 1.5rem !important;
       }
       .glass-login {
@@ -194,18 +202,9 @@
 </head>
 <body>
 
-  <!-- SVG ClipPath for Curved Cut -->
-  <svg width="0" height="0" style="position: absolute;">
-    <defs>
-      <clipPath id="potong-gedung" clipPathUnits="objectBoundingBox">
-        <path d="M 0,0 L 1,0 C 0.65,0.25 0.65,0.75 1,1 L 0,1 Z" />
-      </clipPath>
-    </defs>
-  </svg>
-
   <div class="hero-wrapper">
     
-    <!-- LAYER GEDUNG (KIRI) YANG DIPOTONG -->
+    <!-- AREA KIRI -->
     <div class="building-mask">
       <div class="hero-text">
         <h1>Selamat Datang di<br>Portal PPDB SMP Annida</h1>
@@ -213,7 +212,7 @@
       </div>
     </div>
 
-    <!-- LAYER FORM (KANAN) MENGAMBANG DI ATAS DAUN GLOBAL -->
+    <!-- AREA KANAN -->
     <div class="login-right-area">
       <div class="glass-login">
         
