@@ -6,7 +6,7 @@
  * - X button inside sidebar also closes it
  */
 
-export function injectSidebar(containerId, activeMenuId) {
+export function injectSidebar(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
@@ -46,7 +46,7 @@ export function injectSidebar(containerId, activeMenuId) {
           <i class="ph ph-caret-down accordion-icon"></i>
         </div>
         <div class="nav-group-content">
-          <a href="${basePath}dashboard.html" class="nav-item ${activeMenuId === 'dashboard' ? 'active' : ''}">
+          <a href="${basePath}dashboard.html" class="nav-item">
             <i class="ph ph-squares-four nav-icon"></i> Super Dashboard
           </a>
         </div>
@@ -121,7 +121,7 @@ export function injectSidebar(containerId, activeMenuId) {
           <i class="ph ph-caret-down accordion-icon"></i>
         </div>
         <div class="nav-group-content">
-          <a href="${basePath}pages/ppdb/index.html" class="nav-item ${activeMenuId === 'ppdb' ? 'active' : ''}">
+          <a href="${basePath}pages/ppdb/index.html" class="nav-item">
             <i class="ph ph-user-plus nav-icon"></i> Pendaftar Baru
           </a>
         </div>
@@ -152,6 +152,59 @@ export function injectSidebar(containerId, activeMenuId) {
       <button class="btn btn-outline" style="width:100%;margin-top:1rem;" id="logout-btn">Keluar</button>
     </div>
     `;
+
+    // Active state logic
+    function updateActiveSidebar() {
+        const currentPath = window.location.pathname;
+        const currentHash = window.location.hash || '';
+        
+        container.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        container.querySelectorAll('.accordion-group').forEach(el => el.classList.remove('active'));
+
+        let matchedItem = null;
+        const navItems = container.querySelectorAll('.nav-item');
+        
+        for (const item of navItems) {
+            const href = item.getAttribute('href');
+            if (!href) continue;
+
+            const a = document.createElement('a');
+            a.href = href;
+
+            if (a.pathname === currentPath) {
+                if (a.hash && a.hash === currentHash) {
+                    matchedItem = item;
+                    break;
+                } else if (!a.hash && (!currentHash || currentHash === '#dashboard')) {
+                    matchedItem = item;
+                }
+            }
+        }
+
+        if (!matchedItem) {
+            for (const item of navItems) {
+                const href = item.getAttribute('href');
+                if (!href) continue;
+                const a = document.createElement('a');
+                a.href = href;
+                if (a.pathname === currentPath) {
+                    matchedItem = item;
+                    break;
+                }
+            }
+        }
+
+        if (matchedItem) {
+            matchedItem.classList.add('active');
+            const parentAccordion = matchedItem.closest('.accordion-group');
+            if (parentAccordion) {
+                parentAccordion.classList.add('active');
+            }
+        }
+    }
+
+    updateActiveSidebar();
+    window.addEventListener('hashchange', updateActiveSidebar);
 
     // Create overlay if it doesn't exist
     let overlay = document.getElementById('sidebar-overlay');

@@ -1,5 +1,5 @@
 import { injectSidebar, injectTopbar } from '../core/layout.js';
-injectSidebar('sidebar', 'ppdb');
+injectSidebar('sidebar');
 
 const isSiswa = window.location.pathname.includes('siswa');
 injectTopbar('topbar', {

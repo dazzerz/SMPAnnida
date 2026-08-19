@@ -6,7 +6,7 @@ injectTopbar('topbar', {
   rightHtml: ``
 });
 
-injectSidebar('sidebar', 'academic');
+injectSidebar('sidebar');
 
 // The academic nav-group is now populated statically in core/layout.js
 // so that all pages can see the full academic navigation menu.
@@ -220,3 +220,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Legacy loadAbsensiClasses removed in favor of Master Kelas (kelas.js)
+

@@ -3,7 +3,7 @@
 // =====================================================
 import supabaseClient from '../core/supabase.js';
 import { requireAuth, handleLogout } from '../core/auth.js';
-import { injectLayout } from './layout.js';
+import { injectSidebar, injectTopbar } from '../core/layout.js';
 
 
 
@@ -280,7 +280,8 @@ async function main() {
   const user = await requireAuth();
   if (!user) return;
 
-  injectLayout('dashboard', 'Selamat Datang, 👋', 'Memuat...');
+  injectSidebar('sidebar');
+  injectTopbar('topbar', { greeting: 'Selamat Datang, 👋', title: 'Memuat...' });
   applySavedTheme();
 
   updateGreeting(user);
@@ -450,3 +451,4 @@ async function main() {
 }
 
 main();
+

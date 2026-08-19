@@ -95,7 +95,7 @@ function initSection(sectionId) {
 
 // ── Inject SPA sidebar ─────────────────────────────
 function injectFinanceSidebar() {
-  injectSidebar('sidebar', 'transactions');
+  injectSidebar('sidebar');
   // We rely on core/layout.js for the sidebar HTML.
   // Native hash navigation will trigger our window hashchange listener.
 }
@@ -726,3 +726,4 @@ async function main() {
 }
 
 main();
+

@@ -65,7 +65,7 @@
 
   <script type="module">
     import { injectSidebar, injectTopbar } from './js/core/layout.js';
-    injectSidebar('sidebar', 'dashboard');
+    injectSidebar('sidebar');
     injectTopbar('topbar', { title: 'Executive Dashboard' });
     import { getOptionalUser, handleLogout } from './js/core/auth.js?v=2';
     import { fetchDashboardMetrics, formatCurrency } from './js/core/dashboard.js';
@@ -108,3 +108,4 @@
   </script>
 </body>
 </html>
+
