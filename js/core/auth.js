@@ -49,10 +49,15 @@ export async function handleLogin(e) {
   const isPembina = roleData && roleData.role === 'pembina';
 
   setTimeout(() => { 
-    if (isAdmin || isPembina) {
-      window.location.href = './dashboard.html'; 
+    const r = roleData ? roleData.role : null;
+    if (r === 'calon_siswa') {
+      window.location.href = './pages/ppdb/dashboard-siswa.html';
+    } else if (r === 'finance') {
+      window.location.href = './pages/finance/dashboard.html';
+    } else if (r === 'teacher') {
+      window.location.href = './pages/academic/dashboard.html';
     } else {
-      window.location.href = './pages/academic/dashboard.html'; 
+      window.location.href = './dashboard.html'; 
     }
   }, 800);
 }
@@ -133,6 +138,31 @@ export async function requireAuth() {
     window.location.href = isInPages ? '../../index.html' : './index.html';
     return null;
   }
+
+  // P0 Fix: Role-based Routing (RBAC)
+  const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
+  const role = roleData ? roleData.role : null;
+  
+  if (role) {
+    sessionStorage.setItem('user_role', role);
+  }
+
+  const path = window.location.pathname.toLowerCase();
+
+  // Redirect based on role constraints
+  if (role === 'teacher' && path.includes('/finance/')) {
+    window.location.href = '/pages/academic/dashboard.html';
+    return null;
+  }
+  if (role === 'finance' && path.includes('/academic/')) {
+    window.location.href = '/pages/finance/dashboard.html';
+    return null;
+  }
+  if (role === 'calon_siswa' && (path.includes('/academic/') || path.includes('/finance/') || path.endsWith('/dashboard.html') && !path.includes('/ppdb/'))) {
+    window.location.href = '/pages/ppdb/dashboard-siswa.html';
+    return null;
+  }
+
   return user;
 }
 

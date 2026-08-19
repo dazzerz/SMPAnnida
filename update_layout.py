@@ -1,74 +1,70 @@
 ﻿import re
 
-with open('js/core/layout.js', 'r', encoding='utf-8') as f:
-    content = f.read()
+js_path = 'js/core/layout.js'
+with open(js_path, 'r', encoding='utf-8') as f:
+    js = f.read()
 
-# 1. Add toggle button next to close button
-content = content.replace(
-    '<button class="sidebar-close-btn"',
-    '<button class="sidebar-mini-toggle" id="sidebar-mini-toggle" aria-label="Toggle Sidebar"><i class="ph ph-caret-left"></i></button>\n      <button class="sidebar-close-btn"'
-)
+# Find the end of injectSidebar block
+# Assuming the end of injectSidebar has:
+#   // Focus shortcut
+#   document.addEventListener(...)
+# }
 
-# 2. Wrap texts in nav-items with <span class="nav-text"> and add data-tooltip
-content = re.sub(
-    r'<a href="([^"]+)" class="([^"]+)"(?:\s+data-target="[^"]+")?\s*>.*?<i class="([^"]+)"><\/i>\s*([^<]+)\s*<\/a>',
-    lambda m: f'<a href="{m.group(1)}" class="{m.group(2)}" ' + 
-              (f'data-target="{re.search(r"data-target=\"([^\"]+)\"", m.group(0)).group(1)}" ' if 'data-target' in m.group(0) else '') +
-              f'data-tooltip="{m.group(4).strip()}">\n              <i class="{m.group(3)}"></i> <span class="nav-text">{m.group(4).strip()}</span>\n            </a>',
-    content,
-    flags=re.DOTALL
-)
+# Let's just find export function injectSidebar(containerId) { and inject logic right before the closing brace of the function, or better, immediately after container.innerHTML = ...
+# Actually, the most robust way is to just find the end of the container.innerHTML = \...\; statement.
 
-# 3. Wrap logout text
-content = content.replace(
-    '<i class="ph ph-sign-out"></i> Keluar',
-    '<i class="ph ph-sign-out"></i> <span class="logout-text">Keluar</span>'
-)
+# The template literal ends with \;
+# Then there is setupAccordion();, highlightActiveMenu();, etc.
+# We can inject our role logic after container.innerHTML = ...; or at the very end of injectSidebar function.
 
-# 4. Add initialization logic at the end of injectSidebar function
-init_logic = '''
-    // Mini Sidebar Toggle Logic
-    const toggleBtn = document.getElementById('sidebar-mini-toggle');
-    const toggleIcon = toggleBtn ? toggleBtn.querySelector('i') : null;
+end_of_inject_sidebar = '''// Check window size on load
+    if (window.innerWidth < 769) {
+        document.body.classList.remove('sidebar-mini');
+    }
+}'''
+
+role_logic = '''
+    // ============================================
+    // RBAC: Dynamic Sidebar & Read-Only Constraints
+    // ============================================
+    const userRole = sessionStorage.getItem('user_role');
     
-    function applySidebarState(isCollapsed) {
-        if (window.innerWidth <= 768) return; // Ignore on mobile
-        if (isCollapsed) {
-            container.classList.add('collapsed');
-            if (toggleIcon) {
-                toggleIcon.classList.remove('ph-caret-left');
-                toggleIcon.classList.add('ph-caret-right');
-            }
-        } else {
-            container.classList.remove('collapsed');
-            if (toggleIcon) {
-                toggleIcon.classList.remove('ph-caret-right');
-                toggleIcon.classList.add('ph-caret-left');
-            }
-        }
+    // Hide modules based on role
+    if (userRole === 'teacher') {
+        const financeGroup = document.getElementById('nav-group-finance');
+        if (financeGroup) financeGroup.style.display = 'none';
+    } else if (userRole === 'finance') {
+        const academicGroup = document.getElementById('nav-group-academic');
+        if (academicGroup) academicGroup.style.display = 'none';
+    } else if (userRole === 'calon_siswa') {
+        const mainGroup = document.getElementById('nav-group-main');
+        const academicGroup = document.getElementById('nav-group-academic');
+        const financeGroup = document.getElementById('nav-group-finance');
+        if (mainGroup) mainGroup.style.display = 'none';
+        if (academicGroup) academicGroup.style.display = 'none';
+        if (financeGroup) financeGroup.style.display = 'none';
     }
 
-    // Read initial state
-    const savedState = localStorage.getItem('smpannida-sidebar-state');
-    // Default to collapsed as requested
-    const isInitiallyCollapsed = savedState === null ? true : savedState === 'collapsed';
-    applySidebarState(isInitiallyCollapsed);
-
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-            const willCollapse = !container.classList.contains('collapsed');
-            localStorage.setItem('smpannida-sidebar-state', willCollapse ? 'collapsed' : 'expanded');
-            applySidebarState(willCollapse);
-        });
+    // Apply Read-Only restrictions for Pembina
+    if (userRole === 'pembina' && !document.getElementById('pembina-style')) {
+        const style = document.createElement('style');
+        style.id = 'pembina-style';
+        style.innerHTML = 
+            .role-pembina button:not(.sidebar-mini-toggle):not(.sidebar-close-btn):not(.sidebar-logout-btn):not(.accordion-toggle), 
+            .role-pembina input[type="submit"], 
+            .role-pembina .action-btn, 
+            .role-pembina [class*="btn-add"], 
+            .role-pembina [class*="btn-edit"], 
+            .role-pembina [class*="btn-delete"] { display: none !important; }
+            .role-pembina form input, .role-pembina form select, .role-pembina form textarea { pointer-events: none; opacity: 0.8; }
+        ;
+        document.head.appendChild(style);
+        document.body.classList.add('role-pembina');
     }
-'''
+}'''
 
-content = content.replace(
-    'window._closeSidebar = closeSidebar;\n    window._openSidebar = openSidebar;\n}',
-    'window._closeSidebar = closeSidebar;\n    window._openSidebar = openSidebar;\n' + init_logic + '\n}'
-)
+js = js.replace(end_of_inject_sidebar, role_logic)
 
-with open('js/core/layout.js', 'w', encoding='utf-8') as f:
-    f.write(content)
-
-print("Updated js/core/layout.js")
+with open(js_path, 'w', encoding='utf-8') as f:
+    f.write(js)
+print("Updated layout.js")
