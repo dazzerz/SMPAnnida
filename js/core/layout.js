@@ -24,17 +24,17 @@ export function injectSidebar(containerId) {
     container.innerHTML = `
     <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
       <div style="display:flex; align-items:center; gap:0.75rem;">
-        <div class="sidebar-logo-icon">🏫</div>
+        <div class="sidebar-logo-icon"><i class="ph ph-graduation-cap"></i></div>
         <div class="sidebar-brand">SMPAnnida</div>
       </div>
       <button class="sidebar-close-btn" id="sidebar-close-btn" aria-label="Tutup menu">✕</button>
     </div>
 
     <!-- Sidebar Search -->
-    <div style="padding: 1rem 0.875rem 0 0.875rem;">
-      <div class="sidebar-search-container" style="position:relative;">
-        <i class="ph ph-magnifying-glass" style="position:absolute; left:0.75rem; top:50%; transform:translateY(-50%); color:var(--text-muted);"></i>
-        <input type="text" id="sidebar-search" placeholder="Cari menu... (Ctrl+K)" class="form-input" style="padding-left:2.2rem; font-size:0.8rem; background:var(--glass-bg); border:1px solid var(--border-color); color:var(--text-primary);">
+    <div class="sidebar-search-wrapper">
+      <div class="sidebar-search-container">
+        <i class="ph ph-magnifying-glass search-icon"></i>
+        <input type="text" id="sidebar-search" placeholder="Cari menu... (Ctrl+K)" class="form-input sidebar-search-input">
       </div>
     </div>
 
@@ -151,16 +151,18 @@ export function injectSidebar(containerId) {
       </div>
     </nav>
 
-    <div style="margin-top:auto">
-      <div class="user-widget">
-        <div class="user-avatar" id="user-avatar">G</div>
-        <div style="flex:1;overflow:hidden;">
-          <div style="font-weight:600;font-size:0.9rem;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;" id="nav-user-name">Guest</div>
-          <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;text-overflow:ellipsis;overflow:hidden;" id="nav-user-email">Belum Login</div>
+      <div class="sidebar-bottom-section">
+        <div class="user-widget">
+          <div class="user-avatar" id="user-avatar">G</div>
+          <div class="user-info">
+            <div class="user-name" id="nav-user-name">Guest</div>
+            <div class="user-email" id="nav-user-email">Belum Login</div>
+          </div>
         </div>
+        <button class="sidebar-logout-btn" id="logout-btn">
+          <i class="ph ph-sign-out"></i> Keluar
+        </button>
       </div>
-      <button class="btn btn-outline" style="width:100%;margin-top:1rem;" id="logout-btn">Keluar</button>
-    </div>
     `;
 
     // Active state logic
