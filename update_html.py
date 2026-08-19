@@ -1,21 +1,8 @@
 ﻿import re
 
-# 1. Update HTML
 html_path = 'pages/ppdb/index.html'
 with open(html_path, 'r', encoding='utf-8') as f:
     html = f.read()
-
-# Replace <div class="hero-image"> to the end of its block with the new slider
-# Wait, I previously changed hero-image to contain <div class="hero-photo-grid">, so the outer div is still <div class="hero-image"> ?
-# Let's check what it looks like now.
-
-# Let's just use regex to find <div class="hero-image"> and everything inside it up to its closing tag.
-# Since it's nested, we'll just replace the whole <div class="hero-image"> ... </div>
-
-hero_image_match = re.search(r'<div class="hero-image">.*?</div>\s*</div>\s*</section>', html, flags=re.DOTALL)
-if hero_image_match:
-    # We matched too far if we include </section>
-    pass
 
 new_slider_html = '''<div class="hero-image">
     <!-- Slider Container -->
@@ -79,9 +66,18 @@ new_slider_html = '''<div class="hero-image">
     </div>
 </div>'''
 
-# Replace exactly what is inside <div class="hero-image">
-html = re.sub(r'<div class="hero-image">.*?</div>\s*</div>\s*<!--', new_slider_html + '\n      </div>\n    <!--', html, flags=re.DOTALL)
+lightbox_html = '''<!-- Lightbox Modal untuk Memperbesar Gambar (Letakkan sebelum tag </body>) -->
+<div id="lightbox-modal" class="lightbox-modal">
+    <span class="lightbox-close">&times;</span>
+    <button class="lightbox-nav lightbox-prev">◀</button>
+    <img class="lightbox-content" id="lightbox-img" src="" alt="Perbesar Foto">
+    <button class="lightbox-nav lightbox-next">▶</button>
+    <div id="lightbox-caption" class="lightbox-caption"></div>
+</div>'''
 
-# Let's use a more precise regex. Wait, hero-photo-grid has 4 inner divs.
-html = re.sub(r'<div class="hero-image">.*?</div>\s*</div>\s*(?=</section>)', new_slider_html + '\n      </div>\n    ', html, flags=re.DOTALL)
-# Wait, this regex is too dangerous. I'll print the match before modifying to be safe.
+html = re.sub(r'<div class="hero-image">.*?</div>\s*</div>', new_slider_html + '\n              </div>', html, flags=re.DOTALL)
+html = html.replace('</body>', lightbox_html + '\n</body>')
+
+with open(html_path, 'w', encoding='utf-8') as f:
+    f.write(html)
+print("HTML updated")
