@@ -7,118 +7,82 @@
   <link rel="stylesheet" href="../../css/style.css">
   <style>
     /* =========================================================================
-       CLEAN 2-COLUMN PORTAL LAYOUT
+       CLEAN SPLIT-SCREEN PORTAL LAYOUT
        ========================================================================= */
     .hero-annida {
-      min-height: 100vh;
+      display: flex;
+      height: 100vh;
       width: 100%;
-      position: relative;
-      background-image: 
-        linear-gradient(rgba(10, 18, 14, 0.55), rgba(10, 18, 14, 0.55)),
-        url('../../assets/images/gedung_sekolah.jpg');
+      overflow: hidden;
+    }
+
+    .split-left {
+      width: 45%;
+      background-image: url('../../assets/images/gedung_sekolah.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+    }
+
+    .split-right {
+      width: 55%;
+      background-color: #ffffff;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
-    }
-
-    .portal-container {
-      display: flex;
       align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2rem;
-      gap: 4rem;
-      z-index: 5;
+      padding: 40px;
+      overflow-y: auto;
     }
 
-    .portal-left {
-      flex: 1.2;
-      color: #ffffff;
-      text-align: left;
-    }
-
-    .portal-left h2 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 1.2rem;
-      color: #ffffff !important;
-      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    }
-
-    .portal-left p {
-      font-size: 1.1rem;
-      color: rgba(255, 255, 255, 0.85) !important;
-      line-height: 1.6;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-    }
-
-    .portal-right {
-      flex: 0.8;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    /* Portal Login Card Container */
+    /* Minimalist Portal Login Card Container (Blending with White Background) */
     .hero-annida .login-card {
       width: 100%;
       max-width: 380px;
-      background: rgba(15, 23, 42, 0.5) !important;
-      backdrop-filter: blur(20px) !important;
-      -webkit-backdrop-filter: blur(20px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      border-radius: 24px !important;
-      padding: 2.2rem !important;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      padding: 0 !important;
       margin: 0;
-      transition: transform 0.3s ease;
+    }
+
+    .hero-annida .login-logo {
+      height: 60px;
+      width: auto;
+      margin-bottom: 1.5rem;
+      display: block;
+      object-fit: contain;
+      margin-left: 0; /* Left align on split screen */
     }
 
     .hero-annida .login-title {
-      font-size: 1.6rem;
+      font-size: 2rem;
       font-weight: 700;
+      color: #0f172a !important; /* Dark Slate */
       margin-bottom: 0.5rem;
-      color: white;
-      text-align: center;
+      text-align: left;
     }
+    
     .hero-annida .login-subtitle {
-      color: var(--text-secondary);
+      color: #475569 !important; /* Slate Grey */
       margin-bottom: 2rem;
-      text-align: center;
-    }
-    .hero-annida .login-logo {
-      height: 70px;
-      width: auto;
-      margin-bottom: 1rem;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      object-fit: contain;
+      text-align: left;
+      font-size: 1rem;
     }
 
     /* Responsive adjustments */
-    @media (max-width: 900px) {
-      .portal-container {
-        flex-direction: column;
-        justify-content: center;
-        gap: 2.5rem;
-        text-align: center;
-        padding: 4rem 1.5rem;
+    @media (max-width: 768px) {
+      .split-left {
+        display: none !important; /* Hide image section on mobile */
       }
-      .portal-left {
-        text-align: center;
+      .split-right {
+        width: 100% !important;
+        padding: 30px 20px;
       }
-      .portal-left h2 {
-        font-size: 2.2rem;
-      }
-      .portal-right {
-        justify-content: center;
-        width: 100%;
+      .hero-annida .login-card {
+        padding: 10px !important;
       }
     }
   </style>
@@ -126,37 +90,34 @@
 </head>
 <body>
   <section class="hero-annida">
-    <div class="portal-container">
-      <!-- Left Side: Welcoming Text -->
-      <div class="portal-left">
-        <h2>Selamat Datang di Portal PPDB SMP Annida</h2>
-        <p>Silakan masuk menggunakan akun pendaftaran Anda untuk melanjutkan pengisian biodata, mengunggah dokumen, atau memeriksa status kelulusan seleksi PPDB.</p>
-      </div>
+    <!-- Left Side: Clean Natural Image -->
+    <div class="split-left"></div>
 
-      <!-- Right Side: Login Form -->
-      <div class="portal-right">
-        <div class="glass-panel login-card">
-          <img src="../../1.png" alt="Logo Annida" class="login-logo">
-          <h2 class="login-title">PPDB Portal</h2>
-          <p class="login-subtitle">Silakan masuk ke portal Annida2PPDB.</p>
+    <!-- Right Side: Clean White Login Form -->
+    <div class="split-right">
+      <div class="login-card">
+        <img src="../../1.png" alt="Logo Annida" class="login-logo">
+        <h1 class="login-title">Portal PPDB</h1>
+        <p class="login-subtitle">Silakan masuk menggunakan akun pendaftaran Anda untuk melanjutkan registrasi calon siswa baru SMP Annida.</p>
+        
+        <form action="#" method="POST" id="loginForm">
+          <div style="margin-bottom: 1.2rem; text-align: left;">
+            <label style="display: block; margin-bottom: 0.5rem; color: #475569; font-weight: 500; font-size: 0.9rem;">Alamat Email</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="user@email.com atau admin@annida.com" required style="width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; font-size: 1rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='#00c853'" onblur="this.style.borderColor='#cbd5e1'">
+          </div>
+          <div style="margin-bottom: 1.5rem; text-align: left;">
+            <label style="display: block; margin-bottom: 0.5rem; color: #475569; font-weight: 500; font-size: 0.9rem;">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password Anda" required style="width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; font-size: 1rem; transition: border-color 0.2s;" onfocus="this.style.borderColor='#00c853'" onblur="this.style.borderColor='#cbd5e1'">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1.05rem; border-radius: 8px; margin-bottom: 1rem; background-color: #00c853; color: white; border: none; font-weight: 600; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#009624'" onmouseout="this.style.backgroundColor='#00c853'">
+            Masuk
+          </button>
           
-          <form action="#" method="POST" id="loginForm">
-            <div style="margin-bottom: 1rem; text-align: left;">
-              <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Alamat Email</label>
-              <input type="email" id="email" name="email" class="form-control" placeholder="user@email.com atau admin@annida.com" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: white;">
-            </div>
-            <div style="margin-bottom: 1.5rem; text-align: left;">
-              <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Password</label>
-              <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password Anda" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: white;">
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; border-radius: 50px; margin-bottom: 1rem;">Masuk</button>
-            
-            <div class="form-footer" style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Lupa password? <a href="#" style="color: var(--accent-primary);">Klik di sini</a></p>
-              <p style="color: var(--text-secondary);">Belum punya akun? <a href="register.html" style="color: var(--accent-primary);">Daftar Sekarang</a></p>
-            </div>
-          </form>
-        </div>
+          <div class="form-footer" style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
+            <p style="color: #475569; margin-bottom: 0.5rem;">Lupa password? <a href="#" style="color: #00c853; font-weight: 500;">Klik di sini</a></p>
+            <p style="color: #475569;">Belum punya akun? <a href="register.html" style="color: #00c853; font-weight: 500;">Daftar Sekarang</a></p>
+          </div>
+        </form>
       </div>
     </div>
   </section>
