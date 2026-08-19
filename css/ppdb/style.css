@@ -910,3 +910,98 @@ footer p {
     .lightbox-prev { left: 10px; }
     .lightbox-next { right: 10px; }
 }
+
+/* =========================================================================
+   TRUE GLASSMORPHISM OVERRIDES (NATURE / LEAVES THEME)
+   ========================================================================= */
+body {
+    background-color: #0b130e !important;
+    background-image: url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    color: #f8fafc !important;
+}
+
+h1, h2, h3, h4 {
+    color: #ffffff !important;
+}
+
+p, .section-subtitle {
+    color: #cbd5e1 !important;
+}
+
+/* Glassmorphic Navbar */
+.navbar {
+    background-color: rgba(11, 19, 14, 0.6) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.nav-links a:not(.btn) {
+    color: #f8fafc !important;
+}
+
+.nav-links a:not(.btn):hover {
+    color: var(--primary-color) !important;
+}
+
+.logo-text {
+    color: var(--primary-color) !important;
+}
+
+/* Glassmorphic Section background replacements */
+.bg-light {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Glassmorphic Cards */
+.card {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+    color: #f8fafc !important;
+}
+
+.card h3 {
+    color: var(--primary-color) !important;
+}
+
+.card p {
+    color: #cbd5e1 !important;
+}
+
+.card:hover {
+    background-color: rgba(255, 255, 255, 0.07) !important;
+    border-color: rgba(0, 200, 83, 0.4) !important;
+    box-shadow: 0 12px 40px 0 rgba(0, 200, 83, 0.25) !important;
+}
+
+/* Steps overrides */
+.step h4 {
+    color: #ffffff !important;
+}
+
+.step p {
+    color: #cbd5e1 !important;
+}
+
+.step-number {
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 10px rgba(0, 200, 83, 0.15) !important;
+}
+
+/* Footer style update to match glass theme */
+footer {
+    background-color: rgba(11, 19, 14, 0.8) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+footer p {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
