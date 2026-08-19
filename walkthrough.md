@@ -1,26 +1,23 @@
-# Sidebar Visual Overhaul Complete
+# Role-Based Access Control & Database RLS Implemented
 
-## Overview of Changes
-The sidebar has been fully redesigned to provide a clean, premium, and unified glassmorphism aesthetic while strictly maintaining backward compatibility and functionality across all pages.
+## Frontend Auth Guards (js/core/auth.js)
+* **Role Fetching**: Sistem sekarang menarik profil *role* (user_roles) di Supabase setiap kali fungsi equireAuth() dipanggil, dan menyimpannya ke sessionStorage untuk sinkronisasi rendering sidebar.
+* **URL Protection**: 
+  * Jika Guru mencoba memaksa masuk ke /pages/finance/... lewat URL bar, mereka akan langsung terpental ke /pages/academic/dashboard.html.
+  * Begitu pun Bendahara (finance) tidak dapat masuk ke modul /academic/.
+  * Calon Siswa dikunci permanen di portal pendaftarannya.
 
-### 1. Collapsible Mini Sidebar
-*   Sidebar kini memiliki dua mode: **Expanded (260px)** dan **Collapsed (70px)**.
-*   **Icon-Only Mode:** Saat di-collapse, semua teks label (*brand*, *search bar*, nama menu, info user, nama grup) akan menghilang secara mulus (transisi opacity dan width), menyisakan icon Phosphor berjejer rapi di tengah.
-*   **Toggle Button:** Terdapat tombol panah kecil di sebelah kanan logo untuk mengecilkan/melebarkan sidebar. Saat mode *collapsed*, tombol ini akan bergeser ke bawah logo dengan formasi vertikal agar pas di lebar 70px.
-*   **CSS Tooltip:** Saat *hover* pada ikon menu dalam mode *collapsed*, akan muncul *tooltip* bergaya *glassmorphism* elegan yang menunjukkan nama menu.
-*   **Persisted State:** Kondisi sidebar disimpan secara lokal menggunakan localStorage dengan kunci smpannida-sidebar-state. Saat pertama kali dibuka, sidebar akan tampil *collapsed* secara *default*, dan akan mengingat pilihan terakhir Anda meskipun halaman di-reload.
-*   **Smooth Layout Shift:** Karena desain menggunakan Flexbox yang reaktif, menyusutnya lebar sidebar akan otomatis memperluas area *Main Content* tanpa patahan secara instan (transisi 300ms cubic-bezier).
-*   **Mobile-Safe:** Di layar HP (di bawah 768px), sidebar mini ini tidak berlaku dan kembali beroperasi sebagai *overlay full-width* normal agar tetap ramah jari.
+## Dynamic Sidebar & Pembina Constraints (js/core/layout.js)
+* Sidebar merender daftar menu sesuai role (contoh: menu Keuangan akan di-remove dari DOM jika role pengguna adalah Guru).
+* Khusus untuk pembina, saya telah membuat injeksi CSS dinamis (.role-pembina) yang secara otomatis menyembunyikan semua tombol mutasi data (Simpan, Edit, Hapus, Tambah) dan mem-blok interaksi pada form (input, textarea, select), menciptakan **Global Read-Only Mode**.
 
-### 2. Collapsed State Perfections
-*   **No Ghost Elements:** Judul grup menu (*accordion toggle*) benar-benar dihilangkan eksistensinya (display: none) dalam mode collapsed, sehingga hilangnya bintik-bintik hijau atau ruang kosong vertikal yang aneh di antara deretan icon.
-*   **Centering Sempurna:** Seluruh icon menu (*nav-items*), tombol *logout*, dan foto profil (*user avatar*) kini diletakkan persis di tengah secara geometris dengan *margin* dan *padding* presisi yang simetris dari segala arah.
-*   **Spasing Konsisten:** Lebar antar icon tertata tanpa jeda pemisah kategori (*margin-bottom: 0*), membentuk rentetan kolom tunggal ke bawah dengan *gap* yang seragam.
-*   **Pembatas Visual:** Garis batas transparan tipis (1px border) ditambahkan pada bawah baris *Header* dan di atas baris *Bottom-Section*, menciptakan segregasi tiga-blok (Header - Menu - User) yang jelas tanpa membutuhkan panduan tulisan.
+## Supabase RLS (supabase/migrations/20260819_rbac_rls.sql)
+Saya telah membuatkan SQL *Migration Script* yang menargetkan persis dengan penamaan tabel pada kode JavaScript:
+* **Academic Tables** (	eachers, grades, ttendance_students, dll)
+* **Finance Tables** (	ransactions, udgets, salary_slips, dll)
+* **PPDB Tables** (pendaftaran, iodata_siswa, dll)
 
-### 3. Header & Branding
-*   Replaced the basic ?? emoji with a clean Phosphor Icon (ph ph-graduation-cap).
-
-### 4. Search Bar
-*   Overhauled the search input to seamlessly blend into the glass background.
-*   Implemented a clean focus state with gba(255, 255, 255, 0.08).
+Kebijakan yang diterapkan:
+1. Admin memiliki wewenang *Full Access* (Select & Write) di mana-mana.
+2. Pembina memiliki wewenang *Select-Only* di semua tabel, dan tidak diberikan akses *Write*.
+3. Tabel tersegmentasi dengan ketat: Guru tidak bisa Select atau Write ke tabel Finance, dan Finance tidak dapat menyentuh tabel Akademik.

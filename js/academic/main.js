@@ -53,7 +53,7 @@ async function checkAuth() {
                 
                 _teacher = teacherData || null;
                 if (!teacherData) {
-                    console.warn('Email ini tidak terdaftar sebagai guru:', user.email);
+                    
                 }
 
                 // Sembunyikan menu non-akademik untuk Guru

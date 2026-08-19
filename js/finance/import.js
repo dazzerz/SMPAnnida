@@ -7,7 +7,7 @@ import supabaseClient from '../core/supabase.js';
 // ── Generate & download template Excel ────────────
 export async function downloadTemplate(categories) {
   const XLSX = await import('xlsx');
-  if (!XLSX) { alert('Library Excel belum siap, coba refresh halaman.'); return; }
+  if (!XLSX) { showToast('Library Excel belum siap, coba refresh halaman.', 'error'); return; }
 
   // Sheet 1: Template transaksi
   const headers = ['tanggal', 'keterangan', 'tipe', 'kategori', 'jumlah', 'sumber_dana'];
@@ -367,7 +367,7 @@ export async function validateAndMapRows(rows, categories) {
 
   // --- HUGGING FACE AI INTEGRATION ---
   if (unmatchedRows.length > 0) {
-    console.log(`Mengirim ${unmatchedRows.length} baris ke AI Hugging Face...`);
+    
     
     // Pisahkan berdasarkan tipe agar pilihan kategorinya spesifik
     const incomeRows = unmatchedRows.filter(r => r.type === 'income');
@@ -381,7 +381,7 @@ export async function validateAndMapRows(rows, categories) {
       
       const apiKey = localStorage.getItem('gemini_api_key') || '';
       if (!apiKey) {
-        alert("Kunci API Google Gemini belum diisi! Silakan isi di menu Pengaturan.");
+        showToast("Kunci API Google Gemini belum diisi! Silakan isi di menu Pengaturan.", 'error');
         return;
       }
       
@@ -436,23 +436,23 @@ ${descList}`;
             const data = await response.json();
             answer = data.candidates?.[0]?.content?.parts?.[0]?.text;
             if (answer) {
-              console.log(`Berhasil menggunakan model: ${model}`);
+              
               break; // Sukses, keluar dari loop
             }
           } else {
             lastErrData = await response.json().catch(() => null);
-            console.warn(`Gagal dengan model ${model}:`, lastErrData || response.statusText);
+            
           }
         } catch (err) {
           lastErrMsg = err.message;
-          console.warn(`Error koneksi dengan model ${model}:`, err);
+          
         }
       }
 
       if (!answer) {
         console.error("Semua model Gemini gagal dihubungi.");
-        alert("Gagal memanggil Gemini AI (Semua model dicoba). Error terakhir: " + 
-          (lastErrData?.error?.message || lastErrMsg || "Unknown error"));
+        showToast("Gagal memanggil Gemini AI (Semua model dicoba). Error terakhir: " + 
+          (lastErrData?.error?.message || lastErrMsg || "Unknown error"), 'error');
         return; // Jangan lanjutkan mapping
       }
 
@@ -467,13 +467,13 @@ ${descList}`;
         
         parsedArray = JSON.parse(cleanAnswer);
       } catch (parseErr) {
-        console.warn("JSON parse gagal, mencoba regex fallback...", parseErr);
+        
         const matches = answer.match(/"([^"]+)"/g);
         if (matches) {
           parsedArray = matches.map(m => m.slice(1, -1));
         } else {
           console.error("Gagal parse JSON Gemini:", answer);
-          alert("Gemini mengembalikan format yang salah, tapi koneksi berhasil. Silakan cek console.");
+          showToast("Gemini mengembalikan format yang salah, tapi koneksi berhasil. Silakan cek console.", 'error');
           return;
         }
       }

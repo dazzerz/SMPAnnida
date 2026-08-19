@@ -41,7 +41,7 @@ function showAuthMessage(message, type) {
 }
 
 function setLoading(btnId, isLoading) {
-  const btn = document.getElementById(btnId) || document.querySelector('.btn-login') || document.querySelector('button[type="submit"]');
+  const btn = document.getElementById(btnId) || document.querySelector('.btn-login') || document.querySelector('.btn-submit') || document.querySelector('button[type="submit"]');
   if (!btn) return;
   btn.classList.toggle('loading', isLoading);
   btn.disabled = isLoading;

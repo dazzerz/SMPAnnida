@@ -36,22 +36,73 @@ export function getMonthYear() {
   return { month: now.getMonth() + 1, year: now.getFullYear() };
 }
 
-// Show toast notification
+// Show toast notification (Dynamic & Glassmorphism styled)
 export function showToast(message, type = 'info') {
-  const container = document.getElementById('toast-container');
-  if (!container) return;
+  let container = document.getElementById('toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toast-container';
+    // Dynamic styles for the container
+    container.style.position = 'fixed';
+    container.style.top = '20px';
+    container.style.right = '20px';
+    container.style.zIndex = '999999';
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.gap = '10px';
+    document.body.appendChild(container);
+  }
+
   const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+  const colors = {
+    success: 'rgba(34, 197, 94, 0.2)',
+    error: 'rgba(239, 68, 68, 0.2)',
+    warning: 'rgba(245, 158, 11, 0.2)',
+    info: 'rgba(59, 130, 246, 0.2)'
+  };
+  const borders = {
+    success: 'rgba(34, 197, 94, 0.4)',
+    error: 'rgba(239, 68, 68, 0.4)',
+    warning: 'rgba(245, 158, 11, 0.4)',
+    info: 'rgba(59, 130, 246, 0.4)'
+  };
+
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
+  
+  // Custom toast styling (frosted glass)
+  toast.style.background = colors[type] || 'rgba(255, 255, 255, 0.08)';
+  toast.style.backdropFilter = 'blur(16px)';
+  toast.style.webkitBackdropFilter = 'blur(16px)';
+  toast.style.border = `1px solid ${borders[type] || 'rgba(255, 255, 255, 0.2)'}`;
+  toast.style.borderRadius = '12px';
+  toast.style.padding = '14px 24px';
+  toast.style.color = '#ffffff';
+  toast.style.fontSize = '0.95rem';
+  toast.style.fontWeight = '500';
+  toast.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.25)';
+  toast.style.display = 'flex';
+  toast.style.alignItems = 'center';
+  toast.style.gap = '12px';
+  toast.style.opacity = '0';
+  toast.style.transform = 'translateY(-20px)';
+  toast.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+  
   toast.innerHTML = `
-    <span class="toast-icon">${icons[type] || 'ℹ️'}</span>
-    <span class="toast-message">${message}</span>
+    <span class="toast-icon" style="font-size: 1.1rem; display: flex; align-items: center;">${icons[type] || 'ℹ️'}</span>
+    <span class="toast-message" style="line-height: 1.2;">${message}</span>
   `;
   container.appendChild(toast);
-  requestAnimationFrame(() => toast.classList.add('show'));
+  
+  // Trigger transition
+  toast.offsetHeight; // Force reflow
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateY(0)';
+  
   setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 400);
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(-20px)';
+    setTimeout(() => toast.remove(), 300);
   }, 3500);
 }
 

@@ -246,7 +246,7 @@ async function loadRAB() {
     .single();
 
   if (error) {
-    console.log("Belum ada RAB tersimpan di database, menggunakan nilai default/lokal.");
+    
     calculateRAB();
     return;
   }

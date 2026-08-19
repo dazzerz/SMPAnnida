@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     } catch (e) {
-        console.warn("Autentikasi gagal:", e);
+        
         if (window.location.pathname.includes('dashboard-')) {
             window.location.href = 'login.html';
             return;
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ==========================================
     const isSiswaDashboard = document.getElementById('multiStepForm');
     if (isSiswaDashboard && userId) {
-        console.log("Memuat data siswa dari Supabase untuk user:", userId);
+        
         loadSiswaData(userId);
 
         // Submit form pendaftaran
@@ -49,11 +49,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const isAdminDashboard = document.getElementById('table-pendaftar-body');
     if (isAdminDashboard) {
         if (!sessionUser || !sessionUser.email || !sessionUser.email.includes('admin')) {
-            alert("Akses Ditolak: Anda tidak memiliki izin untuk mengakses halaman Admin.");
+            showToast("Akses Ditolak: Anda tidak memiliki izin untuk mengakses halaman Admin.", 'error');
             window.location.href = '../../index.html';
             return;
         }
-        console.log("Memuat data pendaftar untuk Admin...");
+        
         loadAdminData();
     }
 });
@@ -129,7 +129,7 @@ async function loadSiswaData(userId) {
             }
         }
     } catch (err) {
-        console.warn("Gagal sinkronisasi dengan Supabase (menggunakan data mockup lokal):", err.message);
+        
         // Fallback pre-fill menggunakan data lokal saja
         const localNo = localStorage.getItem('no_pendaftaran');
         if (localNo) {
@@ -188,14 +188,14 @@ async function saveSiswaForm(userId) {
             }, { onConflict: 'pendaftaran_id' });
         }
         
-        alert('Data pendaftaran berhasil disinkronkan dengan database Supabase!');
+        showToast('Data pendaftaran berhasil disinkronkan dengan database Supabase!', 'error');
         updateTimelineUI('Verifikasi');
         document.querySelector('.tab-trigger[data-target="dokumen"]').click();
 
     } catch (err) {
         console.error("Gagal simpan ke Supabase:", err);
         // Fallback local alert
-        alert('Formulir disimpan secara lokal (offline). Hubungkan Supabase Anda secara lengkap.');
+        showToast('Formulir disimpan secara lokal (offline). Hubungkan Supabase Anda secara lengkap.', 'error');
         document.querySelector('.tab-trigger[data-target="dokumen"]').click();
     }
 }
@@ -264,7 +264,7 @@ async function loadAdminData() {
             });
         }
     } catch (err) {
-        console.warn("Gagal memuat data admin dari Supabase (menampilkan dummy):", err.message);
+        
     }
 }
 
@@ -290,10 +290,10 @@ window.activateToAcademic = async function(studentName) {
 
             if (error) throw error;
             
-            alert(`Aktivasi Berhasil!\nSiswa ${studentName} terdaftar di Modul Akademik dengan NIS: ${mockNis}.\n\nModul Keuangan (Finance) kini dapat melacak tagihan bulanan siswa ini.`);
+            showToast(`Aktivasi Berhasil!\nSiswa ${studentName} terdaftar di Modul Akademik dengan NIS: ${mockNis}.\n\nModul Keuangan (Finance) kini dapat melacak tagihan bulanan siswa ini.`, 'success');
         } catch (e) {
             console.error("Gagal aktivasi ke modul akademik pusat:", e.message);
-            alert(`Proses lokal berhasil!\nSiswa ${studentName} terdaftar di Kelas 7A (Simulasi Offline).`);
+            showToast(`Proses lokal berhasil!\nSiswa ${studentName} terdaftar di Kelas 7A (Simulasi Offline).`, 'success');
         }
     }
 };

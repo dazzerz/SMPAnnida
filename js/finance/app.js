@@ -359,7 +359,7 @@ async function main() {
     btn.innerHTML = '⏳ Tunggu...';
     
     try {
-      if (!user) { alert('Silakan login terlebih dahulu.'); return; }
+      if (!user) { showToast('Silakan login terlebih dahulu.', 'info'); return; }
       
       const today = new Date();
       const localDate = today.toLocaleDateString('en-CA'); // YYYY-MM-DD
@@ -392,7 +392,7 @@ async function main() {
       const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
       window.open(url, '_blank');
     } catch (err) {
-      alert('Gagal mengambil data hari ini: ' + err.message);
+      showToast('Gagal mengambil data hari ini: ' + err.message, 'error');
     } finally {
       btn.innerHTML = originalText;
     }

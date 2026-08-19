@@ -90,19 +90,19 @@
                 </div>
                 <div class="dash-card">
                     <div class="dash-card-title">Menunggu Verifikasi</div>
-                    <div class="dash-card-value" style="color: #c05621;" id="kpi-verif">45</div>
+                    <div class="dash-card-value ppdb-admin-2" id="kpi-verif">45</div>
                 </div>
                 <div class="dash-card">
                     <div class="dash-card-title">Menunggu Seleksi</div>
-                    <div class="dash-card-value" style="color: #3182ce;" id="kpi-seleksi">60</div>
+                    <div class="dash-card-value ppdb-admin-18" id="kpi-seleksi">60</div>
                 </div>
                 <div class="dash-card">
                     <div class="dash-card-title">Lulus Diterima</div>
-                    <div class="dash-card-value" style="color: #38a169;" id="kpi-lulus">23</div>
+                    <div class="dash-card-value ppdb-admin-21" id="kpi-lulus">23</div>
                 </div>
             </section>
 
-            <div class="card" style="border-left: 5px solid var(--primary-color);">
+            <div class="card ppdb-admin-20">
                 <h3>Integrasi Sistem Core (Academic-Centric)</h3>
                 <p>Seluruh data pendaftar yang statusnya disetujui untuk **Daftar Ulang** akan langsung disinkronkan ke **Modul Akademik**. Sistem Keuangan (Finance) hanya akan melacak tagihan bulanan (SPP) berdasarkan data siswa aktif dari modul akademik pusat tersebut.</p>
             </div>
@@ -110,7 +110,7 @@
 
         <!-- TAB 2: DATA PENDAFTAR -->
         <div id="tab-admin-pendaftar" class="tab-panel">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div class="ppdb-admin-7">
                 <h3>Data Pendaftaran SMP Sekolah Alam + Tahfidz</h3>
                 <button class="btn btn-primary btn-sm" onclick="alert('Export PDF/Excel Berhasil didownload!')">Export Data</button>
             </div>
@@ -134,7 +134,7 @@
                             <td>Reguler</td>
                             <td>Sekolah Saja</td>
                             <td><span class="status-badge status-verifikasi">Menunggu Verifikasi</span></td>
-                            <td><a href="#" class="tab-trigger" data-target="admin-verifikasi" style="font-weight:600; color:var(--primary-color);">Periksa Berkas</a></td>
+                            <td><a href="#" class="tab-trigger ppdb-admin-4" data-target="admin-verifikasi">Periksa Berkas</a></td>
                         </tr>
                         <tr>
                             <td><strong>REG-2026-002</strong></td>
@@ -142,7 +142,7 @@
                             <td>Tahfidz</td>
                             <td>Sekolah + Pondok</td>
                             <td><span class="status-badge status-verifikasi">Menunggu Verifikasi</span></td>
-                            <td><a href="#" class="tab-trigger" data-target="admin-verifikasi" style="font-weight:600; color:var(--primary-color);">Periksa Berkas</a></td>
+                            <td><a href="#" class="tab-trigger ppdb-admin-4" data-target="admin-verifikasi">Periksa Berkas</a></td>
                         </tr>
                         <tr>
                             <td><strong>REG-2026-003</strong></td>
@@ -150,7 +150,7 @@
                             <td>Prestasi</td>
                             <td>Sekolah Saja</td>
                             <td><span class="status-badge status-lulus">Lulus - Daftar Ulang</span></td>
-                            <td><a href="#" class="tab-trigger" data-target="admin-seleksi" style="font-weight:600; color:var(--primary-color);">Lihat Nilai</a></td>
+                            <td><a href="#" class="tab-trigger ppdb-admin-4" data-target="admin-seleksi">Lihat Nilai</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -165,18 +165,18 @@
             <div class="split-view">
                 <!-- Left List -->
                 <div class="split-left">
-                    <div class="card doc-item" style="cursor: pointer; border-left: 4px solid var(--primary-color);" onclick="showDocPreview('Ahmad Fulan', 'Kartu Keluarga (KK)', 'kk-fulan.png')">
+                    <div class="card doc-item ppdb-admin-12" onclick="showDocPreview('Ahmad Fulan', 'Kartu Keluarga (KK)', 'kk-fulan.png')">
                         <div>
                             <strong>Ahmad Fulan</strong>
-                            <p style="font-size:0.85rem; color: var(--text-muted);">KK & Akta Kelahiran</p>
+                            <p class="ppdb-admin-6">KK & Akta Kelahiran</p>
                         </div>
                         <span class="status-badge status-verifikasi">Perlu Review</span>
                     </div>
                     
-                    <div class="card doc-item" style="cursor: pointer;" onclick="showDocPreview('Budi Santoso', 'Rapor SD / MI', 'rapor-budi.png')">
+                    <div class="card doc-item ppdb-admin-23" onclick="showDocPreview('Budi Santoso', 'Rapor SD / MI', 'rapor-budi.png')">
                         <div>
                             <strong>Budi Santoso</strong>
-                            <p style="font-size:0.85rem; color: var(--text-muted);">Rapor & KTP Ortu</p>
+                            <p class="ppdb-admin-6">Rapor & KTP Ortu</p>
                         </div>
                         <span class="status-badge status-verifikasi">Perlu Review</span>
                     </div>
@@ -184,8 +184,8 @@
                 
                 <!-- Right Preview & Actions -->
                 <div class="split-right" id="doc-preview-panel">
-                    <h4 id="preview-student-name" style="margin-bottom:5px;">Pilih Berkas Calon Siswa</h4>
-                    <p style="font-size:0.9rem; color:var(--text-muted);" id="preview-doc-title">Detail berkas scan akan tampil di sini.</p>
+                    <h4 id="preview-student-name" class="ppdb-admin-11">Pilih Berkas Calon Siswa</h4>
+                    <p class="ppdb-admin-14" id="preview-doc-title">Detail berkas scan akan tampil di sini.</p>
                     
                     <div class="preview-box" id="preview-img-box">
                         <span>Tidak ada file yang dipilih</span>
@@ -196,9 +196,9 @@
                         <textarea class="form-control" rows="2" placeholder="Tulis catatan jika dokumen ditolak/revisi"></textarea>
                     </div>
                     
-                    <div style="display:flex;flex-wrap:wrap;gap:15px;">
-                        <button class="btn btn-primary" onclick="verifyDocumentAction('Approve')" style="flex:1;">Setujui Berkas</button>
-                        <button class="btn btn-outline" onclick="verifyDocumentAction('Reject')" style="flex:1; border-color:#e53e3e; color:#e53e3e;">Tolak / Butuh Revisi</button>
+                    <div class="ppdb-admin-3">
+                        <button class="btn btn-primary ppdb-admin-1" onclick="verifyDocumentAction('Approve')">Setujui Berkas</button>
+                        <button class="btn btn-outline ppdb-admin-10" onclick="verifyDocumentAction('Reject')">Tolak / Butuh Revisi</button>
                     </div>
                 </div>
             </div>
@@ -209,7 +209,7 @@
             <h3>Persetujuan Bukti Transfer Pembayaran</h3>
             <p>Verifikasi bukti transfer dari calon pendaftar untuk meneruskan ke proses seleksi.</p>
             
-            <div class="table-container" style="margin-top: 20px;">
+            <div class="table-container ppdb-admin-19">
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -227,7 +227,7 @@
                             <td>Ahmad Fulan</td>
                             <td>Sekolah Saja</td>
                             <td>Rp 250.000</td>
-                            <td><a href="#" onclick="alert('Membuka file: bukti-transfer-fulan.jpg')" style="color: var(--primary-color); font-weight:600;">Lihat Bukti</a></td>
+                            <td><a href="#" onclick="alert('Membuka file: bukti-transfer-fulan.jpg')" class="ppdb-admin-8">Lihat Bukti</a></td>
                             <td>
                                 <button class="btn btn-primary btn-sm" onclick="verifyPaymentAction(1)">Verifikasi Lunas</button>
                             </td>
@@ -237,7 +237,7 @@
                             <td>Budi Santoso</td>
                             <td>Sekolah + Pondok</td>
                             <td>Rp 500.000</td>
-                            <td><a href="#" onclick="alert('Membuka file: bukti-transfer-budi.jpg')" style="color: var(--primary-color); font-weight:600;">Lihat Bukti</a></td>
+                            <td><a href="#" onclick="alert('Membuka file: bukti-transfer-budi.jpg')" class="ppdb-admin-8">Lihat Bukti</a></td>
                             <td>
                                 <button class="btn btn-primary btn-sm" onclick="verifyPaymentAction(2)">Verifikasi Lunas</button>
                             </td>
@@ -254,8 +254,8 @@
             
             <div class="split-view">
                 <!-- Left Input Form -->
-                <div class="split-left" style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding:30px; box-shadow: var(--shadow-sm);">
-                    <h4 style="margin-bottom:20px;">Kalkulator Nilai</h4>
+                <div class="split-left ppdb-admin-13">
+                    <h4 class="ppdb-admin-16">Kalkulator Nilai</h4>
                     
                     <div class="form-group">
                         <label>Pilih Calon Siswa</label>
@@ -292,18 +292,18 @@
                         <input type="number" class="form-control val-input" id="val-admin" min="0" max="100" value="95">
                     </div>
                     
-                    <div style="margin-top: 20px; font-weight:700; font-size:1.1rem; color:var(--primary-color);">
+                    <div class="ppdb-admin-15">
                         Nilai Akhir Terkalkulasi: <span id="calculated-total-score">84.5</span>
                     </div>
 
-                    <button class="btn btn-primary" style="width: 100%; margin-top:20px;" onclick="saveSeleksiGrade()">Simpan & Update Ranking</button>
+                    <button class="btn btn-primary ppdb-admin-17" onclick="saveSeleksiGrade()">Simpan & Update Ranking</button>
                 </div>
 
                 <!-- Right Ranking list -->
                 <div class="split-right">
-                    <h4 style="margin-bottom:20px;">Tabel Hasil Peringkat Seleksi</h4>
+                    <h4 class="ppdb-admin-16">Tabel Hasil Peringkat Seleksi</h4>
                     <div class="table-container">
-                        <table class="data-table" style="font-size: 0.9rem;">
+                        <table class="data-table ppdb-admin-22">
                             <thead>
                                 <tr>
                                     <th>Peringkat</th>
@@ -317,19 +317,19 @@
                                     <td><strong>#1</strong></td>
                                     <td>Siti Aminah</td>
                                     <td><strong>89.0</strong></td>
-                                    <td><button class="btn btn-outline btn-sm" style="border-color:#38a169; color:#38a169;" onclick="activateToAcademic('Siti Aminah')">Aktivasi Akademik</button></td>
+                                    <td><button class="btn btn-outline btn-sm ppdb-admin-5" onclick="activateToAcademic('Siti Aminah')">Aktivasi Akademik</button></td>
                                 </tr>
                                 <tr id="rank-row-Ahmad-Fulan">
                                     <td><strong>#2</strong></td>
                                     <td>Ahmad Fulan</td>
                                     <td id="score-Ahmad-Fulan"><strong>84.5</strong></td>
-                                    <td><button class="btn btn-outline btn-sm" style="border-color:#38a169; color:#38a169;" onclick="activateToAcademic('Ahmad Fulan')">Aktivasi Akademik</button></td>
+                                    <td><button class="btn btn-outline btn-sm ppdb-admin-5" onclick="activateToAcademic('Ahmad Fulan')">Aktivasi Akademik</button></td>
                                 </tr>
-                                <tr id="rank-row-Budi-Santoso" style="display:none;">
+                                <tr id="rank-row-Budi-Santoso" class="ppdb-admin-9">
                                     <td><strong>#3</strong></td>
                                     <td>Budi Santoso</td>
                                     <td id="score-Budi-Santoso"><strong>0.0</strong></td>
-                                    <td><button class="btn btn-outline btn-sm" style="border-color:#38a169; color:#38a169;" onclick="activateToAcademic('Budi Santoso')">Aktivasi Akademik</button></td>
+                                    <td><button class="btn btn-outline btn-sm ppdb-admin-5" onclick="activateToAcademic('Budi Santoso')">Aktivasi Akademik</button></td>
                                 </tr>
                             </tbody>
                         </table>

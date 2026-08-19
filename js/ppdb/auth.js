@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (error) {
                     // Fallback untuk guest/testing jika Supabase credentials salah atau belum ada akun
-                    console.warn("Supabase Auth error (using mockup fallback):", error.message);
+                    
                     if (email.includes('admin')) {
                         window.location.href = 'dashboard-admin.html';
                     } else {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 console.error("Login process error:", err);
-                alert("Terjadi kesalahan saat masuk. Silakan coba lagi.");
+                showToast("Terjadi kesalahan saat masuk. Silakan coba lagi.", 'error');
             }
         });
     }
@@ -106,12 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     
 
-                    alert(`Registrasi Berhasil!\nNomor Pendaftaran Anda: ${noPendaftaran}`);
+                    showToast(`Registrasi Berhasil!\nNomor Pendaftaran Anda: ${noPendaftaran}`, 'success');
                     window.location.href = 'dashboard-siswa.html';
                 }
             } catch (err) {
                 console.error("Registration error:", err);
-                alert("Registrasi Gagal: " + err.message);
+                showToast("Registrasi Gagal: " + err.message, 'error');
             }
         });
     }

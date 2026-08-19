@@ -74,26 +74,26 @@
         <header class="topbar" id="topbar"></header>
 <!-- TAB 1: BERANDA -->
         <div id="tab-beranda" class="tab-panel active">
-            <div class="card" style="margin-bottom: 30px; border-left: 5px solid var(--primary-color);">
+            <div class="card ppdb-siswa-20">
                 <h3>Selamat Datang, Ahmad Fulan!</h3>
                 <p>Silakan selesaikan seluruh berkas pendaftaran Anda. Anda terdaftar pada program **SMP Sekolah Alam + Tahfidz**.</p>
-                <div style="margin-top: 20px;">
+                <div class="ppdb-siswa-18">
                     <strong>Tipe Pendaftaran:</strong> <span id="display-tipe-pendaftaran" class="badge">Hanya Sekolah</span>
                 </div>
             </div>
 
             <!-- Status Timeline Tracker -->
-            <div class="wizard-container" style="max-width: 100%; margin-bottom: 30px;">
-                <h4 style="margin-bottom: 30px;" class="text-center">Status Alur Pendaftaran Anda</h4>
-                <div class="wizard-progress" style="margin-bottom: 0;">
+            <div class="wizard-container ppdb-siswa-15">
+                <h4 class="text-center ppdb-siswa-3">Status Alur Pendaftaran Anda</h4>
+                <div class="wizard-progress ppdb-siswa-4">
                     <div class="progress-step completed" data-step="1" title="Registrasi Akun">1</div>
                     <div class="progress-step active" data-step="2" title="Isi Formulir">2</div>
                     <div class="progress-step" data-step="3" title="Verifikasi Berkas">3</div>
                     <div class="progress-step" data-step="4" title="Pembayaran">4</div>
                     <div class="progress-step" data-step="5" title="Seleksi & Pengumuman">5</div>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); margin-top: 15px;">
-                    <span style="font-weight: 600; color: var(--primary-color);">Daftar Akun</span>
+                <div class="ppdb-siswa-17">
+                    <span class="ppdb-siswa-14">Daftar Akun</span>
                     <span>Isi Formulir</span>
                     <span>Verifikasi Berkas</span>
                     <span>Bayar Tagihan</span>
@@ -105,7 +105,7 @@
         <!-- TAB 2: FORMULIR -->
         <div id="tab-formulir" class="tab-panel">
             <section class="wizard-container">
-                <div class="wizard-header text-center" style="margin-bottom: 30px;">
+                <div class="wizard-header text-center ppdb-siswa-3">
                     <h3>Formulir Pendaftaran</h3>
                     <p>Silakan isi data dengan lengkap untuk melanjutkan proses verifikasi.</p>
                 </div>
@@ -127,7 +127,7 @@
                             <select class="form-control" disabled>
                                 <option selected>SMP Sekolah Alam + Tahfidz</option>
                             </select>
-                            <small style="color: var(--text-muted);">Hanya tersedia jenjang SMP Sekolah Alam + Tahfidz.</small>
+                            <small class="ppdb-siswa-12">Hanya tersedia jenjang SMP Sekolah Alam + Tahfidz.</small>
                         </div>
                         <div class="form-group">
                             <label>Tipe Pendaftaran</label>
@@ -219,8 +219,8 @@
                             <label>NPSN Sekolah Asal</label>
                             <input type="text" class="form-control" value="20102030">
                         </div>
-                        <div style="margin: 30px 0; padding: 20px; background: var(--bg-light); border-radius: var(--radius-md);">
-                            <p style="margin:0; font-size: 0.95rem;">Dengan ini saya menyatakan bahwa data yang saya isikan adalah benar dan dapat dipertanggungjawabkan untuk kebutuhan pendaftaran SMP Sekolah Alam + Tahfidz.</p>
+                        <div class="ppdb-siswa-11">
+                            <p class="ppdb-siswa-16">Dengan ini saya menyatakan bahwa data yang saya isikan adalah benar dan dapat dipertanggungjawabkan untuk kebutuhan pendaftaran SMP Sekolah Alam + Tahfidz.</p>
                         </div>
                         <div class="step-actions">
                             <button type="button" class="btn btn-outline btn-prev">Kembali</button>
@@ -233,7 +233,7 @@
 
         <!-- TAB 3: DOKUMEN -->
         <div id="tab-dokumen" class="tab-panel">
-            <div class="card" style="margin-bottom: 20px;">
+            <div class="card ppdb-siswa-19">
                 <h3>Pemeriksaan Dokumen Persyaratan</h3>
                 <p>Silakan unggah pindaian (scan) berkas asli dalam format gambar (JPG/PNG) atau PDF.</p>
             </div>
@@ -242,11 +242,11 @@
                 <div class="doc-item">
                     <div>
                         <strong>1. Kartu Keluarga (KK)</strong>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;" id="kk-name">Belum ada file.</p>
+                        <p class="ppdb-siswa-13" id="kk-name">Belum ada file.</p>
                     </div>
                     <div class="doc-status">
                         <span class="status-badge status-draft" id="kk-status">Belum Diunggah</span>
-                        <input type="file" id="file-kk" style="display:none;" accept="image/*,application/pdf">
+                        <input type="file" id="file-kk" class="ppdb-siswa-8" accept="image/*,application/pdf">
                         <button class="btn btn-outline btn-sm" onclick="document.getElementById('file-kk').click()">Upload File</button>
                     </div>
                 </div>
@@ -254,11 +254,11 @@
                 <div class="doc-item">
                     <div>
                         <strong>2. Akta Kelahiran</strong>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;" id="akta-name">Belum ada file.</p>
+                        <p class="ppdb-siswa-13" id="akta-name">Belum ada file.</p>
                     </div>
                     <div class="doc-status">
                         <span class="status-badge status-draft" id="akta-status">Belum Diunggah</span>
-                        <input type="file" id="file-akta" style="display:none;" accept="image/*,application/pdf">
+                        <input type="file" id="file-akta" class="ppdb-siswa-8" accept="image/*,application/pdf">
                         <button class="btn btn-outline btn-sm" onclick="document.getElementById('file-akta').click()">Upload File</button>
                     </div>
                 </div>
@@ -266,11 +266,11 @@
                 <div class="doc-item">
                     <div>
                         <strong>3. Ijazah / Surat Keterangan Lulus (SKL)</strong>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;" id="skl-name">Belum ada file.</p>
+                        <p class="ppdb-siswa-13" id="skl-name">Belum ada file.</p>
                     </div>
                     <div class="doc-status">
                         <span class="status-badge status-draft" id="skl-status">Belum Diunggah</span>
-                        <input type="file" id="file-skl" style="display:none;" accept="image/*,application/pdf">
+                        <input type="file" id="file-skl" class="ppdb-siswa-8" accept="image/*,application/pdf">
                         <button class="btn btn-outline btn-sm" onclick="document.getElementById('file-skl').click()">Upload File</button>
                     </div>
                 </div>
@@ -280,7 +280,7 @@
         <!-- TAB 4: PEMBAYARAN -->
         <div id="tab-pembayaran" class="tab-panel">
             <div class="invoice-card">
-                <h3 class="text-center" style="margin-bottom: 20px;">Invoice Formulir Pendaftaran</h3>
+                <h3 class="text-center ppdb-siswa-19">Invoice Formulir Pendaftaran</h3>
                 
                 <div class="invoice-row">
                     <span>No. Invoice</span>
@@ -294,12 +294,12 @@
                     <span>Tipe Program</span>
                     <span id="invoice-tipe">Hanya Sekolah</span>
                 </div>
-                <div class="invoice-row" style="border: none; margin-bottom: 20px;">
+                <div class="invoice-row ppdb-siswa-5">
                     <span>Total Tagihan</span>
                     <span class="invoice-total" id="invoice-nominal">Rp 250.000</span>
                 </div>
                 
-                <div style="background-color: var(--bg-light); padding: 15px; border-radius: var(--radius-md); margin-bottom: 25px; font-size: 0.9rem;">
+                <div class="ppdb-siswa-2">
                     <strong>Rekening Pembayaran Yayasan:</strong><br>
                     Bank Syariah Indonesia (BSI)<br>
                     No. Rek: <strong>7123456789</strong> a.n Annida 2 PPDB
@@ -310,10 +310,10 @@
                         <label>Unggah Bukti Transfer</label>
                         <input type="file" class="form-control" id="bukti-transfer" required>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;" id="btnConfirmPayment">Kirim Konfirmasi Pembayaran</button>
+                    <button type="submit" class="btn btn-primary ppdb-siswa-1" id="btnConfirmPayment">Kirim Konfirmasi Pembayaran</button>
                 </form>
                 
-                <div id="payment-success-msg" style="display:none; margin-top: 20px; text-align: center; color: var(--primary-dark); font-weight: 600;">
+                <div id="payment-success-msg" class="ppdb-siswa-10">
                     ✓ Bukti transfer telah dikirim dan sedang diverifikasi Bendahara.
                 </div>
             </div>
@@ -321,11 +321,11 @@
 
         <!-- TAB 5: PENGUMUMAN -->
         <div id="tab-pengumuman" class="tab-panel">
-            <div class="card text-center" style="max-width: 600px; margin: 0 auto; padding: 40px;">
-                <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+            <div class="card text-center ppdb-siswa-6">
+                <div class="ppdb-siswa-7">🎉</div>
                 <h3>Pengumuman Hasil Seleksi</h3>
-                <p style="margin-bottom: 30px;">Selamat! Calon siswa atas nama **Ahmad Fulan** dinyatakan **LULUS** seleksi penerimaan murid baru SMP Sekolah Alam + Tahfidz Annida 2.</p>
-                <div style="display:flex;flex-wrap:wrap;gap: 15px; justify-content: center;">
+                <p class="ppdb-siswa-3">Selamat! Calon siswa atas nama **Ahmad Fulan** dinyatakan **LULUS** seleksi penerimaan murid baru SMP Sekolah Alam + Tahfidz Annida 2.</p>
+                <div class="ppdb-siswa-9">
                     <a href="#" class="btn btn-primary">Download Surat Kelulusan</a>
                     <a href="#" class="btn btn-outline" onclick="alert('Pemberitahuan: Akun Anda akan diaktifkan di portal Akademik dan Finance oleh Admin untuk SPP dan kelas.')">Lanjut Daftar Ulang</a>
                 </div>

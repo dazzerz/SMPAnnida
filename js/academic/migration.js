@@ -209,15 +209,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Download Template
     btnDownload.addEventListener('click', async (e) => {
         e.preventDefault();
-        console.log("CLICK DOWNLOAD TEMPLATE");
+        
         
         if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
         
         const type = selectType.value;
-        console.log("Type selected:", type);
+        
         
         const headers = templates[type];
-        console.log("Headers:", headers);
+        
         
         if (!headers) {
             console.error("Headers tidak ditemukan");
@@ -230,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const ws = XLSX.utils.aoa_to_sheet([headers]);
             XLSX.utils.book_append_sheet(wb, ws, 'Template ' + type.charAt(0).toUpperCase() + type.slice(1));
             XLSX.writeFile(wb, `Template_Import_${type}.xlsx`);
-            console.log("DONE DOWNLOAD");
+            
         } catch (err) {
             console.error("ERROR WRITING EXCEL:", err);
         }

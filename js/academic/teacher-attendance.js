@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             currentLng = position.coords.longitude;
                         },
                         (error) => {
-                            console.warn("Location error:", error);
+                            
                         },
                         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
                     );

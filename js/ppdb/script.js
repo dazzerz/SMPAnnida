@@ -11,7 +11,7 @@ injectTopbar('topbar', {
 // Annida2PPDB - Main JavaScript
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Annida2PPDB App initialized.');
+    
     
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (multiStepForm) {
         multiStepForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Formulir Pendaftaran berhasil disimpan! Status Anda kini masuk ke tahap Verifikasi Berkas.');
+            showToast('Formulir Pendaftaran berhasil disimpan! Status Anda kini masuk ke tahap Verifikasi Berkas.', 'error');
             
             // Update UI/Timeline state
             const progress = document.querySelector('.wizard-progress');
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             paymentForm.style.display = 'none';
             paymentSuccessMsg.style.display = 'block';
-            alert('Bukti transfer berhasil dikirim! Silakan tunggu konfirmasi bendahara sekolah.');
+            showToast('Bukti transfer berhasil dikirim! Silakan tunggu konfirmasi bendahara sekolah.', 'success');
         });
     }
 });
@@ -189,10 +189,10 @@ document.addEventListener('DOMContentLoaded', () => {
         window.verifyDocumentAction = function(action) {
             const student = document.getElementById('preview-student-name').innerText;
             if (student === "Pilih Berkas Calon Siswa") {
-                alert("Silakan pilih berkas pendaftar di sebelah kiri terlebih dahulu.");
+                showToast("Silakan pilih berkas pendaftar di sebelah kiri terlebih dahulu.", 'info');
                 return;
             }
-            alert(`Dokumen pendaftaran atas nama ${student} telah di- ${action === 'Approve' ? 'Setujui' : 'Tolak untuk Revisi'}!`);
+            showToast(`Dokumen pendaftaran atas nama ${student} telah di- ${action === 'Approve' ? 'Setujui' : 'Tolak untuk Revisi'}!`, 'error');
         }
 
         // 2. Payment Verify Mock
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let count = parseInt(kpiLulus.innerText);
                 kpiLulus.innerText = count + 1;
                 
-                alert("Verifikasi Pembayaran Berhasil! Status pendaftar diupdate untuk mengikuti tes seleksi.");
+                showToast("Verifikasi Pembayaran Berhasil! Status pendaftar diupdate untuk mengikuti tes seleksi.", 'success');
             }
         }
 
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('score-Budi-Santoso').innerHTML = `<strong>${finalScore.toFixed(1)}</strong>`;
             }
             
-            alert(`Nilai seleksi untuk ${student} berhasil disimpan. Peringkat hasil seleksi diperbarui!`);
+            showToast(`Nilai seleksi untuk ${student} berhasil disimpan. Peringkat hasil seleksi diperbarui!`, 'error');
         }
 
         // 4. Activate to Academic Mock
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const confirmActivation = confirm(`Apakah Anda yakin ingin mengaktivasi ${studentName} menjadi SISWA AKTIF?\n\nProses ini otomatis:\n1. Menggenerate NIS (Nomor Induk Siswa).\n2. Memasukkan data ke Modul Akademik (Presensi & Rapor Kelas).\n3. Membuka portal tagihan SPP bulanan di Modul Finance.`);
             
             if (confirmActivation) {
-                alert(`Selamat! ${studentName} resmi diaktivasi menjadi Siswa Aktif.\nAkun portal Orang Tua & Siswa telah aktif.`);
+                showToast(`Selamat! ${studentName} resmi diaktivasi menjadi Siswa Aktif.\nAkun portal Orang Tua & Siswa telah aktif.`, 'info');
             }
         }
     

@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(btnLihatRekap) {
         btnLihatRekap.addEventListener('click', async () => {
             const studentId = filterSiswaRekap.value;
-            if (!studentId) return alert("Pilih siswa!");
+            if (!studentId) return showToast("Pilih siswa!", 'info');
             tbodyRekapNilai.innerHTML = '<tr><td colspan="6" style="text-align:center;">Memuat...</td></tr>';
             try {
                 const { data, error } = await db.from('grades').select('*').eq('student_id', studentId);

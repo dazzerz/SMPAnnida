@@ -126,3 +126,40 @@ input.form-input[readonly] {
 .mt-md {
   margin-top: 1rem;
 }
+
+
+/* =========================================================================
+   REFACTOR: HOVER, FOCUS, AND TRANSITION STATES FOR INTERACTIVE ELEMENTS
+   ========================================================================= */
+
+/* Transisi Halus Default */
+.form-control, .form-input, input, select, textarea, button, .btn, .card, .rab-card, .nilai-card, .jadwal-card {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* State Focus pada Elemen Input */
+.form-control:focus, .form-input:focus, input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-primary, #7ced50) !important;
+  box-shadow: 0 0 12px var(--accent-primary-glow, rgba(124, 237, 80, 0.25)) !important;
+  background-color: rgba(255, 255, 255, 0.02);
+  outline: none;
+}
+
+/* State Hover & Active pada Tombol */
+.btn:hover, button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active, button:active {
+  transform: translateY(0);
+  filter: brightness(1.0);
+}
+
+/* State Hover pada Cards (Efek Mengambang & Outline Menyala) */
+.card:hover, .rab-card:hover, .nilai-card:hover, .jadwal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}

@@ -310,7 +310,7 @@ export async function initSyahriah() {
     grid.addEventListener('click', (e) => {
         const btn = e.target.closest('.btn-view-slip');
         if (btn) {
-            console.log("Membuka slip dengan ID:", btn.dataset.id);
+            
             viewSlip(btn.dataset.id);
         }
     });
