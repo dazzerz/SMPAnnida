@@ -8,14 +8,14 @@ RETURNS text
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public
-AS 
+AS $$
 DECLARE
     user_role text;
 BEGIN
     SELECT role INTO user_role FROM public.user_roles WHERE user_id = auth.uid() LIMIT 1;
     RETURN user_role;
 END;
-;
+$$;
 
 -- 3. Enable RLS on all relevant tables
 ALTER TABLE IF EXISTS transactions ENABLE ROW LEVEL SECURITY;
