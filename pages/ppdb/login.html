@@ -5,104 +5,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Annida2PPDB</title>
   <link rel="stylesheet" href="../../css/style.css">
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     /* =========================================================================
-       HERO ANNIDA PORTAL OVERHAUL (3D NESTORA PARALLAX STYLE)
+       CLEAN 2-COLUMN PORTAL LAYOUT
        ========================================================================= */
     .hero-annida {
-      height: 100vh;
+      min-height: 100vh;
       width: 100%;
       position: relative;
-      overflow: hidden;
-      /* Premium Dark Slate Blue Gradient Sky */
-      background: linear-gradient(180deg, #1b263b 0%, #0d1b2a 100%);
-    }
-
-    /* Giant Title in Sky (Middle/Top Layer 2) */
-    .hero-title-annida {
-      position: absolute;
-      top: 15%;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 11vw;
-      font-weight: 900;
-      letter-spacing: 2rem;
-      color: rgba(255, 255, 255, 0.85); /* Bright premium white/translucent */
-      text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-      text-transform: uppercase;
-      user-select: none;
-      pointer-events: none;
-      text-align: center;
-      width: 100%;
-      padding-left: 2rem; /* Offset letter-spacing */
-      z-index: 2; /* Layer 2 */
-    }
-
-    /* 3D Transparent Building (Layer 3) */
-    .building-3d {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 3; /* Layer 3 */
-      max-height: 70vh; /* Ensure atap covers bottom half of ANNIDA */
-      max-width: 80%;
-      width: auto;
-      height: auto;
-      display: block;
-      pointer-events: none;
-      object-fit: contain;
-      filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.65));
-    }
-
-    /* Floating Tooltips (Layer 4) */
-    .annida-tooltip {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      padding: 10px 20px;
-      border-radius: 30px;
-      color: #ffffff;
-      font-size: 0.9rem;
-      font-weight: 500;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+      background-image: 
+        linear-gradient(rgba(10, 18, 14, 0.55), rgba(10, 18, 14, 0.55)),
+        url('../../assets/images/gedung_sekolah.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       display: flex;
       align-items: center;
-      gap: 8px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: default;
-      z-index: 4; /* Layer 4 */
-    }
-    .annida-tooltip:hover {
-      transform: translateY(-5px) scale(1.05);
-      background: rgba(255, 255, 255, 0.2);
-      border-color: rgba(255, 255, 255, 0.45);
-      box-shadow: 0 12px 40px 0 rgba(124, 237, 80, 0.3);
-    }
-    .annida-tooltip i {
-      color: var(--accent-primary, #7ced50);
-      font-size: 1.1rem;
+      justify-content: center;
     }
 
-    /* Portal Login Card Container (Layer 4) */
+    .portal-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem;
+      gap: 4rem;
+      z-index: 5;
+    }
+
+    .portal-left {
+      flex: 1.2;
+      color: #ffffff;
+      text-align: left;
+    }
+
+    .portal-left h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+      color: #ffffff !important;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .portal-left p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.85) !important;
+      line-height: 1.6;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+
+    .portal-right {
+      flex: 0.8;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* Portal Login Card Container */
     .hero-annida .login-card {
-      position: absolute;
-      right: 4vw;
-      bottom: 6vh;
       width: 100%;
       max-width: 380px;
-      background: rgba(15, 23, 42, 0.55) !important;
-      backdrop-filter: blur(25px) !important;
-      -webkit-backdrop-filter: blur(25px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      background: rgba(15, 23, 42, 0.5) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
       border-radius: 24px !important;
       padding: 2.2rem !important;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
       margin: 0;
-      z-index: 4; /* Layer 4 */
       transition: transform 0.3s ease;
     }
 
@@ -129,33 +102,23 @@
     }
 
     /* Responsive adjustments */
-    @media (max-width: 1024px) {
-      .annida-tooltip {
-        padding: 8px 14px;
-        font-size: 0.8rem;
+    @media (max-width: 900px) {
+      .portal-container {
+        flex-direction: column;
+        justify-content: center;
+        gap: 2.5rem;
+        text-align: center;
+        padding: 4rem 1.5rem;
       }
-    }
-
-    @media (max-width: 768px) {
-      .hero-title-annida {
-        font-size: 12vw;
-        letter-spacing: 0.8rem;
-        top: 12vh;
+      .portal-left {
+        text-align: center;
       }
-      .building-3d {
-        max-height: 55vh;
-        max-width: 95%;
+      .portal-left h2 {
+        font-size: 2.2rem;
       }
-      .annida-tooltip {
-        display: none !important;
-      }
-      .hero-annida .login-card {
-        right: 50% !important;
-        bottom: 4vh !important;
-        transform: translateX(50%);
-        width: 90% !important;
-        max-width: 380px;
-        padding: 2rem !important;
+      .portal-right {
+        justify-content: center;
+        width: 100%;
       }
     }
   </style>
@@ -163,52 +126,38 @@
 </head>
 <body>
   <section class="hero-annida">
-    <!-- Giant Title in Sky (Layer 2) -->
-    <h1 class="hero-title-annida">ANNIDA</h1>
+    <div class="portal-container">
+      <!-- Left Side: Welcoming Text -->
+      <div class="portal-left">
+        <h2>Selamat Datang di Portal PPDB SMP Annida</h2>
+        <p>Silakan masuk menggunakan akun pendaftaran Anda untuk melanjutkan pengisian biodata, mengunggah dokumen, atau memeriksa status kelulusan seleksi PPDB.</p>
+      </div>
 
-    <!-- 3D Transparent Building (Layer 3) -->
-    <img src="../../assets/images/hero-building.png" alt="Gedung SMP Annida" class="building-3d">
-
-    <!-- Floating Glassmorphism Tooltips (Layer 4) -->
-    <div class="annida-tooltip" style="top: 42%; left: 16%;">
-      <i class="ph ph-mosque"></i>
-      <span>Program Tahfidz 🕋</span>
-    </div>
-    <div class="annida-tooltip" style="top: 58%; left: 26%;">
-      <i class="ph ph-tree"></i>
-      <span>Sekolah Alam 🌳</span>
-    </div>
-    <div class="annida-tooltip" style="top: 32%; left: 56%;">
-      <i class="ph ph-projector-screen"></i>
-      <span>Fasilitas Modern 🏫</span>
-    </div>
-    <div class="annida-tooltip" style="top: 65%; left: 48%;">
-      <i class="ph ph-book-open"></i>
-      <span>Kurikulum Merdeka 📚</span>
-    </div>
-
-    <!-- Portal Login Card (Bottom Right - Layer 4) -->
-    <div class="glass-panel login-card">
-      <img src="../../1.png" alt="Logo Annida" class="login-logo">
-      <h2 class="login-title">Selamat Datang</h2>
-      <p class="login-subtitle">Silakan masuk ke portal Annida2PPDB</p>
-      
-      <form action="#" method="POST" id="loginForm">
-        <div style="margin-bottom: 1rem; text-align: left;">
-          <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Alamat Email</label>
-          <input type="email" id="email" name="email" class="form-control" placeholder="user@email.com atau admin@annida.com" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: white;">
+      <!-- Right Side: Login Form -->
+      <div class="portal-right">
+        <div class="glass-panel login-card">
+          <img src="../../1.png" alt="Logo Annida" class="login-logo">
+          <h2 class="login-title">PPDB Portal</h2>
+          <p class="login-subtitle">Silakan masuk ke portal Annida2PPDB.</p>
+          
+          <form action="#" method="POST" id="loginForm">
+            <div style="margin-bottom: 1rem; text-align: left;">
+              <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Alamat Email</label>
+              <input type="email" id="email" name="email" class="form-control" placeholder="user@email.com atau admin@annida.com" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: white;">
+            </div>
+            <div style="margin-bottom: 1.5rem; text-align: left;">
+              <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Password</label>
+              <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password Anda" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: white;">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; border-radius: 50px; margin-bottom: 1rem;">Masuk</button>
+            
+            <div class="form-footer" style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
+              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Lupa password? <a href="#" style="color: var(--accent-primary);">Klik di sini</a></p>
+              <p style="color: var(--text-secondary);">Belum punya akun? <a href="register.html" style="color: var(--accent-primary);">Daftar Sekarang</a></p>
+            </div>
+          </form>
         </div>
-        <div style="margin-bottom: 1.5rem; text-align: left;">
-          <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Password</label>
-          <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password Anda" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: white;">
-        </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; border-radius: 50px; margin-bottom: 1rem;">Masuk</button>
-        
-        <div class="form-footer" style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
-          <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Lupa password? <a href="#" style="color: var(--accent-primary);">Klik di sini</a></p>
-          <p style="color: var(--text-secondary);">Belum punya akun? <a href="register.html" style="color: var(--accent-primary);">Daftar Sekarang</a></p>
-        </div>
-      </form>
+      </div>
     </div>
   </section>
 
