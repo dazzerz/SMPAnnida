@@ -178,19 +178,27 @@
 </head>
 <body>
 <div class="login-page">
+  <!-- Sisi Kiri: Foto Gedung & Sapaan -->
   <div class="login-left">
-    <h1>Selamat Datang<br>di Portal SMP Annida</h1>
-    <p>Gerbang utama layanan akademik, PPDB, dan administrasi keuangan bagi generasi Qur'ani.</p>
+    <div class="left-content">
+      <h1>Selamat Datang<br>di Portal SMP Annida</h1>
+      <p>Gerbang utama layanan akademik, PPDB, dan administrasi keuangan bagi generasi Qur'ani.</p>
+    </div>
   </div>
+
+  <!-- Sisi Kanan: Panel Login Full Tinggi dengan Background Daun -->
   <div class="login-right">
-    <div class="glass-card">
-      <img src="1.png" alt="Logo" style="width:60px; margin-bottom:16px;">
-      <h2>SMPAnnida Portal</h2>
-      <p style="margin-bottom:24px; opacity:0.7;">Silakan masuk menggunakan akun Anda.</p>
+    <div class="login-panel-glass">
+      <img src="1.png" alt="Logo" style="width:60px; margin-bottom:16px; margin-left: auto; margin-right: auto; display: block; object-fit: contain;">
+      <h2 style="color: #ffffff; margin-bottom: 4px; text-align: center; font-size: 1.6rem; font-weight: 700;">SMPAnnida Portal</h2>
+      <p style="margin-bottom:24px; opacity:0.7; text-align: center; font-size: 0.95rem;">Silakan masuk menggunakan akun Anda.</p>
+      
+      <div id="auth-message"></div>
+
       <form>
-        <label>Email</label>
+        <label style="display: block; text-align: left; margin-bottom: 6px; margin-top: 16px; font-size: 0.9rem; color: rgba(255,255,255,0.8);">Email</label>
         <input type="email" placeholder="admin@smpannida.com">
-        <label>Password</label>
+        <label style="display: block; text-align: left; margin-bottom: 6px; margin-top: 16px; font-size: 0.9rem; color: rgba(255,255,255,0.8);">Password</label>
         <input type="password" placeholder="••••••••">
         <button type="submit" class="btn-login">Masuk</button>
         <div class="divider"><span>Atau</span></div>
