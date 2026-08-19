@@ -28,9 +28,9 @@ CREATE OR REPLACE FUNCTION get_user_role()
 RETURNS TEXT
 LANGUAGE sql
 STABLE
-AS $$$
+AS $
   SELECT role FROM user_roles WHERE user_id = auth.uid();
-$$$;
+$;
 
 ---------------------------------------------
 -- FINANCE TABLES POLICIES
