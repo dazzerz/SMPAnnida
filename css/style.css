@@ -767,3 +767,9 @@ option {
   min-height: 0;
   overflow: hidden;
 }
+
+.nav-group-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

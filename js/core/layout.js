@@ -46,9 +46,11 @@ export function injectSidebar(containerId) {
           <i class="ph ph-caret-down accordion-icon"></i>
         </div>
         <div class="nav-group-content">
-          <a href="${basePath}dashboard.html" class="nav-item">
-            <i class="ph ph-squares-four nav-icon"></i> Super Dashboard
-          </a>
+          <div class="nav-group-inner">
+            <a href="${basePath}dashboard.html" class="nav-item">
+              <i class="ph ph-squares-four nav-icon"></i> Super Dashboard
+            </a>
+          </div>
         </div>
       </div>
 
@@ -59,33 +61,35 @@ export function injectSidebar(containerId) {
           <i class="ph ph-caret-down accordion-icon"></i>
         </div>
         <div class="nav-group-content">
-          <a href="${basePath}pages/academic/dashboard.html#dashboard" class="nav-item nav-link" data-target="dashboard">
-            <i class="ph ph-chart-line-up nav-icon"></i> Dashboard
-          </a>
-          <a href="${basePath}pages/academic/dashboard.html#data-siswa" class="nav-item nav-link" data-target="data-siswa">
-            <i class="ph ph-users nav-icon"></i> Data Siswa
-          </a>
-          <a href="${basePath}pages/academic/dashboard.html#jadwal" class="nav-item nav-link" data-target="jadwal">
-            <i class="ph ph-calendar-blank nav-icon"></i> Jadwal
-          </a>
-          <a href="${basePath}pages/academic/dashboard.html#nilai" class="nav-item nav-link" data-target="nilai">
-            <i class="ph ph-exam nav-icon"></i> Nilai
-          </a>
-          <a href="${basePath}pages/academic/dashboard.html#rapor" class="nav-item nav-link" data-target="rapor">
-            <i class="ph ph-file-text nav-icon"></i> Rapor
-          </a>
-          <a href="${basePath}pages/academic/dashboard.html#absensi" class="nav-item nav-link" data-target="absensi">
-            <i class="ph ph-clipboard-text nav-icon"></i> Absensi Siswa
-          </a>
-          <a href="${basePath}pages/academic/dashboard.html#jurnal-guru" class="nav-item nav-link" data-target="jurnal-guru">
-            <i class="ph ph-notebook nav-icon"></i> Jurnal Guru
-          </a>
-          <a href="${basePath}pages/academic/dashboard.html#absensi-guru" class="nav-item nav-link" data-target="absensi-guru">
-            <i class="ph ph-chalkboard-teacher nav-icon"></i> Absensi Guru
-          </a>
-          <a href="${basePath}pages/academic/dashboard.html#data-migration" class="nav-item nav-link" data-target="data-migration">
-            <i class="ph ph-database nav-icon"></i> Data Migration
-          </a>
+          <div class="nav-group-inner">
+            <a href="${basePath}pages/academic/dashboard.html#dashboard" class="nav-item nav-link" data-target="dashboard">
+              <i class="ph ph-chart-line-up nav-icon"></i> Dashboard
+            </a>
+            <a href="${basePath}pages/academic/dashboard.html#data-siswa" class="nav-item nav-link" data-target="data-siswa">
+              <i class="ph ph-users nav-icon"></i> Data Siswa
+            </a>
+            <a href="${basePath}pages/academic/dashboard.html#jadwal" class="nav-item nav-link" data-target="jadwal">
+              <i class="ph ph-calendar-blank nav-icon"></i> Jadwal
+            </a>
+            <a href="${basePath}pages/academic/dashboard.html#nilai" class="nav-item nav-link" data-target="nilai">
+              <i class="ph ph-exam nav-icon"></i> Nilai
+            </a>
+            <a href="${basePath}pages/academic/dashboard.html#rapor" class="nav-item nav-link" data-target="rapor">
+              <i class="ph ph-file-text nav-icon"></i> Rapor
+            </a>
+            <a href="${basePath}pages/academic/dashboard.html#absensi" class="nav-item nav-link" data-target="absensi">
+              <i class="ph ph-clipboard-text nav-icon"></i> Absensi Siswa
+            </a>
+            <a href="${basePath}pages/academic/dashboard.html#jurnal-guru" class="nav-item nav-link" data-target="jurnal-guru">
+              <i class="ph ph-notebook nav-icon"></i> Jurnal Guru
+            </a>
+            <a href="${basePath}pages/academic/dashboard.html#absensi-guru" class="nav-item nav-link" data-target="absensi-guru">
+              <i class="ph ph-chalkboard-teacher nav-icon"></i> Absensi Guru
+            </a>
+            <a href="${basePath}pages/academic/dashboard.html#data-migration" class="nav-item nav-link" data-target="data-migration">
+              <i class="ph ph-database nav-icon"></i> Data Migration
+            </a>
+          </div>
         </div>
       </div>
 
@@ -96,21 +100,23 @@ export function injectSidebar(containerId) {
           <i class="ph ph-caret-down accordion-icon"></i>
         </div>
         <div class="nav-group-content">
-          <a href="${basePath}pages/finance/dashboard.html#transactions" class="nav-item" data-target="transactions">
-            <i class="ph ph-money nav-icon"></i> Transaksi Kas
-          </a>
-          <a href="${basePath}pages/finance/dashboard.html#budget" class="nav-item" data-target="budget">
-            <i class="ph ph-target nav-icon"></i> Budget Bulanan
-          </a>
-          <a href="${basePath}pages/finance/dashboard.html#rab" class="nav-item" data-target="rab">
-            <i class="ph ph-clipboard-list nav-icon"></i> RAB Kelas
-          </a>
-          <a href="${basePath}pages/finance/dashboard.html#reports" class="nav-item" data-target="reports">
-            <i class="ph ph-chart-pie-slice nav-icon"></i> Laporan
-          </a>
-          <a href="${basePath}pages/finance/dashboard.html#syahriah" class="nav-item" data-target="syahriah">
-            <i class="ph ph-wallet nav-icon"></i> Syahriah Guru
-          </a>
+          <div class="nav-group-inner">
+            <a href="${basePath}pages/finance/dashboard.html#transactions" class="nav-item" data-target="transactions">
+              <i class="ph ph-money nav-icon"></i> Transaksi Kas
+            </a>
+            <a href="${basePath}pages/finance/dashboard.html#budget" class="nav-item" data-target="budget">
+              <i class="ph ph-target nav-icon"></i> Budget Bulanan
+            </a>
+            <a href="${basePath}pages/finance/dashboard.html#rab" class="nav-item" data-target="rab">
+              <i class="ph ph-clipboard-list nav-icon"></i> RAB Kelas
+            </a>
+            <a href="${basePath}pages/finance/dashboard.html#reports" class="nav-item" data-target="reports">
+              <i class="ph ph-chart-pie-slice nav-icon"></i> Laporan
+            </a>
+            <a href="${basePath}pages/finance/dashboard.html#syahriah" class="nav-item" data-target="syahriah">
+              <i class="ph ph-wallet nav-icon"></i> Syahriah Guru
+            </a>
+          </div>
         </div>
       </div>
 
@@ -121,9 +127,11 @@ export function injectSidebar(containerId) {
           <i class="ph ph-caret-down accordion-icon"></i>
         </div>
         <div class="nav-group-content">
-          <a href="${basePath}pages/ppdb/index.html" class="nav-item">
-            <i class="ph ph-user-plus nav-icon"></i> Pendaftar Baru
-          </a>
+          <div class="nav-group-inner">
+            <a href="${basePath}pages/ppdb/index.html" class="nav-item">
+              <i class="ph ph-user-plus nav-icon"></i> Pendaftar Baru
+            </a>
+          </div>
         </div>
       </div>
 
@@ -134,9 +142,11 @@ export function injectSidebar(containerId) {
           <i class="ph ph-caret-down accordion-icon"></i>
         </div>
         <div class="nav-group-content">
-          <a href="${basePath}pages/finance/dashboard.html#settings" class="nav-item" data-target="settings">
-            <i class="ph ph-gear nav-icon"></i> Pengaturan
-          </a>
+          <div class="nav-group-inner">
+            <a href="${basePath}pages/finance/dashboard.html#settings" class="nav-item" data-target="settings">
+              <i class="ph ph-gear nav-icon"></i> Pengaturan
+            </a>
+          </div>
         </div>
       </div>
     </nav>
