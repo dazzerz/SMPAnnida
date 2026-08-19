@@ -5,108 +5,165 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - SMP Annida</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-    body { overflow: hidden; background: #000; }
-    
-    .split-layout {
-      display: flex;
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+
+    /* 1. CONTAINER UTAMA (Background Gedung) */
+    .hero-container {
+      position: relative;
+      width: 100vw; 
       height: 100vh;
-      width: 100vw;
+      /* GANTI DENGAN FOTO GEDUNG */
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 40%), url('assets/images/gedung_sekolah.jpg') center center / cover no-repeat;
+      display: flex;
+      align-items: flex-end; /* Bawa teks ke bawah */
+      overflow: hidden;
     }
 
-    /* === KOLOM KIRI: FOTO GEDUNG SAJA === */
-    .left-panel {
-      flex: 1; /* Mengambil sisa ruang layar */
-      /* Ganti nama file gedung di bawah ini */
-      background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 100%), 
-                  url('assets/images/gedung_sekolah.jpg') center center / cover no-repeat;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 5rem;
+    /* 2. TEKS KIRI BAWAH */
+    .hero-text {
+      width: 50%;
+      padding: 4rem 5rem;
       color: white;
+      z-index: 2;
     }
+    .hero-text h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 1rem; text-shadow: 0 4px 20px rgba(0,0,0,0.8); }
+    .hero-text p { font-size: 1.2rem; opacity: 0.9; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
 
-    .left-panel h1 { font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
-    .left-panel p { font-size: 1.2rem; max-width: 500px; line-height: 1.6; opacity: 0.9; }
-
-    /* === KOLOM KANAN: BACKGROUND DAUN + KACA === */
-    .right-panel {
-      width: 450px; /* Lebar panel form tetap */
-      /* Ganti nama file dedaunan di bawah ini */
-      background: url('assets/images/bg-utama.jpeg') center center / cover no-repeat;
-    }
-
-    /* Efek Kaca Full dari atas ke bawah */
-    .glass-overlay {
-      width: 100%;
-      height: 100%;
+    /* 3. PANEL KANAN MELENGKUNG (Daun) */
+    .curved-panel {
+      position: absolute;
+      right: 0; top: 0;
+      width: 45vw; /* Lebar panel kanan */
+      height: 100vh;
+      /* GANTI DENGAN FOTO DAUN */
+      background: url('assets/images/bg-utama.jpeg') center / cover no-repeat;
+      
+      /* RAHASIA LEKUKAN ORGANIK */
+      border-top-left-radius: 20% 50%;
+      border-bottom-left-radius: 20% 50%;
+      box-shadow: -15px 0 40px rgba(0,0,0,0.6); /* Bayangan memisah panel */
+      
       display: flex;
-      flex-direction: column;
       justify-content: center;
+      align-items: center;
       padding: 3rem;
-      background: rgba(10, 26, 15, 0.6); /* Hijau gelap transparan */
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
+    }
+
+    /* 4. KARTU LOGIN (Neon Glassmorphism) */
+    .glass-login {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(15, 20, 15, 0.65); /* Sangat gelap */
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
       color: white;
     }
 
-    /* Styling Form Login (Sederhana & Elegan) */
-    .text-center { text-align: center; margin-bottom: 2rem; }
-    .text-center img { width: 60px; margin-bottom: 1rem; }
-    
-    .form-group { margin-bottom: 1.5rem; }
-    .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; opacity: 0.8; }
-    .form-group input {
-      width: 100%; padding: 12px 15px; border-radius: 8px;
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-      color: white; outline: none;
+    /* 5. EFEK GLOWING INPUT & TOMBOL */
+    .glass-login input {
+      width: 100%; padding: 14px; margin-bottom: 1.5rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px; color: white; outline: none;
+      transition: all 0.3s ease;
     }
-    .form-group input:focus { border-color: #00c853; }
-    
-    .btn-submit {
-      width: 100%; padding: 14px; border-radius: 8px; font-weight: bold;
-      background: #00c853; color: white; border: none; cursor: pointer; margin-bottom: 1rem;
-      transition: background-color 0.2s;
+    .glass-login input:focus {
+      border-color: #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.5); /* Glowing Neon Hijau */
     }
-    .btn-submit:hover { background: #009624; }
-    .btn-guest {
-      width: 100%; padding: 14px; border-radius: 8px; font-weight: bold;
-      background: transparent; color: #00c853; border: 1px solid #00c853; cursor: pointer;
-      transition: background-color 0.2s;
+
+    .glass-login button {
+      width: 100%; padding: 14px;
+      background: #16a34a; color: white;
+      border: none; border-radius: 50px; font-weight: bold; font-size: 1.1rem;
+      box-shadow: 0 0 20px rgba(22, 163, 74, 0.5); /* Glowing Tombol */
+      cursor: pointer; transition: 0.3s;
     }
-    .btn-guest:hover { background: rgba(0, 200, 83, 0.1); }
+    .glass-login button:hover {
+      background: #15803d;
+      box-shadow: 0 0 25px rgba(22, 163, 74, 0.8);
+    }
+
+    /* Secondary Action Button styling (Outline style) */
+    .glass-login button.btn-guest {
+      background: transparent !important;
+      color: #22c55e !important;
+      border: 1px solid #22c55e !important;
+      box-shadow: none !important;
+      margin-top: 0;
+    }
+    .glass-login button.btn-guest:hover {
+      background: rgba(34, 197, 94, 0.1) !important;
+      box-shadow: none !important;
+    }
+
+    /* Logo and Header text alignment */
+    .login-header {
+       display: flex;
+       align-items: center;
+       gap: 15px; /* Jarak proporsional antara logo dan teks */
+       margin-bottom: 2rem;
+    }
+    .login-header img {
+       width: 45px; /* Ukuran logo disesuaikan */
+       height: auto;
+       object-fit: contain;
+    }
+    .login-header h2 {
+       font-size: 1.6rem;
+       font-weight: 700;
+       color: #ffffff;
+    }
 
     /* Responsive adjustments */
-    @media (max-width: 900px) {
-      .split-layout {
-        flex-direction: column;
+    @media (max-width: 1024px) {
+      .curved-panel {
+        width: 50vw;
       }
-      .left-panel {
-        flex: auto;
-        width: 100% !important;
+      .hero-text {
+        width: 50%;
+        padding: 3rem;
+      }
+      .hero-text h1 {
+        font-size: 2.8rem;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero-container {
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+      .hero-text {
+        width: 100%;
         height: 35vh;
         padding: 2rem 1.5rem;
-        align-items: center;
+        display: flex;
+        flex-direction: column;
         justify-content: center;
         text-align: center;
       }
-      .left-panel h1 {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
+      .hero-text h1 {
+        font-size: 2.2rem;
       }
-      .left-panel p {
-        font-size: 0.95rem;
-        max-width: 100%;
+      .hero-text p {
+        font-size: 1rem;
       }
-      .right-panel {
-        flex: auto;
+      .curved-panel {
+        position: relative;
         width: 100% !important;
         height: 65vh;
-        min-width: 100%;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        box-shadow: 0 -15px 40px rgba(0,0,0,0.6);
+        padding: 1.5rem !important;
       }
-      .glass-overlay {
-        padding: 2rem 1.5rem;
+      .glass-login {
+        padding: 30px 20px;
+        max-width: 380px;
       }
     }
   </style>
@@ -132,35 +189,38 @@
 </head>
 <body>
 
-  <div class="split-layout">
+  <div class="hero-container">
     
-    <!-- KOLOM KIRI -->
-    <div class="left-panel">
-      <h1>Selamat Datang<br>di Portal SMP Annida</h1>
-      <p>Gerbang utama layanan akademik, PPDB, dan administrasi keuangan bagi generasi Qur'ani.</p>
+    <!-- LEFT TEXT -->
+    <div class="hero-text">
+      <h1>Selamat Datang di<br>Portal SMP Annida</h1>
+      <p>Akses terpadu untuk layanan akademik dan<br>administrasi sekolah.</p>
     </div>
 
-    <!-- KOLOM KANAN -->
-    <div class="right-panel">
-      <div class="glass-overlay">
+    <!-- CURVED PANEL RIGHT -->
+    <div class="curved-panel">
+      <div class="glass-login">
         
-        <div class="text-center">
-          <img src="assets/logo/1.png" alt="Logo Annida">
-          <h2>SMPAnnida Portal</h2>
-          <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Silakan masuk menggunakan akun Anda.</p>
+        <div class="login-header">
+           <img src="assets/logo/1.png" alt="Logo Annida">
+           <h2>SMPAnnida Portal</h2>
         </div>
+        
+        <p style="font-size: 0.85rem; opacity: 0.7; margin-bottom: 2rem; margin-top: -1rem; text-align: left;">Silakan masuk menggunakan akun Anda.</p>
+        
+        <div id="auth-message"></div>
 
         <form>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" placeholder="admin@smpannida.com">
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" placeholder="••••••••">
-          </div>
-          <button type="button" class="btn-submit">Masuk</button>
-          <div style="text-align: center; margin: 10px 0; opacity: 0.5; font-size: 0.8rem;">Atau</div>
+          <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; opacity: 0.8; text-align: left;">Email</label>
+          <input type="email" placeholder="admin@smpannida.com">
+          
+          <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; opacity: 0.8; text-align: left;">Password</label>
+          <input type="password" placeholder="••••••••">
+          
+          <button type="button" class="btn-submit" style="margin-bottom: 1rem;">Masuk</button>
+          
+          <div style="text-align: center; margin: 15px 0; opacity: 0.5; font-size: 0.85rem;">Atau</div>
+          
           <button type="button" class="btn-guest">Masuk Tanpa Login (Guest)</button>
         </form>
 
