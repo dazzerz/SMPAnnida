@@ -27,6 +27,7 @@ export function injectSidebar(containerId) {
         <div class="sidebar-logo-icon"><i class="ph ph-graduation-cap"></i></div>
         <div class="sidebar-brand">SMPAnnida</div>
       </div>
+      <button class="sidebar-mini-toggle" id="sidebar-mini-toggle" aria-label="Toggle Sidebar"><i class="ph ph-caret-left"></i></button>
       <button class="sidebar-close-btn" id="sidebar-close-btn" aria-label="Tutup menu">✕</button>
     </div>
 
@@ -47,8 +48,8 @@ export function injectSidebar(containerId) {
         </div>
         <div class="nav-group-content">
           <div class="nav-group-inner">
-            <a href="${basePath}dashboard.html" class="nav-item">
-              <i class="ph ph-squares-four nav-icon"></i> Super Dashboard
+            <a href="${basePath}dashboard.html" class="nav-item" data-tooltip="Super Dashboard">
+              <i class="ph ph-squares-four nav-icon"></i> <span class="nav-text">Super Dashboard</span>
             </a>
           </div>
         </div>
@@ -62,32 +63,32 @@ export function injectSidebar(containerId) {
         </div>
         <div class="nav-group-content">
           <div class="nav-group-inner">
-            <a href="${basePath}pages/academic/dashboard.html#dashboard" class="nav-item nav-link" data-target="dashboard">
-              <i class="ph ph-chart-line-up nav-icon"></i> Dashboard
+            <a href="${basePath}pages/academic/dashboard.html#dashboard" class="nav-item nav-link" data-target="dashboard" data-tooltip="Dashboard">
+              <i class="ph ph-chart-line-up nav-icon"></i> <span class="nav-text">Dashboard</span>
             </a>
-            <a href="${basePath}pages/academic/dashboard.html#data-siswa" class="nav-item nav-link" data-target="data-siswa">
-              <i class="ph ph-users nav-icon"></i> Data Siswa
+            <a href="${basePath}pages/academic/dashboard.html#data-siswa" class="nav-item nav-link" data-target="data-siswa" data-tooltip="Data Siswa">
+              <i class="ph ph-users nav-icon"></i> <span class="nav-text">Data Siswa</span>
             </a>
-            <a href="${basePath}pages/academic/dashboard.html#jadwal" class="nav-item nav-link" data-target="jadwal">
-              <i class="ph ph-calendar-blank nav-icon"></i> Jadwal
+            <a href="${basePath}pages/academic/dashboard.html#jadwal" class="nav-item nav-link" data-target="jadwal" data-tooltip="Jadwal">
+              <i class="ph ph-calendar-blank nav-icon"></i> <span class="nav-text">Jadwal</span>
             </a>
-            <a href="${basePath}pages/academic/dashboard.html#nilai" class="nav-item nav-link" data-target="nilai">
-              <i class="ph ph-exam nav-icon"></i> Nilai
+            <a href="${basePath}pages/academic/dashboard.html#nilai" class="nav-item nav-link" data-target="nilai" data-tooltip="Nilai">
+              <i class="ph ph-exam nav-icon"></i> <span class="nav-text">Nilai</span>
             </a>
-            <a href="${basePath}pages/academic/dashboard.html#rapor" class="nav-item nav-link" data-target="rapor">
-              <i class="ph ph-file-text nav-icon"></i> Rapor
+            <a href="${basePath}pages/academic/dashboard.html#rapor" class="nav-item nav-link" data-target="rapor" data-tooltip="Rapor">
+              <i class="ph ph-file-text nav-icon"></i> <span class="nav-text">Rapor</span>
             </a>
-            <a href="${basePath}pages/academic/dashboard.html#absensi" class="nav-item nav-link" data-target="absensi">
-              <i class="ph ph-clipboard-text nav-icon"></i> Absensi Siswa
+            <a href="${basePath}pages/academic/dashboard.html#absensi" class="nav-item nav-link" data-target="absensi" data-tooltip="Absensi Siswa">
+              <i class="ph ph-clipboard-text nav-icon"></i> <span class="nav-text">Absensi Siswa</span>
             </a>
-            <a href="${basePath}pages/academic/dashboard.html#jurnal-guru" class="nav-item nav-link" data-target="jurnal-guru">
-              <i class="ph ph-notebook nav-icon"></i> Jurnal Guru
+            <a href="${basePath}pages/academic/dashboard.html#jurnal-guru" class="nav-item nav-link" data-target="jurnal-guru" data-tooltip="Jurnal Guru">
+              <i class="ph ph-notebook nav-icon"></i> <span class="nav-text">Jurnal Guru</span>
             </a>
-            <a href="${basePath}pages/academic/dashboard.html#absensi-guru" class="nav-item nav-link" data-target="absensi-guru">
-              <i class="ph ph-chalkboard-teacher nav-icon"></i> Absensi Guru
+            <a href="${basePath}pages/academic/dashboard.html#absensi-guru" class="nav-item nav-link" data-target="absensi-guru" data-tooltip="Absensi Guru">
+              <i class="ph ph-chalkboard-teacher nav-icon"></i> <span class="nav-text">Absensi Guru</span>
             </a>
-            <a href="${basePath}pages/academic/dashboard.html#data-migration" class="nav-item nav-link" data-target="data-migration">
-              <i class="ph ph-database nav-icon"></i> Data Migration
+            <a href="${basePath}pages/academic/dashboard.html#data-migration" class="nav-item nav-link" data-target="data-migration" data-tooltip="Data Migration">
+              <i class="ph ph-database nav-icon"></i> <span class="nav-text">Data Migration</span>
             </a>
           </div>
         </div>
@@ -101,20 +102,20 @@ export function injectSidebar(containerId) {
         </div>
         <div class="nav-group-content">
           <div class="nav-group-inner">
-            <a href="${basePath}pages/finance/dashboard.html#transactions" class="nav-item" data-target="transactions">
-              <i class="ph ph-money nav-icon"></i> Transaksi Kas
+            <a href="${basePath}pages/finance/dashboard.html#transactions" class="nav-item" data-target="transactions" data-tooltip="Transaksi Kas">
+              <i class="ph ph-money nav-icon"></i> <span class="nav-text">Transaksi Kas</span>
             </a>
-            <a href="${basePath}pages/finance/dashboard.html#budget" class="nav-item" data-target="budget">
-              <i class="ph ph-target nav-icon"></i> Budget Bulanan
+            <a href="${basePath}pages/finance/dashboard.html#budget" class="nav-item" data-target="budget" data-tooltip="Budget Bulanan">
+              <i class="ph ph-target nav-icon"></i> <span class="nav-text">Budget Bulanan</span>
             </a>
-            <a href="${basePath}pages/finance/dashboard.html#rab" class="nav-item" data-target="rab">
-              <i class="ph ph-clipboard-list nav-icon"></i> RAB Kelas
+            <a href="${basePath}pages/finance/dashboard.html#rab" class="nav-item" data-target="rab" data-tooltip="RAB Kelas">
+              <i class="ph ph-clipboard-list nav-icon"></i> <span class="nav-text">RAB Kelas</span>
             </a>
-            <a href="${basePath}pages/finance/dashboard.html#reports" class="nav-item" data-target="reports">
-              <i class="ph ph-chart-pie-slice nav-icon"></i> Laporan
+            <a href="${basePath}pages/finance/dashboard.html#reports" class="nav-item" data-target="reports" data-tooltip="Laporan">
+              <i class="ph ph-chart-pie-slice nav-icon"></i> <span class="nav-text">Laporan</span>
             </a>
-            <a href="${basePath}pages/finance/dashboard.html#syahriah" class="nav-item" data-target="syahriah">
-              <i class="ph ph-wallet nav-icon"></i> Syahriah Guru
+            <a href="${basePath}pages/finance/dashboard.html#syahriah" class="nav-item" data-target="syahriah" data-tooltip="Syahriah Guru">
+              <i class="ph ph-wallet nav-icon"></i> <span class="nav-text">Syahriah Guru</span>
             </a>
           </div>
         </div>
@@ -128,8 +129,8 @@ export function injectSidebar(containerId) {
         </div>
         <div class="nav-group-content">
           <div class="nav-group-inner">
-            <a href="${basePath}pages/ppdb/index.html" class="nav-item">
-              <i class="ph ph-user-plus nav-icon"></i> Pendaftar Baru
+            <a href="${basePath}pages/ppdb/index.html" class="nav-item" data-tooltip="Pendaftar Baru">
+              <i class="ph ph-user-plus nav-icon"></i> <span class="nav-text">Pendaftar Baru</span>
             </a>
           </div>
         </div>
@@ -143,8 +144,8 @@ export function injectSidebar(containerId) {
         </div>
         <div class="nav-group-content">
           <div class="nav-group-inner">
-            <a href="${basePath}pages/finance/dashboard.html#settings" class="nav-item" data-target="settings">
-              <i class="ph ph-gear nav-icon"></i> Pengaturan
+            <a href="${basePath}pages/finance/dashboard.html#settings" class="nav-item" data-target="settings" data-tooltip="Pengaturan">
+              <i class="ph ph-gear nav-icon"></i> <span class="nav-text">Pengaturan</span>
             </a>
           </div>
         </div>
@@ -160,7 +161,7 @@ export function injectSidebar(containerId) {
           </div>
         </div>
         <button class="sidebar-logout-btn" id="logout-btn">
-          <i class="ph ph-sign-out"></i> Keluar
+          <i class="ph ph-sign-out"></i> <span class="logout-text">Keluar</span>
         </button>
       </div>
     `;
@@ -344,6 +345,42 @@ export function injectSidebar(containerId) {
     // Expose closeSidebar globally for other scripts
     window._closeSidebar = closeSidebar;
     window._openSidebar = openSidebar;
+
+    // Mini Sidebar Toggle Logic
+    const toggleBtn = document.getElementById('sidebar-mini-toggle');
+    const toggleIcon = toggleBtn ? toggleBtn.querySelector('i') : null;
+    
+    function applySidebarState(isCollapsed) {
+        if (window.innerWidth <= 768) return; // Ignore on mobile
+        if (isCollapsed) {
+            container.classList.add('collapsed');
+            if (toggleIcon) {
+                toggleIcon.classList.remove('ph-caret-left');
+                toggleIcon.classList.add('ph-caret-right');
+            }
+        } else {
+            container.classList.remove('collapsed');
+            if (toggleIcon) {
+                toggleIcon.classList.remove('ph-caret-right');
+                toggleIcon.classList.add('ph-caret-left');
+            }
+        }
+    }
+
+    // Read initial state
+    const savedState = localStorage.getItem('smpannida-sidebar-state');
+    // Default to collapsed as requested
+    const isInitiallyCollapsed = savedState === null ? true : savedState === 'collapsed';
+    applySidebarState(isInitiallyCollapsed);
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            const willCollapse = !container.classList.contains('collapsed');
+            localStorage.setItem('smpannida-sidebar-state', willCollapse ? 'collapsed' : 'expanded');
+            applySidebarState(willCollapse);
+        });
+    }
+
 }
 
 export function injectTopbar(containerId, options = {}) {
