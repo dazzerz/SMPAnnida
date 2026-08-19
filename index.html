@@ -64,40 +64,54 @@
     .auth-message.success { background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.5); color: #86efac; }
   
     /* =========================================================================
-       HERO ANNIDA PORTAL OVERHAUL
+       HERO ANNIDA PORTAL OVERHAUL (3D NESTORA PARALLAX STYLE)
        ========================================================================= */
     .hero-annida {
       height: 100vh;
       width: 100%;
       position: relative;
       overflow: hidden;
-      background-image: 
-        linear-gradient(to top, rgba(10, 18, 14, 0.95) 0%, rgba(10, 18, 14, 0.4) 40%, rgba(10, 18, 14, 0) 80%),
-        url('assets/images/gedung_sekolah.jpg');
-      background-size: cover;
-      background-position: center bottom;
-      background-repeat: no-repeat;
+      /* Premium Dark Slate Blue Gradient Sky */
+      background: linear-gradient(180deg, #1b263b 0%, #0d1b2a 100%);
     }
 
-    /* Giant Title in Sky */
+    /* Giant Title in Sky (Middle/Top Layer 2) */
     .hero-title-annida {
       position: absolute;
-      top: 8vh;
+      top: 15%;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 8vw;
+      font-size: 11vw;
       font-weight: 900;
-      letter-spacing: 1.5rem;
-      color: rgba(255, 255, 255, 0.18);
+      letter-spacing: 2rem;
+      color: rgba(255, 255, 255, 0.12);
       text-transform: uppercase;
       user-select: none;
       pointer-events: none;
       text-align: center;
       width: 100%;
-      padding-left: 1.5rem; /* Offset letter-spacing at the end */
+      padding-left: 2rem; /* Offset letter-spacing */
+      z-index: 2;
     }
 
-    /* Floating Tooltips */
+    /* 3D Transparent Building (Layer 3) */
+    .building-3d {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      max-height: 72vh;
+      max-width: 78%;
+      width: auto;
+      height: auto;
+      display: block;
+      pointer-events: none;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.65));
+    }
+
+    /* Floating Tooltips (Layer 4) */
     .annida-tooltip {
       position: absolute;
       background: rgba(255, 255, 255, 0.12);
@@ -115,7 +129,7 @@
       gap: 8px;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: default;
-      z-index: 5;
+      z-index: 4; /* Floats in front of the building */
     }
     .annida-tooltip:hover {
       transform: translateY(-5px) scale(1.05);
@@ -128,23 +142,27 @@
       font-size: 1.1rem;
     }
 
-    /* Portal Login Card Container */
+    /* Portal Login Card Container (Layer 10) */
     .hero-annida .login-card {
       position: absolute;
-      right: 5vw;
-      bottom: 8vh;
+      right: 4vw;
+      bottom: 6vh;
       width: 100%;
-      max-width: 420px;
-      background: rgba(10, 18, 14, 0.7) !important;
-      backdrop-filter: blur(20px) !important;
-      -webkit-backdrop-filter: blur(20px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      max-width: 380px; /* Slimmer and more elegant */
+      background: rgba(15, 23, 42, 0.55) !important;
+      backdrop-filter: blur(25px) !important;
+      -webkit-backdrop-filter: blur(25px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
       border-radius: 24px !important;
-      padding: 2.5rem !important;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+      padding: 2.2rem !important;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
       margin: 0;
       z-index: 10;
       transition: transform 0.3s ease;
+    }
+
+    .hero-annida .login-title {
+      font-size: 1.6rem;
     }
 
     /* Responsive adjustments */
@@ -161,15 +179,19 @@
         letter-spacing: 0.8rem;
         top: 12vh;
       }
+      .building-3d {
+        max-height: 55vh;
+        max-width: 95%;
+      }
       .annida-tooltip {
-        display: none !important; /* Hide tooltips on mobile to avoid clutter */
+        display: none !important; /* Hide tooltips on mobile */
       }
       .hero-annida .login-card {
         right: 50% !important;
-        bottom: 5vh !important;
+        bottom: 4vh !important;
         transform: translateX(50%);
         width: 90% !important;
-        max-width: 400px;
+        max-width: 380px;
         padding: 2rem !important;
       }
     }
@@ -179,28 +201,31 @@
 </head>
 <body>
   <section class="hero-annida">
-    <!-- Giant Title in Sky -->
+    <!-- Giant Title in Sky (Layer 2) -->
     <div class="hero-title-annida">ANNIDA</div>
 
-    <!-- Floating Glassmorphism Tooltips -->
-    <div class="annida-tooltip" style="top: 35%; left: 12%;">
+    <!-- 3D Transparent Building (Layer 3) -->
+    <img src="assets/images/gedung_3d.png" alt="Gedung SMP Annida" class="building-3d">
+
+    <!-- Floating Glassmorphism Tooltips (Layer 4) -->
+    <div class="annida-tooltip" style="top: 42%; left: 16%;">
       <i class="ph ph-mosque"></i>
       <span>Program Tahfidz 🕋</span>
     </div>
-    <div class="annida-tooltip" style="top: 48%; left: 25%;">
+    <div class="annida-tooltip" style="top: 58%; left: 26%;">
       <i class="ph ph-tree"></i>
       <span>Sekolah Alam 🌳</span>
     </div>
-    <div class="annida-tooltip" style="top: 25%; left: 52%;">
+    <div class="annida-tooltip" style="top: 32%; left: 56%;">
       <i class="ph ph-projector-screen"></i>
       <span>Fasilitas Modern 🏫</span>
     </div>
-    <div class="annida-tooltip" style="top: 55%; left: 45%;">
+    <div class="annida-tooltip" style="top: 65%; left: 48%;">
       <i class="ph ph-book-open"></i>
       <span>Kurikulum Merdeka 📚</span>
     </div>
 
-    <!-- Portal Login Card (Bottom Right) -->
+    <!-- Portal Login Card (Bottom Right - Layer 10) -->
     <div class="glass-panel login-card">
       <img src="1.png" alt="Logo Annida" class="login-logo">
       <h1 class="login-title">SMPAnnida Portal</h1>
