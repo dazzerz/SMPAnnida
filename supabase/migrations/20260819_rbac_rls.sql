@@ -1,4 +1,4 @@
-﻿-- Enable RLS on all relevant tables
+-- Enable RLS on all relevant tables
 ALTER TABLE IF EXISTS transactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS budgets ENABLE ROW LEVEL SECURITY;
@@ -28,9 +28,9 @@ CREATE OR REPLACE FUNCTION get_user_role()
 RETURNS TEXT
 LANGUAGE sql
 STABLE
-AS $
+AS 
   SELECT role FROM user_roles WHERE user_id = auth.uid();
-$;
+;
 
 ---------------------------------------------
 -- FINANCE TABLES POLICIES
