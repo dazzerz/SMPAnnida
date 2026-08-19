@@ -5,15 +5,43 @@ import supabaseClient from './supabase.js';
 import { showToast, setupThemeToggle, applySavedTheme } from './utils.js';
 
 function showAuthMessage(message, type) {
-  const el = document.getElementById('auth-message');
-  if (!el) return;
+  let el = document.getElementById('auth-message');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'auth-message';
+    el.style.padding = '0.75rem';
+    el.style.borderRadius = '8px';
+    el.style.marginBottom = '1rem';
+    el.style.fontSize = '0.9rem';
+    el.style.display = 'none';
+    const form = document.querySelector('form');
+    if (form) {
+      form.parentNode.insertBefore(el, form);
+    } else {
+      return;
+    }
+  }
   el.textContent = message;
   el.className = `auth-message ${type} show`;
-  setTimeout(() => el.classList.remove('show'), 5000);
+  // Add inline styles for success/error dynamically if styles are missing
+  if (type === 'error') {
+    el.style.background = 'rgba(239, 68, 68, 0.2)';
+    el.style.border = '1px solid rgba(239, 68, 68, 0.5)';
+    el.style.color = '#fca5a5';
+  } else if (type === 'success') {
+    el.style.background = 'rgba(34, 197, 94, 0.2)';
+    el.style.border = '1px solid rgba(34, 197, 94, 0.5)';
+    el.style.color = '#86efac';
+  }
+  el.style.display = 'block';
+  setTimeout(() => {
+    el.classList.remove('show');
+    el.style.display = 'none';
+  }, 5000);
 }
 
 function setLoading(btnId, isLoading) {
-  const btn = document.getElementById(btnId);
+  const btn = document.getElementById(btnId) || document.querySelector('.btn-login') || document.querySelector('button[type="submit"]');
   if (!btn) return;
   btn.classList.toggle('loading', isLoading);
   btn.disabled = isLoading;
@@ -22,8 +50,10 @@ function setLoading(btnId, isLoading) {
 // ── LOGIN ─────────────────────────────────────────
 export async function handleLogin(e) {
   e.preventDefault();
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
+  const emailInput = document.getElementById('login-email') || document.querySelector('input[type="email"]');
+  const passwordInput = document.getElementById('login-password') || document.querySelector('input[type="password"]');
+  const email = emailInput ? emailInput.value.trim() : '';
+  const password = passwordInput ? passwordInput.value : '';
   if (!email || !password) {
     showAuthMessage('Mohon isi email dan password.', 'error');
     return;

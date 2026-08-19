@@ -6,129 +6,176 @@
   <title>Login - Annida2PPDB</title>
   <link rel="stylesheet" href="../../css/style.css">
   <style>
-    /* =========================================================================
-       CLEAN 2-COLUMN GLASSMORPHISM PORTAL LAYOUT (USER REQUIREMENT)
-       ========================================================================= */
-    .auth-wrapper {
-        display: flex;
-        height: 100vh;
-        width: 100%;
-        /* Gabungan foto asli dan gradient gelap di sisi kanan agar form terbaca */
-        background: linear-gradient(to right, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%), url('../../assets/images/gedung_sekolah.jpg') center bottom / cover no-repeat;
+    .login-page {
+      display: flex;
+      height: 100vh;
+      width: 100%;
+      background: 
+        linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.75) 100%),
+        url('../../assets/images/gedung_sekolah.jpg') center bottom / cover no-repeat;
     }
 
-    .auth-left {
-        flex: 1; /* Mengambil sisa ruang di kiri */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 10%;
-        color: #ffffff;
+    .login-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8%;
     }
 
-    .auth-left h1 {
-        font-size: 3rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    .login-left h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 15px rgba(0,0,0,0.5);
     }
 
-    .auth-right {
-        width: 450px; /* Lebar area kanan tetap */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem 4rem 2rem 0; /* Memberi jarak dari tepi kanan layar */
+    .login-left p {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.8);
+      max-width: 400px;
     }
 
-    .glass-login-card {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.05); /* Kaca tipis */
-        backdrop-filter: blur(20px); /* Efek blur kaca MURNI */
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        color: white;
+    .login-right {
+      width: 480px;
+      min-width: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
     }
 
-    /* Hilangkan background abu-abu/hitam kusam dari input form! */
-    .glass-login-card input {
-        background: rgba(255,255,255,0.1) !important;
-        border: 1px solid rgba(255,255,255,0.3) !important;
-        color: white !important;
-        width: 100%;
-        padding: 0.8rem 1rem;
-        border-radius: 8px;
-        font-size: 1rem;
+    .glass-card {
+      width: 100%;
+      padding: 40px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      text-align: center;
+      color: #ffffff;
     }
-    .glass-login-card input::placeholder {
-        color: rgba(255,255,255,0.6) !important;
+
+    .glass-card h2 {
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .glass-card label {
+      display: block;
+      text-align: left;
+      margin-bottom: 6px;
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .glass-card input {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      color: #ffffff;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .glass-card input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+
+    .glass-card input:focus {
+      border-color: #00c853;
+      box-shadow: 0 0 0 3px rgba(0,200,83,0.2);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      margin-top: 24px;
+      background: #00c853;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .divider {
+      margin: 20px 0;
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.85rem;
+    }
+
+    .btn-guest {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      color: #00c853;
+      border: 1px solid #00c853;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      cursor: pointer;
     }
 
     /* Responsive adjustments */
     @media (max-width: 900px) {
-      .auth-wrapper {
+      .login-page {
         flex-direction: column;
         background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.85)), url('../../assets/images/gedung_sekolah.jpg') center bottom / cover no-repeat;
       }
-      .auth-left {
+      .login-left {
         text-align: center;
         padding: 3rem 1.5rem 1.5rem;
       }
-      .auth-left h1 {
+      .login-left h1 {
         font-size: 2.2rem;
       }
-      .auth-right {
+      .login-right {
         width: 100% !important;
         padding: 0 2rem 3rem !important;
       }
-      .glass-login-card {
+      .glass-card {
         max-width: 380px;
       }
     }
   </style>
   <link rel="stylesheet" href="../../css/mobile.css" />
-</head>
-<body>
-  <div class="auth-wrapper">
-     <div class="auth-left">
-        <h1>Selamat Datang di Portal PPDB SMP Annida</h1>
-        <p>Silakan masuk menggunakan akun pendaftaran Anda untuk melanjutkan registrasi calon siswa baru SMP Annida.</p>
-     </div>
-     <div class="auth-right">
-        <div class="glass-login-card">
-           <img src="../../1.png" alt="Logo Annida" style="height: 70px; width: auto; margin-bottom: 1.5rem; display: block; margin-left: auto; margin-right: auto; object-fit: contain;">
-           <h2 style="font-size: 1.6rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem; text-align: center;">PPDB Portal</h2>
-           <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 2rem; text-align: center; font-size: 0.95rem;">Silakan masuk ke portal Annida2PPDB.</p>
-           
-           <form action="#" method="POST" id="loginForm">
-             <div style="margin-bottom: 1.2rem; text-align: left;">
-               <label style="display: block; margin-bottom: 0.5rem; color: #ffffff; font-weight: 500;">Alamat Email</label>
-               <input type="email" id="email" name="email" required placeholder="user@email.com atau admin@annida.com">
-             </div>
-             <div style="margin-bottom: 1.5rem; text-align: left;">
-               <label style="display: block; margin-bottom: 0.5rem; color: #ffffff; font-weight: 500;">Password</label>
-               <input type="password" id="password" name="password" required placeholder="Masukkan password Anda">
-             </div>
-             <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1.05rem; border-radius: 8px; margin-bottom: 1rem; background-color: #00c853; color: white; border: none; font-weight: 600; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#009624'" onmouseout="this.style.backgroundColor='#00c853'">
-               Masuk
-             </button>
-             
-             <div class="form-footer" style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
-               <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem;">Lupa password? <a href="#" style="color: #00c853; font-weight: 500;">Klik di sini</a></p>
-               <p style="color: rgba(255, 255, 255, 0.7);">Belum punya akun? <a href="register.html" style="color: #00c853; font-weight: 500;">Daftar Sekarang</a></p>
-             </div>
-           </form>
-        </div>
-     </div>
-  </div>
-
   <script type="module">
     import { setupThemeToggle, applySavedTheme } from '../../js/core/utils.js';
     applySavedTheme();
     setupThemeToggle();
   </script>
+</head>
+<body>
+<div class="login-page">
+  <div class="login-left">
+    <h1>Selamat Datang<br>di Portal PPDB SMP Annida</h1>
+    <p>Silakan masuk menggunakan akun pendaftaran Anda untuk melanjutkan registrasi calon siswa baru SMP Annida.</p>
+  </div>
+  <div class="login-right">
+    <div class="glass-card">
+      <img src="../../1.png" alt="Logo" style="width:60px; margin-bottom:16px;">
+      <h2>PPDB Portal</h2>
+      <p style="margin-bottom:24px; opacity:0.7;">Silakan masuk ke portal Annida2PPDB.</p>
+      <form>
+        <label>Email</label>
+        <input type="email" placeholder="user@email.com atau admin@annida.com">
+        <label>Password</label>
+        <input type="password" placeholder="••••••••">
+        <button type="submit" class="btn-login">Masuk</button>
+        <div class="divider"><span>Atau</span></div>
+        <button type="button" class="btn-guest" onclick="window.location.href='register.html'">Daftar Sekarang</button>
+      </form>
+    </div>
+  </div>
+</div>
 </body>
 </html>
