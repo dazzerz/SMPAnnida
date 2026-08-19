@@ -398,6 +398,9 @@ body {
   padding: 1.5rem 1rem;
   z-index: 100;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 .sidebar-header {
   display: flex;
@@ -408,9 +411,7 @@ body {
   margin-bottom: 1.5rem;
 }
 .sidebar-logo-icon {
-  width: 40px;
-  height: 40px;
-  width: 32px;
+    width: 32px;
   height: 32px;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   border-radius: 8px;
@@ -1085,11 +1086,6 @@ option {
 }
 
 /* Fix sidebar scrolling */
-.sidebar {
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-}
 .sidebar::-webkit-scrollbar {
   width: 4px;
 }
@@ -1129,9 +1125,9 @@ option {
 
 /* Collapsed State Width */
 .sidebar.collapsed {
-  width: 70px !important;
-  min-width: 70px !important;
-  max-width: 70px !important;
+  width: 70px;
+  min-width: 70px;
+  max-width: 70px;
 }
 
 /* Hide Elements when Collapsed */
