@@ -147,48 +147,58 @@
     }
 
     /* Responsive adjustments */
-    @media (max-width: 900px) {
+    @media (max-width: 768px) {
       .hero-wrapper {
         display: flex;
         flex-direction: column;
         height: auto;
         min-height: 100vh;
+        overflow-y: auto;
       }
       .building-mask {
-        position: relative;
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
         width: 100% !important;
-        height: 38vh;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 24px;
-        border-bottom-left-radius: 24px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        padding: 2rem 1.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+        height: 40vh !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 40px !important;
+        border-bottom-left-radius: 40px !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.5) !important;
+        padding: 2rem 1.5rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
       }
       .hero-text {
-        text-align: center;
+        text-align: center !important;
       }
       .hero-text h1 {
-        font-size: 2.2rem;
-        margin-bottom: 0.5rem;
+        font-size: 2.2rem !important;
+        margin-bottom: 0.5rem !important;
       }
       .hero-text p {
-        font-size: 1rem;
-        max-width: 100%;
+        font-size: 1rem !important;
+        max-width: 100% !important;
       }
       .login-right-area {
-        position: relative;
+        position: relative !important;
+        top: 0 !important;
+        right: 0 !important;
         width: 100% !important;
-        height: 62vh;
-        padding: 2rem 1.5rem !important;
+        height: auto !important;
+        min-height: 60vh !important;
+        padding: 20px !important; /* Jarak 20px di kiri, kanan, bawah */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
       }
       .glass-login {
-        padding: 30px 20px;
-        max-width: 380px;
+        padding: 30px 20px !important;
+        max-width: 100% !important;
+        border-radius: 20px !important;
       }
     }
   </style>
