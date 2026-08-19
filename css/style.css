@@ -1096,3 +1096,8 @@ option {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
 }
+/* Fix clock icon color on dark inputs */
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.8;
+}

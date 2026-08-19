@@ -70,7 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function formatTime(isoString) {
         if (!isoString) return '--:--';
         const d = new Date(isoString);
-        return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        const h = String(d.getHours()).padStart(2, '0');
+        const m = String(d.getMinutes()).padStart(2, '0');
+        return `${h}:${m}`;
     }
 
     // Helper to convert Google Drive viewer link to direct image link for <img> tags
@@ -414,11 +416,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${i + 1}</td>
                         <td><strong>${escapeHTML(nama)}</strong></td>
                         <td style="text-align: center;">
-                            <input type="time" class="edit-checkin form-input" data-id="${r.id}" value="${jamIn !== '--:--' ? jamIn : ''}" style="width:100px; text-align:center; padding:0.2rem; color:black; font-size:0.9rem;">
+                            <input type="time" class="edit-checkin form-input" data-id="${r.id}" value="${jamIn !== '--:--' ? jamIn : ''}" style="width:100px; text-align:center; padding:0.2rem; font-size:0.9rem;">
                         </td>
                         <td style="text-align: center;">${imgIn}</td>
                         <td style="text-align: center;">
-                            <input type="time" class="edit-checkout form-input" data-id="${r.id}" value="${jamOut !== '--:--' ? jamOut : ''}" style="width:100px; text-align:center; padding:0.2rem; color:black; font-size:0.9rem;">
+                            <input type="time" class="edit-checkout form-input" data-id="${r.id}" value="${jamOut !== '--:--' ? jamOut : ''}" style="width:100px; text-align:center; padding:0.2rem; font-size:0.9rem;">
                         </td>
                         <td style="text-align: center;">${imgOut}</td>
                         <td style="text-align: center;">${loc}</td>
