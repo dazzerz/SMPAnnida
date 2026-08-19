@@ -7,118 +7,137 @@
   <link rel="stylesheet" href="../../css/style.css">
   <style>
     /* =========================================================================
-       CLEAN 2-COLUMN PORTAL LAYOUT
+       PREMIUM GLASSMORPHISM PORTAL LAYOUT
        ========================================================================= */
     .hero-annida {
       min-height: 100vh;
       width: 100%;
       position: relative;
-      background-image: 
-        linear-gradient(rgba(10, 18, 14, 0.55), rgba(10, 18, 14, 0.55)),
-        url('../../assets/images/gedung_sekolah.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      background: url('../../assets/images/gedung_sekolah.jpg') center bottom / cover no-repeat;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end; /* Align to the right */
+      padding-right: 8vw;
     }
 
-    .portal-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2rem;
-      gap: 4rem;
-      z-index: 5;
+    .hero-overlay-annida {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.85) 100%);
+      z-index: 1;
     }
 
-    .portal-left {
-      flex: 1.2;
-      color: #ffffff;
-      text-align: left;
-    }
-
-    .portal-left h2 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 1.2rem;
-      color: #ffffff !important;
-      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    }
-
-    .portal-left p {
-      font-size: 1.1rem;
-      color: rgba(255, 255, 255, 0.85) !important;
-      line-height: 1.6;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-    }
-
-    .portal-right {
-      flex: 0.8;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    /* Portal Login Card Container */
+    /* Portal Login Card Container (Layer 2) */
     .hero-annida .login-card {
+      position: relative;
+      z-index: 2;
       width: 100%;
-      max-width: 380px;
-      background: rgba(15, 23, 42, 0.5) !important;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.05) !important;
       backdrop-filter: blur(20px) !important;
       -webkit-backdrop-filter: blur(20px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
       border-radius: 24px !important;
-      padding: 2.2rem !important;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+      padding: 40px !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+      color: #ffffff !important;
       margin: 0;
-      transition: transform 0.3s ease;
     }
 
-    .hero-annida .login-title {
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      color: white;
-      text-align: center;
-    }
-    .hero-annida .login-subtitle {
-      color: var(--text-secondary);
-      margin-bottom: 2rem;
-      text-align: center;
-    }
     .hero-annida .login-logo {
       height: 70px;
       width: auto;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       display: block;
+      object-fit: contain;
       margin-left: auto;
       margin-right: auto;
-      object-fit: contain;
+    }
+
+    .hero-annida .login-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffffff !important;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    
+    .hero-annida .login-subtitle {
+      color: rgba(255, 255, 255, 0.7) !important;
+      margin-bottom: 2rem;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .hero-annida label {
+      color: #ffffff !important;
+      font-weight: 500;
+    }
+
+    .hero-annida input {
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+      color: white !important;
+      border-radius: 8px !important;
+      font-size: 1rem;
+    }
+    
+    .hero-annida input::placeholder {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .hero-annida .btn-primary {
+      background-color: #00c853 !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 8px !important;
+      font-weight: 600;
+      transition: background-color 0.2s;
+    }
+    .hero-annida .btn-primary:hover {
+      background-color: #5efc82 !important;
+      color: #0b130e !important;
+    }
+
+    .hero-annida .btn-outline {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+      border-radius: 8px !important;
+    }
+    .hero-annida .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    .divider {
+      margin: 1.5rem 0;
+      color: rgba(255, 255, 255, 0.5);
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.15);
+      margin: 0 1rem;
     }
 
     /* Responsive adjustments */
-    @media (max-width: 900px) {
-      .portal-container {
-        flex-direction: column;
+    @media (max-width: 768px) {
+      .hero-annida {
         justify-content: center;
-        gap: 2.5rem;
-        text-align: center;
-        padding: 4rem 1.5rem;
+        padding-right: 0;
+        background-position: center;
       }
-      .portal-left {
-        text-align: center;
+      .hero-overlay-annida {
+        background: rgba(0, 0, 0, 0.65); /* Dark full cover on mobile */
       }
-      .portal-left h2 {
-        font-size: 2.2rem;
-      }
-      .portal-right {
-        justify-content: center;
-        width: 100%;
+      .hero-annida .login-card {
+        width: 90%;
+        max-width: 380px;
+        padding: 30px 20px !important;
       }
     }
   </style>
@@ -126,38 +145,33 @@
 </head>
 <body>
   <section class="hero-annida">
-    <div class="portal-container">
-      <!-- Left Side: Welcoming Text -->
-      <div class="portal-left">
-        <h2>Selamat Datang di Portal PPDB SMP Annida</h2>
-        <p>Silakan masuk menggunakan akun pendaftaran Anda untuk melanjutkan pengisian biodata, mengunggah dokumen, atau memeriksa status kelulusan seleksi PPDB.</p>
-      </div>
+    <!-- Gradient Overlay (Darker on the right for login card contrast) -->
+    <div class="hero-overlay-annida"></div>
 
-      <!-- Right Side: Login Form -->
-      <div class="portal-right">
-        <div class="glass-panel login-card">
-          <img src="../../1.png" alt="Logo Annida" class="login-logo">
-          <h2 class="login-title">PPDB Portal</h2>
-          <p class="login-subtitle">Silakan masuk ke portal Annida2PPDB.</p>
-          
-          <form action="#" method="POST" id="loginForm">
-            <div style="margin-bottom: 1rem; text-align: left;">
-              <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Alamat Email</label>
-              <input type="email" id="email" name="email" class="form-control" placeholder="user@email.com atau admin@annida.com" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: white;">
-            </div>
-            <div style="margin-bottom: 1.5rem; text-align: left;">
-              <label style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">Password</label>
-              <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password Anda" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: white;">
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; border-radius: 50px; margin-bottom: 1rem;">Masuk</button>
-            
-            <div class="form-footer" style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Lupa password? <a href="#" style="color: var(--accent-primary);">Klik di sini</a></p>
-              <p style="color: var(--text-secondary);">Belum punya akun? <a href="register.html" style="color: var(--accent-primary);">Daftar Sekarang</a></p>
-            </div>
-          </form>
+    <!-- Portal Login Card (Right side) -->
+    <div class="glass-panel login-card">
+      <img src="../../1.png" alt="Logo Annida" class="login-logo">
+      <h2 class="login-title">PPDB Portal</h2>
+      <p class="login-subtitle">Silakan masuk ke portal pendaftaran Annida2PPDB.</p>
+      
+      <form action="#" method="POST" id="loginForm">
+        <div style="margin-bottom: 1.2rem; text-align: left;">
+          <label style="display: block; margin-bottom: 0.5rem;">Alamat Email</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="user@email.com atau admin@annida.com" required style="width: 100%; padding: 0.8rem 1rem;">
         </div>
-      </div>
+        <div style="margin-bottom: 1.5rem; text-align: left;">
+          <label style="display: block; margin-bottom: 0.5rem;">Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan password Anda" required style="width: 100%; padding: 0.8rem 1rem;">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.9rem; font-size: 1.05rem; cursor: pointer;">
+          Masuk
+        </button>
+        
+        <div class="form-footer" style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
+          <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem;">Lupa password? <a href="#" style="color: #00c853; font-weight: 500;">Klik di sini</a></p>
+          <p style="color: rgba(255, 255, 255, 0.7);">Belum punya akun? <a href="register.html" style="color: #00c853; font-weight: 500;">Daftar Sekarang</a></p>
+        </div>
+      </form>
     </div>
   </section>
 
