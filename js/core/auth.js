@@ -100,7 +100,7 @@ export async function handleLogin(e) {
   setTimeout(() => { 
     const r = roleData ? roleData.role : null;
     if (r === 'calon_siswa' || r === 'wali_murid') {
-      window.location.href = './pages/ppdb/dashboard-siswa.html';
+      window.location.href = './pages/ppdb/dashboard-wali.html';
     } else if (r === 'finance') {
       window.location.href = './pages/finance/dashboard.html';
     } else if (r === 'teacher') {
@@ -208,7 +208,7 @@ export async function requireAuth() {
     return null;
   }
   if ((role === 'calon_siswa' || role === 'wali_murid') && (path.includes('/academic/') || path.includes('/finance/') || path.endsWith('/dashboard.html') && !path.includes('/ppdb/'))) {
-    window.location.href = '/pages/ppdb/dashboard-siswa.html';
+    window.location.href = '/pages/ppdb/dashboard-wali.html';
     return null;
   }
 

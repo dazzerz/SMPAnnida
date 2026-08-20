@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ==========================================
-  // A. PORTAL CALON SISWA (dashboard-siswa.html)
+  // A. PORTAL CALON SISWA (dashboard-wali.html)
   // ==========================================
   const isSiswaDashboard = document.getElementById('siswa-display-reg-no');
   if (isSiswaDashboard && userId) {

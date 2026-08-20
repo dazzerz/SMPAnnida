@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (email.includes('admin')) {
                         window.location.href = 'dashboard-admin.html';
                     } else {
-                        window.location.href = 'dashboard-siswa.html';
+                        window.location.href = 'dashboard-wali.html';
                     }
                     return;
                 }
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (email.includes('admin')) {
                     window.location.href = 'dashboard-admin.html';
                 } else {
-                    window.location.href = 'dashboard-siswa.html';
+                    window.location.href = 'dashboard-wali.html';
                 }
             } catch (err) {
                 console.error("Login process error:", err);
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
 
                     showToast(`Registrasi Berhasil!\nNomor Pendaftaran Anda: ${noPendaftaran}`, 'success');
-                    window.location.href = 'dashboard-siswa.html';
+                    window.location.href = 'dashboard-wali.html';
                 }
             } catch (err) {
                 console.error("Registration error:", err);

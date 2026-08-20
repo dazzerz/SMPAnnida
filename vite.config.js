@@ -20,7 +20,7 @@ export default defineConfig({
         financeDashboard: resolve(root, 'pages/finance/dashboard.html'),
         ppdbAbout: resolve(root, 'pages/ppdb/about.html'),
         ppdbDashboardAdmin: resolve(root, 'pages/ppdb/dashboard-admin.html'),
-        ppdbDashboardSiswa: resolve(root, 'pages/ppdb/dashboard-siswa.html'),
+        ppdbDashboardWali: resolve(root, 'pages/ppdb/dashboard-wali.html'),
         ppdbIndex: resolve(root, 'pages/ppdb/index.html'),
         ppdbLogin: resolve(root, 'pages/ppdb/login.html'),
         ppdbRegister: resolve(root, 'pages/ppdb/register.html'),
