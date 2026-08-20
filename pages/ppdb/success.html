@@ -71,9 +71,9 @@
         <div class="text-2xl font-mono font-bold text-white mt-1" id="display-reg-no">PPDB-2027-XXXXX</div>
       </div>
 
-      <!-- Verification Badge -->
+      <!-- Verification Badge (Dynamic) -->
       <div>
-        <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/35 text-xs font-bold uppercase tracking-wider">
+        <span id="status-badge" class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/35 text-xs font-bold uppercase tracking-wider">
           🟡 Menunggu Verifikasi
         </span>
       </div>
@@ -95,14 +95,52 @@
     </div>
   </main>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
+  <script type="module">
+    import supabaseClient from '../../js/core/supabase.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
       const regNo = localStorage.getItem('last_ppdb_no') || 'PPDB-2027-73892';
       document.getElementById('display-reg-no').textContent = regNo;
       
       const btnChat = document.getElementById('btn-chat-admin');
       if (btnChat) {
         btnChat.href = `https://wa.me/6281299887766?text=Halo%20Admin%20PPDB%2C%20saya%20sudah%20mendaftar%20untuk%20anak%20saya%20dengan%20Nomor%20Pendaftaran%3A%20${encodeURIComponent(regNo)}.`;
+      }
+
+      // Fetch actual status dynamically from Supabase
+      try {
+        const { data, error } = await supabaseClient
+          .from('pendaftaran')
+          .select('status_pendaftaran')
+          .eq('no_pendaftaran', regNo)
+          .maybeSingle();
+
+        if (error) throw error;
+        
+        if (data && data.status_pendaftaran) {
+          const status = data.status_pendaftaran;
+          const badge = document.getElementById('status-badge');
+          if (badge) {
+            if (status === 'Verifikasi') {
+              badge.className = 'inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/35 text-xs font-bold uppercase tracking-wider';
+              badge.textContent = '🟡 Menunggu Verifikasi';
+            } else if (status === 'Pembayaran') {
+              badge.className = 'inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/35 text-xs font-bold uppercase tracking-wider';
+              badge.textContent = '🔵 Pembayaran SPP';
+            } else if (status === 'Seleksi') {
+              badge.className = 'inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/35 text-xs font-bold uppercase tracking-wider';
+              badge.textContent = '🟣 Tahap Seleksi';
+            } else if (status === 'Lulus') {
+              badge.className = 'inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/35 text-xs font-bold uppercase tracking-wider';
+              badge.textContent = '🟢 Lulus / Terdaftar';
+            } else if (status === 'Gugur') {
+              badge.className = 'inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-red-500/20 text-red-300 border border-red-500/35 text-xs font-bold uppercase tracking-wider';
+              badge.textContent = '🔴 Gugur';
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Gagal memuat status live Supabase:", err.message);
       }
     });
   </script>
