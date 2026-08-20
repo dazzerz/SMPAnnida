@@ -21,6 +21,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (sessionUser) {
       userId = sessionUser.id;
       userEmail = sessionUser.email || '';
+      
+      // Update sidebar username and role (support both sidebar and layout-defined IDs)
+      const sidebarName = document.getElementById('sidebar-user-name') || document.getElementById('nav-user-name');
+      const sidebarRole = document.getElementById('sidebar-user-role') || document.getElementById('nav-user-email');
+      
+      if (sidebarName) sidebarName.textContent = sessionUser.user_metadata?.full_name || sessionUser.email || 'Admin PPDB';
+      if (sidebarRole) sidebarRole.textContent = 'Panitia PPDB';
     } else {
       // Direct guests to login
       if (window.location.pathname.includes('dashboard-')) {
