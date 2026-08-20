@@ -50,19 +50,38 @@ function setLoading(btnId, isLoading) {
 // ── LOGIN ─────────────────────────────────────────
 export async function handleLogin(e) {
   e.preventDefault();
-  const emailInput = document.getElementById('login-email') || document.querySelector('input[type="email"]');
+  const emailInput = document.getElementById('login-email') || document.querySelector('input[type="email"]') || document.querySelector('input[type="text"]');
   const passwordInput = document.getElementById('login-password') || document.querySelector('input[type="password"]');
-  const email = emailInput ? emailInput.value.trim() : '';
+  const identifier = emailInput ? emailInput.value.trim() : '';
   const password = passwordInput ? passwordInput.value : '';
-  if (!email || !password) {
-    showAuthMessage('Mohon isi email dan password.', 'error');
+  
+  if (!identifier || !password) {
+    showAuthMessage('Mohon isi email/No. HP dan password.', 'error');
     return;
   }
   setLoading('login-btn', true);
-  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+  // Detect Email or Phone using regex
+  let payload = {};
+  if (/[a-zA-Z@]/.test(identifier)) {
+    payload = { email: identifier, password };
+  } else {
+    // Phone authentication (auto-format to E.164)
+    let formattedPhone = identifier.replace(/[^0-9+]/g, '');
+    if (formattedPhone.startsWith('0')) {
+      formattedPhone = '+62' + formattedPhone.slice(1);
+    } else if (formattedPhone.startsWith('62')) {
+      formattedPhone = '+' + formattedPhone;
+    } else if (!formattedPhone.startsWith('+')) {
+      formattedPhone = '+' + formattedPhone;
+    }
+    payload = { phone: formattedPhone, password };
+  }
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword(payload);
   if (error) {
     const msgs = {
-      'Invalid login credentials': 'Email atau password salah.',
+      'Invalid login credentials': 'Email/No. HP atau password salah.',
       'Email not confirmed': 'Cek email kamu dan klik link verifikasi terlebih dahulu.',
     };
     showAuthMessage(msgs[error.message] || error.message, 'error');

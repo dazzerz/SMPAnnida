@@ -129,7 +129,7 @@ export function injectSidebar(containerId) {
         </div>
         <div class="nav-group-content">
           <div class="nav-group-inner">
-            <a href="${basePath}pages/ppdb/index.html" class="nav-item" data-tooltip="Pendaftar Baru">
+            <a href="${basePath}pages/ppdb/dashboard-admin.html" class="nav-item" data-tooltip="Pendaftar Baru">
               <i class="ph ph-user-plus nav-icon"></i> <span class="nav-text">Pendaftar Baru</span>
             </a>
           </div>
