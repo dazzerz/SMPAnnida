@@ -29,199 +29,199 @@
                 <!-- Dashboard Section -->
                 <section id="dashboard" class="page-section active">
                     <h1>Dashboard Utama</h1>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <p style="margin:0;">Selamat datang di Sistem Informasi Akademik.</p>
-                        <div id="dashboard-loading" style="display: none; color: var(--primary); font-weight: 500;">
+                    <div class="aca-inline-56">
+                        <p class="aca-inline-57">Selamat datang di Sistem Informasi Akademik.</p>
+                        <div id="dashboard-loading" class="aca-inline-58">
                             Memuat statistik...
                         </div>
                     </div>
 
                     <!-- SECTION 0: Academic Info -->
-                    <h2 style="font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Informasi Akademik</h2>
-                    <div class="dashboard-cards" style="margin-bottom: 30px; grid-template-columns: repeat(4, 1fr);">
+                    <h2 class="aca-inline-59">Informasi Akademik</h2>
+                    <div class="dashboard-cards aca-inline-1">
                         <div class="card glass">
-                            <h3 style="font-size: 0.9rem;">🏫 Total Kelas</h3>
-                            <p class="number" id="stat-kelas-total" style="font-size: 1.5rem;">0</p>
+                            <h3 class="aca-inline-60">🏫 Total Kelas</h3>
+                            <p class="number" id="stat-kelas-total" class="aca-inline-61">0</p>
                         </div>
                         <div class="card glass">
-                            <h3 style="font-size: 0.9rem;">👨‍🏫 Total Wali Kelas</h3>
-                            <p class="number" id="stat-walikelas-total" style="font-size: 1.5rem;">0</p>
+                            <h3 class="aca-inline-60">👨‍🏫 Total Wali Kelas</h3>
+                            <p class="number" id="stat-walikelas-total" class="aca-inline-61">0</p>
                         </div>
-                        <div class="card glass" style="border-left: 4px solid var(--primary);">
-                            <h3 style="font-size: 0.9rem;">📅 Tahun Ajaran Aktif</h3>
-                            <p class="number" id="stat-tahun-aktif" style="font-size: 1.2rem; margin-top: 5px; font-weight: 600;">-</p>
+                        <div class="card glass aca-inline-2">
+                            <h3 class="aca-inline-60">📅 Tahun Ajaran Aktif</h3>
+                            <p class="number" id="stat-tahun-aktif" class="aca-inline-62">-</p>
                         </div>
-                        <div class="card glass" style="border-left: 4px solid var(--success);">
-                            <h3 style="font-size: 0.9rem;">🗓️ Semester Aktif</h3>
-                            <p class="number" id="stat-semester-aktif" style="font-size: 1.2rem; margin-top: 5px; font-weight: 600;">-</p>
+                        <div class="card glass aca-inline-3">
+                            <h3 class="aca-inline-60">🗓️ Semester Aktif</h3>
+                            <p class="number" id="stat-semester-aktif" class="aca-inline-62">-</p>
                         </div>
                     </div>
                     
                     <!-- SECTION 1: Ringkasan Siswa Hari Ini -->
-                    <h2 style="font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Ringkasan Siswa Hari Ini</h2>
-                    <div class="dashboard-cards" style="margin-bottom: 30px;">
+                    <h2 class="aca-inline-59">Ringkasan Siswa Hari Ini</h2>
+                    <div class="dashboard-cards aca-inline-4">
                         <div class="card glass">
                             <h3>👨‍🎓 Total Siswa</h3>
                             <p class="number" id="stat-siswa-total">0</p>
                         </div>
-                        <div class="card glass" style="border-left: 4px solid var(--success);">
+                        <div class="card glass aca-inline-3">
                             <h3>📋 Hadir Hari Ini</h3>
-                            <p class="number" id="stat-siswa-hadir" style="color: var(--success);">0</p>
+                            <p class="number" id="stat-siswa-hadir" class="aca-inline-63">0</p>
                         </div>
-                        <div class="card glass" style="border-left: 4px solid var(--warning);">
+                        <div class="card glass aca-inline-5">
                             <h3>🤒 Sakit</h3>
                             <p class="number" id="stat-siswa-sakit">0</p>
                         </div>
-                        <div class="card glass" style="border-left: 4px solid var(--primary);">
+                        <div class="card glass aca-inline-2">
                             <h3>📝 Izin</h3>
                             <p class="number" id="stat-siswa-izin">0</p>
                         </div>
-                        <div class="card glass" style="border-left: 4px solid var(--danger);">
+                        <div class="card glass aca-inline-6">
                             <h3>❌ Alpha</h3>
-                            <p class="number" id="stat-siswa-alpha" style="color: var(--danger);">0</p>
+                            <p class="number" id="stat-siswa-alpha" class="aca-inline-64">0</p>
                         </div>
                     </div>
 
                     <!-- SECTION 2 & 3: Guru & Jurnal -->
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div class="aca-inline-65">
                         <div>
-                            <h2 style="font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Kehadiran Guru Hari Ini</h2>
-                            <div class="dashboard-cards" style="grid-template-columns: repeat(2, 1fr);">
+                            <h2 class="aca-inline-59">Kehadiran Guru Hari Ini</h2>
+                            <div class="dashboard-cards aca-inline-7">
                                 <div class="card glass">
-                                    <h3 style="font-size: 0.9rem;">Jumlah Guru</h3>
-                                    <p class="number" id="stat-guru-total" style="font-size: 1.5rem;">0</p>
+                                    <h3 class="aca-inline-60">Jumlah Guru</h3>
+                                    <p class="number" id="stat-guru-total" class="aca-inline-61">0</p>
                                 </div>
                                 <div class="card glass">
-                                    <h3 style="font-size: 0.9rem;">Belum Check In</h3>
-                                    <p class="number" id="stat-guru-belum" style="font-size: 1.5rem;">0</p>
+                                    <h3 class="aca-inline-60">Belum Check In</h3>
+                                    <p class="number" id="stat-guru-belum" class="aca-inline-61">0</p>
                                 </div>
-                                <div class="card glass" style="border-left: 4px solid var(--success);">
-                                    <h3 style="font-size: 0.9rem;">Sudah Check In</h3>
-                                    <p class="number" id="stat-guru-in" style="font-size: 1.5rem; color: var(--success);">0</p>
+                                <div class="card glass aca-inline-3">
+                                    <h3 class="aca-inline-60">Sudah Check In</h3>
+                                    <p class="number" id="stat-guru-in" class="aca-inline-66">0</p>
                                 </div>
-                                <div class="card glass" style="border-left: 4px solid var(--primary);">
-                                    <h3 style="font-size: 0.9rem;">Sudah Check Out</h3>
-                                    <p class="number" id="stat-guru-out" style="font-size: 1.5rem; color: var(--primary);">0</p>
+                                <div class="card glass aca-inline-2">
+                                    <h3 class="aca-inline-60">Sudah Check Out</h3>
+                                    <p class="number" id="stat-guru-out" class="aca-inline-67">0</p>
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <h2 style="font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Jurnal Guru Hari Ini</h2>
-                            <div class="dashboard-cards" style="grid-template-columns: repeat(2, 1fr);">
-                                <div class="card glass" style="grid-column: span 2;">
-                                    <h3 style="font-size: 0.9rem;">Total Jurnal Terisi Hari Ini</h3>
-                                    <p class="number" id="stat-jurnal-total" style="font-size: 1.8rem; color: var(--primary);">0</p>
+                            <h2 class="aca-inline-59">Jurnal Guru Hari Ini</h2>
+                            <div class="dashboard-cards aca-inline-7">
+                                <div class="card glass aca-inline-8">
+                                    <h3 class="aca-inline-60">Total Jurnal Terisi Hari Ini</h3>
+                                    <p class="number" id="stat-jurnal-total" class="aca-inline-68">0</p>
                                 </div>
-                                <div class="card glass" style="border-left: 4px solid var(--success);">
-                                    <h3 style="font-size: 0.9rem;">Guru Sudah Mengisi</h3>
-                                    <p class="number" id="stat-jurnal-guru-sudah" style="font-size: 1.5rem;">0</p>
+                                <div class="card glass aca-inline-3">
+                                    <h3 class="aca-inline-60">Guru Sudah Mengisi</h3>
+                                    <p class="number" id="stat-jurnal-guru-sudah" class="aca-inline-61">0</p>
                                 </div>
-                                <div class="card glass" style="border-left: 4px solid var(--warning);">
-                                    <h3 style="font-size: 0.9rem;">Guru Belum Mengisi</h3>
-                                    <p class="number" id="stat-jurnal-guru-belum" style="font-size: 1.5rem;">0</p>
+                                <div class="card glass aca-inline-5">
+                                    <h3 class="aca-inline-60">Guru Belum Mengisi</h3>
+                                    <p class="number" id="stat-jurnal-guru-belum" class="aca-inline-61">0</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- SECTION: Statistik Jadwal (Baru) -->
-                    <h2 style="font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Statistik Jadwal & Akademik</h2>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <h2 class="aca-inline-59">Statistik Jadwal & Akademik</h2>
+                    <div class="aca-inline-69">
                         <div class="card glass">
-                            <h3 style="font-size: 0.9rem;">Total Jadwal Aktif</h3>
-                            <p class="number" id="stat-jadwal-aktif" style="font-size: 1.5rem; color: var(--primary);">0</p>
-                        </div>
-                        <div class="card glass">
-                            <h3 style="font-size: 0.9rem;">Guru Mengajar Hari Ini</h3>
-                            <p class="number" id="stat-jadwal-guru-today" style="font-size: 1.5rem;">0</p>
+                            <h3 class="aca-inline-60">Total Jadwal Aktif</h3>
+                            <p class="number" id="stat-jadwal-aktif" class="aca-inline-67">0</p>
                         </div>
                         <div class="card glass">
-                            <h3 style="font-size: 0.9rem;">Kelas Aktif Hari Ini</h3>
-                            <p class="number" id="stat-jadwal-kelas-today" style="font-size: 1.5rem;">0</p>
+                            <h3 class="aca-inline-60">Guru Mengajar Hari Ini</h3>
+                            <p class="number" id="stat-jadwal-guru-today" class="aca-inline-61">0</p>
                         </div>
                         <div class="card glass">
-                            <h3 style="font-size: 0.9rem;">Total Jam Hari Ini</h3>
-                            <p class="number" id="stat-jadwal-jam-today" style="font-size: 1.5rem;">0</p>
+                            <h3 class="aca-inline-60">Kelas Aktif Hari Ini</h3>
+                            <p class="number" id="stat-jadwal-kelas-today" class="aca-inline-61">0</p>
                         </div>
-                        <div class="card glass" style="border-left: 4px solid var(--danger);">
-                            <h3 style="font-size: 0.9rem;">Kelas Tanpa Jadwal</h3>
-                            <p class="number" id="stat-jadwal-kelas-kosong" style="font-size: 1.5rem; color: var(--danger);">0</p>
+                        <div class="card glass">
+                            <h3 class="aca-inline-60">Total Jam Hari Ini</h3>
+                            <p class="number" id="stat-jadwal-jam-today" class="aca-inline-61">0</p>
                         </div>
-                        <div class="card glass" style="border-left: 4px solid var(--danger);">
-                            <h3 style="font-size: 0.9rem;">Guru Tanpa Jadwal</h3>
-                            <p class="number" id="stat-jadwal-guru-kosong" style="font-size: 1.5rem; color: var(--danger);">0</p>
+                        <div class="card glass aca-inline-6">
+                            <h3 class="aca-inline-60">Kelas Tanpa Jadwal</h3>
+                            <p class="number" id="stat-jadwal-kelas-kosong" class="aca-inline-70">0</p>
                         </div>
-                        <div class="card glass" style="border-left: 4px solid var(--warning);">
-                            <h3 style="font-size: 0.9rem;">Mapel Belum Dijadwal</h3>
-                            <p class="number" id="stat-jadwal-mapel-kosong" style="font-size: 1.5rem; color: var(--warning);">0</p>
+                        <div class="card glass aca-inline-6">
+                            <h3 class="aca-inline-60">Guru Tanpa Jadwal</h3>
+                            <p class="number" id="stat-jadwal-guru-kosong" class="aca-inline-70">0</p>
+                        </div>
+                        <div class="card glass aca-inline-5">
+                            <h3 class="aca-inline-60">Mapel Belum Dijadwal</h3>
+                            <p class="number" id="stat-jadwal-mapel-kosong" class="aca-inline-71">0</p>
                         </div>
                     </div>
 
                     <!-- SECTION 4 & 5: Grafik & Tabel Kelas -->
-                    <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 30px;">
+                    <div class="aca-inline-72">
                         <div class="card glass">
-                            <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Grafik Kehadiran Siswa (7 Hari Terakhir)</h2>
-                            <div style="width: 100%; height: 250px; position: relative;">
-                                <div id="chart-empty" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">Belum ada data</div>
-                                <canvas id="attendance-chart" style="width: 100%; height: 100%;"></canvas>
+                            <h2 class="aca-inline-73">Grafik Kehadiran Siswa (7 Hari Terakhir)</h2>
+                            <div class="aca-inline-74">
+                                <div id="chart-empty" class="aca-inline-75">Belum ada data</div>
+                                <canvas id="attendance-chart" class="aca-inline-76"></canvas>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card glass" style="margin-bottom: 30px;">
-                        <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Statistik Kehadiran Per Kelas (Hari Ini)</h2>
+                    <div class="card glass aca-inline-4">
+                        <h2 class="aca-inline-73">Statistik Kehadiran Per Kelas (Hari Ini)</h2>
                         <div class="table-responsive">
                             <table class="data-table">
                                 <thead>
                                     <tr>
                                         <th>Kelas</th>
-                                        <th style="text-align: center;">Jml Siswa</th>
-                                        <th style="text-align: center;">Hadir</th>
-                                        <th style="text-align: center;">Sakit</th>
-                                        <th style="text-align: center;">Izin</th>
-                                        <th style="text-align: center;">Alpha</th>
-                                        <th style="text-align: center;">% Kehadiran</th>
+                                        <th class="aca-inline-77">Jml Siswa</th>
+                                        <th class="aca-inline-77">Hadir</th>
+                                        <th class="aca-inline-77">Sakit</th>
+                                        <th class="aca-inline-77">Izin</th>
+                                        <th class="aca-inline-77">Alpha</th>
+                                        <th class="aca-inline-77">% Kehadiran</th>
                                     </tr>
                                 </thead>
                                 <tbody id="stat-class-tbody">
                                     <tr>
-                                        <td colspan="7" style="text-align: center; padding: 20px; color: var(--text-muted);">Memuat data statistik kelas...</td>
+                                        <td colspan="7" class="aca-inline-78">Memuat data statistik kelas...</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     
-                    <h2 style="margin-top: 30px; margin-bottom: 15px; font-size: 18px; color: var(--text-main);">Aksi Cepat</h2>
-                    <div class="card glass" style="max-width: 500px;">
-                        <h3 style="margin-bottom: 10px;">Import Data Siswa (CSV)</h3>
-                        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">
+                    <h2 class="aca-inline-79">Aksi Cepat</h2>
+                    <div class="card glass aca-inline-9">
+                        <h3 class="aca-inline-80">Import Data Siswa (CSV)</h3>
+                        <p class="aca-inline-81">
                             Unggah file .csv yang berisi kolom nama_lengkap, nisn, kelas, dan status_aktif.<br>
-                            <a href="docs/Format_Import_Siswa.csv" download="Format_Import_Siswa.csv" style="color: var(--primary); font-weight: 500; text-decoration: none; margin-top: 5px; display: inline-block;">⬇️ Unduh Format CSV</a>
+                            <a href="docs/Format_Import_Siswa.csv" download="Format_Import_Siswa.csv" class="aca-inline-82">⬇️ Unduh Format CSV</a>
                         </p>
-                        <div style="display:flex;flex-wrap:wrap;gap: 10px; align-items: center;">
-                            <input type="file" id="file-import-siswa" accept=".csv" class="input-control" style="flex: 1;">
+                        <div class="aca-inline-83">
+                            <input type="file" id="file-import-siswa" accept=".csv" class="input-control aca-inline-10">
                             <button id="btn-import-siswa" class="btn-primary">Import Data</button>
                         </div>
-                        <div id="import-status" style="margin-top: 10px; font-size: 14px; font-weight: 500;"></div>
+                        <div id="import-status" class="aca-inline-84"></div>
                     </div>
                 </section>
 
                 <!-- Absensi Section -->
-                <section id="absensi" class="page-section" style="display: none;">
+                <section id="absensi" class="page-section aca-inline-11">
                     
                     <!-- Header -->
-                    <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+                    <div class="section-header aca-inline-12">
                         <div>
-                            <h2 style="margin:0">📋 Absensi Siswa</h2>
-                            <p style="margin:0;color:var(--text-muted);font-size:0.9rem">Input absensi per jam pelajaran</p>
+                            <h2 class="aca-inline-57">📋 Absensi Siswa</h2>
+                            <p class="aca-inline-85">Input absensi per jam pelajaran</p>
                         </div>
-                        <input type="date" id="attend-date" class="input-control" style="width:auto">
+                        <input type="date" id="attend-date" class="input-control aca-inline-13">
                     </div>
 
                     <!-- Tab Navigation -->
-                    <div class="tab-nav" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem;border-bottom:2px solid var(--border-color)">
+                    <div class="tab-nav aca-inline-14">
                         <button class="tab-btn active" data-tab="input-absensi">📝 Input Absensi</button>
                         <button class="tab-btn" data-tab="rekap-siswa">📊 Rekap Per Siswa</button>
                         <button class="tab-btn" data-tab="pivot-absensi">📆 Rekap Harian</button>
@@ -234,25 +234,25 @@
                         <div id="schedule-list"></div>
 
                         <!-- Form Input Absensi (tersembunyi sampai jadwal dipilih) -->
-                        <div id="attend-form-panel" style="display:none">
-                            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+                        <div id="attend-form-panel" class="aca-inline-15">
+                            <div class="aca-inline-86">
                                 <button id="btn-attend-back" class="btn btn-outline btn-sm">← Kembali</button>
-                                <h3 id="attend-panel-title" style="margin:0;flex:1"></h3>
+                                <h3 id="attend-panel-title" class="aca-inline-87"></h3>
                                 <button id="btn-hadir-semua" class="btn btn-outline btn-sm">🟢 Hadir Semua</button>
                             </div>
                             <div class="card glass">
                                 <table class="data-table">
                                     <thead>
                                         <tr>
-                                            <th style="width:40px">No</th>
+                                            <th class="aca-inline-88">No</th>
                                             <th>Nama Siswa</th>
-                                            <th style="width:140px">Status</th>
+                                            <th class="aca-inline-89">Status</th>
                                             <th>Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody id="attend-tbody"></tbody>
                                 </table>
-                                <div style="padding:1rem;border-top:1px solid var(--border-color);margin-top:10px;">
+                                <div class="aca-inline-90">
                                     <button id="btn-attend-save" class="btn btn-primary" disabled>💾 Simpan Absensi</button>
                                 </div>
                             </div>
@@ -260,9 +260,9 @@
                     </div>
 
                     <!-- TAB 2: Rekap Per Siswa -->
-                    <div id="tab-rekap-siswa" class="tab-content" style="display:none">
+                    <div id="tab-rekap-siswa" class="tab-content aca-inline-15">
                         <!-- Filter + Tabel Rekap -->
-                        <div class="filter-bar" style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div class="filter-bar aca-inline-16">
                             <select id="rekap-kelas" class="input-control">
                                 <option value="">-- Pilih Kelas --</option>
                             </select>
@@ -285,7 +285,7 @@
                             </select>
                             <button id="btn-lihat-rekap-absensi-siswa" class="btn-primary">Lihat Rekap</button>
                         </div>
-                        <div class="card glass" style="overflow-x:auto">
+                        <div class="card glass aca-inline-17">
                             <table class="data-table" id="table-rekap-siswa">
                                 <thead id="thead-rekap-siswa">
                                     <tr><th>Memuat...</th></tr>
@@ -296,9 +296,9 @@
                     </div>
 
                     <!-- TAB 3: Pivot Harian -->
-                    <div id="tab-pivot-absensi" class="tab-content" style="display:none">
+                    <div id="tab-pivot-absensi" class="tab-content aca-inline-15">
                         <!-- Filter + Grid Pivot -->
-                        <div class="filter-bar" style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <div class="filter-bar aca-inline-16">
                             <select id="filter-kelas-rekap-absensi" class="input-control"><option value="">-- Pilih Kelas --</option></select>
                             <input type="date" id="filter-dari-absensi" class="input-control">
                             <input type="date" id="filter-sampai-absensi" class="input-control">
@@ -307,7 +307,7 @@
                             </select>
                             <button id="btn-lihat-rekap-absensi-harian" class="btn-primary">Tampilkan</button>
                         </div>
-                        <div class="card glass" style="overflow-x:auto">
+                        <div class="card glass aca-inline-17">
                             <table class="data-table">
                                 <thead id="thead-pivot-absensi">
                                     <tr><th>Memuat...</th></tr>
@@ -318,23 +318,23 @@
                     </div>
 
                     <!-- TAB 4: Export Excel (kode lama dipertahankan) -->
-                    <div id="tab-export-absensi" class="tab-content" style="display:none">
-                        <div class="card glass" style="margin-bottom: 20px;">
-                            <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Export Rekap Absensi Bulanan</h2>
-                            <div style="display:flex;flex-wrap:wrap;gap: 15px; flex-wrap: wrap; align-items: flex-end;">
-                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                    <div id="tab-export-absensi" class="tab-content aca-inline-15">
+                        <div class="card glass aca-inline-18">
+                            <h2 class="aca-inline-91">Export Rekap Absensi Bulanan</h2>
+                            <div class="aca-inline-92">
+                                <div class="form-group aca-inline-19">
                                     <label>Tahun Ajaran</label>
                                     <select id="export-tahun" class="input-control">
                                         <option value="">-- Pilih Tahun --</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <div class="form-group aca-inline-19">
                                     <label>Semester</label>
                                     <select id="export-semester" class="input-control">
                                         <option value="">-- Pilih Semester --</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <div class="form-group aca-inline-19">
                                     <label>Bulan</label>
                                     <select id="export-bulan" class="input-control">
                                         <option value="1">Januari</option>
@@ -351,19 +351,19 @@
                                         <option value="12">Desember</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <div class="form-group aca-inline-19">
                                     <label>Kelas</label>
                                     <select id="export-kelas" class="input-control">
                                         <option value="">-- Pilih Kelas --</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <div class="form-group aca-inline-19">
                                     <label>Mapel (Opsional)</label>
                                     <select id="export-mapel" class="input-control">
                                         <option value="">Semua Mapel (Harian)</option>
                                     </select>
                                 </div>
-                                <button id="btn-export-excel" class="btn btn-outline" style="color: var(--success); border-color: var(--success); height: 41px;">
+                                <button id="btn-export-excel" class="btn btn-outline aca-inline-20">
                                     📥 Export Excel
                                 </button>
                             </div>
@@ -373,13 +373,13 @@
                 </section>
 
                 <!-- Nilai Section -->
-                <section id="nilai" class="page-section" style="display: none;">
+                <section id="nilai" class="page-section aca-inline-11">
                     <h1>Manajemen Nilai & Rapor</h1>
                     
                     <!-- Form Input Nilai -->
-                    <div class="card glass" style="margin-bottom: 20px;">
-                        <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Input Nilai Baru</h2>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div class="card glass aca-inline-18">
+                        <h2 class="aca-inline-91">Input Nilai Baru</h2>
+                        <div class="aca-inline-93">
                             <div class="form-group">
                                 <label>Pilih Kelas</label>
                                 <select id="select-kelas-nilai" class="input-control">
@@ -412,27 +412,27 @@
                                 <input type="number" id="input-angka-nilai" class="input-control" min="0" max="100" placeholder="0">
                             </div>
                         </div>
-                        <button id="btn-simpan-nilai" class="btn-primary" style="margin-top: 15px;">Simpan Nilai</button>
-                        <div id="status-simpan-nilai" style="margin-top: 10px; font-size: 14px; font-weight: 500;"></div>
+                        <button id="btn-simpan-nilai" class="btn-primary aca-inline-21">Simpan Nilai</button>
+                        <div id="status-simpan-nilai" class="aca-inline-84"></div>
                     </div>
 
                     <!-- Tampilan Rapor Sederhana -->
                     <div class="card glass">
-                        <h2 style="font-size: 16px; margin-bottom: 15px; color: var(--text-main);">Lihat Rekap Nilai Siswa (Rapor)</h2>
-                        <div style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 15px; flex-wrap: wrap; align-items: flex-end;">
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                        <h2 class="aca-inline-91">Lihat Rekap Nilai Siswa (Rapor)</h2>
+                        <div class="aca-inline-94">
+                            <div class="form-group aca-inline-19">
                                 <label>Kelas</label>
                                 <select id="filter-kelas-rekap" class="input-control">
                                     <option value="">-- Pilih --</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 200px;">
+                            <div class="form-group aca-inline-22">
                                 <label>Siswa</label>
                                 <select id="filter-siswa-rekap" class="input-control" disabled>
                                     <option value="">-- Pilih --</option>
                                 </select>
                             </div>
-                            <button id="btn-lihat-rekap" class="btn-primary" style="height: 41px;">Tampilkan</button>
+                            <button id="btn-lihat-rekap" class="btn-primary aca-inline-23">Tampilkan</button>
                         </div>
                         <div class="table-responsive">
                             <table class="data-table">
@@ -443,11 +443,11 @@
                                         <th>UH</th>
                                         <th>UTS</th>
                                         <th>UAS</th>
-                                        <th style="color: var(--primary);">Rata-rata</th>
+                                        <th class="aca-inline-95">Rata-rata</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-rekap-nilai">
-                                    <tr><td colspan="6" style="text-align: center;">Pilih siswa untuk melihat nilai.</td></tr>
+                                    <tr><td colspan="6" class="aca-inline-77">Pilih siswa untuk melihat nilai.</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -455,33 +455,33 @@
                 </section>
 
                 <!-- Jadwal Section -->
-                <section id="jadwal" class="page-section" style="display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <section id="jadwal" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
                         <h1>Jadwal Pelajaran</h1>
-                        <button id="btn-tambah-jadwal" class="btn-primary" style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 1.2rem;">+</span> Tambah Jadwal
+                        <button id="btn-tambah-jadwal" class="btn-primary aca-inline-24">
+                            <span class="aca-inline-96">+</span> Tambah Jadwal
                         </button>
                     </div>
 
                     <div class="card glass">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px;">
-                            <div class="form-group" style="margin-bottom: 0;">
+                        <div class="aca-inline-97">
+                            <div class="form-group aca-inline-25">
                                 <label>Cari Guru</label>
                                 <input type="text" id="filter-jadwal-guru" class="input-control" placeholder="Nama guru...">
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group aca-inline-25">
                                 <label>Cari Kelas</label>
                                 <input type="text" id="filter-jadwal-kelas" class="input-control" placeholder="Nama kelas...">
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group aca-inline-25">
                                 <label>Cari Mapel</label>
                                 <input type="text" id="filter-jadwal-mapel" class="input-control" placeholder="Nama mapel...">
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group aca-inline-25">
                                 <label>Cari Ruangan</label>
                                 <input type="text" id="filter-jadwal-ruangan" class="input-control" placeholder="Ruangan...">
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group aca-inline-25">
                                 <label>Hari</label>
                                 <select id="filter-jadwal-hari" class="input-control">
                                     <option value="">-- Semua --</option>
@@ -493,7 +493,7 @@
                                     <option value="Sabtu">Sabtu</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group aca-inline-25">
                                 <label>Semester</label>
                                 <select id="filter-jadwal-semester" class="input-control">
                                     <option value="">-- Semua --</option>
@@ -501,7 +501,7 @@
                                     <option value="Genap">Genap</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group aca-inline-25">
                                 <label>Status</label>
                                 <select id="filter-jadwal-status" class="input-control">
                                     <option value="">-- Semua --</option>
@@ -528,7 +528,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-jadwal">
-                                    <tr><td colspan="9" style="text-align: center;">Memuat jadwal dari database...</td></tr>
+                                    <tr><td colspan="9" class="aca-inline-77">Memuat jadwal dari database...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -536,16 +536,16 @@
                 </section>
 
                 <!-- Data Siswa Section -->
-                <section id="data-siswa" class="page-section" style="display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <section id="data-siswa" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
                         <h1>Master Data Siswa</h1>
                         <button id="btn-add-siswa" class="btn-primary">Tambah Siswa</button>
                     </div>
 
                     <div class="card glass">
                         <!-- Filters -->
-                        <div style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                        <div class="aca-inline-16">
+                            <div class="form-group aca-inline-19">
                                 <label>Status</label>
                                 <select id="filter-status-siswa" class="input-control">
                                     <option value="">Semua Status</option>
@@ -553,13 +553,13 @@
                                     <option value="Nonaktif">Nonaktif</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                            <div class="form-group aca-inline-19">
                                 <label>Kelas</label>
                                 <select id="filter-kelas-siswa" class="input-control">
                                     <option value="">Semua Kelas</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                            <div class="form-group aca-inline-26">
                                 <label>Cari Nama / NIS</label>
                                 <input type="text" id="filter-search-siswa" class="input-control" placeholder="Cari nama atau nis...">
                             </div>
@@ -569,25 +569,25 @@
                             <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 50px;">No</th>
+                                        <th class="aca-inline-98">No</th>
                                         <th>NIS</th>
                                         <th>Nama Lengkap</th>
                                         <th>L/P</th>
                                         <th>Kelas</th>
                                         <th>Status</th>
-                                        <th style="text-align: right;">Aksi</th>
+                                        <th class="aca-inline-99">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-siswa">
-                                    <tr><td colspan="7" style="text-align: center;">Memuat data siswa...</td></tr>
+                                    <tr><td colspan="7" class="aca-inline-77">Memuat data siswa...</td></tr>
                                 </tbody>
                             </table>
                         </div>
 
                         <!-- Pagination -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; font-size: 0.9rem;">
+                        <div class="aca-inline-100">
                             <div id="siswa-info">Menampilkan 0 dari 0 data</div>
-                            <div style="display:flex;flex-wrap:wrap;gap: 5px;" id="siswa-pagination">
+                            <div class="aca-inline-101" id="siswa-pagination">
                                 <!-- Pagination buttons generated by JS -->
                             </div>
                         </div>
@@ -595,7 +595,7 @@
                 </section>
 
                 <!-- Rapor Section -->
-                <section id="rapor" class="page-section" style="display: none;">
+                <section id="rapor" class="page-section aca-inline-11">
                     <h1>Rapor Digital Siswa</h1>
                     
                     <style>
@@ -618,10 +618,10 @@
                         }
                     </style>
 
-                    <div style="display: grid; grid-template-columns: minmax(250px, 300px) 1fr; gap: 20px; align-items: start;">
+                    <div class="aca-inline-102">
                         <!-- Bagian Kiri: Filter -->
                         <div class="card glass" id="rapor-filter-container">
-                            <h2 style="font-size: 16px; margin-bottom: 15px;">Filter Rapor</h2>
+                            <h2 class="aca-inline-103">Filter Rapor</h2>
                             <div class="form-group">
                                 <label>Tahun Ajaran</label>
                                 <select id="rapor-tahun" class="input-control">
@@ -646,37 +646,37 @@
                                     <option value="">-- Pilih Siswa --</option>
                                 </select>
                             </div>
-                            <button id="btn-tampilkan-rapor" class="btn-primary" style="width: 100%;">Tampilkan Rapor</button>
+                            <button id="btn-tampilkan-rapor" class="btn-primary aca-inline-27">Tampilkan Rapor</button>
                         </div>
                         
                         <!-- Bagian Kanan: Preview Rapor -->
-                        <div class="card glass" id="rapor-preview-container" style="background: #fff; color: #000;">
-                            <div id="rapor-content" style="padding: 20px;">
+                        <div class="card glass" id="rapor-preview-container" class="aca-inline-104">
+                            <div id="rapor-content" class="aca-inline-105">
                                 <!-- Identitas Sekolah & Siswa -->
-                                <div style="display: flex; align-items: center; border-bottom: 2px solid #000; margin-bottom: 20px; padding-bottom: 15px;">
-                                    <div style="flex: 0 0 80px; text-align: center;">
+                                <div class="aca-inline-106">
+                                    <div class="aca-inline-107">
                                         <!-- Placeholder Logo -->
-                                        <div style="width: 70px; height: 70px; border: 1px solid #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">LOGO</div>
+                                        <div class="aca-inline-108">LOGO</div>
                                     </div>
-                                    <div style="flex: 1; text-align: center;">
-                                        <h2 style="margin:0; font-size: 22px; text-transform: uppercase;">LAPORAN HASIL BELAJAR SISWA</h2>
-                                        <h3 style="margin:5px 0 0 0; font-size: 18px; text-transform: uppercase;">SMP ANNIDA INTEGRATED SYSTEM</h3>
-                                        <p style="margin:5px 0 0 0; font-size: 12px;">Jl. Pendidikan No. 1, Kota Cerdas, Indonesia | Telp: (021) 1234567</p>
+                                    <div class="aca-inline-109">
+                                        <h2 class="aca-inline-110">LAPORAN HASIL BELAJAR SISWA</h2>
+                                        <h3 class="aca-inline-111">SMP ANNIDA INTEGRATED SYSTEM</h3>
+                                        <p class="aca-inline-112">Jl. Pendidikan No. 1, Kota Cerdas, Indonesia | Telp: (021) 1234567</p>
                                     </div>
-                                    <div style="flex: 0 0 80px;"></div>
+                                    <div class="aca-inline-113"></div>
                                 </div>
                                 
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; margin-bottom: 20px; font-size: 14px;">
+                                <div class="aca-inline-114">
                                     <div>
-                                        <table style="width: 100%;">
-                                            <tr><td style="width: 120px;">Nama Siswa</td><td>: <strong id="rapor-nama">-</strong></td></tr>
+                                        <table class="aca-inline-27">
+                                            <tr><td class="aca-inline-115">Nama Siswa</td><td>: <strong id="rapor-nama">-</strong></td></tr>
                                             <tr><td>NIS/NISN</td><td>: <span id="rapor-nis">-</span></td></tr>
                                             <tr><td>Wali Kelas</td><td>: <span id="rapor-wali">-</span></td></tr>
                                         </table>
                                     </div>
                                     <div>
-                                        <table style="width: 100%;">
-                                            <tr><td style="width: 120px;">Kelas</td><td>: <strong id="rapor-kelas-lbl">-</strong></td></tr>
+                                        <table class="aca-inline-27">
+                                            <tr><td class="aca-inline-115">Kelas</td><td>: <strong id="rapor-kelas-lbl">-</strong></td></tr>
                                             <tr><td>Semester</td><td>: <span id="rapor-semester-lbl">-</span></td></tr>
                                             <tr><td>Tahun Ajaran</td><td>: <span id="rapor-tahun-lbl">-</span></td></tr>
                                         </table>
@@ -684,86 +684,86 @@
                                 </div>
 
                                 <!-- Tabel Nilai -->
-                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px;" id="rapor-table">
+                                <table class="aca-inline-116" id="rapor-table">
                                     <thead>
-                                        <tr style="background-color: #f2f2f2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;">
-                                            <th style="border: 1px solid #000; padding: 8px; text-align: left;">Mata Pelajaran</th>
-                                            <th style="border: 1px solid #000; padding: 8px; text-align: center; width: 60px;">Nilai</th>
-                                            <th style="border: 1px solid #000; padding: 8px; text-align: center; width: 80px;">Predikat</th>
-                                            <th style="border: 1px solid #000; padding: 8px; text-align: left;">Deskripsi</th>
+                                        <tr class="aca-inline-117">
+                                            <th class="aca-inline-118">Mata Pelajaran</th>
+                                            <th class="aca-inline-119">Nilai</th>
+                                            <th class="aca-inline-120">Predikat</th>
+                                            <th class="aca-inline-118">Deskripsi</th>
                                         </tr>
                                     </thead>
                                     <tbody id="rapor-tbody">
-                                        <tr><td colspan="4" style="border: 1px solid #000; padding: 20px; text-align: center; color: #666;">Silakan pilih siswa dan klik Tampilkan Rapor</td></tr>
+                                        <tr><td colspan="4" class="aca-inline-121">Silakan pilih siswa dan klik Tampilkan Rapor</td></tr>
                                     </tbody>
                                 </table>
 
                                 <!-- Statistik & Kehadiran -->
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; font-size: 14px; margin-bottom: 20px;">
+                                <div class="aca-inline-122">
                                     <!-- Kiri: Statistik Nilai -->
                                     <div>
-                                        <h4 style="margin: 0 0 10px 0; font-size: 14px; border-bottom: 1px solid #000; display: inline-block;">Ringkasan Nilai</h4>
-                                        <table style="width: 100%; border-collapse: collapse;">
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Jumlah Mapel</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-jml-mapel">-</td></tr>
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Nilai Tertinggi</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-max">-</td></tr>
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Nilai Terendah</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-min">-</td></tr>
-                                            <tr><td style="border: 1px solid #000; padding: 5px; font-weight: bold;">Rata-rata</td><td style="border: 1px solid #000; padding: 5px; text-align: center; font-weight: bold;" id="rapor-rata">-</td></tr>
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Predikat Akhir</td><td style="border: 1px solid #000; padding: 5px; text-align: center; font-weight: bold;" id="rapor-predikat-akhir">-</td></tr>
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Ranking Kelas</td><td style="border: 1px solid #000; padding: 5px; text-align: center; font-weight: bold;" id="rapor-rank">-</td></tr>
+                                        <h4 class="aca-inline-123">Ringkasan Nilai</h4>
+                                        <table class="aca-inline-124">
+                                            <tr><td class="aca-inline-125">Jumlah Mapel</td><td class="aca-inline-126" id="rapor-jml-mapel">-</td></tr>
+                                            <tr><td class="aca-inline-125">Nilai Tertinggi</td><td class="aca-inline-126" id="rapor-max">-</td></tr>
+                                            <tr><td class="aca-inline-125">Nilai Terendah</td><td class="aca-inline-126" id="rapor-min">-</td></tr>
+                                            <tr><td class="aca-inline-127">Rata-rata</td><td class="aca-inline-128" id="rapor-rata">-</td></tr>
+                                            <tr><td class="aca-inline-125">Predikat Akhir</td><td class="aca-inline-128" id="rapor-predikat-akhir">-</td></tr>
+                                            <tr><td class="aca-inline-125">Ranking Kelas</td><td class="aca-inline-128" id="rapor-rank">-</td></tr>
                                         </table>
                                     </div>
                                     
                                     <!-- Kanan: Kehadiran & Jurnal -->
                                     <div>
-                                        <h4 style="margin: 0 0 10px 0; font-size: 14px; border-bottom: 1px solid #000; display: inline-block;">Ketidakhadiran & Catatan</h4>
-                                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Hadir</td><td style="border: 1px solid #000; padding: 5px; text-align: center; width: 60px;" id="rapor-hadir">-</td><td style="border: 1px solid #000; padding: 5px; width: 50px;">hari</td></tr>
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Sakit</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-sakit">-</td><td style="border: 1px solid #000; padding: 5px;">hari</td></tr>
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Izin</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-izin">-</td><td style="border: 1px solid #000; padding: 5px;">hari</td></tr>
-                                            <tr><td style="border: 1px solid #000; padding: 5px;">Tanpa Keterangan</td><td style="border: 1px solid #000; padding: 5px; text-align: center;" id="rapor-alpha">-</td><td style="border: 1px solid #000; padding: 5px;">hari</td></tr>
+                                        <h4 class="aca-inline-123">Ketidakhadiran & Catatan</h4>
+                                        <table class="aca-inline-129">
+                                            <tr><td class="aca-inline-125">Hadir</td><td class="aca-inline-130" id="rapor-hadir">-</td><td class="aca-inline-131">hari</td></tr>
+                                            <tr><td class="aca-inline-125">Sakit</td><td class="aca-inline-126" id="rapor-sakit">-</td><td class="aca-inline-125">hari</td></tr>
+                                            <tr><td class="aca-inline-125">Izin</td><td class="aca-inline-126" id="rapor-izin">-</td><td class="aca-inline-125">hari</td></tr>
+                                            <tr><td class="aca-inline-125">Tanpa Keterangan</td><td class="aca-inline-126" id="rapor-alpha">-</td><td class="aca-inline-125">hari</td></tr>
                                         </table>
-                                        <div style="border: 1px solid #000; padding: 10px; text-align: center;">
-                                            <div style="font-size: 12px; margin-bottom: 5px;">Total Jurnal Terkait Kelas:</div>
-                                            <div style="font-size: 18px; font-weight: bold;" id="rapor-jurnal-count">-</div>
+                                        <div class="aca-inline-132">
+                                            <div class="aca-inline-133">Total Jurnal Terkait Kelas:</div>
+                                            <div class="aca-inline-134" id="rapor-jurnal-count">-</div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Tanda Tangan -->
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; font-size: 14px; text-align: center; margin-top: 30px;">
+                                <div class="aca-inline-135">
                                     <div>
-                                        <p style="margin: 0 0 60px 0;">Mengetahui,<br>Orang Tua / Wali Siswa</p>
-                                        <p style="margin: 0; font-weight: bold; text-decoration: underline;">( ........................................... )</p>
+                                        <p class="aca-inline-136">Mengetahui,<br>Orang Tua / Wali Siswa</p>
+                                        <p class="aca-inline-137">( ........................................... )</p>
                                     </div>
                                     <div>
-                                        <p style="margin: 0 0 60px 0;" id="rapor-date-lbl">Jakarta, -<br>Wali Kelas</p>
-                                        <p style="margin: 0; font-weight: bold; text-decoration: underline;" id="rapor-ttd-wali">( ........................................... )</p>
+                                        <p class="aca-inline-136" id="rapor-date-lbl">Jakarta, -<br>Wali Kelas</p>
+                                        <p class="aca-inline-137" id="rapor-ttd-wali">( ........................................... )</p>
                                     </div>
                                 </div>
-                                <div style="display: flex; justify-content: center; font-size: 14px; text-align: center; margin-top: 40px;">
+                                <div class="aca-inline-138">
                                     <div>
-                                        <p style="margin: 0 0 60px 0;">Mengesahkan,<br>Kepala Sekolah</p>
-                                        <p style="margin: 0; font-weight: bold; text-decoration: underline;">Dr. Ahmad Fathoni, M.Pd.</p>
+                                        <p class="aca-inline-136">Mengesahkan,<br>Kepala Sekolah</p>
+                                        <p class="aca-inline-137">Dr. Ahmad Fathoni, M.Pd.</p>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div style="margin-top: 20px; text-align: right; border-top: 1px solid var(--border-color); padding-top: 15px;">
-                                <button id="btn-cetak-rapor" class="btn-primary" style="display: inline-flex; align-items: center; gap: 8px;" disabled>🖨️ Cetak PDF</button>
+                            <div class="aca-inline-139">
+                                <button id="btn-cetak-rapor" class="btn-primary aca-inline-28" disabled>🖨️ Cetak PDF</button>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 <!-- Jurnal Guru Section -->
-                <section id="jurnal-guru" class="page-section" style="display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <section id="jurnal-guru" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
                         <h1>Jurnal Guru</h1>
                         <button id="btn-jurnal-save" class="btn-primary" disabled>Simpan Jurnal</button>
                     </div>
                     
                     <div class="card glass">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                        <div class="aca-inline-140">
                             <div class="form-group">
                                 <label>Tanggal</label>
                                 <input type="date" id="jurnal-date" class="input-control">
@@ -786,24 +786,24 @@
                             </div>
                         </div>
                         
-                        <div class="form-group" style="margin-bottom: 15px;">
+                        <div class="form-group aca-inline-29">
                             <label>Materi Pokok</label>
                             <input type="text" id="jurnal-material" class="input-control" placeholder="Masukkan materi utama yang diajarkan">
                         </div>
                         
-                        <div class="form-group" style="margin-bottom: 0;">
+                        <div class="form-group aca-inline-25">
                               <label>Catatan Kegiatan / Hambatan</label>
-                              <textarea id="jurnal-notes" class="input-control" rows="4" placeholder="Masukkan rincian kegiatan atau catatan khusus..." style="resize: vertical;"></textarea>
+                              <textarea id="jurnal-notes" class="input-control" rows="4" placeholder="Masukkan rincian kegiatan atau catatan khusus..." class="aca-inline-141"></textarea>
                           </div>
                       </div>
 
                       <!-- Riwayat Jurnal -->
-                      <div class="card glass" style="margin-top: 25px;">
-                          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
-                              <h2 style="font-size: 1.2rem; margin: 0;">Riwayat Jurnal (Bulan Ini)</h2>
-                              <div style="display: flex; gap: 10px;">
-                                  <select id="jurnal-filter-teacher" class="input-control" style="width: auto; display: none;"><option value="">Semua Guru</option></select><input type="month" id="jurnal-filter-month" class="input-control" style="width: auto;">
-                                  <button id="btn-jurnal-export" class="btn-primary" style="background-color: var(--success); border-color: var(--success);">
+                      <div class="card glass aca-inline-30">
+                          <div class="aca-inline-142">
+                              <h2 class="aca-inline-143">Riwayat Jurnal (Bulan Ini)</h2>
+                              <div class="aca-inline-144">
+                                  <select id="jurnal-filter-teacher" class="input-control aca-inline-31"><option value="">Semua Guru</option></select><input type="month" id="jurnal-filter-month" class="input-control aca-inline-32">
+                                  <button id="btn-jurnal-export" class="btn-primary aca-inline-33">
                                       📊 Export Excel
                                   </button>
                               </div>
@@ -819,96 +819,96 @@
                                           <th>Mapel</th>
                                           <th>Jam Ke-</th>
                                           <th>Materi Pokok</th>
-                                          <th style="width: 100px; text-align: center;">Aksi</th>
+                                          <th class="aca-inline-145">Aksi</th>
                                       </tr>
                                   </thead>
                                   <tbody id="jurnal-history-tbody">
                                       <tr>
-                                          <td colspan="7" style="text-align: center; color: var(--text-muted);">Memuat riwayat jurnal...</td>
+                                          <td colspan="7" class="aca-inline-146">Memuat riwayat jurnal...</td>
                                       </tr>
                                   </tbody>
                               </table>
                           </div>
                           <!-- P2 Fix: Pagination Controls -->
-                          <div class="pagination" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color);">
-                              <div class="pagination-info" id="jurnal-pagination-info" style="font-size: 0.9rem; color: var(--text-muted);">Memuat halaman...</div>
-                              <div class="pagination-controls" style="display: flex; gap: 5px;">
-                                  <button id="btn-jurnal-prev" class="btn" style="padding: 5px 10px; font-size: 0.9rem;" disabled>&laquo; Prev</button>
-                                  <button id="btn-jurnal-next" class="btn" style="padding: 5px 10px; font-size: 0.9rem;" disabled>Next &raquo;</button>
+                          <div class="pagination aca-inline-34">
+                              <div class="pagination-info" id="jurnal-pagination-info" class="aca-inline-147">Memuat halaman...</div>
+                              <div class="pagination-controls aca-inline-35">
+                                  <button id="btn-jurnal-prev" class="btn aca-inline-36" disabled>&laquo; Prev</button>
+                                  <button id="btn-jurnal-next" class="btn aca-inline-36" disabled>Next &raquo;</button>
                               </div>
                           </div>
                       </div>
                   </section>
 
                 <!-- Absensi Guru Section -->
-                <section id="absensi-guru" class="page-section" style="display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <section id="absensi-guru" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
                         <h1>Absensi Guru</h1>
-                        <input type="date" id="tg-rekap-date" class="input-control" style="display: none; max-width: 200px;">
+                        <input type="date" id="tg-rekap-date" class="input-control aca-inline-37">
                     </div>
                     
-                    <div class="tab-nav" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem;border-bottom:2px solid var(--border-color)">
+                    <div class="tab-nav aca-inline-14">
                         <button class="tab-btn active" data-tab="tg-pribadi" id="btn-tg-tab-pribadi">Absensi Anda</button>
-                        <button class="tab-btn admin-only" data-tab="tg-rekap" id="btn-tg-tab-rekap" style="display: none;">Rekap Harian (Admin)</button>
+                        <button class="tab-btn admin-only" data-tab="tg-rekap" id="btn-tg-tab-rekap" class="aca-inline-11">Rekap Harian (Admin)</button>
                     </div>
 
                     <!-- TAB PRIBADI -->
-                    <div id="tab-tg-pribadi" class="tab-content" style="display: block;">
-                        <div class="card glass" style="max-width: 600px; margin: 0 auto;">
-                            <div style="display:flex;flex-wrap:wrap;gap: 15px; justify-content: center; margin-bottom: 25px;">
-                                <div style="text-align: center; flex: 1;">
-                                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Tanggal</div>
-                                    <div id="tg-date" style="font-size: 1.2rem; font-weight: 600;">-</div>
+                    <div id="tab-tg-pribadi" class="tab-content aca-inline-38">
+                        <div class="card glass aca-inline-39">
+                            <div class="aca-inline-148">
+                                <div class="aca-inline-149">
+                                    <div class="aca-inline-150">Tanggal</div>
+                                    <div id="tg-date" class="aca-inline-151">-</div>
                                 </div>
-                                <div style="text-align: center; flex: 1; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);">
-                                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Jam Masuk</div>
-                                    <div id="tg-checkin-time" style="font-size: 1.2rem; font-weight: 600; color: var(--success);">--:--</div>
+                                <div class="aca-inline-152">
+                                    <div class="aca-inline-150">Jam Masuk</div>
+                                    <div id="tg-checkin-time" class="aca-inline-153">--:--</div>
                                 </div>
-                                <div style="text-align: center; flex: 1;">
-                                    <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px;">Jam Keluar</div>
-                                    <div id="tg-checkout-time" style="font-size: 1.2rem; font-weight: 600; color: var(--danger);">--:--</div>
+                                <div class="aca-inline-149">
+                                    <div class="aca-inline-150">Jam Keluar</div>
+                                    <div id="tg-checkout-time" class="aca-inline-154">--:--</div>
                                 </div>
                             </div>
 
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                            <div class="aca-inline-155">
                                 <div>
-                                    <h3 style="font-size: 0.9rem; text-align: center; margin-bottom: 10px;">Foto Masuk</h3>
-                                    <div id="tg-photo-in-container" style="background: rgba(255, 255, 255, 0.05); border-radius: 12px; overflow: hidden; aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: inset 0 0 20px rgba(255,255,255,0.02);">
-                                        <div id="tg-photo-in-placeholder" style="color: var(--text-muted); font-size: 0.8rem;">Belum ada foto</div>
-                                        <img id="tg-photo-in" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                                    <h3 class="aca-inline-156">Foto Masuk</h3>
+                                    <div id="tg-photo-in-container" class="aca-inline-157">
+                                        <div id="tg-photo-in-placeholder" class="aca-inline-158">Belum ada foto</div>
+                                        <img id="tg-photo-in" src="" class="aca-inline-159">
                                     </div>
                                 </div>
                                 <div>
-                                    <h3 style="font-size: 0.9rem; text-align: center; margin-bottom: 10px;">Foto Keluar</h3>
-                                    <div id="tg-photo-out-container" style="background: rgba(255, 255, 255, 0.05); border-radius: 12px; overflow: hidden; aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: inset 0 0 20px rgba(255,255,255,0.02);">
-                                        <div id="tg-photo-out-placeholder" style="color: var(--text-muted); font-size: 0.8rem;">Belum ada foto</div>
-                                        <img id="tg-photo-out" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                                    <h3 class="aca-inline-156">Foto Keluar</h3>
+                                    <div id="tg-photo-out-container" class="aca-inline-157">
+                                        <div id="tg-photo-out-placeholder" class="aca-inline-158">Belum ada foto</div>
+                                        <img id="tg-photo-out" src="" class="aca-inline-159">
                                     </div>
                                 </div>
                             </div>
 
-                            <div id="tg-camera-container" style="display: none; background: rgba(0, 0, 0, 0.4); border-radius: 12px; min-height: 200px; align-items: center; justify-content: center; margin-bottom: 20px; overflow: hidden; position: relative; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: inset 0 0 30px rgba(0,0,0,0.5);">
-                                <video id="tg-video" style="width: 100%; max-height: 300px; object-fit: cover;" autoplay playsinline></video>
-                                <canvas id="tg-canvas" style="display: none;"></canvas>
+                            <div id="tg-camera-container" class="aca-inline-160">
+                                <video id="tg-video" class="aca-inline-161" autoplay playsinline></video>
+                                <canvas id="tg-canvas" class="aca-inline-11"></canvas>
                             </div>
 
-                            <div style="text-align: center;">
-                                <div style="display:flex;flex-wrap:wrap;gap: 10px; margin-bottom: 10px;">
-                                    <button id="btn-tg-camera" class="btn btn-primary" style="flex: 1;" disabled>Nyalakan Kamera</button>
-                                    <input type="file" id="tg-file-input" accept="image/*" style="display: none;">
+                            <div class="aca-inline-77">
+                                <div class="aca-inline-162">
+                                    <button id="btn-tg-camera" class="btn btn-primary aca-inline-10" disabled>Nyalakan Kamera</button>
+                                    <input type="file" id="tg-file-input" accept="image/*" class="aca-inline-11">
                                 </div>
-                                <div id="tg-status-text" style="color: var(--text-muted); font-size: 0.9rem;">Memuat status absensi...</div>
+                                <div id="tg-status-text" class="aca-inline-163">Memuat status absensi...</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- TAB REKAP (ADMIN ONLY) -->
-                    <div id="tab-tg-rekap" class="tab-content" style="display: none;">
+                    <div id="tab-tg-rekap" class="tab-content aca-inline-11">
                         <div class="card glass">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
-                                <h2 style="font-size: 1.2rem; margin: 0;">Rekap Absensi Guru (Harian)</h2>
-                                <button id="btn-tg-export-excel" class="btn btn-outline" style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="font-size: 1.1rem;">📊</span> Export Excel
+                            <div class="aca-inline-142">
+                                <h2 class="aca-inline-143">Rekap Absensi Guru (Harian)</h2>
+                                <button id="btn-tg-export-excel" class="btn btn-outline aca-inline-24">
+                                    <span class="aca-inline-164">📊</span> Export Excel
                                 </button>
                             </div>
                             <div class="table-responsive">
@@ -917,16 +917,16 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Guru</th>
-                                            <th style="text-align: center;">Jam Masuk</th>
-                                            <th style="text-align: center;">Foto Masuk</th>
-                                            <th style="text-align: center;">Jam Keluar</th>
-                                            <th style="text-align: center;">Foto Keluar</th>
-                                            <th style="text-align: center;">Lokasi</th>
-                                            <th style="text-align: center;">Status</th><th style="text-align: center;">Aksi</th>
+                                            <th class="aca-inline-77">Jam Masuk</th>
+                                            <th class="aca-inline-77">Foto Masuk</th>
+                                            <th class="aca-inline-77">Jam Keluar</th>
+                                            <th class="aca-inline-77">Foto Keluar</th>
+                                            <th class="aca-inline-77">Lokasi</th>
+                                            <th class="aca-inline-77">Status</th><th class="aca-inline-77">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tg-rekap-tbody">
-                                        <tr><td colspan="7" style="text-align: center; padding: 20px; color: var(--text-muted);">Memuat rekap...</td></tr>
+                                        <tr><td colspan="7" class="aca-inline-78">Memuat rekap...</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -935,16 +935,16 @@
                 </section>
 
                 <!-- Guru Section -->
-                <section id="guru" class="page-section" style="display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <section id="guru" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
                         <h1>Master Data Guru</h1>
                         <button id="btn-add-guru" class="btn-primary">Tambah Guru</button>
                     </div>
 
                     <div class="card glass">
                         <!-- Filters -->
-                        <div style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                        <div class="aca-inline-16">
+                            <div class="form-group aca-inline-19">
                                 <label>Status</label>
                                 <select id="filter-status-guru" class="input-control">
                                     <option value="">Semua Status</option>
@@ -952,19 +952,19 @@
                                     <option value="Nonaktif">Nonaktif</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                            <div class="form-group aca-inline-19">
                                 <label>Mata Pelajaran</label>
                                 <select id="filter-mapel-guru" class="input-control">
                                     <option value="">Semua Mapel</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                            <div class="form-group aca-inline-19">
                                 <label>Wali Kelas</label>
                                 <select id="filter-wali-guru" class="input-control">
                                     <option value="">Semua Kelas</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                            <div class="form-group aca-inline-26">
                                 <label>Cari Nama / NIP</label>
                                 <input type="text" id="filter-search-guru" class="input-control" placeholder="Cari nama atau nip...">
                             </div>
@@ -974,17 +974,17 @@
                             <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 50px;">No</th>
+                                        <th class="aca-inline-98">No</th>
                                         <th>NIP</th>
                                         <th>Nama</th>
                                         <th>Mapel</th>
                                         <th>Wali Kelas</th>
                                         <th>Status</th>
-                                        <th style="text-align: center; width: 150px;">Aksi</th>
+                                        <th class="aca-inline-165">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-guru">
-                                    <tr><td colspan="7" style="text-align: center;">Memuat data guru...</td></tr>
+                                    <tr><td colspan="7" class="aca-inline-77">Memuat data guru...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -992,16 +992,16 @@
                 </section>
 
                 <!-- Mata Pelajaran Section -->
-                <section id="mata-pelajaran" class="page-section" style="display: none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <section id="mata-pelajaran" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
                         <h1>Master Mata Pelajaran</h1>
                         <button id="btn-add-mapel" class="btn-primary">Tambah Mapel</button>
                     </div>
 
                     <div class="card glass">
                         <!-- Filters -->
-                        <div style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                        <div class="aca-inline-16">
+                            <div class="form-group aca-inline-19">
                                 <label>Status</label>
                                 <select id="filter-status-mapel" class="input-control">
                                     <option value="">Semua Status</option>
@@ -1009,7 +1009,7 @@
                                     <option value="Nonaktif">Nonaktif</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                            <div class="form-group aca-inline-19">
                                 <label>Kelompok</label>
                                 <select id="filter-kelompok-mapel" class="input-control">
                                     <option value="">Semua Kelompok</option>
@@ -1019,13 +1019,13 @@
                                     <option value="Mulok">Muatan Lokal</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                            <div class="form-group aca-inline-19">
                                 <label>Guru Pengampu</label>
                                 <select id="filter-guru-mapel" class="input-control">
                                     <option value="">Semua Guru</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                            <div class="form-group aca-inline-26">
                                 <label>Cari Nama / Kode</label>
                                 <input type="text" id="filter-search-mapel" class="input-control" placeholder="Cari nama atau kode mapel...">
                             </div>
@@ -1035,19 +1035,19 @@
                             <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 50px;">No</th>
+                                        <th class="aca-inline-98">No</th>
                                         <th>Kode</th>
                                         <th>Nama</th>
                                         <th>Guru Pengampu</th>
                                         <th>Kelompok</th>
-                                        <th style="text-align: center;">KKM</th>
-                                        <th style="text-align: center;">Jam</th>
-                                        <th style="text-align: center;">Status</th><th style="text-align: center;">Aksi</th>
-                                        <th style="text-align: center; width: 150px;">Aksi</th>
+                                        <th class="aca-inline-77">KKM</th>
+                                        <th class="aca-inline-77">Jam</th>
+                                        <th class="aca-inline-77">Status</th><th class="aca-inline-77">Aksi</th>
+                                        <th class="aca-inline-165">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-mapel">
-                                    <tr><td colspan="9" style="text-align: center;">Memuat data mata pelajaran...</td></tr>
+                                    <tr><td colspan="9" class="aca-inline-77">Memuat data mata pelajaran...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1055,11 +1055,11 @@
                 </section>
 
                 <!-- Kelas Section -->
-                <section id="kelas" class="page-section" style="display: none;">
-                    <div style="display: grid; grid-template-columns: 1fr; gap: 30px;">
+                <section id="kelas" class="page-section aca-inline-11">
+                    <div class="aca-inline-166">
                         <!-- Bagian Tahun Ajaran -->
                         <div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <div class="aca-inline-56">
                                 <h1>Master Tahun Ajaran</h1>
                                 <button id="btn-add-tahun" class="btn-primary">Tambah Tahun Ajaran</button>
                             </div>
@@ -1068,33 +1068,33 @@
                                     <table class="data-table">
                                         <thead>
                                             <tr>
-                                                <th style="width: 50px;">No</th>
+                                                <th class="aca-inline-98">No</th>
                                                 <th>Tahun Ajaran</th>
                                                 <th>Semester</th>
                                                 <th>Status</th>
-                                                <th style="text-align: center; width: 150px;">Aksi</th>
+                                                <th class="aca-inline-165">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tbody-tahun">
-                                            <tr><td colspan="5" style="text-align: center;">Memuat data tahun ajaran...</td></tr>
+                                            <tr><td colspan="5" class="aca-inline-77">Memuat data tahun ajaran...</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
 
-                        <hr style="border: 0; border-top: 1px solid var(--border-color);">
+                        <hr class="aca-inline-167">
 
                         <!-- Bagian Master Kelas -->
                         <div>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <div class="aca-inline-56">
                                 <h1>Master Kelas</h1>
                                 <button id="btn-add-kelas" class="btn-primary">Tambah Kelas</button>
                             </div>
                             <div class="card glass">
                                 <!-- Filters -->
-                                <div style="display:flex;flex-wrap:wrap;gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                                    <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                <div class="aca-inline-16">
+                                    <div class="form-group aca-inline-19">
                                         <label>Tingkat</label>
                                         <select id="filter-tingkat-kelas" class="input-control">
                                             <option value="">Semua Tingkat</option>
@@ -1103,7 +1103,7 @@
                                             <option value="9">Kelas 9</option>
                                         </select>
                                     </div>
-                                    <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                    <div class="form-group aca-inline-19">
                                         <label>Status</label>
                                         <select id="filter-status-kelas" class="input-control">
                                             <option value="">Semua Status</option>
@@ -1111,13 +1111,13 @@
                                             <option value="Nonaktif">Nonaktif</option>
                                         </select>
                                     </div>
-                                    <div class="form-group" style="margin-bottom: 0; min-width: 150px;">
+                                    <div class="form-group aca-inline-19">
                                         <label>Wali Kelas</label>
                                         <select id="filter-wali-kelas" class="input-control">
                                             <option value="">Semua Wali Kelas</option>
                                         </select>
                                     </div>
-                                    <div class="form-group" style="margin-bottom: 0; flex: 1;">
+                                    <div class="form-group aca-inline-26">
                                         <label>Cari Nama Kelas</label>
                                         <input type="text" id="filter-search-kelas" class="input-control" placeholder="Cari nama kelas...">
                                     </div>
@@ -1127,18 +1127,18 @@
                                     <table class="data-table">
                                         <thead>
                                             <tr>
-                                                <th style="width: 50px;">No</th>
+                                                <th class="aca-inline-98">No</th>
                                                 <th>Nama Kelas</th>
-                                                <th style="text-align: center;">Tingkat</th>
+                                                <th class="aca-inline-77">Tingkat</th>
                                                 <th>Wali Kelas</th>
-                                                <th style="text-align: center;">Ruangan</th>
-                                                <th style="text-align: center;">Kapasitas</th>
-                                                <th style="text-align: center;">Status</th><th style="text-align: center;">Aksi</th>
-                                                <th style="text-align: center; width: 150px;">Aksi</th>
+                                                <th class="aca-inline-77">Ruangan</th>
+                                                <th class="aca-inline-77">Kapasitas</th>
+                                                <th class="aca-inline-77">Status</th><th class="aca-inline-77">Aksi</th>
+                                                <th class="aca-inline-165">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tbody-kelas">
-                                            <tr><td colspan="8" style="text-align: center;">Memuat data kelas...</td></tr>
+                                            <tr><td colspan="8" class="aca-inline-77">Memuat data kelas...</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -1148,45 +1148,45 @@
                 </section>
 
                 <!-- Data Migration Section -->
-                <section id="data-migration" class="page-section" style="display: none;">
+                <section id="data-migration" class="page-section aca-inline-11">
                     
                     <!-- Readiness Banner -->
-                    <div id="db-readiness-banner" class="card glass" style="margin-bottom: 20px; text-align: center; border-left: 5px solid var(--danger);">
-                        <h1 style="margin: 0; font-size: 1.8rem;" id="db-readiness-status">🔴 DATABASE STATUS: NOT READY</h1>
-                        <p style="margin-top: 10px; color: var(--text-muted);" id="db-readiness-desc">
+                    <div id="db-readiness-banner" class="card glass aca-inline-40">
+                        <h1 class="aca-inline-168" id="db-readiness-status">🔴 DATABASE STATUS: NOT READY</h1>
+                        <p class="aca-inline-169" id="db-readiness-desc">
                             Sistem belum siap untuk production. Selesaikan seluruh tahapan import di bawah ini.
                         </p>
-                        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px; font-size: 0.9rem;">
+                        <div class="aca-inline-170">
                             <span>Master Data: <strong id="rb-master-count">0</strong></span>
-                            <span style="color: var(--danger);">Errors: <strong id="rb-error-count">0</strong></span>
-                            <span style="color: var(--warning);">Orphans: <strong id="rb-orphan-count">0</strong></span>
-                            <span style="color: var(--text-muted);">Duplicates: <strong id="rb-duplicate-count">0</strong></span>
+                            <span class="aca-inline-64">Errors: <strong id="rb-error-count">0</strong></span>
+                            <span class="aca-inline-171">Orphans: <strong id="rb-orphan-count">0</strong></span>
+                            <span class="aca-inline-172">Duplicates: <strong id="rb-duplicate-count">0</strong></span>
                         </div>
                     </div>
 
                     <!-- Database Health Checker -->
-                    <div class="card glass" style="margin-bottom: 30px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h2 style="font-size: 1.2rem; margin: 0;">Database Health Checker</h2>
-                            <button id="btn-run-integrity" class="btn-primary" style="font-size: 0.85rem; padding: 6px 12px;">Run Integrity Check</button>
+                    <div class="card glass aca-inline-4">
+                        <div class="aca-inline-173">
+                            <h2 class="aca-inline-143">Database Health Checker</h2>
+                            <button id="btn-run-integrity" class="btn-primary aca-inline-41">Run Integrity Check</button>
                         </div>
-                        <div class="dashboard-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
-                            <div class="card glass"><h3 style="font-size: 0.85rem;">Teachers</h3><p class="number" id="hc-teachers">0</p></div>
-                            <div class="card glass"><h3 style="font-size: 0.85rem;">Students</h3><p class="number" id="hc-students">0</p></div>
-                            <div class="card glass"><h3 style="font-size: 0.85rem;">Subjects</h3><p class="number" id="hc-subjects">0</p></div>
-                            <div class="card glass"><h3 style="font-size: 0.85rem;">Classes</h3><p class="number" id="hc-classes">0</p></div>
-                            <div class="card glass"><h3 style="font-size: 0.85rem;">Academic Years</h3><p class="number" id="hc-years">0</p></div>
-                            <div class="card glass"><h3 style="font-size: 0.85rem;">Schedules</h3><p class="number" id="hc-schedules">0</p></div>
+                        <div class="dashboard-cards aca-inline-42">
+                            <div class="card glass"><h3 class="aca-inline-174">Teachers</h3><p class="number" id="hc-teachers">0</p></div>
+                            <div class="card glass"><h3 class="aca-inline-174">Students</h3><p class="number" id="hc-students">0</p></div>
+                            <div class="card glass"><h3 class="aca-inline-174">Subjects</h3><p class="number" id="hc-subjects">0</p></div>
+                            <div class="card glass"><h3 class="aca-inline-174">Classes</h3><p class="number" id="hc-classes">0</p></div>
+                            <div class="card glass"><h3 class="aca-inline-174">Academic Years</h3><p class="number" id="hc-years">0</p></div>
+                            <div class="card glass"><h3 class="aca-inline-174">Schedules</h3><p class="number" id="hc-schedules">0</p></div>
                         </div>
                     </div>
 
                     <!-- Migration Wizard -->
-                    <div class="card glass" style="margin-bottom: 30px;">
-                        <h2 style="font-size: 1.2rem; margin-bottom: 15px;">Import Wizard</h2>
-                        <p style="margin-bottom: 20px; font-size: 0.9rem; color: var(--text-muted);">Import harus dilakukan secara berurutan. Pilih file Excel Anda untuk memulai.</p>
+                    <div class="card glass aca-inline-4">
+                        <h2 class="aca-inline-73">Import Wizard</h2>
+                        <p class="aca-inline-175">Import harus dilakukan secara berurutan. Pilih file Excel Anda untuk memulai.</p>
                         
-                        <div style="display:flex;flex-wrap:wrap;gap: 15px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color);">
-                            <div class="form-group" style="margin-bottom: 0; min-width: 250px;">
+                        <div class="aca-inline-176">
+                            <div class="form-group aca-inline-43">
                                 <label>Pilih Tahap Import</label>
                                 <select id="dm-type" class="input-control">
                                     <option value="">-- Pilih Langkah --</option>
@@ -1199,40 +1199,40 @@
                                 </select>
                             </div>
                             <button id="btn-dm-download" type="button" class="btn btn-outline" disabled>Download Template</button>
-                            <label class="btn btn-outline" style="cursor: pointer; margin: 0;" id="label-dm-upload">
+                            <label class="btn btn-outline aca-inline-44" id="label-dm-upload">
                                 Upload Excel
-                                <input type="file" id="dm-upload" accept=".xlsx, .xls" style="display: none;" disabled>
+                                <input type="file" id="dm-upload" accept=".xlsx, .xls" class="aca-inline-11" disabled>
                             </label>
                         </div>
 
                         <!-- Panel Aksi Import -->
-                        <div id="panel-import-action" style="display: none;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                <h3 style="font-size: 1rem; margin: 0;">Preview Data</h3>
-                                <div style="display:flex;flex-wrap:wrap;gap: 10px;">
+                        <div id="panel-import-action" class="aca-inline-11">
+                            <div class="aca-inline-173">
+                                <h3 class="aca-inline-177">Preview Data</h3>
+                                <div class="aca-inline-178">
                                     <button id="btn-dm-clear" class="btn btn-outline">Clear Preview</button>
                                     <button id="btn-dm-import" class="btn-primary">Import Data Sekarang</button>
                                 </div>
                             </div>
                             
-                            <div class="form-group" id="dm-duplicate-strategy-container" style="display: none; margin-bottom: 15px;">
+                            <div class="form-group" id="dm-duplicate-strategy-container" class="aca-inline-179">
                                 <label>Strategi Duplikasi (Bila ada data sama)</label>
-                                <select id="dm-duplicate-strategy" class="input-control" style="max-width: 250px;">
+                                <select id="dm-duplicate-strategy" class="input-control aca-inline-45">
                                     <option value="skip">Lewati (Skip)</option>
                                     <option value="update">Update Existing (Upsert)</option>
                                     <option value="cancel">Batalkan Import</option>
                                 </select>
                             </div>
 
-                            <div style="display:flex;flex-wrap:wrap;gap: 15px; font-size: 0.9rem; margin-bottom: 15px;">
+                            <div class="aca-inline-180">
                                 <span>Total: <strong id="prev-total">0</strong></span>
-                                <span style="color: var(--success);">Valid: <strong id="prev-valid">0</strong></span>
-                                <span style="color: var(--warning);">Update: <strong id="prev-update">0</strong></span>
-                                <span style="color: var(--danger);">Error: <strong id="prev-error">0</strong></span>
-                                <span style="color: var(--text-muted);">Duplicate: <strong id="prev-duplicate">0</strong></span>
+                                <span class="aca-inline-63">Valid: <strong id="prev-valid">0</strong></span>
+                                <span class="aca-inline-171">Update: <strong id="prev-update">0</strong></span>
+                                <span class="aca-inline-64">Error: <strong id="prev-error">0</strong></span>
+                                <span class="aca-inline-172">Duplicate: <strong id="prev-duplicate">0</strong></span>
                             </div>
 
-                            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <div class="table-responsive aca-inline-46">
                                 <table class="data-table">
                                     <thead><tr id="prev-thead"></tr></thead>
                                     <tbody id="prev-tbody"></tbody>
@@ -1242,19 +1242,19 @@
                     </div>
 
                     <!-- Progress & Log -->
-                    <div id="dm-progress-container" class="card glass" style="margin-bottom: 30px; display: none;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h2 style="font-size: 1.2rem; margin: 0;">Progress Import</h2>
-                            <button id="btn-download-error-report" class="btn btn-danger" style="display: none; font-size: 0.8rem; padding: 4px 10px;">Download Error Report (Excel)</button>
+                    <div id="dm-progress-container" class="card glass aca-inline-47">
+                        <div class="aca-inline-173">
+                            <h2 class="aca-inline-143">Progress Import</h2>
+                            <button id="btn-download-error-report" class="btn btn-danger aca-inline-48">Download Error Report (Excel)</button>
                         </div>
-                        <div style="width: 100%; background: var(--border-color); height: 20px; border-radius: 10px; overflow: hidden; margin-bottom: 10px;">
-                            <div id="dm-progress-bar" style="width: 0%; background: var(--primary); height: 100%; transition: width 0.3s ease;"></div>
+                        <div class="aca-inline-181">
+                            <div id="dm-progress-bar" class="aca-inline-182"></div>
                         </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <div class="aca-inline-183">
                             <span id="dm-progress-text">0%</span>
                             <span id="dm-progress-stats">0 / 0</span>
                         </div>
-                        <div id="dm-import-log" style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 8px; max-height: 300px; overflow-y: auto; font-family: monospace; font-size: 0.85rem;">
+                        <div id="dm-import-log" class="aca-inline-184">
                         </div>
                     </div>
                 </section>
@@ -1263,13 +1263,13 @@
     </div>
 
     <!-- Modal Form Guru -->
-    <div id="modal-guru" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div class="modal-content card glass" style="width: 100%; max-width: 600px; padding: 25px; border-radius: 12px; margin: 20px;">
-            <h2 id="modal-guru-title" style="margin-bottom: 20px;">Tambah Guru</h2>
+    <div id="modal-guru" class="modal aca-inline-49">
+        <div class="modal-content card glass aca-inline-50">
+            <h2 id="modal-guru-title" class="aca-inline-18">Tambah Guru</h2>
             <form id="form-guru">
                 <input type="hidden" id="guru-id">
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                <div class="aca-inline-185">
                     <div class="form-group">
                         <label>NIP</label>
                         <input type="text" id="guru-nip" class="input-control" placeholder="Nomor Induk Pegawai" required>
@@ -1314,15 +1314,15 @@
                             <option value="">-- Pilih Mapel --</option>
                         </select>
                     </div>
-                    <div class="form-group" style="grid-column: span 2;">
-                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                            <input type="checkbox" id="guru-aktif" checked style="width: 18px; height: 18px;">
+                    <div class="form-group aca-inline-8">
+                        <label class="aca-inline-186">
+                            <input type="checkbox" id="guru-aktif" checked class="aca-inline-187">
                             <span>Status Aktif Mengajar</span>
                         </label>
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <div class="aca-inline-188">
                     <button type="button" id="btn-close-modal-guru" class="btn btn-outline">Batal</button>
                     <button type="submit" id="btn-save-guru" class="btn-primary">Simpan</button>
                 </div>
@@ -1331,13 +1331,13 @@
     </div>
 
     <!-- Modal Form Mapel -->
-    <div id="modal-mapel" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div class="modal-content card glass" style="width: 100%; max-width: 600px; padding: 25px; border-radius: 12px; margin: 20px;">
-            <h2 id="modal-mapel-title" style="margin-bottom: 20px;">Tambah Mata Pelajaran</h2>
+    <div id="modal-mapel" class="modal aca-inline-49">
+        <div class="modal-content card glass aca-inline-50">
+            <h2 id="modal-mapel-title" class="aca-inline-18">Tambah Mata Pelajaran</h2>
             <form id="form-mapel">
                 <input type="hidden" id="mapel-id">
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                <div class="aca-inline-185">
                     <div class="form-group">
                         <label>Kode Mapel</label>
                         <input type="text" id="mapel-kode" class="input-control" placeholder="Contoh: MTK01" required>
@@ -1374,15 +1374,15 @@
                         <label>Urutan Tampil (Opsional)</label>
                         <input type="number" id="mapel-urutan" class="input-control" placeholder="Contoh: 1" min="0">
                     </div>
-                    <div class="form-group" style="grid-column: span 2;">
-                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                            <input type="checkbox" id="mapel-aktif" checked style="width: 18px; height: 18px;">
+                    <div class="form-group aca-inline-8">
+                        <label class="aca-inline-186">
+                            <input type="checkbox" id="mapel-aktif" checked class="aca-inline-187">
                             <span>Status Aktif</span>
                         </label>
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <div class="aca-inline-188">
                     <button type="button" id="btn-close-modal-mapel" class="btn btn-outline">Batal</button>
                     <button type="submit" id="btn-save-mapel" class="btn-primary">Simpan</button>
                 </div>
@@ -1391,30 +1391,30 @@
     </div>
 
     <!-- Modal Form Tahun Ajaran -->
-    <div id="modal-tahun" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div class="modal-content card glass" style="width: 100%; max-width: 400px; padding: 25px; border-radius: 12px; margin: 20px;">
-            <h2 id="modal-tahun-title" style="margin-bottom: 20px;">Tambah Tahun Ajaran</h2>
+    <div id="modal-tahun" class="modal aca-inline-49">
+        <div class="modal-content card glass aca-inline-51">
+            <h2 id="modal-tahun-title" class="aca-inline-18">Tambah Tahun Ajaran</h2>
             <form id="form-tahun">
                 <input type="hidden" id="tahun-id">
-                <div class="form-group" style="margin-bottom: 15px;">
+                <div class="form-group aca-inline-29">
                     <label>Tahun Ajaran</label>
                     <input type="text" id="tahun-nama" class="input-control" placeholder="Contoh: 2026/2027" required>
                 </div>
-                <div class="form-group" style="margin-bottom: 15px;">
+                <div class="form-group aca-inline-29">
                     <label>Semester</label>
                     <select id="tahun-semester" class="input-control" required>
                         <option value="Ganjil">Ganjil</option>
                         <option value="Genap">Genap</option>
                     </select>
                 </div>
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                        <input type="checkbox" id="tahun-aktif" style="width: 18px; height: 18px;">
+                <div class="form-group aca-inline-18">
+                    <label class="aca-inline-186">
+                        <input type="checkbox" id="tahun-aktif" class="aca-inline-187">
                         <span>Set sebagai Aktif (Saat ini)</span>
                     </label>
-                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Hanya boleh ada satu tahun ajaran yang aktif. Mengaktifkan ini akan menonaktifkan tahun ajaran lainnya.</div>
+                    <div class="aca-inline-189">Hanya boleh ada satu tahun ajaran yang aktif. Mengaktifkan ini akan menonaktifkan tahun ajaran lainnya.</div>
                 </div>
-                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <div class="aca-inline-190">
                     <button type="button" id="btn-close-modal-tahun" class="btn btn-outline">Batal</button>
                     <button type="submit" id="btn-save-tahun" class="btn-primary">Simpan</button>
                 </div>
@@ -1423,13 +1423,13 @@
     </div>
 
     <!-- Modal Form Kelas -->
-    <div id="modal-kelas" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div class="modal-content card glass" style="width: 100%; max-width: 600px; padding: 25px; border-radius: 12px; margin: 20px;">
-            <h2 id="modal-kelas-title" style="margin-bottom: 20px;">Tambah Kelas</h2>
+    <div id="modal-kelas" class="modal aca-inline-49">
+        <div class="modal-content card glass aca-inline-50">
+            <h2 id="modal-kelas-title" class="aca-inline-18">Tambah Kelas</h2>
             <form id="form-kelas">
                 <input type="hidden" id="kelas-id">
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                <div class="aca-inline-185">
                     <div class="form-group">
                         <label>Nama Kelas</label>
                         <input type="text" id="kelas-nama" class="input-control" placeholder="Contoh: 7A" required>
@@ -1457,15 +1457,15 @@
                         <label>Kapasitas Siswa</label>
                         <input type="number" id="kelas-kapasitas" class="input-control" placeholder="Contoh: 32" min="1" required>
                     </div>
-                    <div class="form-group" style="display: flex; align-items: center; padding-top: 25px;">
-                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                            <input type="checkbox" id="kelas-aktif" checked style="width: 18px; height: 18px;">
+                    <div class="form-group aca-inline-52">
+                        <label class="aca-inline-186">
+                            <input type="checkbox" id="kelas-aktif" checked class="aca-inline-187">
                             <span>Status Aktif</span>
                         </label>
                     </div>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <div class="aca-inline-188">
                     <button type="button" id="btn-close-modal-kelas" class="btn btn-outline">Batal</button>
                     <button type="submit" id="btn-save-kelas" class="btn-primary">Simpan</button>
                 </div>
@@ -1474,13 +1474,13 @@
     </div>
 
     <!-- Modal Form Jadwal -->
-    <div id="modal-jadwal" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; overflow-y: auto;">
-        <div class="modal-content card glass" style="width: 100%; max-width: 650px; padding: 25px; border-radius: 12px; margin: 20px;">
-            <h2 id="modal-jadwal-title" style="margin-bottom: 20px;">Tambah Jadwal Pelajaran</h2>
+    <div id="modal-jadwal" class="modal aca-inline-53">
+        <div class="modal-content card glass aca-inline-54">
+            <h2 id="modal-jadwal-title" class="aca-inline-18">Tambah Jadwal Pelajaran</h2>
             <form id="form-jadwal">
                 <input type="hidden" id="jadwal-id">
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                <div class="aca-inline-185">
                     <div class="form-group">
                         <label>Tahun Ajaran</label>
                         <select id="jadwal-academic-year" class="input-control" required>
@@ -1539,12 +1539,12 @@
                     </div>
                 </div>
                 
-                <div class="form-group" style="margin-bottom: 15px;">
+                <div class="form-group aca-inline-29">
                     <label>Catatan (Opsional)</label>
-                    <textarea id="jadwal-notes" class="input-control" rows="2" placeholder="Catatan tambahan..." style="resize: vertical;"></textarea>
+                    <textarea id="jadwal-notes" class="input-control" rows="2" placeholder="Catatan tambahan..." class="aca-inline-141"></textarea>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <div class="aca-inline-188">
                     <button type="button" id="btn-close-modal-jadwal" class="btn btn-outline">Batal</button>
                     <button type="submit" id="btn-save-jadwal" class="btn-primary">Simpan Jadwal</button>
                 </div>
@@ -1553,13 +1553,13 @@
     </div>
 
     <!-- Modal Form Siswa -->
-    <div id="modal-siswa" class="modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; overflow-y: auto;">
-        <div class="modal-content card glass" style="width: 100%; max-width: 600px; padding: 25px; border-radius: 12px; margin: 20px;">
-            <h2 id="modal-siswa-title" style="margin-bottom: 20px;">Tambah Siswa</h2>
+    <div id="modal-siswa" class="modal aca-inline-53">
+        <div class="modal-content card glass aca-inline-50">
+            <h2 id="modal-siswa-title" class="aca-inline-18">Tambah Siswa</h2>
             <form id="form-siswa">
                 <input type="hidden" id="siswa-id">
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                <div class="aca-inline-185">
                     <div class="form-group">
                         <label>NIS</label>
                         <input type="text" id="siswa-nis" class="input-control" required>
@@ -1568,7 +1568,7 @@
                         <label>NISN</label>
                         <input type="text" id="siswa-nisn" class="input-control">
                     </div>
-                    <div class="form-group" style="grid-column: span 2;">
+                    <div class="form-group aca-inline-8">
                         <label>Nama Lengkap</label>
                         <input type="text" id="siswa-nama" class="input-control" required>
                     </div>
@@ -1596,19 +1596,19 @@
                     </div>
                 </div>
                 
-                <div class="form-group" style="margin-bottom: 15px;">
+                <div class="form-group aca-inline-29">
                     <label>Alamat</label>
-                    <textarea id="siswa-alamat" class="input-control" rows="2" style="resize: vertical;"></textarea>
+                    <textarea id="siswa-alamat" class="input-control" rows="2" class="aca-inline-141"></textarea>
                 </div>
 
-                <div class="form-group" style="display: flex; align-items: center; padding-top: 10px;">
-                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                        <input type="checkbox" id="siswa-aktif" checked style="width: 18px; height: 18px;">
+                <div class="form-group aca-inline-55">
+                    <label class="aca-inline-186">
+                        <input type="checkbox" id="siswa-aktif" checked class="aca-inline-187">
                         <span>Status Aktif</span>
                     </label>
                 </div>
 
-                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <div class="aca-inline-188">
                     <button type="button" id="btn-close-modal-siswa" class="btn btn-outline">Batal</button>
                     <button type="submit" id="btn-save-siswa" class="btn-primary">Simpan</button>
                 </div>

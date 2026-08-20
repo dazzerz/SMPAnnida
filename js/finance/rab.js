@@ -15,7 +15,8 @@ let state = {
   modal: [50000, 25000, 66000, 50000, 75000, 65000, 95000, 7500, 80000, 12000, 10000],
   opsBulan: [150000, 200000, 100000, 250000], // Listrik, Air, Kebersihan, ATK
   opsTahun: [75000, 40000, 84000], // Bingkai, Sapu, Pel
-  spp: { anak: 9, nominal: 150000 }
+  spp: { anak: 9, nominal: 150000 },
+  daruratPct: 30
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -83,6 +84,11 @@ function setupEventListeners() {
       calculateRAB();
     });
   });
+  
+  document.getElementById('darurat-pct')?.addEventListener('input', () => {
+    updateStateFromUI();
+    calculateRAB();
+  });
 
   document.getElementById('btn-save-rab')?.addEventListener('click', saveRAB);
   document.getElementById('btn-sync-budget')?.addEventListener('click', syncToBudget);
@@ -92,6 +98,8 @@ function setupEventListeners() {
 function updateStateFromUI() {
   state.siswaL = parseInt(document.getElementById('siswa-l').value) || 0;
   state.siswaP = parseInt(document.getElementById('siswa-p').value) || 0;
+  const pctInput = document.getElementById('darurat-pct');
+  state.daruratPct = pctInput ? (parseInt(pctInput.value) !== undefined ? parseInt(pctInput.value) : 30) : 30;
   
   // Pendaftaran
   ['full', 'sebagian', 'khusus', 'gratis'].forEach(key => {
@@ -150,6 +158,8 @@ function updateUIFromState() {
 
   document.getElementById('spp-anak').value = state.spp.anak;
   document.getElementById('spp-nominal').value = state.spp.nominal;
+  const pctInput = document.getElementById('darurat-pct');
+  if (pctInput) pctInput.value = state.daruratPct !== undefined ? state.daruratPct : 30;
 
   calculateRAB();
 }
@@ -177,8 +187,15 @@ function calculateRAB() {
   const modalL = state.siswaL * totalPerAnak;
   const modalP = state.siswaP * totalPerAnak;
   const totalModalAnak = modalL + modalP;
-  const danaDarurat = totalModalAnak * 0.3; // 30%
+  const daruratPct = state.daruratPct !== undefined ? state.daruratPct : 30;
+  const danaDarurat = totalModalAnak * (daruratPct / 100);
   const totalModalAll = totalModalAnak + danaDarurat;
+  
+  // Toggle warning box
+  const warningBox = document.getElementById('rab-warning-box');
+  if (warningBox) {
+    warningBox.style.display = daruratPct < 30 ? 'block' : 'none';
+  }
 
   document.getElementById('modal-l').textContent = formatCurrency(modalL);
   document.getElementById('modal-p').textContent = formatCurrency(modalP);

@@ -622,6 +622,60 @@ async function initSettings() {
 // MAIN INIT
 // ══════════════════════════════════════════════════════
 async function main() {
+  // Inject global style overrides for table transitions, zebra-striping and currency helpers
+  const entryStyles = document.createElement('style');
+  entryStyles.textContent = `
+    .currency-helper-text {
+      color: #10b981 !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      margin-top: 0.25rem !important;
+      display: block !important;
+    }
+    .page-section {
+      animation: finFadeIn 0.3s ease-in-out;
+    }
+    @keyframes finFadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .transactions-table tbody tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02) !important;
+    }
+    .transactions-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.04) !important;
+      transition: background 0.2s ease;
+    }
+  `;
+  document.head.appendChild(entryStyles);
+
+  // Global event delegation for monetary input currency formatting previews
+  document.addEventListener('input', (e) => {
+    const input = e.target;
+    if (input && input.tagName === 'INPUT' && (input.type === 'number' || input.type === 'text')) {
+      const id = input.id || '';
+      const className = input.className || '';
+      const dataTarget = input.getAttribute('data-target') || '';
+      
+      const isMoney = id.includes('nominal') || id.includes('val') || id.includes('spp') || 
+                      id.includes('amount') || id.includes('biaya') || id.includes('harga') ||
+                      className.includes('val') || className.includes('money') ||
+                      dataTarget !== '';
+                      
+      if (isMoney) {
+        let helper = input.parentElement.querySelector('.currency-helper-text');
+        if (!helper) {
+          helper = document.createElement('span');
+          helper.className = 'currency-helper-text';
+          input.parentElement.appendChild(helper);
+        }
+        const val = parseFloat(input.value) || 0;
+        helper.textContent = val > 0 ? new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val) : '';
+      }
+    }
+  });
+
+
   applySavedTheme();
 
   const user = await getOptionalUser();

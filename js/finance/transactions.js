@@ -161,7 +161,16 @@ export function renderTransactionsTable(transactions, canEdit = true) {
   if (!canEdit && thAksi) thAksi.style.display = 'none';
 
   if (!transactions.length) {
-    tbody.innerHTML = `<tr><td colspan="${canEdit ? 8 : 7}"><div class="empty-state"><div class="empty-state-icon">💸</div><div class="empty-state-title">Belum ada transaksi</div><div class="empty-state-desc">Belum ada data yang bisa ditampilkan</div></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="${canEdit ? 8 : 7}">
+      <div class="empty-state" style="padding: 3rem 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <svg style="width: 48px; height: 48px; opacity: 0.3; margin-bottom: 1rem; color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5h16.5c.621 0 1.125.504 1.125 1.125v12.75c0 .621-.504 1.125-1.125 1.125H3.75A1.125 1.125 0 0 1 2.5 18.25V5.625C2.5 5.004 3.004 4.5 3.75 4.5Z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 9h.008v.008H16.5V9Zm0 3h.008v.008H16.5V12Z" />
+        </svg>
+        <div class="empty-state-title" style="font-weight: 600; color: var(--text-primary);">Belum ada transaksi</div>
+        <div class="empty-state-desc" style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem;">Belum ada data transaksi yang dicatat dalam sistem.</div>
+      </div>
+    </td></tr>`;
     return;
   }
   tbody.innerHTML = transactions.map(t => {
@@ -215,7 +224,13 @@ export function renderRecentTransactions(transactions) {
   const el = document.getElementById('recent-transactions');
   if (!el) return;
   if (!transactions.length) {
-    el.innerHTML = `<div class="empty-state" style="padding:2rem"><div class="empty-state-icon">📭</div><div class="empty-state-title">Belum ada transaksi</div></div>`;
+    el.innerHTML = `
+    <div class="empty-state" style="padding: 2.5rem 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <svg style="width: 44px; height: 44px; opacity: 0.3; margin-bottom: 0.75rem; color: var(--text-muted);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5h16.5c.621 0 1.125.504 1.125 1.125v12.75c0 .621-.504 1.125-1.125 1.125H3.75A1.125 1.125 0 0 1 2.5 18.25V5.625C2.5 5.004 3.004 4.5 3.75 4.5Z" />
+      </svg>
+      <div class="empty-state-title" style="font-weight: 600; color: var(--text-primary);">Belum ada transaksi</div>
+    </div>`;
     return;
   }
   el.innerHTML = transactions.map(t => {

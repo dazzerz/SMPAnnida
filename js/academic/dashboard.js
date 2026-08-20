@@ -1,3 +1,4 @@
+import Chart from 'chart.js/auto';
 import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { escapeHTML } from '../core/utils.js';
@@ -264,7 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const values = dates.map(dt => counts[dt]);
-        const maxVal = Math.max(...values, 10);
         
         const canvas = document.getElementById('attendance-chart');
         const emptyEl = document.getElementById('chart-empty');
@@ -272,75 +272,55 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (values.every(v => v === 0)) {
             emptyEl.style.display = 'flex';
+            if (window.attendanceChartInstance) {
+                window.attendanceChartInstance.destroy();
+                window.attendanceChartInstance = null;
+            }
             return;
         } else {
             emptyEl.style.display = 'none';
         }
 
-        const ctx = canvas.getContext('2d');
-        const W = canvas.parentElement.clientWidth;
-        const H = canvas.parentElement.clientHeight;
-        canvas.width = W;
-        canvas.height = H;
-        
-        const padX = 40;
-        const padY = 30;
-        const chartW = W - padX * 2;
-        const chartH = H - padY * 2;
-        
-        ctx.clearRect(0, 0, W, H);
-        
-        // Grid lines & Y labels
-        ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-muted') || '#888';
-        ctx.font = '12px sans-serif';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        
-        const steps = 4;
-        for (let i = 0; i <= steps; i++) {
-            const y = padY + chartH - (i / steps) * chartH;
-            const val = Math.round((i / steps) * maxVal);
-            
-            ctx.fillText(val, padX - 10, y);
-            
-            ctx.beginPath();
-            ctx.moveTo(padX, y);
-            ctx.lineTo(W - padX, y);
-            ctx.strokeStyle = 'rgba(150, 150, 150, 0.2)';
-            ctx.stroke();
+        if (window.attendanceChartInstance) {
+            window.attendanceChartInstance.destroy();
         }
-        
-        // X labels
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
-        const gap = chartW / (dates.length - 1);
-        
-        dates.forEach((dt, i) => {
-            const x = padX + i * gap;
-            ctx.fillText(displayDates[i], x, H - padY + 10);
-        });
-        
-        // Draw Line
-        ctx.beginPath();
-        dates.forEach((dt, i) => {
-            const x = padX + i * gap;
-            const y = padY + chartH - (values[i] / maxVal) * chartH;
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        });
-        ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--primary') || '#4361ee';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-        
-        // Draw Points
-        ctx.fillStyle = '#fff';
-        dates.forEach((dt, i) => {
-            const x = padX + i * gap;
-            const y = padY + chartH - (values[i] / maxVal) * chartH;
-            ctx.beginPath();
-            ctx.arc(x, y, 5, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
+
+        const primaryColor = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#10b981';
+
+        window.attendanceChartInstance = new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels: displayDates,
+                datasets: [{
+                    label: 'Kehadiran Siswa',
+                    data: values,
+                    borderColor: primaryColor,
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.35,
+                    borderWidth: 3,
+                    pointBackgroundColor: primaryColor,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { color: '#a1a1aa' }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { color: '#a1a1aa', stepSize: 2 }
+                    }
+                }
+            }
         });
     }
 
