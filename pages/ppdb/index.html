@@ -1,188 +1,403 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PPDB - Annida2PPDB</title>
-    <meta name="description" content="Penerimaan Peserta Didik Baru (PPDB) Annida2PPDB. Daftar sekarang untuk jenjang SMP Sekolah Alam + Tahfidz.">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Penerimaan Peserta Didik Baru - SMP Annida</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&amp;display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-surface": "#ffffff",
+            "surface-bright": "rgba(255, 255, 255, 0.08)",
+            "on-error-container": "#6e0a12",
+            "primary-fixed": "#b9efc5",
+            "outline-variant": "rgba(255, 255, 255, 0.2)",
+            "tertiary-dim": "#67501c",
+            "on-primary-fixed-variant": "#346544",
+            "surface-container-lowest": "#15803d",
+            "secondary": "#a1a1aa",
+            "secondary-container": "rgba(255, 255, 255, 0.1)",
+            "tertiary-container": "rgba(16, 185, 129, 0.2)",
+            "on-tertiary-fixed": "#4d3806",
+            "surface-container-high": "rgba(255, 255, 255, 0.12)",
+            "secondary-fixed-dim": "#ded3c5",
+            "outline": "rgba(255, 255, 255, 0.3)",
+            "secondary-dim": "#595248",
+            "error-dim": "#67040d",
+            "background": "transparent",
+            "surface": "rgba(15, 23, 42, 0.3)",
+            "error": "#ef4444",
+            "on-primary": "#ffffff",
+            "inverse-primary": "#bef5ca",
+            "on-secondary": "#ffffff",
+            "on-background": "#ffffff",
+            "error-container": "#fa746f",
+            "surface-tint": "#10b981",
+            "primary": "#10b981",
+            "on-tertiary-fixed-variant": "#6c5421",
+            "surface-container": "rgba(255, 255, 255, 0.05)",
+            "surface-dim": "rgba(15, 23, 42, 0.5)",
+            "inverse-on-surface": "#9a9e99",
+            "surface-container-highest": "rgba(255, 255, 255, 0.15)",
+            "primary-fixed-dim": "#abe1b7",
+            "on-primary-container": "#ffffff",
+            "primary-container": "#047857",
+            "tertiary": "#745c27",
+            "tertiary-fixed": "#fad998",
+            "inverse-surface": "#0b0f0c",
+            "secondary-fixed": "#ece1d3",
+            "on-secondary-fixed-variant": "#625a50",
+            "on-secondary-fixed": "#453e34",
+            "on-tertiary": "#fff8f1",
+            "on-secondary-container": "#ffffff",
+            "primary-dim": "#059669",
+            "on-primary-fixed": "#ffffff",
+            "on-error": "#ffffff",
+            "tertiary-fixed-dim": "#ebcb8b",
+            "on-surface-variant": "#e4e4e7",
+            "on-tertiary-container": "#614b18",
+            "surface-container-low": "rgba(255, 255, 255, 0.05)",
+            "surface-variant": "rgba(255, 255, 255, 0.1)"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "sm": "8px",
+            "xs": "4px",
+            "md": "16px",
+            "xl": "32px",
+            "gutter": "16px",
+            "base": "8px",
+            "margin": "24px",
+            "lg": "24px"
+          },
+          "fontFamily": {
+            "headline-md": ["Literata"],
+            "headline-lg": ["Literata"],
+            "label-md": ["Nunito Sans"],
+            "body-md": ["Nunito Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+            "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+            "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    @keyframes marquee-reverse {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+    .animate-marquee-reverse {
+      animation: marquee-reverse 30s linear infinite;
+    }
+    .animate-marquee-reverse:hover {
+      animation-play-state: paused;
+    }
     
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../../css/ppdb/style.css">
+    /* Custom lightbox modal styling */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      padding-top: 50px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.9);
+      backdrop-filter: blur(8px);
+    }
+    .lightbox-content {
+      margin: auto;
+      display: block;
+      max-width: 80%;
+      max-height: 75vh;
+      border-radius: 12px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    }
+    .lightbox-caption {
+      margin: auto;
+      display: block;
+      width: 80%;
+      text-align: center;
+      color: #ccc;
+      padding: 15px 0;
+      font-size: 1.1rem;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .lightbox-close:hover, .lightbox-close:focus {
+      color: #bbb;
+    }
+    .lightbox-nav {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      width: auto;
+      padding: 16px;
+      margin-top: -50px;
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+      transition: 0.6s ease;
+      border-radius: 0 3px 3px 0;
+      user-select: none;
+      background: rgba(255,255,255,0.05);
+      border: none;
+    }
+    .lightbox-prev { left: 5%; border-radius: 5px; }
+    .lightbox-next { right: 5%; border-radius: 5px; }
+    .lightbox-nav:hover { background-color: rgba(255,255,255,0.2); }
+  </style>
 </head>
-<body>
-    <header class="navbar">
-        <div class="container">
-            <div class="logo">
-                <a href="index.html" class="logo-link">
-                    <img src="assets/logo/1.png" alt="Logo Annida2PPDB" class="logo-icon">
-                    <span class="logo-text">Annida2PPDB</span>
-                </a>
-            </div>
-            <nav class="nav-links">
-                <a href="#beranda">Beranda</a>
-                <a href="pages/about.html">Tentang Kami</a>
-                <a href="#program">Program</a>
-                <a href="#alur">Alur Pendaftaran</a>
-                <a href="../../index.html" class="btn btn-outline" id="ppdb-login-btn">Login / Logout</a>
-                <a href="pages/register.html" class="btn btn-primary">Daftar Sekarang</a>
-            </nav>
-        </div>
-    </header>
+<body class="bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-fixed text-white font-body-md text-body-md antialiased min-h-screen flex flex-col">
 
-    <main>
-        <section class="hero" id="beranda">
-            <div class="container hero-content">
-                <div class="hero-text">
-                    <span class="badge">Gelombang 1 Dibuka</span>
-                    <h2>Penerimaan Peserta Didik Baru</h2>
-                    <p>Selamat datang di portal resmi pendaftaran Annida2PPDB. Mulai langkah cemerlang putra-putri Anda bersama kami di SMP Sekolah Alam + Tahfidz dengan fasilitas pendidikan terbaik.</p>
-                    <div class="hero-actions">
-                        <a href="pages/register.html" class="btn btn-primary btn-lg">Mulai Pendaftaran</a>
-                        <a href="#alur" class="btn btn-secondary btn-lg">Pelajari Alur</a>
-                    </div>
-                </div>
-                <div class="hero-image">
-    <!-- Slider Container -->
-    <div class="glass-slider-container">
-        <div class="slider-wrapper">
-            <!-- Slide 1 -->
-            <div class="slide active">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-1.jpg');"></div>
-                <img src="../../assets/images/aktivitas-1.jpg" alt="Aktivitas Belajar Kelas 1" class="slider-img" data-index="0">
-            </div>
-            <!-- Slide 2 -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-2.jpg');"></div>
-                <img src="../../assets/images/aktivitas-2.jpg" alt="Petugas Menyiapkan Proyektor" class="slider-img" data-index="1">
-            </div>
-            <!-- Slide 3 -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-3.jpg');"></div>
-                <img src="../../assets/images/aktivitas-3.jpg" alt="Siswa Bersama Guru di Depan Kelas" class="slider-img" data-index="2">
-            </div>
-            <!-- Slide 4 -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-4.jpg');"></div>
-                <img src="../../assets/images/aktivitas-4.jpg" alt="Siswa Belajar di Kelas" class="slider-img" data-index="3">
-            </div>
-            <!-- Slide 5 -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-5.jpg');"></div>
-                <img src="../../assets/images/aktivitas-5.jpg" alt="Kegiatan Bersama di Aula" class="slider-img" data-index="4">
-            </div>
-            <!-- Slide 6 (Portrait) -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-6.jpg');"></div>
-                <img src="../../assets/images/aktivitas-6.jpg" alt="Ujian Siswa Kelas Ujung Depan" class="slider-img" data-index="5">
-            </div>
-            <!-- Slide 7 (Portrait) -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-7.jpg');"></div>
-                <img src="../../assets/images/aktivitas-7.jpg" alt="Ujian Siswa Barisan Kanan" class="slider-img" data-index="6">
-            </div>
-            <!-- Slide 8 (Portrait) -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-8.jpg');"></div>
-                <img src="../../assets/images/aktivitas-8.jpg" alt="Ujian Siswa Fokus Belajar" class="slider-img" data-index="7">
-            </div>
-        </div>
-        <!-- Tombol Navigasi Slider -->
-        <button class="slider-btn prev-btn" aria-label="Slide Sebelumnya">◀</button>
-        <button class="slider-btn next-btn" aria-label="Slide Berikutnya">▶</button>
-        <!-- Indikator Dots -->
-        <div class="slider-dots">
-            <span class="dot active" data-slide="0"></span>
-            <span class="dot" data-slide="1"></span>
-            <span class="dot" data-slide="2"></span>
-            <span class="dot" data-slide="3"></span>
-            <span class="dot" data-slide="4"></span>
-            <span class="dot" data-slide="5"></span>
-            <span class="dot" data-slide="6"></span>
-            <span class="dot" data-slide="7"></span>
-        </div>
+  <!-- Lapisan Gelap Overlay Global -->
+  <div class="fixed inset-0 bg-black/65 z-[-1]"></div>
+
+  <!-- TopNavBar Shared Component -->
+  <header class="bg-black/30 backdrop-blur-md border-b border-white/10 docked full-width top-0 z-50 sticky shadow-sm">
+    <div class="flex justify-between items-center px-lg py-md w-full max-w-7xl mx-auto">
+      <a class="flex items-center gap-sm font-headline-md text-headline-md font-bold text-white hover:opacity-90 transition-opacity" href="#home">
+        <img src="../../assets/logo/1.png" alt="Logo Annida" class="h-10 w-auto object-contain">
+        <span>SMP Annida</span>
+      </a>
+      <nav class="hidden md:flex gap-xl">
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#home">Home</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#tentang-kami">Tentang Kami</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#program">Program</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#alur-pendaftaran">Alur Pendaftaran</a>
+      </nav>
+      <div class="flex items-center gap-md">
+        <a href="../../index.html" class="font-label-md text-label-md text-white border border-white/20 hover:bg-white/10 px-md py-sm rounded-lg transition-colors">Login</a>
+        <a class="font-label-md text-label-md bg-primary text-white px-md py-sm rounded-lg hover:bg-primary-dim transition-colors" href="register.html">Daftar Sekarang</a>
+      </div>
     </div>
-</div>
-              </div>
-                </div>
-            </div>
-        </section>
+  </header>
 
-        <!-- Program Section -->
-        <section class="section" id="program">
-            <div class="container text-center">
-                <span class="badge">Pilihan Kami</span>
-                <h2>Program Pendidikan</h2>
-                <p class="section-subtitle">Pilih jenjang pendidikan yang sesuai untuk masa depan gemilang.</p>
-                
-                <div class="grid cards-grid" style="grid-template-columns: minmax(250px, 500px); justify-content: center;">
-                    <div class="card">
-                        <div class="card-icon">🔬</div>
-                        <h3>SMP Sekolah Alam + Tahfidz</h3>
-                        <p>Mengintegrasikan pembelajaran sains berbasis alam dengan program hafalan Al-Qur'an (Tahfidz) untuk mencetak generasi berkarakter unggul dan peduli lingkungan.</p>
-                        <a href="pages/register.html?jenjang=smp" class="btn btn-outline btn-sm">Daftar Sekarang</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Alur Pendaftaran Section -->
-        <section class="section bg-light" id="alur">
-            <div class="container text-center">
-                <span class="badge">Panduan</span>
-                <h2>Alur Pendaftaran</h2>
-                <p class="section-subtitle">Ikuti 5 langkah mudah untuk menjadi bagian dari keluarga besar Annida 2.</p>
-                
-                <div class="steps-container">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <h4>Registrasi Akun</h4>
-                        <p>Buat akun dan isi biodata pendaftaran.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <h4>Upload Dokumen</h4>
-                        <p>Lengkapi berkas persyaratan yang diminta.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <h4>Pembayaran</h4>
-                        <p>Bayar biaya pendaftaran dan verifikasi.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <h4>Seleksi</h4>
-                        <p>Ikuti tes akademik dan wawancara.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">5</div>
-                        <h4>Pengumuman</h4>
-                        <p>Cek hasil kelulusan dan daftar ulang.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Annida 2 Management System. All rights reserved.</p>
+  <main class="flex-grow">
+    <!-- Hero Section -->
+    <section class="relative pt-xl pb-32 px-margin lg:px-0" id="home">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-xl items-center">
+        <div class="z-10 bg-emerald-950/40 backdrop-blur-md p-xl rounded-xl shadow-lg border border-white/10 lg:-mr-12 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
+          <span class="inline-block py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-label-md text-label-md mb-md">Penerimaan Siswa Baru 2026/2027</span>
+          <h1 class="font-headline-lg text-headline-lg text-white mb-md leading-tight">Wujudkan Masa Depan Qur'ani dan Unggul di SMP Annida</h1>
+          <p class="font-body-md text-body-md text-gray-200 mb-xl max-w-lg">
+            Lingkungan belajar ramah alam yang dirancang untuk menumbuhkan akhlak mulia, hafalan Al-Qur'an mutqin, serta kecerdasan IPTEK bagi generasi Qur'ani masa kini.
+          </p>
+          <div class="flex flex-wrap gap-md">
+            <a class="bg-primary text-white font-label-md text-label-md px-xl py-md rounded-lg shadow-sm hover:shadow-md hover:bg-primary-dim transition-all flex items-center gap-2" href="register.html">
+              Daftar Sekarang
+              <span class="material-symbols-outlined" data-icon="arrow_forward" data-weight="fill" style="font-variation-settings: 'FILL' 1;">arrow_forward</span>
+            </a>
+            <a href="../../assets/images/gedung_sekolah.jpg" target="_blank" class="border border-white/30 text-white font-label-md text-label-md px-xl py-md rounded-lg hover:bg-white/10 transition-all flex items-center gap-2">
+              Unduh Brosur
+              <span class="material-symbols-outlined" data-icon="download">download</span>
+            </a>
+          </div>
         </div>
-    </footer>
+        <div class="relative h-[500px] rounded-xl overflow-hidden shadow-xl lg:ml-12 z-0 border border-white/10">
+          <div class="absolute inset-0 bg-emerald-950/20 mix-blend-multiply z-10"></div>
+          <img class="w-full h-full object-cover" alt="Gedung SMP Annida Al Islamy 2" src="../../assets/images/gedung_sekolah.jpg"/>
+        </div>
+      </div>
+    </section>
 
-    <!-- Custom JS -->
-    <script type="module" src="../../js/ppdb/script.js"></script>
-<!-- Lightbox Modal untuk Memperbesar Gambar (Letakkan sebelum tag </body>) -->
-<div id="lightbox-modal" class="lightbox-modal">
+    <!-- Tentang Kami Section -->
+    <section class="py-xl px-margin lg:px-0" id="tentang-kami">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-xl items-center py-12">
+        <div class="relative h-[400px] rounded-xl overflow-hidden shadow-lg order-2 lg:order-1 border border-white/10">
+          <img alt="Aktivitas Siswa SMP Annida" class="w-full h-full object-cover" src="../../assets/images/aktivitas-3.jpg"/>
+          <div class="absolute inset-0 bg-emerald-950/15 mix-blend-multiply"></div>
+        </div>
+        <div class="order-1 lg:order-2 bg-emerald-950/25 backdrop-blur-sm p-xl rounded-2xl border border-white/5">
+          <h2 class="font-headline-lg text-headline-lg text-primary mb-md">Visi, Misi &amp; Sejarah</h2>
+          <p class="font-body-md text-body-md text-gray-200 mb-md">
+            SMP Annida didirikan dengan cita-cita mulia menyelenggarakan pendidikan tingkat menengah yang memadukan keunggulan sains akademik dengan kekuatan iman, takwa, dan hafalan Al-Qur'an.
+          </p>
+          <p class="font-body-md text-body-md text-gray-200">
+            Selaras dengan konsep Sekolah Alam, kami berkomitmen membentuk siswa-siswi berjiwa mandiri, berwawasan lingkungan luas, serta berakhlak Qur'ani yang siap memimpin umat menyongsong masa depan yang gemilang.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Program Section -->
+    <section class="py-xl px-margin lg:px-0" id="program">
+      <div class="max-w-7xl mx-auto py-12">
+        <div class="text-center mb-xl max-w-2xl mx-auto">
+          <h2 class="font-headline-lg text-headline-lg text-primary mb-sm">Program Pendidikan</h2>
+          <p class="font-body-md text-body-md text-gray-200">Kurikulum terpadu yang dirancang untuk mengoptimalkan potensi akademis dan spiritual secara seimbang.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+          <!-- Program Cards -->
+          <div class="bg-emerald-950/30 backdrop-blur-md rounded-xl p-lg shadow-sm border border-white/10 hover:shadow-md hover:border-primary/50 transition-all duration-300">
+            <span class="material-symbols-outlined text-4xl text-primary mb-md block">eco</span>
+            <h3 class="font-headline-md text-headline-md text-white mb-sm">Sekolah Alam</h3>
+            <p class="font-body-md text-body-md text-gray-300">Eksplorasi ilmu sains, sosial, dan kepemimpinan secara langsung melalui alam sebagai laboratorium pembelajaran utama yang interaktif.</p>
+          </div>
+          <div class="bg-emerald-950/30 backdrop-blur-md rounded-xl p-lg shadow-sm border border-white/10 hover:shadow-md hover:border-primary/50 transition-all duration-300">
+            <span class="material-symbols-outlined text-4xl text-primary mb-md block">local_library</span>
+            <h3 class="font-headline-md text-headline-md text-white mb-sm">Kelas Tahfidz</h3>
+            <p class="font-body-md text-body-md text-gray-300">Program hafalan Al-Qur'an intensif berstandar tinggi yang dibina langsung oleh ustaz-ustazah hafizh untuk mencapai target mutqin.</p>
+          </div>
+          <div class="bg-emerald-950/30 backdrop-blur-md rounded-xl p-lg shadow-sm border border-white/10 hover:shadow-md hover:border-primary/50 transition-all duration-300">
+            <span class="material-symbols-outlined text-4xl text-primary mb-md block">science</span>
+            <h3 class="font-headline-md text-headline-md text-white mb-sm">Sains &amp; Literasi</h3>
+            <p class="font-body-md text-body-md text-gray-300">Pembekalan riset ilmiah, penguasaan bahasa asing, kecakapan teknologi, serta penanaman karakter literasi kritis masa kini.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Galeri Marquee Section -->
+    <section class="py-xl overflow-hidden border-t border-white/10" id="galeri">
+      <div class="text-center mb-xl max-w-2xl mx-auto px-margin lg:px-0">
+        <h2 class="font-headline-lg text-headline-lg text-primary mb-sm">Galeri Kegiatan &amp; Fasilitas</h2>
+        <p class="font-body-md text-body-md text-gray-200">Dokumentasi sarana prasarana modern, aktivitas belajar mengajar, serta keceriaan santri di lingkungan SMP Annida.</p>
+      </div>
+      <div class="w-full relative flex overflow-hidden">
+        <div class="flex w-max animate-marquee-reverse gap-lg px-lg">
+          <!-- Group 1 -->
+          <div class="flex gap-lg">
+            <img alt="Laboratorium Sains &amp; Praktikum Mandiri" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="0" src="../../assets/images/aktivitas-1.jpg"/>
+            <img alt="Pembelajaran Interaktif Berbasis Proyektor" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="1" src="../../assets/images/aktivitas-2.jpg"/>
+            <img alt="Kolaborasi Siswa &amp; Guru Sekolah Alam" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="2" src="../../assets/images/aktivitas-3.jpg"/>
+            <img alt="Fasilitas Ruang Kelas Nyaman" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="3" src="../../assets/images/aktivitas-4.jpg"/>
+            <img alt="Perpustakaan &amp; Ruang Baca Modern" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="4" src="../../assets/images/aktivitas-5.jpg"/>
+            <img alt="Ujian Tulis &amp; Pembiasaan Mandiri" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="5" src="../../assets/images/aktivitas-6.jpg"/>
+            <img alt="Program Tahfidz dan Evaluasi Pembelajaran" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="6" src="../../assets/images/aktivitas-7.jpg"/>
+            <img alt="Aktivitas Ekstrakurikuler dan Pengembangan Karakter" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="7" src="../../assets/images/aktivitas-8.jpg"/>
+          </div>
+          <!-- Group 2 (Duplicate for loop) -->
+          <div class="flex gap-lg">
+            <img alt="Laboratorium Sains &amp; Praktikum Mandiri" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="0" src="../../assets/images/aktivitas-1.jpg"/>
+            <img alt="Pembelajaran Interaktif Berbasis Proyektor" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="1" src="../../assets/images/aktivitas-2.jpg"/>
+            <img alt="Kolaborasi Siswa &amp; Guru Sekolah Alam" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="2" src="../../assets/images/aktivitas-3.jpg"/>
+            <img alt="Fasilitas Ruang Kelas Nyaman" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="3" src="../../assets/images/aktivitas-4.jpg"/>
+            <img alt="Perpustakaan &amp; Ruang Baca Modern" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="4" src="../../assets/images/aktivitas-5.jpg"/>
+            <img alt="Ujian Tulis &amp; Pembiasaan Mandiri" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="5" src="../../assets/images/aktivitas-6.jpg"/>
+            <img alt="Program Tahfidz dan Evaluasi Pembelajaran" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="6" src="../../assets/images/aktivitas-7.jpg"/>
+            <img alt="Aktivitas Ekstrakurikuler dan Pengembangan Karakter" class="slider-img h-64 w-auto rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-105 transition-all duration-300" data-index="7" src="../../assets/images/aktivitas-8.jpg"/>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Alur Pendaftaran Section -->
+    <section class="py-xl px-margin lg:px-0 border-t border-white/10" id="alur-pendaftaran">
+      <div class="max-w-7xl mx-auto py-12">
+        <div class="text-center mb-xl max-w-2xl mx-auto">
+          <h2 class="font-headline-lg text-headline-lg text-primary mb-sm">Alur Pendaftaran PPDB</h2>
+          <p class="font-body-md text-body-md text-gray-200">Langkah mudah untuk mendaftarkan putra-putri Anda secara sistematis.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-lg relative mt-8">
+          <!-- Connector line -->
+          <div class="hidden md:block absolute top-8 left-[12%] right-[12%] h-0.5 bg-white/20 z-0"></div>
+          <!-- Steps -->
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <div class="w-16 h-16 rounded-full bg-emerald-950/60 text-primary border-2 border-primary flex items-center justify-center font-headline-md text-headline-md mb-md shadow-sm transition-transform hover:scale-105">
+              <span class="material-symbols-outlined">edit_document</span>
+            </div>
+            <h4 class="font-label-md text-label-md text-white mb-xs">1. Isi Formulir</h4>
+            <p class="font-body-md text-sm text-gray-300">Lengkapi data pendaftaran &amp; buat akun secara online.</p>
+          </div>
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <div class="w-16 h-16 rounded-full bg-emerald-950/60 text-primary border-2 border-primary flex items-center justify-center font-headline-md text-headline-md mb-md shadow-sm transition-transform hover:scale-105">
+              <span class="material-symbols-outlined">psychology</span>
+            </div>
+            <h4 class="font-label-md text-label-md text-white mb-xs">2. Tes Seleksi</h4>
+            <p class="font-body-md text-sm text-gray-300">Ikuti asesmen materi dasar, keagamaan, dan wawancara.</p>
+          </div>
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <div class="w-16 h-16 rounded-full bg-emerald-950/60 text-primary border-2 border-primary flex items-center justify-center font-headline-md text-headline-md mb-md shadow-sm transition-transform hover:scale-105">
+              <span class="material-symbols-outlined">forum</span>
+            </div>
+            <h4 class="font-label-md text-label-md text-white mb-xs">3. Wawancara</h4>
+            <p class="font-body-md text-sm text-gray-300">Sesi silaturahmi &amp; wawancara orang tua bersama pimpinan madrasah.</p>
+          </div>
+          <div class="relative z-10 flex flex-col items-center text-center">
+            <div class="w-16 h-16 rounded-full bg-primary text-white border-2 border-primary flex items-center justify-center font-headline-md text-headline-md mb-md shadow-md transition-transform hover:scale-105">
+              <span class="material-symbols-outlined">how_to_reg</span>
+            </div>
+            <h4 class="font-label-md text-label-md text-white mb-xs">4. Daftar Ulang</h4>
+            <p class="font-body-md text-sm text-gray-300">Konfirmasi kelulusan, penyerahan berkas fisik &amp; administrasi keuangan.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Shared Component -->
+  <footer class="bg-black/40 backdrop-blur-md border-t border-white/10 mt-auto">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-xl px-lg py-xl w-full max-w-7xl mx-auto">
+      <div class="col-span-1 md:col-span-1">
+        <div class="flex items-center gap-sm font-headline-md text-headline-md text-white mb-md">
+          <img src="../../assets/logo/1.png" alt="Logo Annida" class="h-10 w-auto object-contain">
+          <span>SMP Annida</span>
+        </div>
+        <p class="font-body-md text-body-md text-gray-300">
+          Membentuk santri berjiwa Qur'ani, literat, tangguh, dan berwawasan lingkungan global.
+        </p>
+      </div>
+      <div class="col-span-1 md:col-span-3 flex flex-col md:flex-row gap-xl md:justify-end">
+        <div class="flex flex-col gap-sm">
+          <span class="font-label-md text-label-md text-white mb-2">Navigasi</span>
+          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="#home">Home</a>
+          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="#tentang-kami">Tentang Kami</a>
+          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="#program">Program</a>
+          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="#alur-pendaftaran">Alur Pendaftaran</a>
+        </div>
+        <div class="flex flex-col gap-sm">
+          <span class="font-label-md text-label-md text-white mb-2">Bantuan</span>
+          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="#">Hubungi Kami</a>
+          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="../../index.html">Portal Akademik</a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-white/5 w-full">
+      <div class="max-w-7xl mx-auto px-lg py-md flex justify-between items-center text-sm text-gray-400">
+        <span>© 2026 SMP Annida Portal. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lightbox Modal untuk Memperbesar Gambar (Letakkan sebelum tag </body>) -->
+  <div id="lightbox-modal" class="lightbox-modal">
     <span class="lightbox-close">&times;</span>
     <button class="lightbox-nav lightbox-prev">◀</button>
     <img class="lightbox-content" id="lightbox-img" src="" alt="Perbesar Foto">
     <button class="lightbox-nav lightbox-next">▶</button>
     <div id="lightbox-caption" class="lightbox-caption"></div>
-</div>
+  </div>
+
+  <!-- Custom JS -->
+  <script type="module" src="../../js/ppdb/script.js"></script>
 </body>
 </html>
