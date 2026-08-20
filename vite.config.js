@@ -23,7 +23,8 @@ export default defineConfig({
         ppdbDashboardSiswa: resolve(root, 'pages/ppdb/dashboard-siswa.html'),
         ppdbIndex: resolve(root, 'pages/ppdb/index.html'),
         ppdbLogin: resolve(root, 'pages/ppdb/login.html'),
-        ppdbRegister: resolve(root, 'pages/ppdb/register.html')
+        ppdbRegister: resolve(root, 'pages/ppdb/register.html'),
+        ppdbSuccess: resolve(root, 'pages/ppdb/success.html')
       }
     }
   }
