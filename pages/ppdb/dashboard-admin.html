@@ -1,346 +1,408 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Annida2PPDB</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/ppdb/style.css">
-    
-    <!-- Supabase SDK & Config -->
-    <script type="module" src="../../js/ppdb/db.js" defer></script>
-    <style>
-        .tab-panel {
-            display: none;
-            animation: fadeIn 0.4s ease;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - PPDB Annida 2</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#10b981",
+            "primary-dim": "#059669",
+            accent: "#34d399",
+            bgGlass: "rgba(255, 255, 255, 0.05)",
+            borderGlass: "rgba(255, 255, 255, 0.15)"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"]
+          }
         }
-        .tab-panel.active {
-            display: block;
-        }
-        
-        /* Split view styling for Doc Verification */
-        .split-view {
-            display:flex;flex-wrap:wrap;gap: 30px;
-            margin-top: 20px;
-        }
-        .split-left {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .split-right {
-            flex: 1.5;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            padding: 30px;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .preview-box {
-            width: 100%;
-            height: 250px;
-            background-color: var(--bg-light);
-            border: 2px dashed var(--border-color);
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-
-        /* Calculator Styles */
-        .calc-row {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .calc-header {
-            font-weight: 600;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 8px;
-            margin-bottom: 15px;
-        }
-    </style>
-  <link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/mobile.css" />
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/mobile.css">
+  <link rel="stylesheet" href="../../css/ppdb/style.css">
+  
+  <!-- Chart.js CDN for Dynamic Admin Charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Supabase SDK & Config -->
+  <script type="module" src="../../js/ppdb/db.js" defer></script>
+  
+  <style>
+    .tab-panel {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+    .tab-panel.active {
+      display: block;
+      opacity: 1;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    /* Scrollable custom table styling */
+    .table-container::-webkit-scrollbar {
+      height: 6px;
+    }
+    .table-container::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+  </style>
 </head>
-<body class="dashboard-layout">
-    
-    <!-- Sidebar -->
-      <!-- Unified Sidebar -->
+<body class="dashboard-layout bg-[#0b1320] text-slate-100 min-h-screen">
+
+  <!-- Unified Sidebar Container -->
   <aside class="sidebar" id="sidebar"></aside>
-<!-- Main Content -->
-    <main class="main-content">
-        <header class="topbar" id="topbar"></header>
-<!-- TAB 1: DASHBOARD UTAMA -->
-        <div id="tab-admin-dashboard" class="tab-panel active">
-            <!-- KPI Cards -->
-            <section class="dashboard-cards">
-                <div class="dash-card">
-                    <div class="dash-card-title">Total Pendaftar</div>
-                    <div class="dash-card-value highlight" id="kpi-total">128</div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-card-title">Menunggu Verifikasi</div>
-                    <div class="dash-card-value ppdb-admin-2" id="kpi-verif">45</div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-card-title">Menunggu Seleksi</div>
-                    <div class="dash-card-value ppdb-admin-18" id="kpi-seleksi">60</div>
-                </div>
-                <div class="dash-card">
-                    <div class="dash-card-title">Lulus Diterima</div>
-                    <div class="dash-card-value ppdb-admin-21" id="kpi-lulus">23</div>
-                </div>
-            </section>
 
-            <div class="card ppdb-admin-20">
-                <h3>Integrasi Sistem Core (Academic-Centric)</h3>
-                <p>Seluruh data pendaftar yang statusnya disetujui untuk **Daftar Ulang** akan langsung disinkronkan ke **Modul Akademik**. Sistem Keuangan (Finance) hanya akan melacak tagihan bulanan (SPP) berdasarkan data siswa aktif dari modul akademik pusat tersebut.</p>
+  <!-- Main Content Container -->
+  <main class="main-content flex-1 p-6 lg:p-8 overflow-y-auto">
+    <!-- Topbar Header -->
+    <header class="topbar mb-8" id="topbar"></header>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: DASHBOARD UTAMA -->
+    <!-- ========================================================================= -->
+    <div id="tab-admin-dashboard" class="tab-panel active space-y-6">
+      
+      <!-- KPI Top Cards Grid -->
+      <section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        
+        <!-- KPI 1: Total Pendaftar -->
+        <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-emerald-500">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Pendaftar</p>
+              <h3 class="text-2xl font-bold text-white mt-1" id="kpi-total">0</h3>
             </div>
+            <span class="text-xl">👥</span>
+          </div>
         </div>
 
-        <!-- TAB 2: DATA PENDAFTAR -->
-        <div id="tab-admin-pendaftar" class="tab-panel">
-            <div class="ppdb-admin-7">
-                <h3>Data Pendaftaran SMP Sekolah Alam + Tahfidz</h3>
-                <button class="btn btn-primary btn-sm" onclick="alert('Export PDF/Excel Berhasil didownload!')">Export Data</button>
+        <!-- KPI 2: Menunggu Verifikasi -->
+        <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-amber-500">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Menunggu</p>
+              <h3 class="text-2xl font-bold text-white mt-1" id="kpi-verif">0</h3>
+            </div>
+            <span class="text-xl">⏳</span>
+          </div>
+        </div>
+
+        <!-- KPI 3: Menunggu Seleksi -->
+        <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-purple-500">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Seleksi</p>
+              <h3 class="text-2xl font-bold text-white mt-1" id="kpi-seleksi">0</h3>
+            </div>
+            <span class="text-xl">📝</span>
+          </div>
+        </div>
+
+        <!-- KPI 4: Lulus -->
+        <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-blue-500">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Lulus</p>
+              <h3 class="text-2xl font-bold text-white mt-1" id="kpi-lulus">0</h3>
+            </div>
+            <span class="text-xl">🎓</span>
+          </div>
+        </div>
+
+        <!-- KPI 5: Gugur/Ditolak -->
+        <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-red-500 col-span-2 lg:col-span-1">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Gugur</p>
+              <h3 class="text-2xl font-bold text-white mt-1" id="kpi-gugur">0</h3>
+            </div>
+            <span class="text-xl">❌</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Chart & Analytics Area -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Bar Chart (Col-span-2) -->
+        <div class="glass-card rounded-2xl p-6 shadow-xl lg:col-span-2 space-y-4">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Tren Pendaftaran Bulanan</h3>
+          <div class="w-full h-[280px] flex items-center justify-center relative">
+            <canvas id="ppdb-monthly-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Program Distribution (Col-span-1) -->
+        <div class="glass-card rounded-2xl p-6 shadow-xl space-y-4">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Distribusi Program</h3>
+          <div class="space-y-4 pt-2">
+            <div>
+              <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                <span>Hanya Sekolah (Reguler)</span>
+                <span id="dist-reguler-text">0 pendaftar (0%)</span>
+              </div>
+              <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-full transition-all duration-500" id="dist-reguler-bar" style="width: 0%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+                <span>Sekolah + Pondok (Boarding)</span>
+                <span id="dist-pondok-text">0 pendaftar (0%)</span>
+              </div>
+              <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-blue-500 h-full transition-all duration-500" id="dist-pondok-bar" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="pt-6 border-t border-white/5 text-center text-xs text-slate-400">
+            SMP Annida 2 Setu - PPDB 2027/2028
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Pendaftar Data Table -->
+      <section class="glass-card rounded-2xl p-6 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Daftar Pendaftar Terbaru</h3>
+          <div class="relative max-w-xs">
+            <input type="text" id="admin-search-input" placeholder="Cari nama atau nomor..." class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-2 text-xs text-slate-300 focus:ring-emerald-500 focus:border-emerald-500">
+          </div>
+        </div>
+        
+        <div class="table-container overflow-x-auto w-full">
+          <table class="w-full text-left border-collapse min-w-[700px]">
+            <thead>
+              <tr class="border-b border-white/10 text-xs text-slate-400 uppercase font-semibold">
+                <th class="py-3 px-4">No. Daftar</th>
+                <th class="py-3 px-4">Nama Siswa</th>
+                <th class="py-3 px-4">Program</th>
+                <th class="py-3 px-4">Tanggal Daftar</th>
+                <th class="py-3 px-4 text-center">Status</th>
+                <th class="py-3 px-4 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="table-pendaftar-body" class="divide-y divide-white/5 text-sm text-slate-200">
+              <!-- Dynamically populated via JS -->
+              <tr>
+                <td colspan="6" class="py-8 text-center text-slate-400">Memuat data pendaftar...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 2: DETIL & VERIFIKASI (admin-verifikasi) -->
+    <!-- ========================================================================= -->
+    <div id="tab-admin-verifikasi" class="tab-panel space-y-6">
+      
+      <div class="glass-card rounded-2xl p-6 lg:p-8 shadow-xl space-y-6">
+        <div class="flex justify-between items-center pb-4 border-b border-white/10">
+          <div>
+            <h2 class="text-xl lg:text-2xl font-bold text-white">Detail Verifikasi Berkas</h2>
+            <p class="text-slate-400 text-xs mt-1">ID Pendaftaran: <span id="detail-reg-id" class="font-mono text-slate-300">-</span></p>
+          </div>
+          <button class="tab-trigger bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-semibold px-4 py-2 rounded-xl text-xs transition-all" data-target="admin-dashboard">
+            ← Kembali ke List
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Data Orang Tua & Siswa (Left) -->
+          <div class="space-y-6">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400 border-b border-white/5 pb-2">Informasi Calon Murid</h3>
+            
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span class="text-xs text-slate-400 block">Nama Lengkap Siswa</span>
+                <span class="font-medium text-slate-100" id="detail-siswa-nama">-</span>
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 block">NIK / NISN</span>
+                <span class="font-medium text-slate-100" id="detail-siswa-nik-nisn">-</span>
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 block">Tempat, Tanggal Lahir</span>
+                <span class="font-medium text-slate-100" id="detail-siswa-ttl">-</span>
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 block">Sekolah Asal (NPSN)</span>
+                <span class="font-medium text-slate-100" id="detail-siswa-sekolah">-</span>
+              </div>
+              <div class="col-span-2">
+                <span class="text-xs text-slate-400 block">Alamat Rumah</span>
+                <span class="font-medium text-slate-100" id="detail-siswa-alamat">-</span>
+              </div>
+            </div>
+
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400 border-b border-white/5 pb-2 pt-4">Informasi Orang Tua / Wali</h3>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span class="text-xs text-slate-400 block">Nama Ayah (Pekerjaan)</span>
+                <span class="font-medium text-slate-100" id="detail-ortu-ayah">-</span>
+              </div>
+              <div>
+                <span class="text-xs text-slate-400 block">Nama Ibu (Pekerjaan)</span>
+                <span class="font-medium text-slate-100" id="detail-ortu-ibu">-</span>
+              </div>
+              <div class="col-span-2">
+                <span class="text-xs text-slate-400 block">No. WhatsApp Wali</span>
+                <span class="font-medium text-emerald-400 font-mono" id="detail-ortu-wa">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Document Preview & Actions (Right) -->
+          <div class="space-y-6">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400 border-b border-white/5 pb-2">Verifikasi Berkas Pendukung</h3>
+            
+            <div class="preview-box glass-card border-dashed border-2 border-white/20 rounded-xl p-8 text-center text-slate-400 flex items-center justify-center min-h-[180px]">
+              📂 Lampiran dokumen digital (KK, Akta, SKL) dapat diverifikasi di sistem penyimpanan Supabase.
             </div>
             
-            <div class="table-container">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>No. Pendaftaran</th>
-                            <th>Nama Lengkap</th>
-                            <th>Jalur</th>
-                            <th>Tipe Program</th>
-                            <th>Status Pendaftaran</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-pendaftar-body">
-                        <tr>
-                            <td><strong>REG-2027-001</strong></td>
-                            <td>Ahmad Fulan</td>
-                            <td>Reguler</td>
-                            <td>Sekolah Saja</td>
-                            <td><span class="status-badge status-verifikasi">Menunggu Verifikasi</span></td>
-                            <td><a href="#" class="tab-trigger ppdb-admin-4" data-target="admin-verifikasi">Periksa Berkas</a></td>
-                        </tr>
-                        <tr>
-                            <td><strong>REG-2027-002</strong></td>
-                            <td>Budi Santoso</td>
-                            <td>Tahfidz</td>
-                            <td>Sekolah + Pondok</td>
-                            <td><span class="status-badge status-verifikasi">Menunggu Verifikasi</span></td>
-                            <td><a href="#" class="tab-trigger ppdb-admin-4" data-target="admin-verifikasi">Periksa Berkas</a></td>
-                        </tr>
-                        <tr>
-                            <td><strong>REG-2027-003</strong></td>
-                            <td>Siti Aminah</td>
-                            <td>Prestasi</td>
-                            <td>Sekolah Saja</td>
-                            <td><span class="status-badge status-lulus">Lulus - Daftar Ulang</span></td>
-                            <td><a href="#" class="tab-trigger ppdb-admin-4" data-target="admin-seleksi">Lihat Nilai</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="space-y-3">
+              <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Aksi Keputusan Status Pendaftaran</label>
+              <div class="grid grid-cols-3 gap-3">
+                <button onclick="adminVerifyStatus('Pembayaran')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 px-2 rounded-xl text-xs shadow-lg transition-all text-center">
+                  🟢 Loloskan & Bayar SPP
+                </button>
+                <button onclick="adminVerifyStatus('Seleksi')" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-2 rounded-xl text-xs shadow-lg transition-all text-center">
+                  🟣 Loloskan ke Tes Seleksi
+                </button>
+                <button onclick="adminVerifyStatus('Gugur')" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-2 rounded-xl text-xs shadow-lg transition-all text-center">
+                  🔴 Tolak / Gugurkan
+                </button>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
 
-        <!-- TAB 3: VERIFIKASI BERKAS (SPLIT VIEW) -->
-        <div id="tab-admin-verifikasi" class="tab-panel">
-            <h3>Verifikasi Dokumen Masuk</h3>
-            <p>Pilih pendaftar untuk memverifikasi dokumen persyaratan mereka.</p>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 3: TAHAP SELEKSI & RANKING -->
+    <!-- ========================================================================= -->
+    <div id="tab-admin-seleksi" class="tab-panel space-y-6">
+      
+      <div class="glass-card rounded-2xl p-6 lg:p-8 shadow-xl">
+        <h2 class="text-xl lg:text-2xl font-bold text-white mb-2">Input Nilai Seleksi & Penilaian Akhir</h2>
+        <p class="text-slate-400 text-sm mb-6">Masukkan nilai komponen seleksi untuk menghitung ranking kelulusan secara otomatis.</p>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Kalkulator Nilai (Left/1 Col) -->
+          <div class="space-y-4 lg:col-span-1">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400">Kalkulator Nilai</h3>
             
-            <div class="split-view">
-                <!-- Left List -->
-                <div class="split-left">
-                    <div class="card doc-item ppdb-admin-12" onclick="showDocPreview('Ahmad Fulan', 'Kartu Keluarga (KK)', 'kk-fulan.png')">
-                        <div>
-                            <strong>Ahmad Fulan</strong>
-                            <p class="ppdb-admin-6">KK & Akta Kelahiran</p>
-                        </div>
-                        <span class="status-badge status-verifikasi">Perlu Review</span>
-                    </div>
-                    
-                    <div class="card doc-item ppdb-admin-23" onclick="showDocPreview('Budi Santoso', 'Rapor SD / MI', 'rapor-budi.png')">
-                        <div>
-                            <strong>Budi Santoso</strong>
-                            <p class="ppdb-admin-6">Rapor & KTP Ortu</p>
-                        </div>
-                        <span class="status-badge status-verifikasi">Perlu Review</span>
-                    </div>
-                </div>
-                
-                <!-- Right Preview & Actions -->
-                <div class="split-right" id="doc-preview-panel">
-                    <h4 id="preview-student-name" class="ppdb-admin-11">Pilih Berkas Calon Siswa</h4>
-                    <p class="ppdb-admin-14" id="preview-doc-title">Detail berkas scan akan tampil di sini.</p>
-                    
-                    <div class="preview-box" id="preview-img-box">
-                        <span>Tidak ada file yang dipilih</span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Catatan/Revisi untuk Pendaftar (Opsional)</label>
-                        <textarea class="form-control" rows="2" placeholder="Tulis catatan jika dokumen ditolak/revisi"></textarea>
-                    </div>
-                    
-                    <div class="ppdb-admin-3">
-                        <button class="btn btn-primary ppdb-admin-1" onclick="verifyDocumentAction('Approve')">Setujui Berkas</button>
-                        <button class="btn btn-outline ppdb-admin-10" onclick="verifyDocumentAction('Reject')">Tolak / Butuh Revisi</button>
-                    </div>
-                </div>
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1">Pilih Calon Siswa</label>
+                <select class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-200" id="seleksi-student-select">
+                  <!-- Dynamically populated -->
+                </select>
+              </div>
+              
+              <div class="grid grid-cols-3 gap-2 border-b border-white/10 pb-2 text-xs text-slate-400 font-semibold uppercase">
+                <span class="col-span-2">Komponen</span>
+                <span>Nilai (0-100)</span>
+              </div>
+              
+              <div class="grid grid-cols-3 gap-2 items-center text-sm">
+                <span class="col-span-2 text-slate-300">Tes Akademik (40%)</span>
+                <input type="number" class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-2 py-1 text-slate-200 text-center" id="val-akademik" min="0" max="100" value="80" oninput="calcTotalScore()">
+              </div>
+              
+              <div class="grid grid-cols-3 gap-2 items-center text-sm">
+                <span class="col-span-2 text-slate-300">Tahfidz (30%)</span>
+                <input type="number" class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-2 py-1 text-slate-200 text-center" id="val-tahfidz" min="0" max="100" value="85" oninput="calcTotalScore()">
+              </div>
+              
+              <div class="grid grid-cols-3 gap-2 items-center text-sm">
+                <span class="col-span-2 text-slate-300">Wawancara (20%)</span>
+                <input type="number" class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-2 py-1 text-slate-200 text-center" id="val-interview" min="0" max="100" value="90" oninput="calcTotalScore()">
+              </div>
+              
+              <div class="grid grid-cols-3 gap-2 items-center text-sm">
+                <span class="col-span-2 text-slate-300">Administrasi (10%)</span>
+                <input type="number" class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-2 py-1 text-slate-200 text-center" id="val-admin" min="0" max="100" value="95" oninput="calcTotalScore()">
+              </div>
+              
+              <div class="flex justify-between items-center p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold text-sm mt-3">
+                <span>Nilai Akhir Terkalkulasi:</span>
+                <span id="calculated-total-score">84.5</span>
+              </div>
+              
+              <button onclick="adminSaveSeleksiGrade()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs shadow-lg transition-all mt-3">
+                💾 Simpan & Update Ranking
+              </button>
             </div>
-        </div>
-
-        <!-- TAB 4: VERIFIKASI PEMBAYARAN -->
-        <div id="tab-admin-pembayaran" class="tab-panel">
-            <h3>Persetujuan Bukti Transfer Pembayaran</h3>
-            <p>Verifikasi bukti transfer dari calon pendaftar untuk meneruskan ke proses seleksi.</p>
+          </div>
+          
+          <!-- Ranking List (Right/2 Cols) -->
+          <div class="space-y-4 lg:col-span-2">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400">Tabel Hasil Peringkat Seleksi</h3>
             
-            <div class="table-container ppdb-admin-19">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>No. Pendaftaran</th>
-                            <th>Nama Lengkap</th>
-                            <th>Tipe Program</th>
-                            <th>Total Tagihan</th>
-                            <th>Bukti Transfer</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr id="pay-row-1">
-                            <td><strong>REG-2027-001</strong></td>
-                            <td>Ahmad Fulan</td>
-                            <td>Sekolah Saja</td>
-                            <td>Rp 250.000</td>
-                            <td><a href="#" onclick="alert('Membuka file: bukti-transfer-fulan.jpg')" class="ppdb-admin-8">Lihat Bukti</a></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm" onclick="verifyPaymentAction(1)">Verifikasi Lunas</button>
-                            </td>
-                        </tr>
-                        <tr id="pay-row-2">
-                            <td><strong>REG-2027-002</strong></td>
-                            <td>Budi Santoso</td>
-                            <td>Sekolah + Pondok</td>
-                            <td>Rp 500.000</td>
-                            <td><a href="#" onclick="alert('Membuka file: bukti-transfer-budi.jpg')" class="ppdb-admin-8">Lihat Bukti</a></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm" onclick="verifyPaymentAction(2)">Verifikasi Lunas</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="table-container overflow-x-auto w-full">
+              <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr class="border-b border-white/10 text-slate-400 uppercase font-semibold">
+                    <th class="py-2.5 px-3">Peringkat</th>
+                    <th class="py-2.5 px-3">No. Daftar</th>
+                    <th class="py-2.5 px-3">Nama Siswa</th>
+                    <th class="py-2.5 px-3">Nilai Akhir</th>
+                    <th class="py-2.5 px-3">Status PPDB</th>
+                    <th class="py-2.5 px-3 text-center">Aksi Kelulusan</th>
+                  </tr>
+                </thead>
+                <tbody id="ranking-table-body" class="divide-y divide-white/5 text-slate-300">
+                  <tr>
+                    <td colspan="6" class="py-6 text-center text-slate-500">Memuat peringkat pendaftar...</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
+      </div>
 
-        <!-- TAB 5: PROSES SELEKSI (CALCULATOR & RANKING) -->
-        <div id="tab-admin-seleksi" class="tab-panel">
-            <h3>Input Nilai Seleksi & Penilaian Akhir</h3>
-            <p>Masukkan nilai komponen seleksi untuk menghitung ranking kelulusan secara otomatis.</p>
-            
-            <div class="split-view">
-                <!-- Left Input Form -->
-                <div class="split-left ppdb-admin-13">
-                    <h4 class="ppdb-admin-16">Kalkulator Nilai</h4>
-                    
-                    <div class="form-group">
-                        <label>Pilih Calon Siswa</label>
-                        <select class="form-control" id="seleksi-student-select">
-                            <option value="Ahmad Fulan">Ahmad Fulan</option>
-                            <option value="Budi Santoso">Budi Santoso</option>
-                        </select>
-                    </div>
+    </div>
 
-                    <div class="calc-header calc-row">
-                        <span>Komponen</span>
-                        <span>Bobot</span>
-                        <span>Nilai (0-100)</span>
-                    </div>
+  </main>
 
-                    <div class="calc-row">
-                        <span>Tes Akademik</span>
-                        <span>40%</span>
-                        <input type="number" class="form-control val-input" id="val-akademik" min="0" max="100" value="80">
-                    </div>
-                    <div class="calc-row">
-                        <span>Tahfidz</span>
-                        <span>30%</span>
-                        <input type="number" class="form-control val-input" id="val-tahfidz" min="0" max="100" value="85">
-                    </div>
-                    <div class="calc-row">
-                        <span>Wawancara / Interview</span>
-                        <span>20%</span>
-                        <input type="number" class="form-control val-input" id="val-interview" min="0" max="100" value="90">
-                    </div>
-                    <div class="calc-row">
-                        <span>Administrasi</span>
-                        <span>10%</span>
-                        <input type="number" class="form-control val-input" id="val-admin" min="0" max="100" value="95">
-                    </div>
-                    
-                    <div class="ppdb-admin-15">
-                        Nilai Akhir Terkalkulasi: <span id="calculated-total-score">84.5</span>
-                    </div>
-
-                    <button class="btn btn-primary ppdb-admin-17" onclick="saveSeleksiGrade()">Simpan & Update Ranking</button>
-                </div>
-
-                <!-- Right Ranking list -->
-                <div class="split-right">
-                    <h4 class="ppdb-admin-16">Tabel Hasil Peringkat Seleksi</h4>
-                    <div class="table-container">
-                        <table class="data-table ppdb-admin-22">
-                            <thead>
-                                <tr>
-                                    <th>Peringkat</th>
-                                    <th>Nama Siswa</th>
-                                    <th>Nilai Akhir</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ranking-table-body">
-                                <tr>
-                                    <td><strong>#1</strong></td>
-                                    <td>Siti Aminah</td>
-                                    <td><strong>89.0</strong></td>
-                                    <td><button class="btn btn-outline btn-sm ppdb-admin-5" onclick="activateToAcademic('Siti Aminah')">Aktivasi Akademik</button></td>
-                                </tr>
-                                <tr id="rank-row-Ahmad-Fulan">
-                                    <td><strong>#2</strong></td>
-                                    <td>Ahmad Fulan</td>
-                                    <td id="score-Ahmad-Fulan"><strong>84.5</strong></td>
-                                    <td><button class="btn btn-outline btn-sm ppdb-admin-5" onclick="activateToAcademic('Ahmad Fulan')">Aktivasi Akademik</button></td>
-                                </tr>
-                                <tr id="rank-row-Budi-Santoso" class="ppdb-admin-9">
-                                    <td><strong>#3</strong></td>
-                                    <td>Budi Santoso</td>
-                                    <td id="score-Budi-Santoso"><strong>0.0</strong></td>
-                                    <td><button class="btn btn-outline btn-sm ppdb-admin-5" onclick="activateToAcademic('Budi Santoso')">Aktivasi Akademik</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <script type="module" src="../../js/ppdb/script.js"></script>
-    
+  <script type="module" src="../../js/ppdb/script.js"></script>
+  
+  <script>
+    // Local calculator helper
+    function calcTotalScore() {
+      const ak = parseFloat(document.getElementById('val-akademik').value) || 0;
+      const ta = parseFloat(document.getElementById('val-tahfidz').value) || 0;
+      const iv = parseFloat(document.getElementById('val-interview').value) || 0;
+      const ad = parseFloat(document.getElementById('val-admin').value) || 0;
+      
+      const total = (ak * 0.4) + (ta * 0.3) + (iv * 0.2) + (ad * 0.1);
+      document.getElementById('calculated-total-score').textContent = total.toFixed(1);
+    }
+  </script>
 </body>
 </html>

@@ -1,339 +1,467 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Calon Siswa - Annida2PPDB</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/ppdb/style.css">
-    
-    <!-- Supabase SDK & Config -->
-    <script type="module" src="../../js/ppdb/db.js" defer></script>
-    <style>
-        .tab-panel {
-            display: none;
-            animation: fadeIn 0.4s ease;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Calon Siswa - PPDB Annida 2</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#10b981",
+            "primary-dim": "#059669",
+            accent: "#34d399",
+            bgGlass: "rgba(255, 255, 255, 0.05)",
+            borderGlass: "rgba(255, 255, 255, 0.15)"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"]
+          }
         }
-        .tab-panel.active {
-            display: block;
-        }
-        .doc-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .doc-item {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .doc-status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .invoice-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            padding: 30px;
-            max-width: 500px;
-            margin: 0 auto;
-            box-shadow: var(--shadow-sm);
-        }
-        .invoice-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px dashed var(--border-color);
-        }
-        .invoice-total {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-    </style>
-  <link rel="stylesheet" href="../../css/style.css" />
-<link rel="stylesheet" href="../../css/mobile.css" />
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/mobile.css">
+  <link rel="stylesheet" href="../../css/ppdb/style.css">
+  
+  <!-- Supabase SDK & Config -->
+  <script type="module" src="../../js/ppdb/db.js" defer></script>
+  
+  <style>
+    /* Tab transition & display overrides */
+    .tab-panel {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+    .tab-panel.active {
+      display: block;
+      opacity: 1;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+  </style>
 </head>
-<body class="dashboard-layout">
-    
-    <!-- Sidebar -->
-      <!-- Unified Sidebar -->
+<body class="dashboard-layout bg-[#0b1320] text-slate-100 min-h-screen">
+  
+  <!-- Unified Sidebar Container -->
   <aside class="sidebar" id="sidebar"></aside>
-<!-- Main Content -->
-    <main class="main-content">
-        <header class="topbar" id="topbar"></header>
-<!-- TAB 1: BERANDA -->
-        <div id="tab-beranda" class="tab-panel active">
-            <div class="card ppdb-siswa-20">
-                <h3>Selamat Datang, Ahmad Fulan!</h3>
-                <p>Silakan selesaikan seluruh berkas pendaftaran Anda. Anda terdaftar pada program **SMP Sekolah Alam + Tahfidz**.</p>
-                <div class="ppdb-siswa-18">
-                    <strong>Tipe Pendaftaran:</strong> <span id="display-tipe-pendaftaran" class="badge">Hanya Sekolah</span>
-                </div>
-            </div>
 
-            <!-- Status Timeline Tracker -->
-            <div class="wizard-container ppdb-siswa-15">
-                <h4 class="text-center ppdb-siswa-3">Status Alur Pendaftaran Anda</h4>
-                <div class="wizard-progress ppdb-siswa-4">
-                    <div class="progress-step completed" data-step="1" title="Registrasi Akun">1</div>
-                    <div class="progress-step active" data-step="2" title="Isi Formulir">2</div>
-                    <div class="progress-step" data-step="3" title="Verifikasi Berkas">3</div>
-                    <div class="progress-step" data-step="4" title="Pembayaran">4</div>
-                    <div class="progress-step" data-step="5" title="Seleksi & Pengumuman">5</div>
-                </div>
-                <div class="ppdb-siswa-17">
-                    <span class="ppdb-siswa-14">Daftar Akun</span>
-                    <span>Isi Formulir</span>
-                    <span>Verifikasi Berkas</span>
-                    <span>Bayar Tagihan</span>
-                    <span>Pengumuman</span>
-                </div>
+  <!-- Main Content Container -->
+  <main class="main-content flex-1 p-6 lg:p-8 overflow-y-auto">
+    <!-- Topbar Header -->
+    <header class="topbar mb-8" id="topbar"></header>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 1: BERANDA -->
+    <!-- ========================================================================= -->
+    <div id="tab-beranda" class="tab-panel active space-y-6">
+      
+      <!-- Premium Greeting Banner -->
+      <div class="glass-card rounded-2xl p-6 lg:p-8 relative overflow-hidden shadow-2xl">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -z-10"></div>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div>
+            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold mb-3 border border-emerald-500/20">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              Tahun Ajaran 2027/2028
+            </span>
+            <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-white mb-2" id="siswa-greeting-name">
+              Selamat datang, Wali Murid 👋
+            </h2>
+            <p class="text-slate-300 max-w-2xl text-sm lg:text-base">
+              Terima kasih telah mendaftar di SMP Annida. Silakan lengkapi biodata pendaftaran dan unggah seluruh dokumen pendukung di menu yang disediakan.
+            </p>
+          </div>
+          <div class="glass-card rounded-xl px-5 py-4 border border-white/10 text-right min-w-[200px]">
+            <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Nomor Registrasi</div>
+            <div class="text-lg font-mono font-bold text-emerald-400" id="siswa-display-reg-no">PPDB-2027-XXXXX</div>
+            <div class="text-xs text-slate-400 mt-2">Program: <span id="siswa-display-program" class="font-bold text-slate-200">-</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Horizontal Stepper / Timeline Tracker -->
+      <div class="glass-card rounded-2xl p-6 shadow-xl">
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400 mb-6">Status Alur Pendaftaran</h3>
+        
+        <!-- Timeline Stepper -->
+        <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-2">
+          
+          <!-- Step 1: Registrasi -->
+          <div class="flex items-center gap-3 md:flex-col md:text-center flex-1" id="step-track-1">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-emerald-500 text-white ring-4 ring-emerald-500/20">✓</div>
+            <div class="text-xs font-medium text-slate-200 mt-1">Registrasi Akun</div>
+          </div>
+          <div class="hidden md:block h-0.5 bg-emerald-500 flex-1 mx-2" id="line-track-1"></div>
+
+          <!-- Step 2: Data -->
+          <div class="flex items-center gap-3 md:flex-col md:text-center flex-1" id="step-track-2">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-700 text-slate-400" id="step-icon-2">2</div>
+            <div class="text-xs font-medium text-slate-400 mt-1" id="step-text-2">Data Calon Siswa</div>
+          </div>
+          <div class="hidden md:block h-0.5 bg-slate-700 flex-1 mx-2" id="line-track-2"></div>
+
+          <!-- Step 3: Verifikasi -->
+          <div class="flex items-center gap-3 md:flex-col md:text-center flex-1" id="step-track-3">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-700 text-slate-400" id="step-icon-3">3</div>
+            <div class="text-xs font-medium text-slate-400 mt-1" id="step-text-3">Verifikasi Berkas</div>
+          </div>
+          <div class="hidden md:block h-0.5 bg-slate-700 flex-1 mx-2" id="line-track-3"></div>
+
+          <!-- Step 4: Pembayaran -->
+          <div class="flex items-center gap-3 md:flex-col md:text-center flex-1" id="step-track-4">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-700 text-slate-400" id="step-icon-4">4</div>
+            <div class="text-xs font-medium text-slate-400 mt-1" id="step-text-4">Pembayaran SPP</div>
+          </div>
+          <div class="hidden md:block h-0.5 bg-slate-700 flex-1 mx-2" id="line-track-4"></div>
+
+          <!-- Step 5: Seleksi -->
+          <div class="flex items-center gap-3 md:flex-col md:text-center flex-1" id="step-track-5">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-700 text-slate-400" id="step-icon-5">5</div>
+            <div class="text-xs font-medium text-slate-400 mt-1" id="step-text-5">Tes Seleksi</div>
+          </div>
+          <div class="hidden md:block h-0.5 bg-slate-700 flex-1 mx-2" id="line-track-5"></div>
+
+          <!-- Step 6: Pengumuman -->
+          <div class="flex items-center gap-3 md:flex-col md:text-center flex-1" id="step-track-6">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-700 text-slate-400" id="step-icon-6">6</div>
+            <div class="text-xs font-medium text-slate-400 mt-1" id="step-text-6">Pengumuman Kelulusan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Status Alert Box & Action Cards -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Current Status Alert Box (Left/Col-span-2) -->
+        <div class="glass-card rounded-2xl p-6 shadow-xl lg:col-span-2 space-y-4">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Status Pendaftaran Saat Ini</h3>
+          
+          <div class="flex items-start gap-4 p-5 rounded-xl border border-yellow-500/20 bg-yellow-500/5 text-yellow-300" id="status-alert-box">
+            <span class="text-2xl mt-0.5">ℹ️</span>
+            <div>
+              <span id="display-badge-status" class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+                🟡 Menunggu Verifikasi
+              </span>
+              <p class="text-sm text-slate-300 leading-relaxed" id="display-status-description">
+                Formulir pendaftaran Anda sudah kami terima dan berkas Anda sedang antre untuk diperiksa secara menyeluruh oleh admin PPDB. Mohon pantau halaman ini secara berkala.
+              </p>
             </div>
+          </div>
+          
+          <div class="flex flex-wrap gap-4 pt-2">
+            <button class="tab-trigger btn bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-5 py-2.5 rounded-xl shadow-lg transition-all" data-target="formulir">
+              ✏️ Lengkapi Data Pendaftaran
+            </button>
+            <button class="tab-trigger btn bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold px-5 py-2.5 rounded-xl transition-all" data-target="berkas">
+              📁 Unggah Berkas & Dokumen
+            </button>
+          </div>
         </div>
 
-        <!-- TAB 2: FORMULIR -->
-        <div id="tab-formulir" class="tab-panel">
-            <section class="wizard-container">
-                <div class="wizard-header text-center ppdb-siswa-3">
-                    <h3>Formulir Pendaftaran</h3>
-                    <p>Silakan isi data dengan lengkap untuk melanjutkan proses verifikasi.</p>
+        <!-- Notification & Actions (Right) -->
+        <div class="glass-card rounded-2xl p-6 shadow-xl space-y-6 flex flex-col justify-between">
+          <div class="space-y-4">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Notifikasi Terbaru</h3>
+            <div class="space-y-3" id="siswa-notification-list">
+              <!-- Item 1 -->
+              <div class="flex gap-3 text-xs p-3 rounded-lg bg-white/5 border border-white/5">
+                <span class="text-emerald-400">✓</span>
+                <div>
+                  <p class="font-medium text-slate-200">Akun PPDB Berhasil Dibuat</p>
+                  <p class="text-slate-400 mt-0.5">Wali Murid telah terdaftar pada platform.</p>
                 </div>
-                
-                <!-- Progress Bar -->
-                <div class="wizard-progress">
-                    <div class="progress-step active" data-step="1">1</div>
-                    <div class="progress-step" data-step="2">2</div>
-                    <div class="progress-step" data-step="3">3</div>
-                    <div class="progress-step" data-step="4">4</div>
+              </div>
+              <!-- Item 2 -->
+              <div class="flex gap-3 text-xs p-3 rounded-lg bg-white/5 border border-white/5">
+                <span class="text-amber-400">⏳</span>
+                <div>
+                  <p class="font-medium text-slate-200">Menunggu Kelengkapan Formulir</p>
+                  <p class="text-slate-400 mt-0.5">Silakan selesaikan data siswa & orang tua.</p>
                 </div>
+              </div>
+            </div>
+          </div>
 
-                <form id="multiStepForm">
-                    <!-- Step 1: Pilihan Program -->
-                    <div class="form-step active" id="step1">
-                        <h4>Pilihan Program</h4>
-                        <div class="form-group">
-                            <label>Pilih Jenjang</label>
-                            <select class="form-control" disabled>
-                                <option selected>SMP Sekolah Alam + Tahfidz</option>
-                            </select>
-                            <small class="ppdb-siswa-12">Hanya tersedia jenjang SMP Sekolah Alam + Tahfidz.</small>
-                        </div>
-                        <div class="form-group">
-                            <label>Tipe Pendaftaran</label>
-                            <select id="tipe_pendaftaran_dashboard" class="form-control">
-                                <option value="sekolah">Hanya Sekolah (Non-Pondok)</option>
-                                <option value="pondok">Sekolah + Pondok (Boarding)</option>
-                            </select>
-                        </div>
-                        <div class="step-actions">
-                            <div></div>
-                            <button type="button" class="btn btn-primary btn-next">Selanjutnya</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Biodata Diri -->
-                    <div class="form-step" id="step2">
-                        <h4>Biodata Diri Calon Siswa</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>NIK</label>
-                                <input type="text" class="form-control" placeholder="16 digit angka" value="3275012345678901">
-                            </div>
-                            <div class="form-group">
-                                <label>NISN</label>
-                                <input type="text" class="form-control" placeholder="Nomor Induk Siswa Nasional" value="0123456789">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Tempat Lahir</label>
-                                <input type="text" class="form-control" value="Jakarta">
-                            </div>
-                            <div class="form-group">
-                                <label>Tanggal Lahir</label>
-                                <input type="date" class="form-control" value="2013-05-12">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Alamat Lengkap</label>
-                            <textarea class="form-control" rows="3">Jl. Raya Hijau Alam No. 42, RT 03/RW 04, Kec. Kesiswaan</textarea>
-                        </div>
-                        <div class="step-actions">
-                            <button type="button" class="btn btn-outline btn-prev">Kembali</button>
-                            <button type="button" class="btn btn-primary btn-next">Selanjutnya</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Data Orang Tua -->
-                    <div class="form-step" id="step3">
-                        <h4>Data Orang Tua / Wali</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Nama Ayah Kandung</label>
-                                <input type="text" class="form-control" value="Bambang Fulan">
-                            </div>
-                            <div class="form-group">
-                                <label>Pekerjaan Ayah</label>
-                                <input type="text" class="form-control" value="Wiraswasta">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Nama Ibu Kandung</label>
-                                <input type="text" class="form-control" value="Siti Aminah">
-                            </div>
-                            <div class="form-group">
-                                <label>Pekerjaan Ibu</label>
-                                <input type="text" class="form-control" value="Guru">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Nomor WhatsApp / HP Aktif</label>
-                            <input type="tel" class="form-control" value="081234567890">
-                        </div>
-                        <div class="step-actions">
-                            <button type="button" class="btn btn-outline btn-prev">Kembali</button>
-                            <button type="button" class="btn btn-primary btn-next">Selanjutnya</button>
-                        </div>
-                    </div>
-
-                    <!-- Step 4: Asal Sekolah -->
-                    <div class="form-step" id="step4">
-                        <h4>Asal Sekolah & Konfirmasi</h4>
-                        <div class="form-group">
-                            <label>Nama Sekolah Asal (SD/MI)</label>
-                            <input type="text" class="form-control" value="SD Negeri Hijau Alam 1">
-                        </div>
-                        <div class="form-group">
-                            <label>NPSN Sekolah Asal</label>
-                            <input type="text" class="form-control" value="20102030">
-                        </div>
-                        <div class="ppdb-siswa-11">
-                            <p class="ppdb-siswa-16">Dengan ini saya menyatakan bahwa data yang saya isikan adalah benar dan dapat dipertanggungjawabkan untuk kebutuhan pendaftaran SMP Sekolah Alam + Tahfidz.</p>
-                        </div>
-                        <div class="step-actions">
-                            <button type="button" class="btn btn-outline btn-prev">Kembali</button>
-                            <button type="submit" class="btn btn-primary" id="btnSubmitForm">Simpan & Kirim Formulir</button>
-                        </div>
-                    </div>
-                </form>
-            </section>
+          <!-- WA Contact Admin Widget -->
+          <div class="pt-4 border-t border-white/10">
+            <a href="https://wa.me/6281299887766" target="_blank" id="btn-chat-admin" class="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg transition-all text-sm w-100">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.59 1.977 14.113.953 11.487.953c-5.437 0-9.862 4.371-9.866 9.8.001 2.02.535 3.996 1.547 5.751l-.997 3.638 3.738-.973c1.6.87 3.11 1.33 4.74 1.33l-.002.001zm11.517-5.16c-.302-.15-1.786-.87-2.062-.97-.277-.1-.478-.15-.678.15-.2.3-.777.97-.953 1.17-.176.2-.351.225-.653.075-.302-.15-1.273-.466-2.424-1.485-.895-.793-1.5-1.771-1.676-2.071-.176-.3-.019-.462.132-.612.135-.134.302-.35.453-.525.15-.175.2-.3.302-.5.101-.2.05-.375-.025-.525-.075-.15-.678-1.625-.93-2.225-.245-.589-.496-.509-.678-.518-.176-.008-.377-.01-.578-.01-.2 0-.528.075-.804.375-.276.3-1.055 1.025-1.055 2.5s1.08 2.9 1.23 3.1c.15.2 2.127 3.226 5.154 4.526.719.309 1.28.495 1.718.633.722.229 1.378.197 1.897.12.578-.087 1.787-.726 2.037-1.425.25-.7.25-1.3.176-1.425-.075-.125-.276-.2-.578-.35z"/>
+              </svg>
+              💬 Hubungi Admin via WhatsApp
+            </a>
+          </div>
         </div>
 
-        <!-- TAB 3: DOKUMEN -->
-        <div id="tab-dokumen" class="tab-panel">
-            <div class="card ppdb-siswa-19">
-                <h3>Pemeriksaan Dokumen Persyaratan</h3>
-                <p>Silakan unggah pindaian (scan) berkas asli dalam format gambar (JPG/PNG) atau PDF.</p>
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 2: FORMULIR -->
+    <!-- ========================================================================= -->
+    <div id="tab-formulir" class="tab-panel space-y-6">
+      <div class="glass-card rounded-2xl p-6 lg:p-8 shadow-xl">
+        <h2 class="text-xl lg:text-2xl font-bold text-white mb-6">✏️ Lengkapi Data Pendaftaran</h2>
+        
+        <form id="multiStepForm" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Program Pendaftaran -->
+            <div class="md:col-span-2">
+              <label for="tipe_pendaftaran_dashboard" class="block text-sm font-semibold text-slate-300 mb-2">Program Pendaftaran</label>
+              <select id="tipe_pendaftaran_dashboard" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500 transition-all">
+                <option value="reguler">Hanya Sekolah (Non-Pondok)</option>
+                <option value="pondok">Sekolah + Pondok (Boarding School)</option>
+              </select>
             </div>
             
-            <div class="doc-list">
-                <div class="doc-item">
-                    <div>
-                        <strong>1. Kartu Keluarga (KK)</strong>
-                        <p class="ppdb-siswa-13" id="kk-name">Belum ada file.</p>
-                    </div>
-                    <div class="doc-status">
-                        <span class="status-badge status-draft" id="kk-status">Belum Diunggah</span>
-                        <input type="file" id="file-kk" class="ppdb-siswa-8" accept="image/*,application/pdf">
-                        <button class="btn btn-outline btn-sm" onclick="document.getElementById('file-kk').click()">Upload File</button>
-                    </div>
-                </div>
-                
-                <div class="doc-item">
-                    <div>
-                        <strong>2. Akta Kelahiran</strong>
-                        <p class="ppdb-siswa-13" id="akta-name">Belum ada file.</p>
-                    </div>
-                    <div class="doc-status">
-                        <span class="status-badge status-draft" id="akta-status">Belum Diunggah</span>
-                        <input type="file" id="file-akta" class="ppdb-siswa-8" accept="image/*,application/pdf">
-                        <button class="btn btn-outline btn-sm" onclick="document.getElementById('file-akta').click()">Upload File</button>
-                    </div>
-                </div>
-                
-                <div class="doc-item">
-                    <div>
-                        <strong>3. Ijazah / Surat Keterangan Lulus (SKL)</strong>
-                        <p class="ppdb-siswa-13" id="skl-name">Belum ada file.</p>
-                    </div>
-                    <div class="doc-status">
-                        <span class="status-badge status-draft" id="skl-status">Belum Diunggah</span>
-                        <input type="file" id="file-skl" class="ppdb-siswa-8" accept="image/*,application/pdf">
-                        <button class="btn btn-outline btn-sm" onclick="document.getElementById('file-skl').click()">Upload File</button>
-                    </div>
-                </div>
+            <!-- NIK -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-300 mb-2">NIK Calon Siswa</label>
+              <input type="text" id="siswa-nik" placeholder="16 digit angka" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500" required>
             </div>
-        </div>
 
-        <!-- TAB 4: PEMBAYARAN -->
-        <div id="tab-pembayaran" class="tab-panel">
-            <div class="invoice-card">
-                <h3 class="text-center ppdb-siswa-19">Invoice Formulir Pendaftaran</h3>
-                
-                <div class="invoice-row">
-                    <span>No. Invoice</span>
-                    <strong>INV/2027/PPDB/001</strong>
-                </div>
-                <div class="invoice-row">
-                    <span>Nama Biaya</span>
-                    <span>Biaya Formulir Pendaftaran</span>
-                </div>
-                <div class="invoice-row">
-                    <span>Tipe Program</span>
-                    <span id="invoice-tipe">Hanya Sekolah</span>
-                </div>
-                <div class="invoice-row ppdb-siswa-5">
-                    <span>Total Tagihan</span>
-                    <span class="invoice-total" id="invoice-nominal">Rp 250.000</span>
-                </div>
-                
-                <div class="ppdb-siswa-2">
-                    <strong>Rekening Pembayaran Yayasan:</strong><br>
-                    Bank Syariah Indonesia (BSI)<br>
-                    No. Rek: <strong>7123456789</strong> a.n Annida 2 PPDB
-                </div>
-                
-                <form id="paymentForm">
-                    <div class="form-group">
-                        <label>Unggah Bukti Transfer</label>
-                        <input type="file" class="form-control" id="bukti-transfer" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary ppdb-siswa-1" id="btnConfirmPayment">Kirim Konfirmasi Pembayaran</button>
-                </form>
-                
-                <div id="payment-success-msg" class="ppdb-siswa-10">
-                    ✓ Bukti transfer telah dikirim dan sedang diverifikasi Bendahara.
-                </div>
+            <!-- NISN -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-300 mb-2">NISN Calon Siswa</label>
+              <input type="text" id="siswa-nisn" placeholder="Nomor Induk Siswa Nasional" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500" required>
             </div>
-        </div>
 
-        <!-- TAB 5: PENGUMUMAN -->
-        <div id="tab-pengumuman" class="tab-panel">
-            <div class="card text-center ppdb-siswa-6">
-                <div class="ppdb-siswa-7">🎉</div>
-                <h3>Pengumuman Hasil Seleksi</h3>
-                <p class="ppdb-siswa-3">Selamat! Calon siswa atas nama **Ahmad Fulan** dinyatakan **LULUS** seleksi penerimaan murid baru SMP Sekolah Alam + Tahfidz Annida 2.</p>
-                <div class="ppdb-siswa-9">
-                    <a href="#" class="btn btn-primary">Download Surat Kelulusan</a>
-                    <a href="#" class="btn btn-outline" onclick="alert('Pemberitahuan: Akun Anda akan diaktifkan di portal Akademik dan Finance oleh Admin untuk SPP dan kelas.')">Lanjut Daftar Ulang</a>
-                </div>
+            <!-- Tempat Lahir -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-300 mb-2">Tempat Lahir</label>
+              <input type="text" id="siswa-tempat-lahir" placeholder="Kota Lahir" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500" required>
             </div>
+
+            <!-- Tanggal Lahir -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-300 mb-2">Tanggal Lahir</label>
+              <input type="date" id="siswa-tanggal-lahir" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500" required>
+            </div>
+
+            <!-- Nama Ayah -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-300 mb-2">Nama Ayah</label>
+              <input type="text" id="ortu-nama-ayah" placeholder="Nama Lengkap Ayah" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500" required>
+            </div>
+
+            <!-- Pekerjaan Ayah -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-300 mb-2">Pekerjaan Ayah</label>
+              <input type="text" id="ortu-pekerjaan-ayah" placeholder="Pekerjaan Ayah" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500">
+            </div>
+
+            <!-- Nama Ibu -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-300 mb-2">Nama Ibu</label>
+              <input type="text" id="ortu-nama-ibu" placeholder="Nama Lengkap Ibu" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500" required>
+            </div>
+
+            <!-- Pekerjaan Ibu -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-300 mb-2">Pekerjaan Ibu</label>
+              <input type="text" id="ortu-pekerjaan-ibu" placeholder="Pekerjaan Ibu" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500">
+            </div>
+
+            <!-- Whatsapp Wali -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-300 mb-2">No. WhatsApp Wali</label>
+              <input type="text" id="ortu-whatsapp-dash" placeholder="08..." class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500" required>
+            </div>
+
+            <!-- Sekolah Asal -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-300 mb-2">Nama Sekolah Asal (SD/MI)</label>
+              <input type="text" id="sekolah-nama" placeholder="Nama Sekolah Asal" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500" required>
+            </div>
+
+            <!-- NPSN Sekolah Asal -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-300 mb-2">NPSN Sekolah Asal</label>
+              <input type="text" id="sekolah-npsn" placeholder="Nomor Pokok Sekolah Nasional" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500">
+            </div>
+
+            <!-- Alamat -->
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold text-slate-300 mb-2">Alamat Rumah Lengkap</label>
+              <textarea id="siswa-alamat" rows="3" placeholder="Nama jalan, RT/RW, Desa/Kel, Kec, Kota/Kab" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-emerald-500 focus:border-emerald-500" required></textarea>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-4">
+            <button type="submit" id="btn-save-form" class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2">
+              💾 Simpan & Update Data
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- TAB 3: BERKAS / DOKUMEN -->
+    <!-- ========================================================================= -->
+    <div id="tab-berkas" class="tab-panel space-y-6">
+      <div class="glass-card rounded-2xl p-6 lg:p-8 shadow-xl">
+        <h2 class="text-xl lg:text-2xl font-bold text-white mb-2">📁 Unggah Berkas & Dokumen Pendukung</h2>
+        <p class="text-slate-400 text-sm mb-6">Silakan unggah dokumen persyaratan dalam format gambar (JPG/PNG) atau PDF maksimal 2MB.</p>
+        
+        <div class="space-y-4">
+          <!-- Item 1: Kartu Keluarga -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between p-5 rounded-xl bg-white/5 border border-white/10 gap-4">
+            <div>
+              <h4 class="font-bold text-white mb-1">1. Kartu Keluarga (KK)</h4>
+              <p class="text-xs text-slate-400" id="kk-name">Belum ada file diunggah.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="px-2.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-semibold" id="kk-status">Belum Diunggah</span>
+              <input type="file" id="file-kk" class="hidden" accept="image/*,application/pdf" onchange="handleFileUpload('kk')">
+              <button class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition-all" onclick="document.getElementById('file-kk').click()">Pilih File</button>
+            </div>
+          </div>
+          
+          <!-- Item 2: Akta Kelahiran -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between p-5 rounded-xl bg-white/5 border border-white/10 gap-4">
+            <div>
+              <h4 class="font-bold text-white mb-1">2. Akta Kelahiran</h4>
+              <p class="text-xs text-slate-400" id="akta-name">Belum ada file diunggah.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="px-2.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-semibold" id="akta-status">Belum Diunggah</span>
+              <input type="file" id="file-akta" class="hidden" accept="image/*,application/pdf" onchange="handleFileUpload('akta')">
+              <button class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition-all" onclick="document.getElementById('file-akta').click()">Pilih File</button>
+            </div>
+          </div>
+          
+          <!-- Item 3: SKL/Ijazah -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between p-5 rounded-xl bg-white/5 border border-white/10 gap-4">
+            <div>
+              <h4 class="font-bold text-white mb-1">3. Ijazah / Surat Keterangan Lulus (SKL)</h4>
+              <p class="text-xs text-slate-400" id="skl-name">Belum ada file diunggah.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="px-2.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-semibold" id="skl-status">Belum Diunggah</span>
+              <input type="file" id="file-skl" class="hidden" accept="image/*,application/pdf" onchange="handleFileUpload('skl')">
+              <button class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold px-4 py-2 rounded-lg transition-all" onclick="document.getElementById('file-skl').click()">Pilih File</button>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
 
-    </main>
+    <!-- ========================================================================= -->
+    <!-- TAB 4: PEMBAYARAN -->
+    <!-- ========================================================================= -->
+    <div id="tab-pembayaran" class="tab-panel space-y-6">
+      <div class="max-w-2xl mx-auto glass-card rounded-2xl p-6 lg:p-8 shadow-2xl space-y-6">
+        <div class="text-center">
+          <h2 class="text-xl lg:text-2xl font-bold text-white mb-1">Tagihan Pembayaran Pendaftaran</h2>
+          <p class="text-slate-400 text-xs uppercase tracking-wider font-semibold">Invoice No: INV/2027/PPDB/001</p>
+        </div>
+        
+        <div class="border-y border-white/10 py-4 space-y-3">
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-400">Deskripsi</span>
+            <span class="font-medium text-slate-200">Biaya Pendaftaran Calon Murid Baru (2027/2028)</span>
+          </div>
+          <div class="flex justify-between text-sm">
+            <span class="text-slate-400">Tipe Program</span>
+            <span class="font-medium text-slate-200" id="invoice-tipe">Hanya Sekolah</span>
+          </div>
+          <div class="flex justify-between text-lg font-bold pt-3 border-t border-dashed border-white/10">
+            <span class="text-white">Total Tagihan</span>
+            <span class="text-emerald-400" id="invoice-nominal">Rp 250.000</span>
+          </div>
+        </div>
+        
+        <div class="p-4 rounded-xl bg-white/5 border border-white/10 text-xs leading-relaxed text-slate-300">
+          <p class="font-bold text-slate-200 mb-2">Metode Pembayaran (Transfer Bank):</p>
+          <p>Bank Syariah Indonesia (BSI)</p>
+          <p class="text-base font-bold text-slate-100 my-1">No. Rek: <span class="font-mono">7123456789</span></p>
+          <p>Atas Nama: <strong>Yayasan Annida Setu (PPDB)</strong></p>
+        </div>
+        
+        <form id="paymentForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-semibold text-slate-300 mb-2">Unggah Bukti Transfer</label>
+            <input type="file" id="bukti-transfer" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-300 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-emerald-500/10 file:text-emerald-400 hover:file:bg-emerald-500/20" required>
+          </div>
+          <button type="submit" id="btnConfirmPayment" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+            ✓ Kirim Konfirmasi Pembayaran
+          </button>
+        </form>
+        
+        <div id="payment-success-msg" class="hidden flex items-center gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs text-center justify-center">
+          ✓ Bukti transfer telah terkirim dan sedang dalam proses verifikasi oleh Bendahara.
+        </div>
+      </div>
+    </div>
 
-    <script type="module" src="../../js/ppdb/script.js"></script>
+    <!-- ========================================================================= -->
+    <!-- TAB 5: PENGUMUMAN -->
+    <!-- ========================================================================= -->
+    <div id="tab-pengumuman" class="tab-panel space-y-6">
+      <div class="max-w-2xl mx-auto glass-card rounded-2xl p-8 shadow-2xl text-center space-y-6">
+        <div class="w-20 h-20 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-4xl mx-auto">🎉</div>
+        
+        <div class="space-y-2">
+          <h2 class="text-2xl font-bold text-white">Pengumuman Hasil Seleksi</h2>
+          <span class="inline-flex items-center px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider">
+            🟢 Diterima / Lulus
+          </span>
+        </div>
+        
+        <p class="text-slate-300 leading-relaxed text-sm md:text-base max-w-lg mx-auto" id="display-announcement-text">
+          Selamat! Calon siswa atas nama <strong class="text-white" id="announce-student-name">Ahmad Fulan</strong> dinyatakan **LULUS** seleksi penerimaan murid baru SMP Annida Tahun Ajaran 2027/2028.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+          <a href="#" class="btn bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all text-sm">
+            📄 Download Surat Kelulusan
+          </a>
+          <button class="btn bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold px-6 py-3 rounded-xl transition-all text-sm" onclick="alert('Informasi: Akun Anda sedang dipindahkan ke Portal Akademik Utama. Tim kami akan menghubungi Anda untuk SPP dan penentuan kelas.')">
+            ✓ Konfirmasi Daftar Ulang
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script type="module" src="../../js/ppdb/script.js"></script>
+  
+  <script>
+    // Local client helper for file uploads
+    function handleFileUpload(docType) {
+      const fileInput = document.getElementById(`file-${docType}`);
+      const statusSpan = document.getElementById(`${docType}-status`);
+      const nameText = document.getElementById(`${docType}-name`);
+      
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        nameText.textContent = `File: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
+        statusSpan.className = "px-2.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-semibold";
+        statusSpan.textContent = "Sedang Diunggah";
+        
+        // Simulating upload success
+        setTimeout(() => {
+          statusSpan.className = "px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold";
+          statusSpan.textContent = "Terunggah";
+        }, 1500);
+      }
+    }
+  </script>
 </body>
 </html>
