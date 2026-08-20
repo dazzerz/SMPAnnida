@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const user = authData.user;
                 if (user) {
                     // Generate nomor pendaftaran
-                    const noPendaftaran = `REG-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+                    const noPendaftaran = `REG-2027-${Math.floor(1000 + Math.random() * 9000)}`;
 
                     // 2. Masukkan Data ke Tabel pendaftaran
                     const { error: dbError } = await db

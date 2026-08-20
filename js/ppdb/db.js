@@ -274,7 +274,7 @@ window.activateToAcademic = async function(studentName) {
     
     if (confirmActivation) {
         try {
-            const mockNis = `2026${Math.floor(100 + Math.random() * 900)}`;
+            const mockNis = `2027${Math.floor(100 + Math.random() * 900)}`;
             
             // Insert ke tabel akademik real 'students' yang sudah eksis di database Anda!
             const { error } = await db

@@ -3,7 +3,7 @@ injectSidebar('sidebar');
 
 const isSiswa = window.location.pathname.includes('siswa');
 injectTopbar('topbar', {
-    greeting: isSiswa ? 'Portal PPDB' : 'Gelombang 1 - SMP Sekolah Alam + Tahfidz 2026/2027',
+    greeting: isSiswa ? 'Portal PPDB' : 'Gelombang 1 - SMP Sekolah Alam + Tahfidz 2027/2028',
     title: isSiswa ? 'Portal Calon Siswa' : 'Admin PPDB Panel'
 });
 
