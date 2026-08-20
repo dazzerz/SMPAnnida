@@ -13,85 +13,16 @@
       theme: {
         extend: {
           "colors": {
-            "on-surface": "#ffffff",
-            "surface-bright": "rgba(255, 255, 255, 0.08)",
-            "on-error-container": "#6e0a12",
-            "primary-fixed": "#b9efc5",
-            "outline-variant": "rgba(255, 255, 255, 0.2)",
-            "tertiary-dim": "#67501c",
-            "on-primary-fixed-variant": "#346544",
-            "surface-container-lowest": "#15803d",
-            "secondary": "#a1a1aa",
-            "secondary-container": "rgba(255, 255, 255, 0.1)",
-            "tertiary-container": "rgba(16, 185, 129, 0.2)",
-            "on-tertiary-fixed": "#4d3806",
-            "surface-container-high": "rgba(255, 255, 255, 0.12)",
-            "secondary-fixed-dim": "#ded3c5",
-            "outline": "rgba(255, 255, 255, 0.3)",
-            "secondary-dim": "#595248",
-            "error-dim": "#67040d",
-            "background": "transparent",
-            "surface": "rgba(15, 23, 42, 0.3)",
-            "error": "#ef4444",
-            "on-primary": "#ffffff",
-            "inverse-primary": "#bef5ca",
-            "on-secondary": "#ffffff",
-            "on-background": "#ffffff",
-            "error-container": "#fa746f",
-            "surface-tint": "#10b981",
             "primary": "#10b981",
-            "on-tertiary-fixed-variant": "#6c5421",
-            "surface-container": "rgba(255, 255, 255, 0.05)",
-            "surface-dim": "rgba(15, 23, 42, 0.5)",
-            "inverse-on-surface": "#9a9e99",
-            "surface-container-highest": "rgba(255, 255, 255, 0.15)",
-            "primary-fixed-dim": "#abe1b7",
-            "on-primary-container": "#ffffff",
-            "primary-container": "#047857",
-            "tertiary": "#745c27",
-            "tertiary-fixed": "#fad998",
-            "inverse-surface": "#0b0f0c",
-            "secondary-fixed": "#ece1d3",
-            "on-secondary-fixed-variant": "#625a50",
-            "on-secondary-fixed": "#453e34",
-            "on-tertiary": "#fff8f1",
-            "on-secondary-container": "#ffffff",
             "primary-dim": "#059669",
-            "on-primary-fixed": "#ffffff",
-            "on-error": "#ffffff",
-            "tertiary-fixed-dim": "#ebcb8b",
-            "on-surface-variant": "#e4e4e7",
-            "on-tertiary-container": "#614b18",
-            "surface-container-low": "rgba(255, 255, 255, 0.05)",
-            "surface-variant": "rgba(255, 255, 255, 0.1)"
-          },
-          "borderRadius": {
-            "DEFAULT": "0.25rem",
-            "lg": "0.5rem",
-            "xl": "0.75rem",
-            "full": "9999px"
-          },
-          "spacing": {
-            "sm": "8px",
-            "xs": "4px",
-            "md": "16px",
-            "xl": "32px",
-            "gutter": "16px",
-            "base": "8px",
-            "margin": "24px",
-            "lg": "24px"
+            "primary-container": "#047857",
+            "accent": "#34d399"
           },
           "fontFamily": {
             "headline-md": ["Literata"],
             "headline-lg": ["Literata"],
             "label-md": ["Nunito Sans"],
             "body-md": ["Nunito Sans"]
-          },
-          "fontSize": {
-            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
-            "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
-            "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
-            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
           }
         },
       },
@@ -99,297 +30,605 @@
   </script>
   <style>
     html { scroll-behavior: smooth; }
-    @keyframes marquee-reverse {
-      0% { transform: translateX(-50%); }
-      100% { transform: translateX(0); }
+    
+    /* Neon Glow Emerald Green CTA Button */
+    .neon-glow-btn {
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+      transition: all 0.3s ease;
     }
-    .animate-marquee-reverse {
-      animation: marquee-reverse 30s linear infinite;
-    }
-    .animate-marquee-reverse:hover {
-      animation-play-state: paused;
+    .neon-glow-btn:hover {
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.9);
+      transform: translateY(-2px);
     }
     
-    /* Custom lightbox modal styling */
-    .lightbox-modal {
-      display: none;
-      position: fixed;
-      z-index: 10000;
-      padding-top: 50px;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.9);
-      backdrop-filter: blur(8px);
+    /* Glassmorphism Styles */
+    .glass-panel-custom {
+      background: rgba(16, 26, 20, 0.35);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
-    .lightbox-content {
-      margin: auto;
-      display: block;
-      max-width: 80%;
-      max-height: 75vh;
-      border-radius: 12px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    
+    /* FAQ Accordion Transitions */
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .lightbox-caption {
-      margin: auto;
-      display: block;
-      width: 80%;
-      text-align: center;
-      color: #ccc;
-      padding: 15px 0;
-      font-size: 1.1rem;
+    .faq-item.active .faq-answer {
+      max-height: 200px;
     }
-    .lightbox-close {
-      position: absolute;
-      top: 15px;
-      right: 35px;
-      color: #f1f1f1;
-      font-size: 40px;
-      font-weight: bold;
-      transition: 0.3s;
-      cursor: pointer;
+    .faq-icon {
+      transition: transform 0.3s ease;
     }
-    .lightbox-close:hover, .lightbox-close:focus {
-      color: #bbb;
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
     }
-    .lightbox-nav {
-      cursor: pointer;
-      position: absolute;
-      top: 50%;
-      width: auto;
-      padding: 16px;
-      margin-top: -50px;
-      color: white;
-      font-weight: bold;
-      font-size: 24px;
-      transition: 0.6s ease;
-      border-radius: 0 3px 3px 0;
-      user-select: none;
-      background: rgba(255,255,255,0.05);
-      border: none;
-    }
-    .lightbox-prev { left: 5%; border-radius: 5px; }
-    .lightbox-next { right: 5%; border-radius: 5px; }
-    .lightbox-nav:hover { background-color: rgba(255,255,255,0.2); }
   </style>
 </head>
-<body class="bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-fixed text-white font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<body class="bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-fixed text-white font-body-md antialiased min-h-screen flex flex-col">
 
   <!-- Lapisan Gelap Overlay Global -->
   <div class="fixed inset-0 bg-black/25 z-[-1]"></div>
 
   <!-- TopNavBar Shared Component -->
   <header class="bg-black/30 backdrop-blur-md border-b border-white/10 docked full-width top-0 z-50 sticky shadow-sm">
-    <div class="flex justify-between items-center px-lg py-md w-full max-w-7xl mx-auto">
-      <a class="flex items-center gap-sm font-headline-md text-headline-md font-bold text-white hover:opacity-90 transition-opacity" href="#home">
+    <div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
+      <a class="flex items-center gap-2 font-headline-md text-2xl font-bold text-white hover:opacity-90 transition-opacity" href="#home">
         <img src="../../assets/logo/1.png" alt="Logo Annida" class="h-10 w-auto object-contain">
         <span>SMP Annida</span>
       </a>
-      <nav class="hidden md:flex gap-xl">
-        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#home">Home</a>
-        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#tentang-kami">Tentang Kami</a>
-        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#program">Program</a>
-        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#alur-pendaftaran">Alur Pendaftaran</a>
+      <nav class="hidden md:flex gap-8">
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-semibold" href="#home">Home</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-semibold" href="#mengapa-kami">Mengapa Kami</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-semibold" href="#program">Program</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-semibold" href="#timeline">Timeline</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-semibold" href="#biaya">Biaya</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-semibold" href="#alur">Alur PPDB</a>
       </nav>
-      <div class="flex items-center gap-md">
-        <a href="../../index.html" class="font-label-md text-label-md text-white border border-white/20 hover:bg-white/10 px-md py-sm rounded-lg transition-colors">Login</a>
-        <a class="font-label-md text-label-md bg-primary text-white px-md py-sm rounded-lg hover:bg-primary-dim transition-colors" href="register.html">Daftar Sekarang</a>
+      <div class="flex items-center gap-4">
+        <a href="../../index.html" class="text-sm font-semibold text-white border border-white/20 hover:bg-white/10 px-4 py-2 rounded-lg transition-colors">Login</a>
+        <a class="text-sm font-semibold bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dim transition-colors" href="register.html">Daftar Sekarang</a>
       </div>
     </div>
   </header>
 
   <main class="flex-grow">
-    <!-- Hero Section -->
-    <section class="relative pt-xl pb-32 px-margin lg:px-0" id="home">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-xl items-center">
-        <div class="z-10 bg-emerald-950/40 backdrop-blur-md p-xl rounded-xl shadow-lg border border-white/10 lg:-mr-12 relative overflow-hidden">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
-          <span class="inline-block py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-label-md text-label-md mb-md">Penerimaan Siswa Baru 2026/2027</span>
-          <h1 class="font-headline-lg text-headline-lg text-white mb-md leading-tight">Wujudkan Masa Depan Qur'ani dan Unggul di SMP Annida</h1>
-          <p class="font-body-md text-body-md text-gray-200 mb-xl max-w-lg">
-            Lingkungan belajar ramah alam yang dirancang untuk menumbuhkan akhlak mulia, hafalan Al-Qur'an mutqin, serta kecerdasan IPTEK bagi generasi Qur'ani masa kini.
-          </p>
-          <div class="flex flex-wrap gap-md">
-            <a class="bg-primary text-white font-label-md text-label-md px-xl py-md rounded-lg shadow-sm hover:shadow-md hover:bg-primary-dim transition-all flex items-center gap-2" href="register.html">
-              Daftar Sekarang
-              <span class="material-symbols-outlined" data-icon="arrow_forward" data-weight="fill" style="font-variation-settings: 'FILL' 1;">arrow_forward</span>
-            </a>
-            <a href="../../assets/images/gedung_sekolah.jpg" target="_blank" class="border border-white/30 text-white font-label-md text-label-md px-xl py-md rounded-lg hover:bg-white/10 transition-all flex items-center gap-2">
-              Unduh Brosur
-              <span class="material-symbols-outlined" data-icon="download">download</span>
-            </a>
-          </div>
+    
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 1. HERO SECTION -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="relative pt-20 pb-28 px-6 lg:px-0" id="home">
+      <div class="max-w-7xl mx-auto text-center">
+        <span class="inline-block py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-sm font-semibold mb-6">Penerimaan Peserta Didik Baru (PPDB) 2026/2027</span>
+        <h1 class="font-headline-lg text-4xl md:text-5xl lg:text-6xl text-white mb-6 leading-tight max-w-4xl mx-auto">
+          Membentuk Generasi Berilmu, Berkarakter, dan Siap Menghadapi Masa Depan
+        </h1>
+        <p class="text-lg md:text-xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
+          Pendidikan yang mengembangkan kemampuan akademik, karakter, kemandirian, dan potensi setiap peserta didik melalui pembiasaan akhlak islami, Sekolah Alam terpadu, dan bimbingan Tahfidz Al-Qur'an.
+        </p>
+        
+        <!-- CTA & Neon Glow -->
+        <div class="flex flex-wrap justify-center gap-4 mb-10">
+          <a class="neon-glow-btn bg-primary text-white font-bold px-8 py-4 rounded-lg flex items-center gap-2 hover:bg-primary-dim" href="register.html">
+            🟢 Daftar Sekarang
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
+          <a class="border border-white/30 text-white font-bold px-8 py-4 rounded-lg hover:bg-white/10 transition-all flex items-center gap-2" href="#program">
+            Lihat Program
+          </a>
         </div>
-        <div class="relative h-[500px] rounded-xl overflow-hidden shadow-xl lg:ml-12 z-0 border border-white/10">
-          <div class="absolute inset-0 bg-emerald-950/20 mix-blend-multiply z-10"></div>
-          <img class="w-full h-full object-cover" alt="Gedung SMP Annida Al Islamy 2" src="../../assets/images/gedung_sekolah.jpg"/>
-        </div>
-      </div>
-    </section>
-
-    <!-- Tentang Kami Section -->
-    <section class="py-xl px-margin lg:px-0" id="tentang-kami">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-xl items-center py-12">
-        <div class="relative rounded-xl overflow-hidden shadow-lg order-2 lg:order-1 border border-white/10 hover:scale-[1.03] hover:rotate-[0.5deg] transition-all duration-300 cursor-pointer">
-          <img alt="Aktivitas Siswa SMP Annida" class="slider-img w-full h-auto max-h-[420px] object-cover" data-index="2" src="../../assets/images/aktivitas-3.jpg"/>
-          <div class="absolute inset-0 bg-emerald-950/15 mix-blend-multiply pointer-events-none"></div>
-        </div>
-        <div class="order-1 lg:order-2 bg-emerald-950/25 backdrop-blur-sm p-xl rounded-2xl border border-white/5">
-          <h2 class="font-headline-lg text-headline-lg text-primary mb-md">Visi, Misi &amp; Sejarah</h2>
-          <p class="font-body-md text-body-md text-gray-200 mb-md">
-            SMP Annida didirikan dengan cita-cita mulia menyelenggarakan pendidikan tingkat menengah yang memadukan keunggulan sains akademik dengan kekuatan iman, takwa, dan hafalan Al-Qur'an.
-          </p>
-          <p class="font-body-md text-body-md text-gray-200">
-            Selaras dengan konsep Sekolah Alam, kami berkomitmen membentuk siswa-siswi berjiwa mandiri, berwawasan lingkungan luas, serta berakhlak Qur'ani yang siap memimpin umat menyongsong masa depan yang gemilang.
-          </p>
+        
+        <!-- Checklist Horizontal -->
+        <div class="flex flex-wrap justify-center gap-6 md:gap-10 text-gray-200 text-sm md:text-base font-semibold">
+          <span class="flex items-center gap-1">✓ Pendaftaran Online</span>
+          <span class="flex items-center gap-1">✓ Proses Mudah</span>
+          <span class="flex items-center gap-1">✓ Informasi Transparan</span>
         </div>
       </div>
     </section>
 
-    <!-- Program Section -->
-    <section class="py-xl px-margin lg:px-0" id="program">
-      <div class="max-w-7xl mx-auto py-12">
-        <div class="text-center mb-xl max-w-2xl mx-auto">
-          <h2 class="font-headline-lg text-headline-lg text-primary mb-sm">Program Pendidikan</h2>
-          <p class="font-body-md text-body-md text-gray-200">Kurikulum terpadu yang dirancang untuk mengoptimalkan potensi akademis dan spiritual secara seimbang.</p>
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 2. QUICK INFO & TRUST (Floating bar + Trust Grid) -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="px-6 lg:px-0 -mt-10 mb-24 relative z-20">
+      <div class="max-w-7xl mx-auto">
+        <!-- Floating Info Bar -->
+        <div class="glass-panel-custom rounded-2xl grid grid-cols-2 md:grid-cols-4 gap-6 p-6 mb-12 text-center border border-white/10">
+          <div class="flex flex-col items-center justify-center p-2">
+            <span class="material-symbols-outlined text-emerald-400 text-3xl mb-1">calendar_month</span>
+            <span class="text-xs text-gray-400 font-semibold uppercase">PPDB AJARAN</span>
+            <span class="text-base md:text-lg font-bold text-white mt-1">2026 / 2027</span>
+          </div>
+          <div class="flex flex-col items-center justify-center p-2 border-l border-white/10">
+            <span class="material-symbols-outlined text-emerald-400 text-3xl mb-1">school</span>
+            <span class="text-xs text-gray-400 font-semibold uppercase">JENJANG</span>
+            <span class="text-base md:text-lg font-bold text-white mt-1">SMP (Sekolah Menengah)</span>
+          </div>
+          <div class="flex flex-col items-center justify-center p-2 border-l border-white/10">
+            <span class="material-symbols-outlined text-emerald-400 text-3xl mb-1">payments</span>
+            <span class="text-xs text-gray-400 font-semibold uppercase">BIAYA MASUK</span>
+            <span class="text-base md:text-lg font-bold text-white mt-1">Mulai Rp 3,25 Juta</span>
+          </div>
+          <div class="flex flex-col items-center justify-center p-2 border-l border-white/10">
+            <span class="material-symbols-outlined text-emerald-400 text-3xl mb-1">location_on</span>
+            <span class="text-xs text-gray-400 font-semibold uppercase">LOKASI</span>
+            <span class="text-base md:text-lg font-bold text-white mt-1">Bekasi, Indonesia</span>
+          </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
-          <!-- Program Cards -->
-          <div class="bg-emerald-950/30 backdrop-blur-md rounded-xl p-lg shadow-sm border border-white/10 hover:shadow-md hover:border-primary/50 transition-all duration-300">
-            <span class="material-symbols-outlined text-4xl text-primary mb-md block">eco</span>
-            <h3 class="font-headline-md text-headline-md text-white mb-sm">Sekolah Alam</h3>
-            <p class="font-body-md text-body-md text-gray-300">Eksplorasi ilmu sains, sosial, dan kepemimpinan secara langsung melalui alam sebagai laboratorium pembelajaran utama yang interaktif.</p>
-          </div>
-          <div class="bg-emerald-950/30 backdrop-blur-md rounded-xl p-lg shadow-sm border border-white/10 hover:shadow-md hover:border-primary/50 transition-all duration-300">
-            <span class="material-symbols-outlined text-4xl text-primary mb-md block">local_library</span>
-            <h3 class="font-headline-md text-headline-md text-white mb-sm">Kelas Tahfidz</h3>
-            <p class="font-body-md text-body-md text-gray-300">Program hafalan Al-Qur'an intensif berstandar tinggi yang dibina langsung oleh ustaz-ustazah hafizh untuk mencapai target mutqin.</p>
-          </div>
-          <div class="bg-emerald-950/30 backdrop-blur-md rounded-xl p-lg shadow-sm border border-white/10 hover:shadow-md hover:border-primary/50 transition-all duration-300">
-            <span class="material-symbols-outlined text-4xl text-primary mb-md block">school</span>
-            <h3 class="font-headline-md text-headline-md text-white mb-sm">Program SMP</h3>
-            <p class="font-body-md text-body-md text-gray-300">Program Sekolah Menengah Pertama formal yang mengintegrasikan kurikulum nasional dengan pembinaan akhlak mulia dan kepemimpinan Islam.</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Galeri Marquee Section -->
-    <section class="py-xl overflow-hidden border-t border-white/10" id="galeri">
-      <div class="text-center mb-xl max-w-2xl mx-auto px-margin lg:px-0">
-        <h2 class="font-headline-lg text-headline-lg text-primary mb-sm">Galeri Kegiatan &amp; Fasilitas</h2>
-        <p class="font-body-md text-body-md text-gray-200">Dokumentasi sarana prasarana modern, aktivitas belajar mengajar, serta keceriaan santri di lingkungan SMP Annida.</p>
-      </div>
-      <div class="w-full relative overflow-hidden py-4">
-        <div class="flex w-max animate-marquee-reverse gap-6">
-          <!-- Group 1 -->
-          <div class="flex gap-6 shrink-0">
-            <img alt="Laboratorium Sains &amp; Praktikum Mandiri" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="0" src="../../assets/images/aktivitas-1.jpg"/>
-            <img alt="Pembelajaran Interaktif Berbasis Proyektor" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="1" src="../../assets/images/aktivitas-2.jpg"/>
-            <img alt="Kolaborasi Siswa &amp; Guru Sekolah Alam" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="2" src="../../assets/images/aktivitas-3.jpg"/>
-            <img alt="Fasilitas Ruang Kelas Nyaman" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="3" src="../../assets/images/aktivitas-4.jpg"/>
-            <img alt="Perpustakaan &amp; Ruang Baca Modern" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="4" src="../../assets/images/aktivitas-5.jpg"/>
-            <img alt="Ujian Tulis &amp; Pembiasaan Mandiri" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="5" src="../../assets/images/aktivitas-6.jpg"/>
-            <img alt="Program Tahfidz dan Evaluasi Pembelajaran" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="6" src="../../assets/images/aktivitas-7.jpg"/>
-            <img alt="Aktivitas Ekstrakurikuler dan Pengembangan Karakter" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="7" src="../../assets/images/aktivitas-8.jpg"/>
+        <!-- Trust Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+          <div class="glass-panel-custom rounded-2xl p-6 border border-white/5">
+            <div class="text-4xl font-extrabold text-emerald-400">91+</div>
+            <div class="text-sm text-gray-300 font-medium mt-1">Siswa Aktif</div>
           </div>
-          <!-- Group 2 (Duplicate for loop) -->
-          <div class="flex gap-6 shrink-0">
-            <img alt="Laboratorium Sains &amp; Praktikum Mandiri" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="0" src="../../assets/images/aktivitas-1.jpg"/>
-            <img alt="Pembelajaran Interaktif Berbasis Proyektor" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="1" src="../../assets/images/aktivitas-2.jpg"/>
-            <img alt="Kolaborasi Siswa &amp; Guru Sekolah Alam" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="2" src="../../assets/images/aktivitas-3.jpg"/>
-            <img alt="Fasilitas Ruang Kelas Nyaman" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="3" src="../../assets/images/aktivitas-4.jpg"/>
-            <img alt="Perpustakaan &amp; Ruang Baca Modern" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="4" src="../../assets/images/aktivitas-5.jpg"/>
-            <img alt="Ujian Tulis &amp; Pembiasaan Mandiri" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="5" src="../../assets/images/aktivitas-6.jpg"/>
-            <img alt="Program Tahfidz dan Evaluasi Pembelajaran" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="6" src="../../assets/images/aktivitas-7.jpg"/>
-            <img alt="Aktivitas Ekstrakurikuler dan Pengembangan Karakter" class="slider-img h-64 w-[320px] shrink-0 rounded-xl object-cover shadow-sm border border-white/10 cursor-pointer hover:scale-[1.05] transition-all duration-300" data-index="7" src="../../assets/images/aktivitas-8.jpg"/>
+          <div class="glass-panel-custom rounded-2xl p-6 border border-white/5">
+            <div class="text-4xl font-extrabold text-emerald-400">15+</div>
+            <div class="text-sm text-gray-300 font-medium mt-1">Tenaga Pendidik</div>
+          </div>
+          <div class="glass-panel-custom rounded-2xl p-6 border border-white/5">
+            <div class="text-4xl font-extrabold text-emerald-400">8+</div>
+            <div class="text-sm text-gray-300 font-medium mt-1">Program Unggulan</div>
+          </div>
+          <div class="glass-panel-custom rounded-2xl p-6 border border-white/5">
+            <div class="text-4xl font-extrabold text-emerald-400">5+</div>
+            <div class="text-sm text-gray-300 font-medium mt-1">Tahun Pengalaman</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Alur Pendaftaran Section -->
-    <section class="py-xl px-margin lg:px-0 border-t border-white/10" id="alur-pendaftaran">
-      <div class="max-w-7xl mx-auto py-12">
-        <div class="text-center mb-xl max-w-2xl mx-auto">
-          <h2 class="font-headline-lg text-headline-lg text-primary mb-sm">Alur Pendaftaran PPDB</h2>
-          <p class="font-body-md text-body-md text-gray-200">Langkah mudah untuk mendaftarkan putra-putri Anda secara sistematis.</p>
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 3. MENGAPA ANNIDA? & PROGRAM PENDIDIKAN -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="py-16 px-6 lg:px-0" id="mengapa-kami">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="font-headline-lg text-3xl md:text-4xl text-primary mb-3">Mengapa Memilih SMP Annida?</h2>
+          <p class="text-gray-200 max-w-2xl mx-auto">6 keunggulan utama sistem pendidikan kami dalam membentuk generasi tangguh, islami, dan berwawasan luas.</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-lg relative mt-8">
-          <!-- Connector line -->
-          <div class="hidden md:block absolute top-8 left-[12%] right-[12%] h-0.5 bg-white/20 z-0"></div>
-          <!-- Steps -->
-          <div class="relative z-10 flex flex-col items-center text-center">
-            <div class="w-16 h-16 rounded-full bg-emerald-950/60 text-primary border-2 border-primary flex items-center justify-center font-headline-md text-headline-md mb-md shadow-sm transition-transform hover:scale-105">
-              <span class="material-symbols-outlined">edit_document</span>
-            </div>
-            <h4 class="font-label-md text-label-md text-white mb-xs">1. Isi Formulir</h4>
-            <p class="font-body-md text-sm text-gray-300">Lengkapi data pendaftaran &amp; buat akun secara online.</p>
+
+        <!-- 6 Keunggulan Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
+          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+            <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">menu_book</span>
+            <h3 class="text-lg font-bold text-white mb-2">Pendidikan Akademik</h3>
+            <p class="text-sm text-gray-300">Mengintegrasikan kurikulum nasional dengan materi sains, sosial, dan nalar berpikir logis yang mendalam.</p>
           </div>
-          <div class="relative z-10 flex flex-col items-center text-center">
-            <div class="w-16 h-16 rounded-full bg-emerald-950/60 text-primary border-2 border-primary flex items-center justify-center font-headline-md text-headline-md mb-md shadow-sm transition-transform hover:scale-105">
-              <span class="material-symbols-outlined">psychology</span>
-            </div>
-            <h4 class="font-label-md text-label-md text-white mb-xs">2. Tes Seleksi</h4>
-            <p class="font-body-md text-sm text-gray-300">Ikuti asesmen materi dasar, keagamaan, dan wawancara.</p>
+          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+            <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">favorite</span>
+            <h3 class="text-lg font-bold text-white mb-2">Pendidikan Karakter</h3>
+            <p class="text-sm text-gray-300">Penanaman adab islami harian, integritas kejujuran, dan pembiasaan shalat berjamaah serta dhuha.</p>
           </div>
-          <div class="relative z-10 flex flex-col items-center text-center">
-            <div class="w-16 h-16 rounded-full bg-emerald-950/60 text-primary border-2 border-primary flex items-center justify-center font-headline-md text-headline-md mb-md shadow-sm transition-transform hover:scale-105">
-              <span class="material-symbols-outlined">forum</span>
-            </div>
-            <h4 class="font-label-md text-label-md text-white mb-xs">3. Wawancara</h4>
-            <p class="font-body-md text-sm text-gray-300">Sesi silaturahmi &amp; wawancara orang tua bersama pimpinan madrasah.</p>
+          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+            <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">groups</span>
+            <h3 class="text-lg font-bold text-white mb-2">Pendampingan Guru</h3>
+            <p class="text-sm text-gray-300">Bimbingan penuh perhatian dari asatidzah berdedikasi tinggi yang bertindak sebagai mentor dan sahabat siswa.</p>
           </div>
-          <div class="relative z-10 flex flex-col items-center text-center">
-            <div class="w-16 h-16 rounded-full bg-primary text-white border-2 border-primary flex items-center justify-center font-headline-md text-headline-md mb-md shadow-md transition-transform hover:scale-105">
-              <span class="material-symbols-outlined">how_to_reg</span>
-            </div>
-            <h4 class="font-label-md text-label-md text-white mb-xs">4. Daftar Ulang</h4>
-            <p class="font-body-md text-sm text-gray-300">Konfirmasi kelulusan, penyerahan berkas fisik &amp; administrasi keuangan.</p>
+          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+            <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">computer</span>
+            <h3 class="text-lg font-bold text-white mb-2">Literasi Digital</h3>
+            <p class="text-sm text-gray-300">Penguasaan perangkat teknologi secara bijak untuk riset ilmiah, kolaborasi online, dan produktivitas kreatif.</p>
+          </div>
+          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+            <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">military_tech</span>
+            <h3 class="text-lg font-bold text-white mb-2">Pengembangan Potensi</h3>
+            <p class="text-sm text-gray-300">Eksplorasi bakat siswa melalui beragam ekstrakurikuler kepemimpinan, kewirausahaan, dan olahraga.</p>
+          </div>
+          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+            <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">nature_people</span>
+            <h3 class="text-lg font-bold text-white mb-2">Lingkungan Positif</h3>
+            <p class="text-sm text-gray-300">Suasana belajar yang asri dan aman berbasis konsep Sekolah Alam, jauh dari kebisingan kota dan polusi.</p>
+          </div>
+        </div>
+
+        <!-- Program Cards -->
+        <div class="text-center mb-10" id="program">
+          <h2 class="font-headline-lg text-3xl text-primary mb-3">Pilihan Program Pendidikan</h2>
+          <p class="text-gray-200">Sesuaikan metode belajar yang paling tepat untuk pertumbuhan optimal putra-putri Anda.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div class="glass-panel-custom rounded-2xl p-8 border border-white/10 hover:shadow-2xl transition-all">
+            <span class="material-symbols-outlined text-5xl text-emerald-400 mb-4">school</span>
+            <h3 class="text-xl font-bold text-white mb-3">Program Reguler (Non-Pondok)</h3>
+            <p class="text-gray-300 text-sm leading-relaxed mb-6">
+              Program sekolah formal reguler harian yang memadukan kelas inklusif akademik dengan eksplorasi alam terbuka, mentoring agama, dan kepemimpinan. Sangat cocok untuk siswa yang berdomisili di sekitar Bekasi dan pulang setiap sore.
+            </p>
+            <a href="register.html" class="inline-block bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold py-2.5 px-6 rounded-lg text-sm transition-all">Pilih Reguler</a>
+          </div>
+
+          <div class="glass-panel-custom rounded-2xl p-8 border border-white/10 hover:shadow-2xl transition-all relative overflow-hidden">
+            <div class="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Favorit</div>
+            <span class="material-symbols-outlined text-5xl text-emerald-400 mb-4">home_work</span>
+            <h3 class="text-xl font-bold text-white mb-3">Program Pondok (Boarding School)</h3>
+            <p class="text-gray-300 text-sm leading-relaxed mb-6">
+              Sistem asrama terpadu yang memadukan kurikulum pendidikan umum dengan program hafalan Al-Qur'an (Tahfidz) intensif, pembinaan akhlak mulia 24 jam, penguasaan bahasa Arab & Inggris harian, serta ibadah berjamaah mandiri.
+            </p>
+            <a href="register.html" class="inline-block bg-primary hover:bg-primary-dim text-white font-bold py-2.5 px-6 rounded-lg text-sm transition-all">Pilih Pondok</a>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 4. TIMELINE: SEHARI DI ANNIDA -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="py-16 px-6 lg:px-0 border-t border-white/10" id="timeline">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="font-headline-lg text-3xl md:text-4xl text-primary mb-3">Sehari di SMP Annida</h2>
+          <p class="text-gray-200">Gambaran rutinitas produktif dan menyenangkan para santri dari pagi hingga sore.</p>
+        </div>
+
+        <!-- Vertical Timeline Component -->
+        <div class="relative border-l-2 border-emerald-500/30 max-w-3xl mx-auto pl-8 space-y-12">
+          <!-- Timeline Item 1 -->
+          <div class="relative">
+            <span class="absolute -left-12 top-1.5 bg-primary text-white text-xs font-extrabold rounded-full px-3 py-1 flex items-center justify-center border border-white/20">06.45</span>
+            <div class="absolute -left-[41px] top-2 bg-emerald-500 w-5 h-5 rounded-full border-4 border-black"></div>
+            <div class="glass-panel-custom rounded-xl p-5">
+              <h4 class="text-lg font-bold text-white mb-1">Kedatangan &amp; Dhuha Berjamaah</h4>
+              <p class="text-sm text-gray-300">Penyambutan ramah oleh guru piket, penertiban perlengkapan, dan pembiasaan shalat Dhuha berjamaah di mushala.</p>
+            </div>
+          </div>
+          <!-- Timeline Item 2 -->
+          <div class="relative">
+            <span class="absolute -left-12 top-1.5 bg-primary text-white text-xs font-extrabold rounded-full px-3 py-1 flex items-center justify-center border border-white/20">07.00</span>
+            <div class="absolute -left-[41px] top-2 bg-emerald-500 w-5 h-5 rounded-full border-4 border-black"></div>
+            <div class="glass-panel-custom rounded-xl p-5">
+              <h4 class="text-lg font-bold text-white mb-1">Kegiatan Belajar Mengajar (KBM)</h4>
+              <p class="text-sm text-gray-300">Sesi pembelajaran interaktif sains, matematika, studi sosial, bahasa, dan Al-Qur'an dengan konsep praktek langsung di alam.</p>
+            </div>
+          </div>
+          <!-- Timeline Item 3 -->
+          <div class="relative">
+            <span class="absolute -left-12 top-1.5 bg-primary text-white text-xs font-extrabold rounded-full px-3 py-1 flex items-center justify-center border border-white/20">09.30</span>
+            <div class="absolute -left-[41px] top-2 bg-emerald-500 w-5 h-5 rounded-full border-4 border-black"></div>
+            <div class="glass-panel-custom rounded-xl p-5">
+              <h4 class="text-lg font-bold text-white mb-1">Istirahat &amp; Snack Sehat</h4>
+              <p class="text-sm text-gray-300">Mengisi energi dengan snack buah/roti sehat dan interaksi akrab antarsiswa di bawah naungan pepohonan rindang.</p>
+            </div>
+          </div>
+          <!-- Timeline Item 4 -->
+          <div class="relative">
+            <span class="absolute -left-12 top-1.5 bg-primary text-white text-xs font-extrabold rounded-full px-3 py-1 flex items-center justify-center border border-white/20">12.00</span>
+            <div class="absolute -left-[41px] top-2 bg-emerald-500 w-5 h-5 rounded-full border-4 border-black"></div>
+            <div class="glass-panel-custom rounded-xl p-5">
+              <h4 class="text-lg font-bold text-white mb-1">Shalat Dzuhur &amp; Makan Siang</h4>
+              <p class="text-sm text-gray-300">Pembinaan kedisiplinan ibadah shalat fardhu berjamaah dan makan siang bernutrisi seimbang bersama para guru.</p>
+            </div>
+          </div>
+          <!-- Timeline Item 5 -->
+          <div class="relative">
+            <span class="absolute -left-12 top-1.5 bg-primary text-white text-xs font-extrabold rounded-full px-3 py-1 flex items-center justify-center border border-white/20">13.00</span>
+            <div class="absolute -left-[41px] top-2 bg-emerald-500 w-5 h-5 rounded-full border-4 border-black"></div>
+            <div class="glass-panel-custom rounded-xl p-5">
+              <h4 class="text-lg font-bold text-white mb-1">Pengembangan Diri &amp; Tahfidz</h4>
+              <p class="text-sm text-gray-300">Setoran hafalan Qur'an harian, latihan kepemimpinan kelompok, olahraga memanah/futsal, dan pembekalan kewirausahaan mandiri.</p>
+            </div>
+          </div>
+          <!-- Timeline Item 6 -->
+          <div class="relative">
+            <span class="absolute -left-12 top-1.5 bg-primary text-white text-xs font-extrabold rounded-full px-3 py-1 flex items-center justify-center border border-white/20">15.00</span>
+            <div class="absolute -left-[41px] top-2 bg-emerald-500 w-5 h-5 rounded-full border-4 border-black"></div>
+            <div class="glass-panel-custom rounded-xl p-5">
+              <h4 class="text-lg font-bold text-white mb-1">Pulang (Reguler) / Kegiatan Asrama (Pondok)</h4>
+              <p class="text-sm text-gray-300">Kepulangan tertib untuk siswa reguler, sedangkan santri pondok mulai mempersiapkan diri untuk mentoring asrama sore.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 5. BIAYA & SIMULATOR BIAYA -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="py-16 px-6 lg:px-0 border-t border-white/10" id="biaya">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="font-headline-lg text-3xl md:text-4xl text-primary mb-3">Rincian Biaya &amp; Simulator Interaktif</h2>
+          <p class="text-gray-200">Informasi biaya transparan dan alat bantu estimasi anggaran pendaftaran secara instan.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <!-- Rate details -->
+          <div class="space-y-6">
+            <div class="glass-panel-custom rounded-2xl p-6 border border-white/10">
+              <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-400">payments</span>
+                Tarif Biaya Pendidikan
+              </h3>
+              <div class="divide-y divide-white/10 text-sm">
+                <div class="py-3 flex justify-between">
+                  <span class="text-gray-300">Uang Pendaftaran Awal (Reguler)</span>
+                  <span class="font-bold text-white">Rp 3.250.000</span>
+                </div>
+                <div class="py-3 flex justify-between">
+                  <span class="text-gray-300">Uang Pendaftaran Awal (Pondok)</span>
+                  <span class="font-bold text-white">Rp 4.500.000</span>
+                </div>
+                <div class="py-3 flex justify-between">
+                  <span class="text-gray-300">SPP Bulanan (Reguler)</span>
+                  <span class="font-bold text-white">Rp 425.000 / Bulan</span>
+                </div>
+                <div class="py-3 flex justify-between">
+                  <span class="text-gray-300">SPP Bulanan (Pondok)</span>
+                  <span class="font-bold text-white">Rp 1.100.000 / Bulan</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="glass-panel-custom rounded-2xl p-6 border border-white/5 bg-emerald-950/20">
+              <h4 class="font-bold text-emerald-400 mb-2 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">info</span>
+                Catatan Penting
+              </h4>
+              <p class="text-xs text-gray-300 leading-relaxed">
+                Biaya masuk awal sudah mencakup seragam sekolah (3 stel), sewa lemari asrama (khusus pondok), modul kitab tahfidz, kasur asrama (pondok), rapot, pas foto, dan kegiatan tahunan semester ganjil. Tidak ada biaya pembangunan tambahan tersembunyi.
+              </p>
+            </div>
+          </div>
+
+          <!-- Cost Simulator (Killer Feature!) -->
+          <div class="glass-panel-custom rounded-2xl p-8 border border-white/12 relative">
+            <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Simulator</div>
+            <h3 class="text-xl font-bold text-white mb-6">Simulator Estimasi Anggaran</h3>
+            
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Pilih Program Pendidikan</label>
+                <select id="sim-program" class="w-full bg-slate-900/60 text-white border border-white/20 rounded-lg p-3">
+                  <option value="reguler">Program Reguler (Non-Pondok)</option>
+                  <option value="pondok">Program Pondok (Boarding)</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Jenjang Pendidikan</label>
+                <select id="sim-jenjang" class="w-full bg-slate-900/60 text-white border border-white/20 rounded-lg p-3 opacity-80" disabled>
+                  <option value="smp">SMP (Sekolah Menengah Pertama)</option>
+                </select>
+              </div>
+              
+              <div>
+                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Jumlah Anak yang Didaftarkan</label>
+                <input type="number" id="sim-anak" class="w-full bg-slate-900/60 text-white border border-white/20 rounded-lg p-3 text-center font-bold" value="1" min="1" max="10" />
+              </div>
+              
+              <!-- Result Screen -->
+              <div class="bg-black/30 border border-white/10 rounded-xl p-5 mt-6">
+                <div class="flex justify-between items-center mb-3">
+                  <span class="text-xs text-gray-300 font-semibold uppercase">Estimasi Biaya Masuk Awal</span>
+                  <span class="text-lg font-bold text-white" id="out-biaya-awal">Rp 3.250.000</span>
+                </div>
+                <div class="flex justify-between items-center border-t border-white/10 pt-3">
+                  <span class="text-xs text-gray-300 font-semibold uppercase">Estimasi Biaya Bulanan (SPP)</span>
+                  <span class="text-lg font-bold text-emerald-400" id="out-biaya-bulanan">Rp 425.000</span>
+                </div>
+              </div>
+              
+              <a href="register.html" class="w-full bg-primary hover:bg-primary-dim text-white font-bold py-3.5 rounded-lg transition-all text-center block mt-6 text-sm">
+                Lanjut ke Pendaftaran
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 6. ALUR PPDB & FAQ -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="py-16 px-6 lg:px-0 border-t border-white/10" id="alur">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="font-headline-lg text-3xl md:text-4xl text-primary mb-3">Alur Pendaftaran &amp; FAQ</h2>
+          <p class="text-gray-200">Pahami 6 tahapan pendaftaran online dan temukan jawaban dari pertanyaan yang sering diajukan.</p>
+        </div>
+
+        <!-- 6 Step Stepper -->
+        <div class="grid grid-cols-2 lg:grid-cols-6 gap-6 mb-20 text-center">
+          <div class="glass-panel-custom rounded-xl p-5 border border-white/5 relative">
+            <span class="absolute top-2 left-3 text-3xl font-extrabold text-white/10">01</span>
+            <span class="material-symbols-outlined text-3xl text-emerald-400 mb-2">edit_note</span>
+            <h4 class="text-sm font-bold text-white mb-1">Isi Formulir</h4>
+            <p class="text-[11px] text-gray-400 leading-normal">Lengkapi formulir biodata online di web.</p>
+          </div>
+          <div class="glass-panel-custom rounded-xl p-5 border border-white/5 relative">
+            <span class="absolute top-2 left-3 text-3xl font-extrabold text-white/10">02</span>
+            <span class="material-symbols-outlined text-3xl text-emerald-400 mb-2">upload_file</span>
+            <h4 class="text-sm font-bold text-white mb-1">Upload berkas</h4>
+            <p class="text-[11px] text-gray-400 leading-normal">Unggah Akta, KK, dan foto siswa digital.</p>
+          </div>
+          <div class="glass-panel-custom rounded-xl p-5 border border-white/5 relative">
+            <span class="absolute top-2 left-3 text-3xl font-extrabold text-white/10">03</span>
+            <span class="material-symbols-outlined text-3xl text-emerald-400 mb-2">verified_user</span>
+            <h4 class="text-sm font-bold text-white mb-1">Verifikasi</h4>
+            <p class="text-[11px] text-gray-400 leading-normal">Pengecekan berkas oleh Panitia PPDB.</p>
+          </div>
+          <div class="glass-panel-custom rounded-xl p-5 border border-white/5 relative">
+            <span class="absolute top-2 left-3 text-3xl font-extrabold text-white/10">04</span>
+            <span class="material-symbols-outlined text-3xl text-emerald-400 mb-2">payments</span>
+            <h4 class="text-sm font-bold text-white mb-1">Pembayaran</h4>
+            <p class="text-[11px] text-gray-400 leading-normal">Penyelesaian administrasi pendaftaran.</p>
+          </div>
+          <div class="glass-panel-custom rounded-xl p-5 border border-white/5 relative">
+            <span class="absolute top-2 left-3 text-3xl font-extrabold text-white/10">05</span>
+            <span class="material-symbols-outlined text-3xl text-emerald-400 mb-2">psychology</span>
+            <h4 class="text-sm font-bold text-white mb-1">Tes Seleksi</h4>
+            <p class="text-[11px] text-gray-400 leading-normal">Tes akademik dasar &amp; wawancara ortu.</p>
+          </div>
+          <div class="glass-panel-custom rounded-xl p-5 border border-white/5 relative">
+            <span class="absolute top-2 left-3 text-3xl font-extrabold text-white/10">06</span>
+            <span class="material-symbols-outlined text-3xl text-emerald-400 mb-2">how_to_reg</span>
+            <h4 class="text-sm font-bold text-white mb-1">Pengumuman</h4>
+            <p class="text-[11px] text-gray-400 leading-normal">Kelulusan &amp; proses daftar ulang kelas.</p>
+          </div>
+        </div>
+
+        <!-- Glass FAQ Accordion -->
+        <div class="max-w-3xl mx-auto space-y-4" id="faq">
+          <!-- FAQ item 1 -->
+          <div class="faq-item glass-panel-custom rounded-xl border border-white/10 transition-all">
+            <button class="faq-trigger w-full text-left px-6 py-4 flex justify-between items-center font-semibold text-white focus:outline-none">
+              <span>Apakah proses pendaftaran 100% dilakukan secara online?</span>
+              <span class="material-symbols-outlined faq-icon text-emerald-400">expand_more</span>
+            </button>
+            <div class="faq-answer px-6">
+              <p class="text-sm text-gray-300 pb-4">
+                Ya, benar. Seluruh tahapan pendaftaran mulai dari pengisian biodata, pengunggahan dokumen kelengkapan berkas fisik, konfirmasi transfer biaya pendaftaran, hingga pengumuman kelulusan dilakukan secara mandiri lewat portal PPDB online ini.
+              </p>
+            </div>
+          </div>
+          
+          <!-- FAQ item 2 -->
+          <div class="faq-item glass-panel-custom rounded-xl border border-white/10 transition-all">
+            <button class="faq-trigger w-full text-left px-6 py-4 flex justify-between items-center font-semibold text-white focus:outline-none">
+              <span>Dokumen apa saja yang wajib diunggah untuk kelengkapan berkas?</span>
+              <span class="material-symbols-outlined faq-icon text-emerald-400">expand_more</span>
+            </button>
+            <div class="faq-answer px-6">
+              <p class="text-sm text-gray-300 pb-4">
+                Calon siswa wajib mengunggah pindaian (scan) Kartu Keluarga (KK), Akta Kelahiran, Rapor semester terakhir sekolah asal (SD/MI), serta pas foto berlatar merah/biru ukuran 3x4.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ item 3 -->
+          <div class="faq-item glass-panel-custom rounded-xl border border-white/10 transition-all">
+            <button class="faq-trigger w-full text-left px-6 py-4 flex justify-between items-center font-semibold text-white focus:outline-none">
+              <span>Bagaimana format tes seleksi masuk di SMP Annida?</span>
+              <span class="material-symbols-outlined faq-icon text-emerald-400">expand_more</span>
+            </button>
+            <div class="faq-answer px-6">
+              <p class="text-sm text-gray-300 pb-4">
+                Tes seleksi masuk didesain ramah anak, meliputi asesmen lisan kelancaran membaca Al-Qur'an (makharijul huruf), tes potensi akademik dasar (matematika dasar & literasi bahasa), serta wawancara komitmen orang tua murid.
+              </p>
+            </div>
+          </div>
+
+          <!-- FAQ item 4 -->
+          <div class="faq-item glass-panel-custom rounded-xl border border-white/10 transition-all">
+            <button class="faq-trigger w-full text-left px-6 py-4 flex justify-between items-center font-semibold text-white focus:outline-none">
+              <span>Apakah ada keringanan biaya pembangunan atau beasiswa khusus?</span>
+              <span class="material-symbols-outlined faq-icon text-emerald-400">expand_more</span>
+            </button>
+            <div class="faq-answer px-6">
+              <p class="text-sm text-gray-300 pb-4">
+                Kami menyediakan potongan harga khusus saudara kandung (sibling discount), beasiswa prestasi akademik/tahfidz minimal 5 juz, serta skema bantuan subsidi khusus bagi yatim dan dhuafa yang divalidasi berkas ekonominya oleh panitia.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- 7. LOKASI & CONTACT INFO -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="py-16 px-6 lg:px-0 border-t border-white/10" id="lokasi">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+          <!-- Contact details -->
+          <div class="glass-panel-custom rounded-2xl p-8 border border-white/10 flex flex-col justify-between">
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-6">Hubungi Kantor Panitia PPDB</h3>
+              <p class="text-gray-300 text-sm leading-relaxed mb-8">
+                Untuk pertanyaan lebih mendalam mengenai kurikulum Sekolah Alam, fasilitas asrama pondok, atau kendala dalam portal pengunggahan berkas online, Anda dapat mengunjungi kantor kami atau menghubungi kami melalui saluran berikut:
+              </p>
+              
+              <div class="space-y-4 text-sm">
+                <div class="flex items-start gap-3">
+                  <span class="material-symbols-outlined text-emerald-400">location_on</span>
+                  <div>
+                    <span class="font-bold text-white block">Alamat Kampus Utama</span>
+                    <span class="text-gray-300">Jl. KH. Noer Ali No. 1, Jakasampurna, Bekasi Barat, Kota Bekasi, Jawa Barat 17145</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-emerald-400">call</span>
+                  <div>
+                    <span class="font-bold text-white block">Telepon Kantor</span>
+                    <span class="text-gray-300">(021) 88961234 / 88965678</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-emerald-400">chat</span>
+                  <div>
+                    <span class="font-bold text-white block">WhatsApp Panitia</span>
+                    <span class="text-gray-300">+62 812-9988-7766 (Fast Response)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-6 mt-8 flex gap-4">
+              <a href="https://wa.me/6281299887766" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-lg text-sm flex items-center gap-1.5 transition-all">
+                💬 Chat WhatsApp
+              </a>
+              <a href="tel:+6281299887766" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold py-2.5 px-6 rounded-lg text-sm transition-all">
+                Hubungi Panitia
+              </a>
+            </div>
+          </div>
+
+          <!-- Maps embed -->
+          <div class="rounded-2xl overflow-hidden border border-white/10 h-[400px] lg:h-auto min-h-[350px]">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.1950005477817!2d106.9744653758444!3d-6.238073961089222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698c5ee692e105%3A0xbdbebd6d6eaee1a5!2sBekasi%20Cyber%20Park!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- Footer Shared Component -->
   <footer class="bg-black/40 backdrop-blur-md border-t border-white/10 mt-auto">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-xl px-lg py-xl w-full max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-6 py-12 w-full max-w-7xl mx-auto">
       <div class="col-span-1 md:col-span-1">
-        <div class="flex items-center gap-sm font-headline-md text-headline-md text-white mb-md">
+        <div class="flex items-center gap-2 font-headline-md text-xl text-white mb-4">
           <img src="../../assets/logo/1.png" alt="Logo Annida" class="h-10 w-auto object-contain">
           <span>SMP Annida</span>
         </div>
-        <p class="font-body-md text-body-md text-gray-300">
+        <p class="text-sm text-gray-300 leading-relaxed">
           Membentuk santri berjiwa Qur'ani, literat, tangguh, dan berwawasan lingkungan global.
         </p>
       </div>
-      <div class="col-span-1 md:col-span-3 flex flex-col md:flex-row gap-xl md:justify-end">
-        <div class="flex flex-col gap-sm">
-          <span class="font-label-md text-label-md text-white mb-2">Navigasi</span>
-          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="#home">Home</a>
-          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="#tentang-kami">Tentang Kami</a>
-          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="#program">Program</a>
-          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="#alur-pendaftaran">Alur Pendaftaran</a>
+      <div class="col-span-1 md:col-span-3 flex flex-col md:flex-row gap-8 md:justify-end">
+        <div class="flex flex-col gap-2">
+          <span class="font-bold text-white mb-2 text-sm uppercase tracking-wider">Navigasi</span>
+          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="#home">Home</a>
+          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="#mengapa-kami">Mengapa Kami</a>
+          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="#program">Program</a>
+          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="#biaya">Biaya</a>
         </div>
-        <div class="flex flex-col gap-sm">
-          <span class="font-label-md text-label-md text-white mb-2">Bantuan</span>
-          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="#">Hubungi Kami</a>
-          <a class="text-gray-300 hover:underline hover:text-primary transition-all duration-300 font-label-md text-label-md" href="../../index.html">Portal Akademik</a>
+        <div class="flex flex-col gap-2">
+          <span class="font-bold text-white mb-2 text-sm uppercase tracking-wider">Bantuan</span>
+          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="#lokasi">Hubungi Kami</a>
+          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="../../index.html">Portal Akademik</a>
         </div>
       </div>
     </div>
     <div class="border-t border-white/5 w-full">
-      <div class="max-w-7xl mx-auto px-lg py-md flex justify-between items-center text-sm text-gray-400">
-        <span>© 2026 SMP Annida Portal. All rights reserved.</span>
+      <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center text-xs text-gray-400">
+        <span>© 2026 SMP Annida PPDB Portal. All rights reserved.</span>
       </div>
     </div>
   </footer>
 
   <!-- Lightbox Modal untuk Memperbesar Gambar (Letakkan sebelum tag </body>) -->
-  <div id="lightbox-modal" class="lightbox-modal">
+  <div id="lightbox-modal" class="lightbox-modal" style="display:none;">
     <span class="lightbox-close">&times;</span>
     <button class="lightbox-nav lightbox-prev">◀</button>
     <img class="lightbox-content" id="lightbox-img" src="" alt="Perbesar Foto">
@@ -397,7 +636,64 @@
     <div id="lightbox-caption" class="lightbox-caption"></div>
   </div>
 
+  <!-- FLOATING WHATSAPP CTA -->
+  <a href="https://wa.me/6281299887766" target="_blank" class="fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-400 text-white rounded-full px-5 py-3 shadow-[0_4px_15px_rgba(16,185,129,0.4)] hover:shadow-[0_6px_20px_rgba(16,185,129,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 z-50 font-bold text-sm">
+    <span class="material-symbols-outlined text-lg leading-none">chat</span>
+    <span>👋 Butuh bantuan?</span>
+  </a>
+
   <!-- Custom JS -->
   <script type="module" src="../../js/ppdb/script.js"></script>
+  
+  <!-- INTERACTIVE LOGIC (SIMULATOR & ACCORDION) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. FAQ Accordion Logic
+      const faqTriggers = document.querySelectorAll('.faq-trigger');
+      faqTriggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          const item = trigger.closest('.faq-item');
+          const isActive = item.classList.contains('active');
+          
+          // Close all FAQ items
+          document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+          
+          // Open clicked one if it wasn't active
+          if (!isActive) {
+            item.classList.add('active');
+          }
+        });
+      });
+
+      // 2. Cost Simulator Logic
+      const programSelect = document.getElementById('sim-program');
+      const anakInput = document.getElementById('sim-anak');
+      const outBiayaAwal = document.getElementById('out-biaya-awal');
+      const outBiayaBulanan = document.getElementById('out-biaya-bulanan');
+
+      const PRICING = {
+        reguler: { awal: 3250000, spp: 425000 },
+        pondok: { awal: 4500000, spp: 1100000 }
+      };
+
+      function updateEstimates() {
+        const prog = programSelect.value;
+        const count = Math.max(1, parseInt(anakInput.value) || 1);
+        
+        const rates = PRICING[prog] || PRICING.reguler;
+        const totalAwal = rates.awal * count;
+        const totalSpp = rates.spp * count;
+
+        outBiayaAwal.textContent = 'Rp ' + totalAwal.toLocaleString('id-ID');
+        outBiayaBulanan.textContent = 'Rp ' + totalSpp.toLocaleString('id-ID') + (count > 1 ? ` (${count} Anak)` : '');
+      }
+
+      programSelect.addEventListener('change', updateEstimates);
+      anakInput.addEventListener('input', updateEstimates);
+      
+      // Run once at start
+      updateEstimates();
+    });
+  </script>
 </body>
 </html>
