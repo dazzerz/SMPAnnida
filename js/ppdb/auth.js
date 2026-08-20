@@ -94,8 +94,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (dbError) {
                         console.error("Database insert error:", dbError.message);
-                        // Walau database insert error (mungkin karena tabel belum dibuat),
-                        // kita tetap biarkan user masuk lewat simulasi localStorage
+                    }
+
+                    // 2.1. Upsert user_roles
+                    const { error: roleError } = await db.from('user_roles').upsert([
+                        { user_id: user.id, role: 'wali_murid' }
+                    ], { onConflict: 'user_id' });
+
+                    if (roleError) {
+                        console.error("Role insert warning:", roleError.message);
                     }
 
                     // Simpan state cadangan ke localStorage

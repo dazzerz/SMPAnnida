@@ -99,7 +99,7 @@ export async function handleLogin(e) {
 
   setTimeout(() => { 
     const r = roleData ? roleData.role : null;
-    if (r === 'calon_siswa') {
+    if (r === 'calon_siswa' || r === 'wali_murid') {
       window.location.href = './pages/ppdb/dashboard-siswa.html';
     } else if (r === 'finance') {
       window.location.href = './pages/finance/dashboard.html';
@@ -207,7 +207,7 @@ export async function requireAuth() {
     window.location.href = '/pages/finance/dashboard.html';
     return null;
   }
-  if (role === 'calon_siswa' && (path.includes('/academic/') || path.includes('/finance/') || path.endsWith('/dashboard.html') && !path.includes('/ppdb/'))) {
+  if ((role === 'calon_siswa' || role === 'wali_murid') && (path.includes('/academic/') || path.includes('/finance/') || path.endsWith('/dashboard.html') && !path.includes('/ppdb/'))) {
     window.location.href = '/pages/ppdb/dashboard-siswa.html';
     return null;
   }

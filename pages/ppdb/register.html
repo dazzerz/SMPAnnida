@@ -592,7 +592,7 @@
         // 2. INSERT user_roles
         const { error: roleError } = await supabaseClient
           .from('user_roles')
-          .insert([{ user_id: userId, role: 'calon_siswa' }]);
+          .upsert([{ user_id: userId, role: 'wali_murid' }], { onConflict: 'user_id' });
         
         if (roleError) console.error("Role insert warning:", roleError.message);
 
