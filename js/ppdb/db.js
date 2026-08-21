@@ -528,7 +528,8 @@ window.viewRegistrationDetails = function(regId) {
   document.getElementById('detail-ortu-wa').textContent = r.data_orangtua ? r.data_orangtua.whatsapp : '-';
 
   // Open Details Tab
-  document.querySelector('.tab-trigger[data-target="admin-verifikasi"]').click();
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-admin-verifikasi').classList.add('active');
 };
 
 window.adminVerifyStatus = async function(newStatus) {
@@ -551,7 +552,8 @@ window.adminVerifyStatus = async function(newStatus) {
     await fetchAllRegistrations();
     
     // Redirect to list
-    document.querySelector('.tab-trigger[data-target="admin-dashboard"]').click();
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-admin-dashboard').classList.add('active');
   } catch (err) {
     console.error("Gagal update status verifikasi:", err.message);
     alert("Gagal mengubah status: " + err.message);
