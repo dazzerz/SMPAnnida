@@ -147,7 +147,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <!-- GALERI FASILITAS & KEGIATAN -->
     <!-- ═══════════════════════════════════════════ -->
-    <section class="py-12 px-6 lg:px-0 relative z-20 overflow-hidden">
+    <section class="py-12 px-6 lg:px-0 relative z-30 overflow-hidden">
       <div class="max-w-7xl mx-auto mb-6 text-center">
         <span class="inline-block py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-semibold mb-3">Fasilitas & Dokumentasi Kegiatan</span>
         <h2 class="font-headline-lg text-2xl md:text-3xl text-white mb-2">Gallery Sekolah</h2>
@@ -766,9 +766,10 @@
   </div>
 
   <script>
-    function openLightbox(imageSrc) {
+    window.openLightbox = function(imageSrc) {
       const modal = document.getElementById('lightbox-modal');
       const img = document.getElementById('lightbox-img');
+      if (!modal || !img) return;
       
       img.src = imageSrc;
       modal.classList.remove('hidden');
@@ -779,10 +780,12 @@
         img.classList.remove('scale-95');
         img.classList.add('scale-100');
       }, 10);
-    }
-    function closeLightbox() {
+    };
+
+    window.closeLightbox = function() {
       const modal = document.getElementById('lightbox-modal');
       const img = document.getElementById('lightbox-img');
+      if (!modal || !img) return;
       
       // Trigger animasi fade out
       modal.classList.add('opacity-0');
@@ -793,10 +796,11 @@
         modal.classList.add('hidden');
         img.src = '';
       }, 300);
-    }
+    };
+
     // Tutup lightbox jika area background hitam diklik
     document.getElementById('lightbox-modal').addEventListener('click', function(e) {
-      if (e.target === this) closeLightbox();
+      if (e.target === this) window.closeLightbox();
     });
   </script>
 </body>
