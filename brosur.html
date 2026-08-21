@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Brosur PPDB Online - SMP Annida</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,400..900;1,400..900&amp;family=Nunito+Sans:ital,wght@0,200..1000;1,200..1000&amp;display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#10b981",
+            "primary-dim": "#059669",
+            accent: "#34d399",
+            dark: "#064e3b" // emerald-900
+          },
+          fontFamily: {
+            heading: ["Literata", "serif"],
+            body: ["Nunito Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+    }
+    .text-shadow {
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .poster-container {
+      max-width: 800px; /* A4-ish proportions */
+      margin: 0 auto;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-body antialiased py-10 px-4">
+
+  <!-- Brosur Container -->
+  <div class="poster-container bg-white relative overflow-hidden rounded-xl">
+    
+    <!-- Hero / Header Section -->
+    <div class="relative h-[450px]">
+      <img src="assets/images/bg-utama.jpeg" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop'"/>
+      <div class="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/50 to-dark/90"></div>
+      
+      <!-- Top Info -->
+      <div class="relative z-10 flex justify-between items-center p-6 text-white">
+        <div class="flex items-center gap-3">
+          <div class="bg-white p-2 rounded-full shadow-lg">
+            <img src="assets/logo/1.png" alt="Logo Annida" class="h-12 w-12 object-contain" />
+          </div>
+          <div>
+            <h1 class="font-heading text-2xl font-bold leading-tight">SMP Annida 2</h1>
+            <p class="text-sm font-semibold tracking-wider text-emerald-300">Sekolah Alam + Tahfidz</p>
+          </div>
+        </div>
+        <div class="bg-emerald-500 text-white font-bold px-4 py-2 rounded-lg shadow-lg border border-emerald-400">
+          PPDB 2027/2028
+        </div>
+      </div>
+
+      <!-- Main Headline -->
+      <div class="relative z-10 flex flex-col items-center justify-center h-[calc(100%-100px)] text-center px-8">
+        <h2 class="font-heading text-4xl md:text-5xl font-extrabold text-white text-shadow mb-4">
+          Membentuk Generasi Berilmu,<br/>Berkarakter, & Siap Masa Depan
+        </h2>
+        <p class="text-lg text-gray-200 max-w-2xl text-shadow font-medium">
+          Menjadi lembaga pendidikan sains berbasis alam terdepan yang melahirkan hafizh Qur'an berkarakter pemimpin dan peduli lingkungan.
+        </p>
+      </div>
+    </div>
+
+    <!-- Keunggulan Section -->
+    <div class="bg-emerald-50 py-10 px-8">
+      <div class="text-center mb-8">
+        <h3 class="font-heading text-2xl font-bold text-dark">Mengapa Memilih Kami?</h3>
+        <div class="w-16 h-1 bg-primary mx-auto mt-2 rounded"></div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-emerald-100 text-center flex flex-col items-center">
+          <span class="material-symbols-outlined text-4xl text-primary mb-2">menu_book</span>
+          <h4 class="font-bold text-gray-800 text-sm">Akademik & Sains</h4>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-emerald-100 text-center flex flex-col items-center">
+          <span class="material-symbols-outlined text-4xl text-primary mb-2">mosque</span>
+          <h4 class="font-bold text-gray-800 text-sm">Tahfidz Intensif</h4>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-emerald-100 text-center flex flex-col items-center">
+          <span class="material-symbols-outlined text-4xl text-primary mb-2">nature_people</span>
+          <h4 class="font-bold text-gray-800 text-sm">Sekolah Alam</h4>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-emerald-100 text-center flex flex-col items-center">
+          <span class="material-symbols-outlined text-4xl text-primary mb-2">groups</span>
+          <h4 class="font-bold text-gray-800 text-sm">Karakter Pemimpin</h4>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-emerald-100 text-center flex flex-col items-center">
+          <span class="material-symbols-outlined text-4xl text-primary mb-2">military_tech</span>
+          <h4 class="font-bold text-gray-800 text-sm">Ekstrakurikuler</h4>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-emerald-100 text-center flex flex-col items-center">
+          <span class="material-symbols-outlined text-4xl text-primary mb-2">computer</span>
+          <h4 class="font-bold text-gray-800 text-sm">Literasi Digital</h4>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gallery & Program Grid -->
+    <div class="grid md:grid-cols-2">
+      <!-- Programs & Biaya -->
+      <div class="p-8 bg-white">
+        <h3 class="font-heading text-xl font-bold text-dark mb-4">Pilihan Program</h3>
+        
+        <div class="mb-4 p-4 border border-emerald-200 rounded-lg bg-emerald-50">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-primary">school</span>
+            <h4 class="font-bold text-gray-800">Reguler (Non-Pondok)</h4>
+          </div>
+          <p class="text-xs text-gray-600 mb-2">Sekolah formal harian, eksplorasi alam, & kepemimpinan.</p>
+          <div class="flex justify-between text-sm font-semibold text-dark">
+            <span>Awal: Rp 3.250.000</span>
+            <span>SPP: Rp 425.000/bln</span>
+          </div>
+        </div>
+
+        <div class="p-4 border border-emerald-200 rounded-lg bg-primary text-white relative overflow-hidden">
+          <div class="absolute top-0 right-0 bg-yellow-400 text-dark text-[10px] font-bold px-2 py-1 rounded-bl-lg">FAVORIT</div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-white">home_work</span>
+            <h4 class="font-bold">Pondok (Boarding)</h4>
+          </div>
+          <p class="text-xs text-emerald-100 mb-2">Asrama 24 jam, Tahfidz intensif, bahasa Arab & Inggris.</p>
+          <div class="flex justify-between text-sm font-semibold text-white">
+            <span>Awal: Rp 4.500.000</span>
+            <span>SPP: Rp 1.100.000/bln</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery Images -->
+      <div class="p-8 bg-gray-50 grid grid-cols-2 gap-3">
+        <img src="assets/images/aktivitas-1.jpg" alt="Aktivitas" class="w-full h-32 object-cover rounded-lg shadow-sm border border-gray-200">
+        <img src="assets/images/aktivitas-2.jpg" alt="Aktivitas" class="w-full h-32 object-cover rounded-lg shadow-sm border border-gray-200">
+        <img src="assets/images/aktivitas-5.jpg" alt="Aktivitas" class="w-full h-32 object-cover rounded-lg shadow-sm border border-gray-200">
+        <img src="assets/images/aktivitas-6.jpg" alt="Aktivitas" class="w-full h-32 object-cover rounded-lg shadow-sm border border-gray-200">
+      </div>
+    </div>
+
+    <!-- Footer / CTA -->
+    <div class="bg-dark text-white p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <!-- Contact Info -->
+      <div class="flex-1">
+        <h3 class="font-heading text-xl font-bold mb-3 text-emerald-400">Informasi Pendaftaran</h3>
+        <ul class="space-y-3 text-sm text-gray-300">
+          <li class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">location_on</span>
+            <span>Gg. Al-Ikhlas No.47, RT.002/RW.05, Kp.Rawa Atug, Desa Cibening, Kec. Setu, Kab. Bekasi</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">call</span>
+            <span class="font-bold text-white">+62 812-8957-5462</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg">public</span>
+            <span>www.annida2ppdb.com</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- QR Code -->
+      <div class="bg-white p-3 rounded-xl shadow-xl flex flex-col items-center flex-shrink-0">
+        <img src="assets/images/qr-ppdb.png" alt="Scan untuk Daftar" class="w-32 h-32 object-contain mb-2">
+        <div class="text-center">
+          <p class="text-dark font-bold text-sm">SCAN DISINI</p>
+          <p class="text-xs text-gray-600">untuk daftar online</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
