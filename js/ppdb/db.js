@@ -31,13 +31,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       // Direct guests to login
       if (window.location.pathname.includes('dashboard-')) {
-        window.location.href = 'login.html';
+        window.location.href = '../../index.html';
         return;
       }
     }
   } catch (e) {
     if (window.location.pathname.includes('dashboard-')) {
-      window.location.href = 'login.html';
+      window.location.href = '../../index.html';
       return;
     }
   }
