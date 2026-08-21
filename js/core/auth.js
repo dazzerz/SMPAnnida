@@ -99,7 +99,11 @@ export async function handleLogin(e) {
 
   setTimeout(() => { 
     let r = roleData ? roleData.role : null;
-    if (!r && data.user.phone) r = 'wali_murid';
+    
+    // OVERRIDE: Jika user login menggunakan nomor HP/WA, paksa role menjadi wali_murid
+    if (data.user.phone || !/[a-zA-Z@]/.test(identifier)) {
+      r = 'wali_murid';
+    }
     if (r === 'calon_siswa' || r === 'wali_murid') {
       window.location.href = './pages/ppdb/dashboard-wali.html';
     } else if (r === 'finance') {
