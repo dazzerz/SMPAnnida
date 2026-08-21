@@ -111,6 +111,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         filterRegistrationsTable(searchInput.value);
       });
     }
+
+    // Setup student select change listener to load level of hafalan
+    const select = document.getElementById('seleksi-student-select');
+    if (select) {
+      select.addEventListener('change', () => {
+        const regId = select.value;
+        const student = allRegistrations.find(r => r.id === regId);
+        const inputHafalan = document.getElementById('val-level-hafalan');
+        if (student && inputHafalan) {
+          const docVerif = student.document_verification || {};
+          inputHafalan.value = docVerif.level_hafalan || '';
+        } else if (inputHafalan) {
+          inputHafalan.value = '';
+        }
+      });
+    }
   }
 });
 
@@ -213,6 +229,44 @@ async function fetchMyRegistrationStatus(userId) {
           }
         }
       });
+
+      // DP Payment UI controls
+      const dpSection = document.getElementById('dp-payment-section');
+      const berkasLockBanner = document.getElementById('berkas-lock-banner');
+      const berkasUploadContent = document.getElementById('berkas-upload-content');
+      
+      const docVerif = pendaftaran.document_verification || {};
+      const dpData = docVerif.dp_payment || null;
+      
+      if (pendaftaran.status_pendaftaran === 'Draft') {
+        if (dpSection) {
+          dpSection.classList.remove('hidden');
+          const dpBadge = document.getElementById('dp-status-badge');
+          const dpFilename = document.getElementById('dp-upload-filename');
+          const submitBtn = document.getElementById('btn-submit-dp');
+          
+          if (dpData) {
+            if (dpData.status === 'pending') {
+              if (dpBadge) {
+                dpBadge.textContent = 'Menunggu Validasi';
+                dpBadge.className = 'px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 text-xs font-bold uppercase tracking-wider';
+              }
+              if (dpFilename) dpFilename.textContent = `Bukti Transfer: ${dpData.file_name} (Menunggu Validasi)`;
+              if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = '⏳ Menunggu Validasi';
+              }
+            }
+          }
+        }
+        
+        if (berkasLockBanner) berkasLockBanner.classList.remove('hidden');
+        if (berkasUploadContent) berkasUploadContent.classList.add('hidden');
+      } else {
+        if (dpSection) dpSection.classList.add('hidden');
+        if (berkasLockBanner) berkasLockBanner.classList.add('hidden');
+        if (berkasUploadContent) berkasUploadContent.classList.remove('hidden');
+      }
 
       // Show/Hide Warning Banner on Beranda if status is 'Revisi'
       let banner = document.getElementById('revisi-warning-banner');
@@ -350,15 +404,15 @@ async function submitPaymentConfirmation() {
 }
 
 function updateTimelineUI(status) {
-  // Stepper Elements
-  const steps = [
-    { num: 1, name: 'Registrasi' },
-    { num: 2, name: 'Data Calon Siswa' },
-    { num: 3, name: 'Verifikasi Berkas' },
-    { num: 4, name: 'Pembayaran SPP' },
-    { num: 5, name: 'Tes Seleksi' },
-    { num: 6, name: 'Pengumuman Kelulusan' }
-  ];
+  // Update stepper labels dynamically
+  const text3 = document.getElementById('step-text-3');
+  const text4 = document.getElementById('step-text-4');
+  const text5 = document.getElementById('step-text-5');
+  const text6 = document.getElementById('step-text-6');
+  if (text3) text3.textContent = 'Menunggu DP';
+  if (text4) text4.textContent = 'Verifikasi Berkas';
+  if (text5) text5.textContent = 'Tes Tahfidz';
+  if (text6) text6.textContent = 'Lulus';
 
   // Reset all steps to default gray styles
   for (let i = 1; i <= 6; i++) {
@@ -374,12 +428,12 @@ function updateTimelineUI(status) {
     if (line) line.className = 'hidden md:block h-0.5 bg-slate-700 flex-1 mx-2';
   }
 
-  // Active steps mapper
+  // Active steps mapper based on Alur Komitmen Tahfidz
   let activeMax = 2; // Default is mengisi data
-  if (status === 'Verifikasi' || status === 'Revisi') activeMax = 3;
-  if (status === 'Pembayaran') activeMax = 4;
+  if (status === 'Draft') activeMax = 3;
+  if (status === 'Verifikasi' || status === 'Revisi') activeMax = 4;
   if (status === 'Seleksi') activeMax = 5;
-  if (status === 'Lulus' || status === 'Gugur') activeMax = 6;
+  if (status === 'Lulus') activeMax = 6;
 
   // Render completed paths
   for (let i = 1; i <= activeMax; i++) {
@@ -388,7 +442,7 @@ function updateTimelineUI(status) {
     const line = document.getElementById(`line-track-${i - 1}`);
 
     if (icon) {
-      if (i === 3 && status === 'Revisi') {
+      if (i === 4 && status === 'Revisi') {
         icon.className = 'w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-red-500 text-white ring-4 ring-red-500/20';
         icon.textContent = '✗';
       } else if (i === activeMax && status !== 'Lulus') {
@@ -399,7 +453,7 @@ function updateTimelineUI(status) {
         icon.textContent = '✓';
       }
     }
-    if (i === 3 && status === 'Revisi') {
+    if (i === 4 && status === 'Revisi') {
       if (text) text.className = 'text-xs font-semibold text-red-400 mt-1';
       if (line) line.className = 'hidden md:block h-0.5 bg-red-500 flex-1 mx-2';
     } else {
@@ -415,28 +469,28 @@ function updateTimelineUI(status) {
 
   if (status === 'Draft') {
     badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '⚪ Draf Pendaftaran';
-    desc.textContent = 'Formulir pendaftaran Anda belum dikirim. Silakan lengkapi biodata & sekolah asal untuk mengajukan verifikasi berkas.';
+    badge.textContent = '⚪ Menunggu DP';
+    desc.textContent = 'Formulir pendaftaran Anda sudah diterima. Silakan selesaikan pembayaran DP Komitmen Tahfidz (30%) di seksi Pembayaran DP di bawah ini untuk membuka akses pengunggahan berkas persyaratan.';
     alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-slate-500/20 bg-slate-500/5 text-slate-400';
   } else if (status === 'Verifikasi') {
     badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '🟡 Menunggu Verifikasi';
-    desc.textContent = 'Biodata dan berkas dokumen digital pendaftaran Anda sedang dalam antrean verifikasi oleh panitia administrasi PPDB.';
+    badge.textContent = '🟡 Verifikasi Berkas';
+    desc.textContent = 'Bukti transfer DP Anda telah divalidasi oleh panitia. Berkas dokumen digital pendaftaran Anda sedang dalam antrean verifikasi oleh panitia PPDB.';
     alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-yellow-500/20 bg-yellow-500/5 text-yellow-300';
   } else if (status === 'Pembayaran') {
     badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '🔵 Pembayaran Formulir & Uang Pangkal';
-    desc.textContent = 'Berkas terverifikasi! Silakan lakukan transfer pembayaran formulir & biaya pendaftaran ke rekening Yayasan dan unggah bukti transfer di menu Pembayaran.';
+    badge.textContent = '🔵 Pembayaran Formulir';
+    desc.textContent = 'Berkas terverifikasi! Silakan lakukan transfer pembayaran formulir pendaftaran ke rekening Yayasan.';
     alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-blue-500/20 bg-blue-500/5 text-blue-300';
   } else if (status === 'Seleksi') {
     badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '🟣 Tahap Tes Seleksi Akademik';
-    desc.textContent = 'Pembayaran terkonfirmasi! Anda diundang mengikuti tes seleksi akademik & tahfidz secara langsung. Panitia akan menginfokan detail jadwal via WhatsApp.';
+    badge.textContent = '🟣 Tahap Tes Tahfidz';
+    desc.textContent = 'Berkas terverifikasi! Calon siswa dijadwalkan mengikuti tes pemetaan Tahfidz secara langsung. Panitia akan menginformasikan detail jadwal via WhatsApp.';
     alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-purple-500/20 bg-purple-500/5 text-purple-300';
   } else if (status === 'Lulus') {
     badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '🟢 Lulus Seleksi';
-    desc.textContent = 'Selamat! Calon siswa dinyatakan LULUS tes seleksi masuk SMP Annida Tahun Ajaran 2027/2028. Silakan unduh SK Kelulusan dan lakukan Daftar Ulang.';
+    badge.textContent = '🟢 Lulus';
+    desc.textContent = 'Selamat! Calon siswa dinyatakan LULUS tes pemetaan Tahfidz masuk SMP Annida. Silakan unduh Surat Kelulusan dan lakukan Daftar Ulang.';
     alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 text-emerald-400';
     
     // Show announcement texts
@@ -446,11 +500,12 @@ function updateTimelineUI(status) {
     badge.textContent = '🔴 Perlu Revisi Berkas';
     desc.textContent = 'Panitia menemukan dokumen yang tidak sesuai persyaratan. Silakan periksa tab Berkas untuk melihat berkas yang perlu diunggah ulang beserta catatan admin.';
     alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-red-500/20 bg-red-500/5 text-red-400';
-  } else if (status === 'Gugur') {
-    badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '🔴 Gugur Seleksi';
-    desc.textContent = 'Mohon maaf, calon siswa dinyatakan tidak lulus seleksi masuk SMP Annida Gelombang ini. Terima kasih atas partisipasi Anda.';
-    alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-red-500/20 bg-red-500/5 text-red-400';
+  } else {
+    // Default fallback
+    badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+    badge.textContent = status;
+    desc.textContent = 'Status pendaftaran Anda saat ini: ' + status;
+    alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-slate-500/20 bg-slate-500/5 text-slate-400';
   }
 }
 
@@ -496,13 +551,13 @@ function updateAdminKPIs() {
   const verif = allRegistrations.filter(r => r.status_pendaftaran === 'Verifikasi').length;
   const seleksi = allRegistrations.filter(r => r.status_pendaftaran === 'Seleksi').length;
   const lulus = allRegistrations.filter(r => r.status_pendaftaran === 'Lulus').length;
-  const gugur = allRegistrations.filter(r => r.status_pendaftaran === 'Gugur').length;
+  const revisi = allRegistrations.filter(r => r.status_pendaftaran === 'Revisi').length;
 
   document.getElementById('kpi-total').textContent = total;
   document.getElementById('kpi-verif').textContent = verif;
   document.getElementById('kpi-seleksi').textContent = seleksi;
   document.getElementById('kpi-lulus').textContent = lulus;
-  document.getElementById('kpi-gugur').textContent = gugur;
+  document.getElementById('kpi-revisi').textContent = revisi;
 
   // Program distribution bars
   const regulerCount = allRegistrations.filter(r => r.tipe_pendaftaran === 'reguler').length;
@@ -536,16 +591,23 @@ function renderAdminTable(data) {
 
     // Badge styling mapping
     let badgeClass = 'bg-slate-500/10 text-slate-400 border border-slate-500/20';
-    if (r.status_pendaftaran === 'Verifikasi') {
-      badgeClass = 'bg-amber-500/10 text-amber-400 border border-amber-500/20';
-    } else if (r.status_pendaftaran === 'Pembayaran') {
+    let badgeText = r.status_pendaftaran;
+    
+    if (r.status_pendaftaran === 'Draft') {
+      badgeClass = 'bg-slate-500/10 text-slate-400 border border-slate-500/20';
+      badgeText = 'Menunggu DP';
+    } else if (r.status_pendaftaran === 'Verifikasi') {
       badgeClass = 'bg-blue-500/10 text-blue-400 border border-blue-500/20';
+      badgeText = 'Verifikasi Berkas';
     } else if (r.status_pendaftaran === 'Seleksi') {
       badgeClass = 'bg-purple-500/10 text-purple-400 border border-purple-500/20';
+      badgeText = 'Tes Tahfidz';
     } else if (r.status_pendaftaran === 'Lulus') {
       badgeClass = 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
-    } else if (r.status_pendaftaran === 'Gugur') {
+      badgeText = 'Lulus';
+    } else if (r.status_pendaftaran === 'Revisi') {
       badgeClass = 'bg-red-500/10 text-red-400 border border-red-500/20';
+      badgeText = 'Revisi';
     }
 
     const tr = document.createElement('tr');
@@ -557,7 +619,7 @@ function renderAdminTable(data) {
       <td class="py-4 px-4 text-xs text-slate-400">${dateFormatted}</td>
       <td class="py-4 px-4 text-center">
         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold uppercase tracking-wider ${badgeClass}">
-          ${r.status_pendaftaran}
+          ${badgeText}
         </span>
       </td>
       <td class="py-4 px-4 text-center">
@@ -713,14 +775,14 @@ window.saveAdminVerification = async function(newStatus) {
       }
 
       let statusMsg = '';
-      if (newStatus === 'Pembayaran') {
-        statusMsg = 'Lolos Verifikasi Berkas (Silakan melakukan pembayaran SPP)';
+      if (newStatus === 'Verifikasi') {
+        statusMsg = 'Pembayaran DP Komitmen Tahfidz (30%) Diterima. Pendaftaran Anda lanjut ke tahap Verifikasi Berkas.';
       } else if (newStatus === 'Seleksi') {
-        statusMsg = 'Lolos Verifikasi Berkas (Lanjut ke tahap Ujian Seleksi)';
+        statusMsg = 'Dokumen Persyaratan Valid. Calon siswa diundang mengikuti Ujian Seleksi Pemetaan Tahfidz secara langsung.';
       } else if (newStatus === 'Revisi') {
         statusMsg = 'Perlu Revisi Dokumen:\n' + rejectedDocs.join('\n');
-      } else if (newStatus === 'Gugur') {
-        statusMsg = 'Tidak Lulus Verifikasi / Gugur';
+      } else if (newStatus === 'Lulus') {
+        statusMsg = 'Selamat! Calon siswa dinyatakan LULUS Tes Seleksi Pemetaan Tahfidz masuk SMP Annida.';
       }
 
       const rawMsg = `Halo Ayah/Bunda dari ${studentName},\n\nPendaftaran PPDB SMP Annida No. Registrasi *${noDaftar}* telah diperiksa oleh Panitia.\n\n*Status:* ${statusMsg}\n\nSilakan masuk ke portal PPDB untuk memproses langkah berikutnya:\nhttps://dazzerz.github.io/SMPAnnida/`;
@@ -749,8 +811,8 @@ function renderRankingData(data) {
   const tbody = document.getElementById('ranking-table-body');
   if (!select || !tbody) return;
 
-  // Filter students who are ready for selection (status is 'Seleksi', 'Lulus', or 'Gugur')
-  const selectionReady = data.filter(r => ['Seleksi', 'Lulus', 'Gugur'].includes(r.status_pendaftaran));
+  // Filter students who are ready for Tahfidz mapping (status is 'Seleksi' or 'Lulus')
+  const selectionReady = data.filter(r => ['Seleksi', 'Lulus'].includes(r.status_pendaftaran));
 
   select.innerHTML = '<option value="">-- Pilih Calon Siswa --</option>';
   selectionReady.forEach(r => {
@@ -762,84 +824,120 @@ function renderRankingData(data) {
   });
 
   if (selectionReady.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-500">Tidak ada pendaftar di Tahap Seleksi.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-500">Tidak ada pendaftar di Tahap Pemetaan Tahfidz.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = '';
   
-  // Sort selection ready students by mock final score (we can give mock ranking for demonstration)
-  // Normally scores would be queried from a 'nilai_seleksi' table, but we will mock a formula score
-  const scoredList = selectionReady.map((r, index) => {
-    // Generate static deterministic score based on NIK digits to make it feel real
-    const nikDigits = r.biodata_siswa ? r.biodata_siswa.nik : '0';
-    const sum = nikDigits.split('').reduce((acc, d) => acc + (parseInt(d) || 0), 0);
-    const mockScore = 65 + (sum % 31); // gives score between 65 and 96
-    
-    return {
-      pendaftaran: r,
-      score: r.status_pendaftaran === 'Lulus' ? Math.max(mockScore, 85) : mockScore
-    };
-  });
-
-  scoredList.sort((a, b) => b.score - a.score);
-
-  scoredList.forEach((item, index) => {
-    const r = item.pendaftaran;
+  selectionReady.forEach((r) => {
     const name = r.biodata_siswa ? r.biodata_siswa.nama_lengkap : 'Calon Murid';
+    const docVerif = r.document_verification || {};
+    const levelHafalan = docVerif.level_hafalan || 'Belum diinput';
     
     // Status color
-    const badgeColor = r.status_pendaftaran === 'Lulus' ? 'text-emerald-400 font-bold' : (r.status_pendaftaran === 'Gugur' ? 'text-red-400' : 'text-slate-400');
+    const badgeColor = r.status_pendaftaran === 'Lulus' ? 'text-emerald-400 font-bold' : 'text-slate-400';
 
     const tr = document.createElement('tr');
     tr.className = 'border-b border-white/5 hover:bg-white/[0.01]';
+    
+    let actionHtml = '';
+    if (r.status_pendaftaran === 'Lulus') {
+      actionHtml = `<button onclick="activateToAcademic('${r.id}', '${escapeHTML(name)}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-3 py-1 rounded text-[10px] transition-all">
+            ✓ Aktivasi Akademik
+           </button>`;
+    } else {
+      actionHtml = `<button onclick="adminSetLulus('${r.id}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold px-3 py-1 rounded text-[10px] transition-all">
+            🎓 Nyatakan Lulus
+           </button>`;
+    }
+
     tr.innerHTML = `
-      <td class="py-3 px-3 font-bold text-slate-400">#${index + 1}</td>
       <td class="py-3 px-3 font-mono text-slate-400">${escapeHTML(r.no_pendaftaran)}</td>
       <td class="py-3 px-3 font-semibold text-slate-200">${escapeHTML(name)}</td>
-      <td class="py-3 px-3 font-bold text-white">${item.score.toFixed(1)}</td>
-      <td class="py-3 px-3 ${badgeColor}">${r.status_pendaftaran}</td>
+      <td class="py-3 px-3 font-medium text-slate-300">${escapeHTML(levelHafalan)}</td>
+      <td class="py-3 px-3 ${badgeColor}">${r.status_pendaftaran === 'Lulus' ? 'Lulus' : 'Tes Tahfidz'}</td>
       <td class="py-3 px-3 text-center">
-        ${r.status_pendaftaran === 'Lulus' ? 
-          `<button onclick="activateToAcademic('${r.id}', '${escapeHTML(name)}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-3 py-1 rounded text-[10px] transition-all">
-            ✓ Aktivasi Akademik
-           </button>` : 
-          `<span class="text-[10px] text-slate-500 font-medium">Buka menu Verifikasi untuk meloloskan</span>`
-        }
+        ${actionHtml}
       </td>
     `;
     tbody.appendChild(tr);
   });
 }
 
-window.adminSaveSeleksiGrade = async function() {
+window.adminSaveHafalan = async function() {
   const select = document.getElementById('seleksi-student-select');
   const regId = select.value;
   if (!regId) {
     alert("Silakan pilih calon siswa terlebih dahulu!");
     return;
   }
+  const level = document.getElementById('val-level-hafalan').value.trim();
+  try {
+    const { data: reg, error: fetchErr } = await db
+      .from('pendaftaran')
+      .select('document_verification')
+      .eq('id', regId)
+      .single();
+    if (fetchErr) throw fetchErr;
 
-  const scoreText = document.getElementById('calculated-total-score').textContent;
-  const score = parseFloat(scoreText) || 0;
+    const docVerif = reg.document_verification || {};
+    docVerif.level_hafalan = level;
 
-  // Logika keputusan kelulusan otomatis jika nilai akhir >= 75
-  const isLulus = score >= 75;
-  const finalStatus = isLulus ? 'Lulus' : 'Gugur';
+    const { error } = await db
+      .from('pendaftaran')
+      .update({ document_verification: docVerif })
+      .eq('id', regId);
+
+    if (error) throw error;
+    alert("Level hafalan berhasil disimpan!");
+    await fetchAllRegistrations();
+  } catch (err) {
+    console.error("Gagal menyimpan hafalan:", err.message);
+    alert("Gagal menyimpan hafalan: " + err.message);
+  }
+};
+
+window.adminSetLulus = async function(paramId) {
+  const select = document.getElementById('seleksi-student-select');
+  const regId = paramId || select.value;
+  if (!regId) {
+    alert("Silakan pilih calon siswa terlebih dahulu!");
+    return;
+  }
+  const student = allRegistrations.find(r => r.id === regId);
+  if (!student) return;
+  
+  const name = student.biodata_siswa ? student.biodata_siswa.nama_lengkap : 'Calon Murid';
+  
+  const confirmLulus = confirm(`Apakah Anda yakin ingin menyatakan ${name} LULUS Seleksi PPDB?`);
+  if (!confirmLulus) return;
 
   try {
     const { error } = await db
       .from('pendaftaran')
-      .update({ status_pendaftaran: finalStatus })
+      .update({ status_pendaftaran: 'Lulus' })
       .eq('id', regId);
 
     if (error) throw error;
-
-    alert(`Sukses! Calon siswa berhasil diberikan penilaian.\nNilai Akhir: ${score}\nStatus Akhir: ${finalStatus}`);
+    alert(`Selamat! ${name} dinyatakan LULUS.`);
     await fetchAllRegistrations();
+    
+    // Auto WhatsApp
+    if (student.data_orangtua && student.data_orangtua.whatsapp) {
+      const waNumber = student.data_orangtua.whatsapp;
+      const rawMsg = `Halo Ayah/Bunda dari ${name},\n\nPendaftaran PPDB SMP Annida No. Registrasi *${student.no_pendaftaran}* dinyatakan *LULUS* Seleksi Pemetaan Tahfidz.\n\nSilakan masuk ke portal PPDB untuk melakukan konfirmasi daftar ulang:\nhttps://dazzerz.github.io/SMPAnnida/`;
+      const encodedMsg = encodeURIComponent(rawMsg);
+      const sanitizedPhone = waNumber.replace(/[^0-9]/g, '');
+      const waUrl = `https://wa.me/${sanitizedPhone}?text=${encodedMsg}`;
+
+      if (confirm(`Apakah Anda ingin mengirimkan notifikasi kelulusan via WhatsApp ke wali murid (${waNumber})?`)) {
+        window.open(waUrl, '_blank');
+      }
+    }
   } catch (err) {
-    console.error("Gagal update penilaian seleksi:", err.message);
-    alert("Gagal menyimpan nilai seleksi: " + err.message);
+    console.error("Gagal meluluskan siswa:", err.message);
+    alert("Gagal menyimpan status kelulusan: " + err.message);
   }
 };
 
@@ -986,5 +1084,48 @@ window.updateDocUploadStatus = async function(docType, fileName) {
     }
   } catch (err) {
     console.error("Gagal menyimpan status unggahan dokumen:", err.message);
+  }
+};
+
+window.submitDpPayment = async function(fileName) {
+  const pId = localStorage.getItem('pendaftaran_id');
+  if (!pId) {
+    alert("Data pendaftaran tidak ditemukan.");
+    return;
+  }
+  
+  try {
+    const { data: reg, error: fetchErr } = await db
+      .from('pendaftaran')
+      .select('document_verification')
+      .eq('id', pId)
+      .single();
+      
+    if (fetchErr) throw fetchErr;
+    
+    const docVerif = reg.document_verification || {};
+    docVerif.dp_payment = {
+      status: 'pending',
+      file_name: fileName,
+      uploaded_at: new Date().toISOString()
+    };
+    
+    const { error: updateErr } = await db
+      .from('pendaftaran')
+      .update({ document_verification: docVerif })
+      .eq('id', pId);
+      
+    if (updateErr) throw updateErr;
+    
+    alert("Bukti transfer DP berhasil dikirim! Menunggu validasi dari panitia.");
+    window.location.reload();
+  } catch (err) {
+    console.error("Gagal mengirim bukti transfer DP:", err.message);
+    alert("Gagal mengirim bukti transfer: " + err.message);
+    const submitBtn = document.getElementById('btn-submit-dp');
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🚀 Kirim Bukti Pembayaran';
+    }
   }
 };
