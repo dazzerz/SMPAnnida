@@ -65,6 +65,21 @@
     .faq-item.active .faq-icon {
       transform: rotate(180deg);
     }
+    
+    /* Infinite Marquee Photo Gallery Keyframes & Styles */
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(-250px * 6 - 1.5rem * 6)); }
+    }
+    .slider-track {
+      display: flex;
+      width: calc((250px * 12) + (1.5rem * 11));
+      animation: scroll 25s linear infinite;
+      gap: 1.5rem;
+    }
+    .slider-track:hover {
+      animation-play-state: paused;
+    }
   </style>
 </head>
 <body class="bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-fixed text-white font-body-md antialiased min-h-screen flex flex-col">
@@ -125,6 +140,45 @@
           <span class="flex items-center gap-1">✓ Pendaftaran Online</span>
           <span class="flex items-center gap-1">✓ Proses Mudah</span>
           <span class="flex items-center gap-1">✓ Informasi Transparan</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- GALERI FASILITAS & KEGIATAN -->
+    <!-- ═══════════════════════════════════════════ -->
+    <section class="py-12 px-6 lg:px-0 relative z-20 overflow-hidden">
+      <div class="max-w-7xl mx-auto mb-6 text-center">
+        <span class="inline-block py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-semibold mb-3">Fasilitas & Dokumentasi Kegiatan</span>
+        <h2 class="font-headline-lg text-2xl md:text-3xl text-white mb-2">Galeri Kehidupan Kampus</h2>
+        <p class="text-xs text-gray-300">Klik pada foto untuk memperbesar pratinjau dalam Lightbox</p>
+      </div>
+
+      <!-- Outer Container with Glassmorphic Frame & Gradient Mask Edge -->
+      <div class="relative w-full max-w-7xl mx-auto glass-panel-custom rounded-2xl p-4 overflow-hidden border border-white/10 shadow-2xl">
+        <!-- Left & Right Gradient Shadows for Soft In-Out Fading -->
+        <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#0b1320] to-transparent z-30 pointer-events-none"></div>
+        <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#0b1320] to-transparent z-30 pointer-events-none"></div>
+
+        <!-- Sliding Track Container -->
+        <div class="slider-container overflow-hidden w-full">
+          <div class="slider-track flex gap-6">
+            <!-- Set 1 -->
+            <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=500&q=80" alt="Fasilitas 1" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+            <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=500&q=80" alt="Fasilitas 2" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500&q=80" alt="Fasilitas 3" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500&q=80" alt="Fasilitas 4" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&q=80" alt="Fasilitas 5" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80" alt="Fasilitas 6" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+            
+            <!-- Duplicated Set for Infinite Scrolling (Loop) -->
+            <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=500&q=80" alt="Fasilitas 1" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+            <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=500&q=80" alt="Fasilitas 2" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500&q=80" alt="Fasilitas 3" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500&q=80" alt="Fasilitas 4" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=500&q=80" alt="Fasilitas 5" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80" alt="Fasilitas 6" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300" onclick="openLightbox(this.src)">
+          </div>
         </div>
       </div>
     </section>
@@ -693,6 +747,52 @@
       
       // Run once at start
       updateEstimates();
+    });
+  </script>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox-modal" class="fixed inset-0 z-[9999] hidden bg-black/90 backdrop-blur-sm flex justify-center items-center opacity-0 transition-opacity duration-300">
+    <!-- Tombol Close -->
+    <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white hover:text-red-500 text-4xl font-bold z-50 transition-colors">&times;</button>
+    
+    <!-- Container Foto -->
+    <div class="relative w-full max-w-5xl px-4 flex justify-center">
+      <img id="lightbox-img" src="" alt="Fasilitas Annida" class="max-h-[85vh] rounded-2xl shadow-2xl scale-95 transition-transform duration-300">
+    </div>
+  </div>
+
+  <script>
+    function openLightbox(imageSrc) {
+      const modal = document.getElementById('lightbox-modal');
+      const img = document.getElementById('lightbox-img');
+      
+      img.src = imageSrc;
+      modal.classList.remove('hidden');
+      
+      // Trigger animasi fade in & scale
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        img.classList.remove('scale-95');
+        img.classList.add('scale-100');
+      }, 10);
+    }
+    function closeLightbox() {
+      const modal = document.getElementById('lightbox-modal');
+      const img = document.getElementById('lightbox-img');
+      
+      // Trigger animasi fade out
+      modal.classList.add('opacity-0');
+      img.classList.remove('scale-100');
+      img.classList.add('scale-95');
+      
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        img.src = '';
+      }, 300);
+    }
+    // Tutup lightbox jika area background hitam diklik
+    document.getElementById('lightbox-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeLightbox();
     });
   </script>
 </body>
