@@ -254,6 +254,10 @@
 
       // Proteksi Akses: Jika bukan Admin atau Pembina, tendang ke Akademik
       const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
+      if (!roleData && user.phone) {
+        window.location.href = 'pages/ppdb/dashboard-wali.html';
+        return;
+      }
       const isAdmin = roleData && roleData.role === 'admin';
       const isPembina = roleData && roleData.role === 'pembina';
 

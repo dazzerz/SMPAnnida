@@ -98,7 +98,8 @@ export async function handleLogin(e) {
   const isPembina = roleData && roleData.role === 'pembina';
 
   setTimeout(() => { 
-    const r = roleData ? roleData.role : null;
+    let r = roleData ? roleData.role : null;
+    if (!r && data.user.phone) r = 'wali_murid';
     if (r === 'calon_siswa' || r === 'wali_murid') {
       window.location.href = './pages/ppdb/dashboard-wali.html';
     } else if (r === 'finance') {
