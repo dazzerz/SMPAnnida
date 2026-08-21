@@ -10,6 +10,11 @@ const db = supabaseClient;
 // Global state variables for Admin
 let allRegistrations = [];
 let selectedRegForVerif = null;
+let currentDocVerification = {
+  kartu_keluarga: { status: 'pending', note: '' },
+  akta_kelahiran: { status: 'pending', note: '' },
+  ijazah: { status: 'pending', note: '' }
+};
 
 document.addEventListener('DOMContentLoaded', async () => {
   let sessionUser = null;
@@ -184,6 +189,67 @@ async function fetchMyRegistrationStatus(userId) {
       if (invoiceNominal) {
         invoiceNominal.textContent = pendaftaran.tipe_pendaftaran === 'pondok' ? 'Rp 500.000' : 'Rp 250.000';
       }
+
+      // Render Document Verification Status
+      const savedDocs = pendaftaran.document_verification || {};
+      ['kk', 'akta', 'skl'].forEach(docType => {
+        const dbKey = docType === 'skl' ? 'ijazah' : docType === 'kk' ? 'kartu_keluarga' : 'akta_kelahiran';
+        const docData = savedDocs[dbKey] || { status: 'pending', note: '' };
+        
+        const statusSpan = document.getElementById(`${docType}-status`);
+        
+        if (statusSpan) {
+          if (docData.status === 'approved') {
+            statusSpan.className = "px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold";
+            statusSpan.textContent = "Disetujui";
+            const fileSelectBtn = statusSpan.nextElementSibling?.nextElementSibling;
+            if (fileSelectBtn) fileSelectBtn.disabled = true;
+          } else if (docData.status === 'rejected') {
+            statusSpan.className = "px-2.5 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-semibold";
+            statusSpan.textContent = `Perlu Revisi${docData.note ? ': ' + docData.note : ''}`;
+          } else {
+            statusSpan.className = "px-2.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-semibold";
+            statusSpan.textContent = "Menunggu Verifikasi";
+          }
+        }
+      });
+
+      // Show/Hide Warning Banner on Beranda if status is 'Revisi'
+      let banner = document.getElementById('revisi-warning-banner');
+      if (pendaftaran.status_pendaftaran === 'Revisi') {
+        if (!banner) {
+          banner = document.createElement('div');
+          banner.id = 'revisi-warning-banner';
+          banner.className = "p-5 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-semibold flex flex-col gap-2 shadow-lg mb-6";
+          
+          let rejectedList = [];
+          ['kk', 'akta', 'skl'].forEach(doc => {
+            const dbKey = doc === 'skl' ? 'ijazah' : doc === 'kk' ? 'kartu_keluarga' : 'akta_kelahiran';
+            const data = savedDocs[dbKey] || {};
+            if (data.status === 'rejected') {
+              const label = doc === 'kk' ? 'Kartu Keluarga' : doc === 'akta' ? 'Akta Kelahiran' : 'Ijazah/SKL';
+              rejectedList.push(`<li>• <strong>${label}</strong>: ${data.note || 'Mohon unggah ulang.'}</li>`);
+            }
+          });
+
+          banner.innerHTML = `
+            <div class="flex items-center gap-2 text-base font-bold text-red-300">
+              ⚠️ Pendaftaran Membutuhkan Revisi Berkas
+            </div>
+            <p class="text-xs text-slate-300">Panitia PPDB menemukan ketidaksesuaian pada dokumen berikut. Silakan masuk ke tab <strong>Berkas</strong> untuk mengunggah ulang dokumen tersebut:</p>
+            <ul class="text-xs space-y-1 mt-1 text-slate-200">
+              ${rejectedList.join('')}
+            </ul>
+          `;
+          
+          const greetingBanner = document.getElementById('siswa-greeting-name')?.closest('.glass-card');
+          if (greetingBanner) {
+            greetingBanner.parentNode.insertBefore(banner, greetingBanner.nextSibling);
+          }
+        }
+      } else {
+        if (banner) banner.remove();
+      }
     }
   } catch (err) {
     console.error("Gagal memuat data pendaftar:", err.message);
@@ -310,19 +376,22 @@ function updateTimelineUI(status) {
 
   // Active steps mapper
   let activeMax = 2; // Default is mengisi data
-  if (status === 'Verifikasi') activeMax = 3;
+  if (status === 'Verifikasi' || status === 'Revisi') activeMax = 3;
   if (status === 'Pembayaran') activeMax = 4;
   if (status === 'Seleksi') activeMax = 5;
   if (status === 'Lulus' || status === 'Gugur') activeMax = 6;
 
-  // Render green completed paths
+  // Render completed paths
   for (let i = 1; i <= activeMax; i++) {
     const icon = document.getElementById(`step-icon-${i}`);
     const text = document.getElementById(`step-text-${i}`);
     const line = document.getElementById(`line-track-${i - 1}`);
 
     if (icon) {
-      if (i === activeMax && status !== 'Lulus') {
+      if (i === 3 && status === 'Revisi') {
+        icon.className = 'w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-red-500 text-white ring-4 ring-red-500/20';
+        icon.textContent = '✗';
+      } else if (i === activeMax && status !== 'Lulus') {
         icon.className = 'w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-amber-500 text-white ring-4 ring-amber-500/20';
         icon.textContent = i;
       } else {
@@ -330,8 +399,13 @@ function updateTimelineUI(status) {
         icon.textContent = '✓';
       }
     }
-    if (text) text.className = 'text-xs font-semibold text-emerald-400 mt-1';
-    if (line) line.className = 'hidden md:block h-0.5 bg-emerald-500 flex-1 mx-2';
+    if (i === 3 && status === 'Revisi') {
+      if (text) text.className = 'text-xs font-semibold text-red-400 mt-1';
+      if (line) line.className = 'hidden md:block h-0.5 bg-red-500 flex-1 mx-2';
+    } else {
+      if (text) text.className = 'text-xs font-semibold text-emerald-400 mt-1';
+      if (line) line.className = 'hidden md:block h-0.5 bg-emerald-500 flex-1 mx-2';
+    }
   }
 
   // Dynamic alert card status
@@ -367,6 +441,11 @@ function updateTimelineUI(status) {
     
     // Show announcement texts
     document.getElementById('announce-student-name').textContent = localStorage.getItem('last_student_name') || 'Ahmad Fulan';
+  } else if (status === 'Revisi') {
+    badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+    badge.textContent = '🔴 Perlu Revisi Berkas';
+    desc.textContent = 'Panitia menemukan dokumen yang tidak sesuai persyaratan. Silakan periksa tab Berkas untuk melihat berkas yang perlu diunggah ulang beserta catatan admin.';
+    alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-red-500/20 bg-red-500/5 text-red-400';
   } else if (status === 'Gugur') {
     badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/35 text-xs font-bold uppercase tracking-wider mb-2';
     badge.textContent = '🔴 Gugur Seleksi';
@@ -527,38 +606,143 @@ window.viewRegistrationDetails = function(regId) {
   document.getElementById('detail-ortu-ibu').textContent = r.data_orangtua ? `${r.data_orangtua.nama_ibu} (${r.data_orangtua.pekerjaan_ibu || '-'})` : '-';
   document.getElementById('detail-ortu-wa').textContent = r.data_orangtua ? r.data_orangtua.whatsapp : '-';
 
+  // Load document verification status
+  const savedVerification = r.document_verification || {};
+  currentDocVerification = {
+    kartu_keluarga: savedVerification.kartu_keluarga || { status: 'pending', note: '' },
+    akta_kelahiran: savedVerification.akta_kelahiran || { status: 'pending', note: '' },
+    ijazah: savedVerification.ijazah || { status: 'pending', note: '' }
+  };
+
+  // Update button visual styles and note values
+  ['kartu_keluarga', 'akta_kelahiran', 'ijazah'].forEach(docType => {
+    const docData = currentDocVerification[docType];
+    const noteInput = document.getElementById(`note-${docType}`);
+    if (noteInput) {
+      noteInput.value = docData.note || '';
+    }
+    window.setDocStatus(docType, docData.status);
+  });
+
+  // Dynamic preview links to Supabase Storage (fallback path using user_id)
+  const storageUrl = 'https://vxrgezyfxzynpucuomci.supabase.co/storage/v1/object/public/documents';
+  document.getElementById('doc-kk-link').href = `${storageUrl}/${r.user_id}/kk.pdf`;
+  document.getElementById('doc-akta-link').href = `${storageUrl}/${r.user_id}/akta.pdf`;
+  document.getElementById('doc-ijazah-link').href = `${storageUrl}/${r.user_id}/ijazah.pdf`;
+
   // Open Details Tab
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('tab-admin-verifikasi').classList.add('active');
 };
 
-window.adminVerifyStatus = async function(newStatus) {
+window.setDocStatus = function(docType, status) {
+  if (!currentDocVerification[docType]) {
+    currentDocVerification[docType] = { status: 'pending', note: '' };
+  }
+  currentDocVerification[docType].status = status;
+
+  const approveBtn = document.getElementById(`btn-${docType}-approve`);
+  const rejectBtn = document.getElementById(`btn-${docType}-reject`);
+  const noteInput = document.getElementById(`note-${docType}`);
+
+  if (status === 'approved') {
+    if (approveBtn) approveBtn.className = "flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold bg-emerald-500 text-white transition-all";
+    if (rejectBtn) rejectBtn.className = "flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all";
+    if (noteInput) {
+      noteInput.classList.add('hidden');
+    }
+  } else if (status === 'rejected') {
+    if (approveBtn) approveBtn.className = "flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all";
+    if (rejectBtn) rejectBtn.className = "flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold bg-red-500 text-white transition-all";
+    if (noteInput) {
+      noteInput.classList.remove('hidden');
+    }
+  } else {
+    if (approveBtn) approveBtn.className = "flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all";
+    if (rejectBtn) rejectBtn.className = "flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all";
+    if (noteInput) {
+      noteInput.classList.add('hidden');
+    }
+  }
+};
+
+window.saveAdminVerification = async function(newStatus) {
   if (!selectedRegForVerif) return;
 
   const id = selectedRegForVerif.id;
   const noDaftar = selectedRegForVerif.no_pendaftaran;
+  const waNumber = selectedRegForVerif.data_orangtua ? selectedRegForVerif.data_orangtua.whatsapp : '';
+  const studentName = selectedRegForVerif.biodata_siswa ? selectedRegForVerif.biodata_siswa.nama_lengkap : '';
+
+  // Gather notes
+  ['kartu_keluarga', 'akta_kelahiran', 'ijazah'].forEach(docType => {
+    const noteInput = document.getElementById(`note-${docType}`);
+    if (noteInput && currentDocVerification[docType].status === 'rejected') {
+      currentDocVerification[docType].note = noteInput.value.trim();
+    } else if (currentDocVerification[docType].status === 'approved') {
+      currentDocVerification[docType].note = '';
+    }
+  });
 
   try {
     const { error } = await db
       .from('pendaftaran')
-      .update({ status_pendaftaran: newStatus })
+      .update({
+        status_pendaftaran: newStatus,
+        document_verification: currentDocVerification
+      })
       .eq('id', id);
 
     if (error) throw error;
 
-    alert(`Sukses! Status pendaftaran ${noDaftar} berhasil diubah menjadi: ${newStatus}`);
-    
-    // Reload full list to sync
+    alert(`Sukses! Verifikasi berkas ${noDaftar} berhasil disimpan dengan status: ${newStatus}`);
+
     await fetchAllRegistrations();
-    
-    // Redirect to list
+
+    // Send WhatsApp (Client-side trigger)
+    if (waNumber) {
+      let rejectedDocs = [];
+      if (newStatus === 'Revisi') {
+        ['kartu_keluarga', 'akta_kelahiran', 'ijazah'].forEach(doc => {
+          if (currentDocVerification[doc].status === 'rejected') {
+            const docLabel = doc === 'kartu_keluarga' ? 'Kartu Keluarga' : doc === 'akta_kelahiran' ? 'Akta Kelahiran' : 'Ijazah/SKL';
+            const note = currentDocVerification[doc].note ? ` (${currentDocVerification[doc].note})` : '';
+            rejectedDocs.push(`- ${docLabel}${note}`);
+          }
+        });
+      }
+
+      let statusMsg = '';
+      if (newStatus === 'Pembayaran') {
+        statusMsg = 'Lolos Verifikasi Berkas (Silakan melakukan pembayaran SPP)';
+      } else if (newStatus === 'Seleksi') {
+        statusMsg = 'Lolos Verifikasi Berkas (Lanjut ke tahap Ujian Seleksi)';
+      } else if (newStatus === 'Revisi') {
+        statusMsg = 'Perlu Revisi Dokumen:\n' + rejectedDocs.join('\n');
+      } else if (newStatus === 'Gugur') {
+        statusMsg = 'Tidak Lulus Verifikasi / Gugur';
+      }
+
+      const rawMsg = `Halo Ayah/Bunda dari ${studentName},\n\nPendaftaran PPDB SMP Annida No. Registrasi *${noDaftar}* telah diperiksa oleh Panitia.\n\n*Status:* ${statusMsg}\n\nSilakan masuk ke portal PPDB untuk memproses langkah berikutnya:\nhttps://dazzerz.github.io/SMPAnnida/`;
+      const encodedMsg = encodeURIComponent(rawMsg);
+      const sanitizedPhone = waNumber.replace(/[^0-9]/g, '');
+      const waUrl = `https://wa.me/${sanitizedPhone}?text=${encodedMsg}`;
+
+      if (confirm(`Apakah Anda ingin mengirimkan notifikasi WhatsApp hasil verifikasi ke wali murid (${waNumber})?`)) {
+        window.open(waUrl, '_blank');
+      }
+    }
+
+    // Go back to dashboard list
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('tab-admin-dashboard').classList.add('active');
   } catch (err) {
-    console.error("Gagal update status verifikasi:", err.message);
-    alert("Gagal mengubah status: " + err.message);
+    console.error("Gagal menyimpan verifikasi:", err.message);
+    alert("Gagal menyimpan: " + err.message);
   }
 };
+
+window.adminVerifyStatus = window.saveAdminVerification; // Legacy fallback
 
 function renderRankingData(data) {
   const select = document.getElementById('seleksi-student-select');
@@ -758,3 +942,49 @@ function renderMonthlyChart(data) {
     }
   });
 }
+
+window.updateDocUploadStatus = async function(docType, fileName) {
+  const pendaftaranId = localStorage.getItem('pendaftaran_id');
+  if (!pendaftaranId) return;
+
+  try {
+    const { data: reg } = await db
+      .from('pendaftaran')
+      .select('document_verification, status_pendaftaran')
+      .eq('id', pendaftaranId)
+      .single();
+
+    if (reg) {
+      const dbKey = docType === 'skl' ? 'ijazah' : docType === 'kk' ? 'kartu_keluarga' : 'akta_kelahiran';
+      const currentDocs = reg.document_verification || {};
+      
+      currentDocs[dbKey] = { status: 'pending', note: '', file_name: fileName };
+
+      let hasRejected = false;
+      Object.keys(currentDocs).forEach(k => {
+        if (currentDocs[k].status === 'rejected') hasRejected = true;
+      });
+
+      let newRegStatus = reg.status_pendaftaran;
+      if (!hasRejected && reg.status_pendaftaran === 'Revisi') {
+        newRegStatus = 'Verifikasi';
+      }
+
+      await db
+        .from('pendaftaran')
+        .update({
+          document_verification: currentDocs,
+          status_pendaftaran: newRegStatus
+        })
+        .eq('id', pendaftaranId);
+
+      console.log(`Document ${docType} uploaded successfully, status set to pending.`);
+      
+      if (newRegStatus === 'Verifikasi') {
+        window.location.reload();
+      }
+    }
+  } catch (err) {
+    console.error("Gagal menyimpan status unggahan dokumen:", err.message);
+  }
+};

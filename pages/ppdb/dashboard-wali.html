@@ -497,10 +497,14 @@
         statusSpan.className = "px-2.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-semibold";
         statusSpan.textContent = "Sedang Diunggah";
         
-        // Simulating upload success
+        // Simulating upload success & database sync
         setTimeout(() => {
           statusSpan.className = "px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold";
           statusSpan.textContent = "Terunggah";
+          
+          if (window.updateDocUploadStatus) {
+            window.updateDocUploadStatus(docType, file.name);
+          }
         }, 1500);
       }
     }
