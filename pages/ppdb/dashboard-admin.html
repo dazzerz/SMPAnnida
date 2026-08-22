@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard - PPDB Annida 2</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = {
+darkMode: "class",
+theme: {
+extend: {
+colors: {
+primary: "#10b981",
+"primary-dim": "#059669",
+accent: "#34d399",
+bgGlass: "rgba(255, 255, 255, 0.05)",
+borderGlass: "rgba(255, 255, 255, 0.15)"
+},
+fontFamily: {
+sans: ["Inter", "sans-serif"]
+}
+}
+}
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../../css/mobile.css">
+<link rel="stylesheet" href="../../css/ppdb/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="module" src="../../js/ppdb/db.js" defer></script>
+<style>
+.tab-panel {
+display: none;
+opacity: 0;
+transition: opacity 0.3s ease-in-out;
+}
+.tab-panel.active {
+display: block;
+opacity: 1;
+}
+.glass-card {
+background: rgba(255, 255, 255, 0.07);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border: 1px solid rgba(255, 255, 255, 0.15);
+}
+/* Scrollable custom table styling */
+.table-container::-webkit-scrollbar {
+height: 6px;
+}
+.table-container::-webkit-scrollbar-thumb {
+background-color: rgba(255, 255, 255, 0.1);
+border-radius: 4px;
+}
+</style>
+</head>
+<body class="flex flex-row bg-[#0b1320] text-slate-100 min-h-screen overflow-x-hidden">
+<aside class="sidebar" id="sidebar"></aside>
+<main class="main-content flex-1 p-6 lg:p-8 overflow-y-auto">
+<header class="topbar mb-8" id="topbar"></header>
+<div id="tab-admin-dashboard" class="tab-panel active space-y-6">
+<section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+<div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-emerald-500">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Pendaftar</p>
+<h3 class="text-2xl font-bold text-white mt-1" id="kpi-total">0</h3>
+</div>
+<span class="text-xl">👥</span>
+</div>
+</div>
+<div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-amber-500">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Menunggu</p>
+<h3 class="text-2xl font-bold text-white mt-1" id="kpi-verif">0</h3>
+</div>
+<span class="text-xl">⏳</span>
+</div>
+</div>
+<div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-purple-500 cursor-pointer hover:bg-white/10 transition-all" onclick="showTahfidzTab()">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pemetaan Tahfidz</p>
+<h3 class="text-2xl font-bold text-white mt-1" id="kpi-seleksi">0</h3>
+</div>
+<span class="text-xl">📝</span>
+</div>
+</div>
+<div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-blue-500">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Lulus</p>
+<h3 class="text-2xl font-bold text-white mt-1" id="kpi-lulus">0</h3>
+</div>
+<span class="text-xl">🎓</span>
+</div>
+</div>
+<div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-red-500 col-span-2 lg:col-span-1">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Perlu Revisi</p>
+<h3 class="text-2xl font-bold text-white mt-1" id="kpi-revisi">0</h3>
+</div>
+<span class="text-xl">⚠️</span>
+</div>
+</div>
+</section>
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="glass-card rounded-2xl p-6 shadow-xl lg:col-span-2 space-y-4">
+<h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Tren Pendaftaran Bulanan</h3>
+<div class="w-full h-[280px] flex items-center justify-center relative">
+<canvas id="ppdb-monthly-chart"></canvas>
+</div>
+</div>
+<div class="glass-card rounded-2xl p-6 shadow-xl space-y-4">
+<h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Distribusi Program</h3>
+<div class="space-y-4 pt-2">
+<div>
+<div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+<span>Hanya Sekolah (Reguler)</span>
+<span id="dist-reguler-text">0 pendaftar (0%)</span>
+</div>
+<div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full transition-all duration-500" id="dist-reguler-bar" style="width: 0%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+<span>Sekolah + Pondok (Boarding)</span>
+<span id="dist-pondok-text">0 pendaftar (0%)</span>
+</div>
+<div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+<div class="bg-blue-500 h-full transition-all duration-500" id="dist-pondok-bar" style="width: 0%"></div>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-white/5 text-center text-xs text-slate-400">
+SMP Annida 2 Setu - PPDB 2027/2028
+</div>
+</div>
+</section>
+<section class="glass-card rounded-2xl p-6 shadow-xl space-y-4">
+<div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+<h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Daftar Pendaftar Terbaru</h3>
+<div class="relative max-w-xs">
+<input type="text" id="admin-search-input" placeholder="Cari nama atau nomor..." class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-2 text-xs text-slate-300 focus:ring-emerald-500 focus:border-emerald-500">
+</div>
+</div>
+<div class="table-container overflow-x-auto w-full">
+<table class="w-full text-left border-collapse min-w-[700px]">
+<thead>
+<tr class="border-b border-white/10 text-xs text-slate-400 uppercase font-semibold">
+<th class="py-3 px-4">No. Daftar</th>
+<th class="py-3 px-4">Nama Siswa</th>
+<th class="py-3 px-4">Program</th>
+<th class="py-3 px-4">Tanggal Daftar</th>
+<th class="py-3 px-4 text-center">Status</th>
+<th class="py-3 px-4 text-center">Aksi</th>
+</tr>
+</thead>
+<tbody id="table-pendaftar-body" class="divide-y divide-white/5 text-sm text-slate-200">
+<tr>
+<td colspan="6" class="py-8 text-center text-slate-400">Memuat data pendaftar...</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<div id="tab-admin-verifikasi" class="tab-panel space-y-6">
+<div class="glass-card rounded-2xl p-6 lg:p-8 shadow-xl space-y-6">
+<div class="flex justify-between items-center pb-4 border-b border-white/10">
+<div>
+<h2 class="text-xl lg:text-2xl font-bold text-white">Detail Verifikasi Berkas</h2>
+<p class="text-slate-400 text-xs mt-1">ID Pendaftaran: <span id="detail-reg-id" class="font-mono text-slate-300">-</span></p>
+</div>
+<button class="tab-trigger bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-semibold px-4 py-2 rounded-xl text-xs transition-all" data-target="admin-dashboard">
+← Kembali ke List
+</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="space-y-6">
+<h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400 border-b border-white/5 pb-2">Informasi Calon Murid</h3>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div>
+<span class="text-xs text-slate-400 block">Nama Lengkap Siswa</span>
+<span class="font-medium text-slate-100" id="detail-siswa-nama">-</span>
+</div>
+<div>
+<span class="text-xs text-slate-400 block">NIK / NISN</span>
+<span class="font-medium text-slate-100" id="detail-siswa-nik-nisn">-</span>
+</div>
+<div>
+<span class="text-xs text-slate-400 block">Tempat, Tanggal Lahir</span>
+<span class="font-medium text-slate-100" id="detail-siswa-ttl">-</span>
+</div>
+<div>
+<span class="text-xs text-slate-400 block">Sekolah Asal (NPSN)</span>
+<span class="font-medium text-slate-100" id="detail-siswa-sekolah">-</span>
+</div>
+<div class="col-span-2">
+<span class="text-xs text-slate-400 block">Alamat Rumah</span>
+<span class="font-medium text-slate-100" id="detail-siswa-alamat">-</span>
+</div>
+</div>
+<h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400 border-b border-white/5 pb-2 pt-4">Informasi Orang Tua / Wali</h3>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div>
+<span class="text-xs text-slate-400 block">Nama Ayah (Pekerjaan)</span>
+<span class="font-medium text-slate-100" id="detail-ortu-ayah">-</span>
+</div>
+<div>
+<span class="text-xs text-slate-400 block">Nama Ibu (Pekerjaan)</span>
+<span class="font-medium text-slate-100" id="detail-ortu-ibu">-</span>
+</div>
+<div class="col-span-2">
+<span class="text-xs text-slate-400 block">No. WhatsApp Wali</span>
+<span class="font-medium text-emerald-400 font-mono" id="detail-ortu-wa">-</span>
+</div>
+</div>
+</div>
+<div class="space-y-6 bg-slate-900/40 p-6 rounded-2xl border border-white/5 shadow-inner">
+<h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400 border-b border-white/5 pb-2">Checklist Verifikasi Berkas</h3>
+<div class="space-y-4">
+<div class="glass-card rounded-xl p-4 border border-white/10 space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-slate-300">1. Kartu Keluarga (KK)</span>
+<a href="#" target="_blank" id="doc-kk-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">🔗 Pratinjau KK</a>
+</div>
+<div class="flex gap-2">
+<button type="button" onclick="setDocStatus('kartu_keluarga', 'approved')" id="btn-kartu_keluarga-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">✓ Setujui</button>
+<button type="button" onclick="setDocStatus('kartu_keluarga', 'rejected')" id="btn-kartu_keluarga-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">✗ Tolak/Revisi</button>
+</div>
+<input type="text" id="note-kartu_keluarga" placeholder="Catatan revisi Kartu Keluarga..." class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-300 hidden">
+</div>
+<div class="glass-card rounded-xl p-4 border border-white/10 space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-slate-300">2. Akta Kelahiran</span>
+<a href="#" target="_blank" id="doc-akta-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">🔗 Pratinjau Akta</a>
+</div>
+<div class="flex gap-2">
+<button type="button" onclick="setDocStatus('akta_kelahiran', 'approved')" id="btn-akta_kelahiran-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">✓ Setujui</button>
+<button type="button" onclick="setDocStatus('akta_kelahiran', 'rejected')" id="btn-akta_kelahiran-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">✗ Tolak/Revisi</button>
+</div>
+<input type="text" id="note-akta_kelahiran" placeholder="Catatan revisi Akta Kelahiran..." class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-300 hidden">
+</div>
+<div class="glass-card rounded-xl p-4 border border-white/10 space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-slate-300">3. Ijazah / SKL</span>
+<a href="#" target="_blank" id="doc-ijazah-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">🔗 Pratinjau SKL</a>
+</div>
+<div class="flex gap-2">
+<button type="button" onclick="setDocStatus('ijazah', 'approved')" id="btn-ijazah-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">✓ Setujui</button>
+<button type="button" onclick="setDocStatus('ijazah', 'rejected')" id="btn-ijazah-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">✗ Tolak/Revisi</button>
+</div>
+<input type="text" id="note-ijazah" placeholder="Catatan revisi SKL..." class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-300 hidden">
+</div>
+</div>
+<div class="space-y-4 pt-4 border-t border-white/10">
+<div class="space-y-2">
+<label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Aksi Keputusan Status Pendaftaran</label>
+<div class="grid grid-cols-1 gap-2">
+<button type="button" onclick="saveAdminVerification('Verifikasi')" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
+🔵 Validasi DP (Lanjut ke Verifikasi Berkas)
+</button>
+<button type="button" onclick="saveAdminVerification('Seleksi')" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
+🟣 Berkas Valid -> Lanjut Tes Tahfidz
+</button>
+<button type="button" onclick="saveAdminVerification('Revisi')" class="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
+🟡 Kembalikan untuk Revisi
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tab-admin-seleksi" class="tab-panel space-y-6">
+<div class="glass-card rounded-2xl p-6 lg:p-8 shadow-xl">
+<h2 class="text-xl lg:text-2xl font-bold text-white mb-2">Pemetaan Tahfidz & Kelulusan</h2>
+<p class="text-slate-400 text-sm mb-6">Masukkan level hafalan calon siswa untuk pemetaan tahfidz. Tes ini bersifat pemetaan adab & hafalan, serta tidak menggugurkan calon siswa.</p>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="space-y-4 lg:col-span-1">
+<h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400">Input Hasil Tes</h3>
+<div class="space-y-3">
+<div>
+<label class="block text-xs font-semibold text-slate-400 mb-1">Pilih Calon Siswa</label>
+<select class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-200" id="seleksi-student-select">
+</select>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-400 mb-1">Level Hafalan</label>
+<input type="text" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-200" id="val-level-hafalan" placeholder="Contoh: Juz 30 / Belum Ada">
+</div>
+<button onclick="adminSaveHafalan()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs shadow-lg transition-all mt-3">
+💾 Simpan Pemetaan Hafalan
+</button>
+<div class="border-t border-white/10 my-4 pt-4">
+<button onclick="adminSetLulus()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-xl text-xs shadow-lg transition-all">
+🎓 Nyatakan Lulus Seleksi
+</button>
+</div>
+</div>
+</div>
+<div class="space-y-4 lg:col-span-2">
+<h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400">Daftar Siswa Tahap Tes Tahfidz</h3>
+<div class="table-container overflow-x-auto w-full">
+<table class="w-full text-left border-collapse text-xs">
+<thead>
+<tr class="border-b border-white/10 text-slate-400 uppercase font-semibold">
+<th class="py-2.5 px-3">No. Daftar</th>
+<th class="py-2.5 px-3">Nama Siswa</th>
+<th class="py-2.5 px-3">Level Hafalan</th>
+<th class="py-2.5 px-3">Status PPDB</th>
+<th class="py-2.5 px-3 text-center">Aksi Kelulusan</th>
+</tr>
+</thead>
+<tbody id="ranking-table-body" class="divide-y divide-white/5 text-slate-300">
+<tr>
+<td colspan="5" class="py-6 text-center text-slate-500">Memuat pendaftar tahap tahfidz...</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script type="module" src="../../js/ppdb/script.js"></script>
+<script>
+function showTahfidzTab() {
+document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+const panel = document.getElementById('tab-admin-seleksi');
+if (panel) panel.classList.add('active');
+}
+window.showTahfidzTab = showTahfidzTab;
+</script>
+</body>
+</html>
