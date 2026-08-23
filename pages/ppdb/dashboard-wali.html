@@ -31,6 +31,9 @@
   <link rel="stylesheet" href="../../css/mobile.css">
   <link rel="stylesheet" href="../../css/ppdb/style.css">
   
+  <!-- html2pdf CDN for PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
   <!-- Supabase SDK & Config -->
   <script type="module" src="../../js/ppdb/db.js" defer></script>
   
@@ -494,6 +497,8 @@
           Selamat! Calon siswa atas nama <strong class="text-white" id="announce-student-name">Ahmad Fulan</strong> dinyatakan **LULUS** seleksi penerimaan murid baru SMP Annida Tahun Ajaran 2027/2028.
         </p>
         
+        <button type="button" id="btn-cetak-lulus" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition-all hidden mx-auto flex items-center justify-center gap-2"><span class="material-symbols-outlined align-middle">print</span> Cetak Bukti Kelulusan</button>
+        
         <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
           <a href="#" class="btn bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all text-sm">
             📄 Download Surat Kelulusan
@@ -600,5 +605,45 @@
     window.handleDpUpload = handleDpUpload;
     window.submitDpConfirmation = submitDpConfirmation;
   </script>
+
+  <!-- PDF Template (Hidden) -->
+  <div id="pdf-template" class="hidden bg-white text-black p-8 max-w-2xl mx-auto" style="width: 800px; padding: 40px; font-family: sans-serif;">
+    <div style="text-align: center; border-bottom: 2px solid black; padding-bottom: 20px; margin-bottom: 30px;">
+      <h1 style="font-size: 24px; font-weight: bold; margin: 0;">YAYASAN ANNIDA AL-ISLAMY</h1>
+      <h2 style="font-size: 20px; font-weight: bold; margin: 5px 0;">SMP ANNIDA 2 SETU</h2>
+      <p style="font-size: 14px; margin: 0;">Jl. Raya Setu, Bekasi. Telp: (021) 1234567</p>
+    </div>
+    
+    <div style="text-align: center; margin-bottom: 40px;">
+      <h3 style="font-size: 18px; font-weight: bold; text-decoration: underline; margin: 0;">SURAT KETERANGAN LULUS</h3>
+      <p style="font-size: 14px; margin-top: 5px;">Nomor: 421.3/PPDB/SMP.A2/2027</p>
+    </div>
+    
+    <div style="font-size: 14px; line-height: 1.6; margin-bottom: 30px;">
+      <p>Panitia Penerimaan Peserta Didik Baru (PPDB) SMP Annida Tahun Ajaran 2027/2028 menerangkan bahwa:</p>
+      
+      <table style="width: 100%; margin-top: 20px; margin-bottom: 20px;">
+        <tr>
+          <td style="width: 30%; padding: 5px 0;">Nama Lengkap</td>
+          <td style="width: 5%; padding: 5px 0;">:</td>
+          <td style="width: 65%; padding: 5px 0; font-weight: bold;" id="pdf-nama">Fulan</td>
+        </tr>
+        <tr>
+          <td style="padding: 5px 0;">NISN</td>
+          <td style="padding: 5px 0;">:</td>
+          <td style="padding: 5px 0; font-weight: bold;" id="pdf-nisn">1234567890</td>
+        </tr>
+      </table>
+      
+      <p>Berdasarkan hasil tes seleksi pemetaan tahfidz dan verifikasi dokumen, siswa tersebut dinyatakan <strong>LULUS</strong> dan berhak untuk mengikuti tahapan daftar ulang di SMP Annida 2.</p>
+    </div>
+    
+    <div style="width: 100%; text-align: right; margin-top: 50px;">
+      <p style="margin: 0;">Bekasi, <span id="pdf-tanggal"></span></p>
+      <p style="margin: 0; font-weight: bold;">Ketua Panitia PPDB</p>
+      <br><br><br>
+      <p style="margin: 0; font-weight: bold; text-decoration: underline;">Ustadz Panitia, S.Pd.I</p>
+    </div>
+  </div>
 </body>
 </html>

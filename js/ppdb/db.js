@@ -72,6 +72,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         await submitPaymentConfirmation();
       });
     }
+
+    // 4. Print PDF Lulus
+    const btnCetakLulus = document.getElementById('btn-cetak-lulus');
+    if (btnCetakLulus) {
+      btnCetakLulus.addEventListener('click', printPDFLulus);
+    }
   }
 
   // ==========================================
@@ -110,6 +116,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       searchInput.addEventListener('input', () => {
         filterRegistrationsTable(searchInput.value);
       });
+    }
+
+    // Setup Export Excel Button
+    const btnExportExcel = document.getElementById('btn-export-excel');
+    if (btnExportExcel) {
+      btnExportExcel.addEventListener('click', exportDataToExcel);
     }
 
     // Setup student select change listener to load level of hafalan
@@ -507,6 +519,10 @@ function updateTimelineUI(status) {
     const announceName = document.getElementById('announce-student-name');
     if (announceName) {
       announceName.textContent = localStorage.getItem('last_student_name') || 'Ahmad Fulan';
+    }
+    const btnCetakLulus = document.getElementById('btn-cetak-lulus');
+    if (btnCetakLulus) {
+      btnCetakLulus.classList.remove('hidden');
     }
   } else if (status === 'Revisi') {
     if (badge) {
@@ -1146,3 +1162,83 @@ window.submitDpPayment = async function(fileName) {
     }
   }
 };
+
+window.exportDataToExcel = function() {
+  if (!allRegistrations || allRegistrations.length === 0) {
+    alert("Tidak ada data pendaftar untuk di-export.");
+    return;
+  }
+  
+  const mappedData = allRegistrations.map((r, index) => {
+    return {
+      "No": index + 1,
+      "No. Pendaftaran": r.no_pendaftaran || "-",
+      "Nama Lengkap": r.biodata_siswa?.nama_lengkap || "-",
+      "NIK": r.biodata_siswa?.nik || "-",
+      "NISN": r.biodata_siswa?.nisn || "-",
+      "Tempat Lahir": r.biodata_siswa?.tempat_lahir || "-",
+      "Tanggal Lahir": r.biodata_siswa?.tanggal_lahir || "-",
+      "Alamat": r.biodata_siswa?.alamat || "-",
+      "Nama Ayah": r.data_orangtua?.nama_ayah || "-",
+      "Nama Ibu": r.data_orangtua?.nama_ibu || "-",
+      "No WhatsApp": r.data_orangtua?.whatsapp || "-",
+      "Sekolah Asal": r.sekolah_asal?.nama_sekolah || "-",
+      "NPSN Sekolah": r.sekolah_asal?.npsn || "-",
+      "Jalur Daftar": r.tipe_pendaftaran === 'pondok' ? 'Sekolah + Pondok' : 'Sekolah Saja',
+      "Status Pendaftaran": r.status_pendaftaran || "-",
+      "Level Hafalan": r.document_verification?.level_hafalan || "-",
+      "Tanggal Daftar": new Date(r.created_at).toLocaleDateString('id-ID')
+    };
+  });
+
+  if (typeof XLSX !== 'undefined') {
+    const ws = XLSX.utils.json_to_sheet(mappedData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Data Pendaftar");
+    XLSX.writeFile(wb, "Data_Pendaftar_PPDB.xlsx");
+  } else {
+    alert("Library XLSX (Excel) belum selesai dimuat. Silakan tunggu beberapa detik dan coba lagi.");
+  }
+};
+
+window.printPDFLulus = function() {
+  const template = document.getElementById('pdf-template');
+  const pdfNama = document.getElementById('pdf-nama');
+  const pdfNisn = document.getElementById('pdf-nisn');
+  const pdfTanggal = document.getElementById('pdf-tanggal');
+  
+  if (!template || !pdfNama || !pdfNisn) {
+    alert('Template PDF tidak ditemukan.');
+    return;
+  }
+  
+  // Mengisi teks ke pdf-nama dan pdf-nisn
+  pdfNama.textContent = localStorage.getItem('last_student_name') || 'Fulan';
+  
+  const inputNisn = document.getElementById('siswa-nisn');
+  pdfNisn.textContent = inputNisn && inputNisn.value ? inputNisn.value : '-';
+  
+  if (pdfTanggal) {
+    pdfTanggal.textContent = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  // Menghapus sementara class hidden
+  template.classList.remove('hidden');
+  
+  if (typeof html2pdf !== 'undefined') {
+    html2pdf().set({
+      margin: 1,
+      filename: 'Surat_Lulus_PPDB.pdf',
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    }).from(template).save().then(() => {
+      // Mengembalikan class hidden setelah render
+      template.classList.add('hidden');
+    });
+  } else {
+    alert("Library html2pdf belum termuat. Mohon periksa koneksi internet Anda.");
+    template.classList.add('hidden');
+  }
+};
+
+function exportDataToExcel() { window.exportDataToExcel(); }
+function printPDFLulus() { window.printPDFLulus(); }
