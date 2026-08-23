@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Registrasi Berhasil - SMP Annida</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+darkMode: "class",
+theme: {
+extend: {
+"colors": {
+"primary": "#10b981",
+"primary-dim": "#059669",
+"accent": "#34d399"
+},
+"fontFamily": {
+"headline-md": ["Literata"],
+"headline-lg": ["Literata"],
+"label-md": ["Nunito Sans"],
+"body-md": ["Nunito Sans"]
+}
+},
+},
+}
+</script>
+<style>
+.glass-panel-custom {
+background: rgba(16, 26, 20, 0.4);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border: 1px solid rgba(255, 255, 255, 0.12);
+box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+.confetti-animation {
+font-size: 4rem;
+animation: bounce 1.5s infinite;
+}
+@keyframes bounce {
+0%, 100% { transform: translateY(0) scale(1); }
+50% { transform: translateY(-15px) scale(1.1); }
+}
+</style>
+</head>
+<body class="bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-fixed text-white font-body-md min-h-screen flex flex-col antialiased">
+<div class="fixed inset-0 bg-black/35 z-[-1]"></div>
+<main class="flex-grow flex items-center justify-center px-6 py-12">
+<div class="w-full max-w-xl glass-panel-custom rounded-2xl p-8 text-center space-y-6">
+<div class="confetti-animation">🎉</div>
+<h2 class="font-headline-lg text-3xl font-bold text-emerald-400">Pendaftaran Berhasil!</h2>
+<p class="text-sm text-gray-300 max-w-md mx-auto leading-relaxed">
+Selamat! Pendaftaran calon siswa baru untuk Tahun Ajaran 2027/2028 telah berhasil disimpan ke sistem pusat SMP Annida.
+</p>
+<div class="bg-black/30 border border-white/10 rounded-xl p-4 inline-block mx-auto min-w-[280px]">
+<span class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Nomor Pendaftaran Anda</span>
+<div class="text-2xl font-mono font-bold text-white mt-1" id="display-reg-no">PPDB-2027-XXXXX</div>
+</div>
+<div>
+<span id="status-badge" class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/35 text-xs font-bold uppercase tracking-wider">
+🟡 Menunggu Verifikasi
+</span>
+</div>
+<p class="text-xs text-gray-400 max-w-sm mx-auto leading-relaxed">
+Harap catat Nomor Pendaftaran Anda. Gunakan Nomor WhatsApp Wali dan password pendaftaran yang Anda buat sebelumnya untuk login.
+</p>
+<div class="flex flex-col gap-3 pt-4">
+<a href="dashboard-wali.html" class="w-full bg-primary hover:bg-primary-dim text-white font-bold py-3.5 rounded-lg text-sm transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+Masuk Dashboard Wali Murid
+</a>
+<a id="btn-chat-admin" href="https://wa.me/6281299887766" target="_blank" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold py-3 rounded-lg text-sm transition-all">
+Hubungi Admin Panitia PPDB
+</a>
+</div>
+</div>
+</main>
+<script type="module">
+import supabaseClient from '../../js/core/supabase.js';
+document.addEventListener('DOMContentLoaded', async () => {
+const regNo = localStorage.getItem('last_ppdb_no') || 'PPDB-2027-73892';
+document.getElementById('display-reg-no').textContent = regNo;
+const btnChat = document.getElementById('btn-chat-admin');
+if (btnChat) {
+btnChat.href = `https://wa.me/6281299887766?text=Halo%20Admin%20PPDB%2C%20saya%20sudah%20mendaftar%20untuk%20anak%20saya%20dengan%20Nomor%20Pendaftaran%3A%20${encodeURIComponent(regNo)}.`;
+}
+// Fetch actual status dynamically from Supabase
+try {
+const { data, error } = await supabaseClient
+.from('pendaftaran')
+.select('status_pendaftaran')
+.eq('no_pendaftaran', regNo)
+.maybeSingle();
+if (error) throw error;
+if (data && data.status_pendaftaran) {
+const status = data.status_pendaftaran;
+const badge = document.getElementById('status-badge');
+if (badge) {
+if (status === 'Verifikasi') {
+badge.className = 'inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/35 text-xs font-bold uppercase tracking-wider';
+badge.textContent = '🟡 Menunggu Verifikasi';
+} else if (status === 'Pembayaran') {
+badge.className = 'inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/35 text-xs font-bold uppercase tracking-wider';
+badge.textContent = '🔵 Pembayaran SPP';
+} else if (status === 'Seleksi') {
+badge.className = 'inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/35 text-xs font-bold uppercase tracking-wider';
+badge.textContent = '🟣 Tahap Seleksi';
+} else if (status === 'Lulus') {
+badge.className = 'inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/35 text-xs font-bold uppercase tracking-wider';
+badge.textContent = '🟢 Lulus / Terdaftar';
+} else if (status === 'Gugur') {
+badge.className = 'inline-flex items-center gap-1.5 py-1 px-3 rounded-full bg-red-500/20 text-red-300 border border-red-500/35 text-xs font-bold uppercase tracking-wider';
+badge.textContent = '🔴 Gugur';
+}
+}
+}
+} catch (err) {
+console.warn("Gagal memuat status live Supabase:", err.message);
+}
+});
+</script>
+</body>
+</html>
