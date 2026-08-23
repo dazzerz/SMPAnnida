@@ -1079,7 +1079,7 @@ function renderMonthlyChart(data) {
   });
 }
 
-window.updateDocUploadStatus = async function(docType, fileName) {
+window.updateDocUploadStatus = async function(docType, fileName, fileUrl = null) {
   const pendaftaranId = localStorage.getItem('pendaftaran_id');
   if (!pendaftaranId) return;
 
@@ -1094,7 +1094,7 @@ window.updateDocUploadStatus = async function(docType, fileName) {
       const dbKey = docType === 'skl' ? 'ijazah' : docType === 'kk' ? 'kartu_keluarga' : 'akta_kelahiran';
       const currentDocs = reg.document_verification || {};
       
-      currentDocs[dbKey] = { status: 'pending', note: '', file_name: fileName };
+      currentDocs[dbKey] = { status: 'pending', note: '', file_name: fileName, file_url: fileUrl };
 
       let hasRejected = false;
       Object.keys(currentDocs).forEach(k => {
@@ -1125,7 +1125,7 @@ window.updateDocUploadStatus = async function(docType, fileName) {
   }
 };
 
-window.submitDpPayment = async function(fileName) {
+window.submitDpPayment = async function(fileName, fileUrl = null) {
   const pId = localStorage.getItem('pendaftaran_id');
   if (!pId) {
     alert("Data pendaftaran tidak ditemukan.");
@@ -1145,6 +1145,7 @@ window.submitDpPayment = async function(fileName) {
     docVerif.dp_payment = {
       status: 'pending',
       file_name: fileName,
+      file_url: fileUrl,
       uploaded_at: new Date().toISOString()
     };
     

@@ -546,8 +546,8 @@
     });
   </script>
   <script>
-    // Local client helper for file uploads
-    function handleFileUpload(docType) {
+    // Local client helper for file uploads to Google Drive
+    async function handleFileUpload(docType) {
       const fileInput = document.getElementById(`file-${docType}`);
       const statusSpan = document.getElementById(`${docType}-status`);
       const nameText = document.getElementById(`${docType}-name`);
@@ -556,17 +556,38 @@
         const file = fileInput.files[0];
         nameText.textContent = `File: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
         statusSpan.className = "px-2.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-semibold";
-        statusSpan.textContent = "Sedang Diunggah";
+        statusSpan.textContent = "Mengunggah ke Drive...";
         
-        // Simulating upload success & database sync
-        setTimeout(() => {
-          statusSpan.className = "px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold";
-          statusSpan.textContent = "Terunggah";
-          
-          if (window.updateDocUploadStatus) {
-            window.updateDocUploadStatus(docType, file.name);
-          }
-        }, 1500);
+        try {
+          const reader = new FileReader();
+          reader.onload = async function(e) {
+            const base64Data = e.target.result.split(',')[1];
+            const gasUrl = 'https://script.google.com/macros/s/AKfycbwgrN_Q75I06zGRygrivLYAJm7MC1p9n1H_sZFrmEexS5xfS5tYtwjQSd2zNef_xBxR/exec';
+            
+            const response = await fetch(gasUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain' },
+              body: JSON.stringify({ filename: file.name, image: base64Data })
+            });
+            
+            const result = await response.json();
+            if (result.status === 'success') {
+              statusSpan.className = "px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold";
+              statusSpan.textContent = "Terunggah";
+              if (window.updateDocUploadStatus) {
+                window.updateDocUploadStatus(docType, file.name, result.url);
+              }
+            } else {
+              throw new Error(result.message || 'Gagal mengunggah ke Drive');
+            }
+          };
+          reader.readAsDataURL(file);
+        } catch (error) {
+          console.error("Upload error:", error);
+          statusSpan.className = "px-2.5 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20 text-xs font-semibold";
+          statusSpan.textContent = "Gagal Diunggah";
+          alert("Gagal mengunggah file: " + error.message);
+        }
       }
     }
 
@@ -585,20 +606,40 @@
     async function submitDpConfirmation() {
       const submitBtn = document.getElementById('btn-submit-dp');
       submitBtn.disabled = true;
-      submitBtn.textContent = '⏳ Mengirim...';
+      submitBtn.textContent = '⏳ Mengunggah ke Drive...';
 
       const fileInput = document.getElementById('file-dp');
       if (fileInput.files.length === 0) return;
 
       const file = fileInput.files[0];
 
-      if (window.submitDpPayment) {
-        await window.submitDpPayment(file.name);
-      } else {
-        setTimeout(() => {
-          alert("Pembayaran berhasil dikirim! (Simulasi)");
-          window.location.reload();
-        }, 1500);
+      try {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+          const base64Data = e.target.result.split(',')[1];
+          const gasUrl = 'https://script.google.com/macros/s/AKfycbwgrN_Q75I06zGRygrivLYAJm7MC1p9n1H_sZFrmEexS5xfS5tYtwjQSd2zNef_xBxR/exec';
+          
+          const response = await fetch(gasUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ filename: file.name, image: base64Data })
+          });
+          
+          const result = await response.json();
+          if (result.status === 'success') {
+            if (window.submitDpPayment) {
+              await window.submitDpPayment(file.name, result.url);
+            }
+          } else {
+            throw new Error(result.message || 'Gagal mengunggah ke Drive');
+          }
+        };
+        reader.readAsDataURL(file);
+      } catch (error) {
+        console.error("DP Upload error:", error);
+        alert("Gagal mengunggah bukti: " + error.message);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Kirim Bukti Pembayaran';
       }
     }
 
