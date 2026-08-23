@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (stepForm) {
       stepForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        await saveSiswaForm(userId);
+        await saveSiswaForm();
       });
     }
 
@@ -322,7 +322,14 @@ async function fetchMyRegistrationStatus(userId) {
   }
 }
 
-async function saveSiswaForm(userId) {
+async function saveSiswaForm() {
+  const { data: { user } } = await db.auth.getUser();
+  if (!user) {
+    alert('Sesi login Anda telah habis. Silakan login ulang.');
+    return;
+  }
+  const userId = user.id;
+
   const pendaftaranId = localStorage.getItem('pendaftaran_id');
   if (!pendaftaranId) return;
 
