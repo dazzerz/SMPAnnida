@@ -564,10 +564,21 @@
             const base64Data = e.target.result.split(',')[1];
             const gasUrl = 'https://script.google.com/macros/s/AKfycbwgrN_Q75I06zGRygrivLYAJm7MC1p9n1H_sZFrmEexS5xfS5tYtwjQSd2zNef_xBxR/exec';
             
+            const noPendaftaran = localStorage.getItem('last_ppdb_no') || 'UNKNOWN';
+            const namaSiswa = localStorage.getItem('last_student_name') || 'Calon Siswa';
+            
+            const payload = {
+              filename: file.name,
+              image: base64Data,
+              docType: docType,
+              noPendaftaran: noPendaftaran,
+              namaSiswa: namaSiswa
+            };
+
             const response = await fetch(gasUrl, {
               method: 'POST',
               headers: { 'Content-Type': 'text/plain' },
-              body: JSON.stringify({ filename: file.name, image: base64Data })
+              body: JSON.stringify(payload)
             });
             
             const result = await response.json();
@@ -619,10 +630,21 @@
           const base64Data = e.target.result.split(',')[1];
           const gasUrl = 'https://script.google.com/macros/s/AKfycbwgrN_Q75I06zGRygrivLYAJm7MC1p9n1H_sZFrmEexS5xfS5tYtwjQSd2zNef_xBxR/exec';
           
+          const noPendaftaran = localStorage.getItem('last_ppdb_no') || 'UNKNOWN';
+          const namaSiswa = localStorage.getItem('last_student_name') || 'Calon Siswa';
+          
+          const payload = {
+            filename: file.name,
+            image: base64Data,
+            docType: 'dp',
+            noPendaftaran: noPendaftaran,
+            namaSiswa: namaSiswa
+          };
+
           const response = await fetch(gasUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify({ filename: file.name, image: base64Data })
+            body: JSON.stringify(payload)
           });
           
           const result = await response.json();
