@@ -1,0 +1,1284 @@
+/* =========================================================================
+   SMPAnnida - Unified Global Glassmorphism CSS (Green Theme)
+========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* ==========================================
+   CONSOLIDATED MODULE VARIABLES
+========================================== */
+/* Extracted from css/finance/global.css */
+:root {
+
+  /* Colors - Dark Theme (default) */
+  --bg-primary: #0a0f12; /* Darker near-black for green contrast */
+  --bg-secondary: #10161a;
+  --bg-card: #141c21;
+  --bg-card-hover: #19242a;
+  --bg-elevated: #1a242a;
+  --bg-input: #0f161a;
+  --bg-sidebar: #060a0c;
+
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(124, 237, 80, 0.4); /* Green focus */
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0a0f12;
+
+  /* Brand Colors (Annida Logo) */
+  --accent-primary: #7ced50; /* Lime green from logo */
+  --accent-primary-glow: rgba(124, 237, 80, 0.15);
+  --accent-secondary: #000000; /* Black from logo stripes */
+  --accent-secondary-glow: rgba(0, 0, 0, 0.15);
+  --accent-warning: #f59e0b;
+  --accent-danger: #ef4444;
+  --accent-danger-glow: rgba(239, 68, 68, 0.15);
+  --accent-purple: #8b5cf6;
+  --accent-pink: #ec4899;
+  --accent-gold: #fbbf24;
+
+  /* Income / Expense specific */
+  --income-color: #10b981;
+  --income-bg: rgba(16, 185, 129, 0.1);
+  --expense-color: #ef4444;
+  --expense-bg: rgba(239, 68, 68, 0.1);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #7ced50, #4ade80); /* Bright green gradient */
+  --gradient-success: linear-gradient(135deg, #10b981, #059669);
+  --gradient-danger: linear-gradient(135deg, #ef4444, #be123c);
+  --gradient-gold: linear-gradient(135deg, #f59e0b, #d97706);
+  --gradient-sidebar: linear-gradient(180deg, #060a0c 0%, #080d11 100%);
+  --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+
+  /* Glass effect */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.2);
+  --shadow-glow-green: 0 0 20px rgba(16, 185, 129, 0.2);
+
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s ease;
+
+  /* Sidebar */
+  --sidebar-max-max-width: 260px; width: 100%; width: 100%;
+  --sidebar-collapsed: 72px;
+  --header-height: 70px;
+
+}
+
+/* Extracted from css/finance/global.css */
+[data-theme="light"] {
+
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-elevated: #ffffff;
+  --bg-input: #f1f5f9;
+  --bg-sidebar: #ffffff; /* Bright white sidebar in light mode */
+
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-focus: rgba(124, 237, 80, 0.4);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-inverse: #f8fafc;
+
+  /* Brand Colors Override for Light Theme */
+  --accent-primary: #60cc38; /* Slightly darker green for light theme contrast */
+  --accent-primary-glow: rgba(96, 204, 56, 0.15);
+  --accent-secondary: #000000;
+  --accent-secondary-glow: rgba(0, 0, 0, 0.15);
+  
+  --gradient-primary: linear-gradient(135deg, #60cc38, #4ade80);
+  --gradient-sidebar: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  --gradient-card: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(248,250,252,1) 100%);
+  
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+
+}
+
+/* Extracted from css/finance/global.css */
+:root {
+
+    --sidebar-width: 100%;
+    --font-size-3xl: 1.5rem;
+    --font-size-4xl: 1.875rem;
+  
+}
+
+/* Extracted from css/academic/main.css */
+:root {
+
+    --primary: #4ade80;
+    --primary-hover: #22c55e;
+    --background: #F3F4F6;
+    --surface: #FFFFFF;
+    --text-main: #1F2937;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+    --success: #10B981;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --sidebar-width: 250px;
+    --topbar-height: 60px;
+
+}
+
+/* Extracted from css/ppdb/style.css */
+:root {
+
+    /* Color Palette - Light Electric Green */
+    --primary-color: #00c853; /* Electric Green */
+    --primary-light: #5efc82;
+    --primary-dark: #009624;
+    --secondary-color: #2d3748; /* Dark Contrast for Accent */
+    --secondary-light: #e6f9ed; /* Very light green for subtle backgrounds */
+    
+    /* Neutrals */
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --bg-main: #f7fafc;
+    --bg-card: #ffffff;
+    --bg-light: #edf2f7;
+    --border-color: #e2e8f0;
+
+    /* Typography */
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    
+    /* Shadows & Effects */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+    --transition: all 0.3s ease;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+
+}
+
+
+
+:root, [data-theme="light"] {
+  /* Green Theme Colors (Darker for Light Mode contrast) */
+  --primary: #059669;
+  --primary-hover: #047857;
+  --primary-light: rgba(16, 185, 129, 0.1);
+  
+  --secondary: #34d399;
+  --accent: #6ee7b7;
+
+  /* Glassmorphism Surface (Light Mode Default) */
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-bg-hover: rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --glass-border-light: rgba(0, 0, 0, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --glass-blur: blur(12px);
+
+  /* Typography */
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+
+  /* Background Mesh Gradient (Light) */
+  --body-bg-gradient: radial-gradient(at 0% 0%, #d1fae5 0px, transparent 50%),
+                      radial-gradient(at 100% 100%, #ecfdf5 0px, transparent 50%),
+                      #f3f4f6;
+  --body-color: #f3f4f6;
+
+  /* Utility Colors */
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --success: #10b981;
+}
+
+[data-theme="dark"] {
+  /* Green Theme Colors (Lighter for Dark Mode contrast) */
+  --primary: #10b981;
+  --primary-hover: #059669;
+  --primary-light: rgba(16, 185, 129, 0.2);
+
+  /* Glassmorphism Surface (Dark Mode) */
+  --glass-bg: rgba(17, 24, 39, 0.65);
+  --glass-bg-hover: rgba(17, 24, 39, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-light: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+  /* Typography */
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  /* Background Mesh Gradient (Dark Teal) */
+  --body-bg-gradient: radial-gradient(at 0% 0%, #064e3b 0px, transparent 50%),
+                      radial-gradient(at 100% 100%, #022c22 0px, transparent 50%),
+                      #0f172a;
+  --body-color: #0f172a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  background-color: var(--body-color);
+  background-image: var(--body-bg-gradient);
+  background-attachment: fixed;
+  background-size: cover;
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  /* overflow-x: hidden; removed to prevent complete cut-off if scrolling is needed */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ----------------------------------------------------------------------
+   GLASSMORPHISM UTILITIES
+---------------------------------------------------------------------- */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.glass-card {
+  background: rgba(31, 41, 55, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+.glass-card:hover {
+  background: rgba(31, 41, 55, 0.6);
+  border-color: var(--primary-light);
+  transform: translateY(-2px);
+}
+
+/* ----------------------------------------------------------------------
+   BUTTONS
+---------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+.btn-outline:hover {
+  background: var(--primary-light);
+}
+
+/* ----------------------------------------------------------------------
+   INPUTS & FORMS
+---------------------------------------------------------------------- */
+.form-group {
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: rgba(17, 24, 39, 0.5);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+  background: rgba(17, 24, 39, 0.8);
+}
+
+/* ----------------------------------------------------------------------
+   LAYOUT: SIDEBAR & MAIN CONTENT
+---------------------------------------------------------------------- */
+.app-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.sidebar {
+  max-max-width: 260px; width: 100%; width: 100%;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  border-right: 1px solid var(--glass-border);
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: var(--glass-blur);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  z-index: 100;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--glass-border);
+  margin-bottom: 1.5rem;
+}
+.sidebar-logo-icon {
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.sidebar-logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.sidebar-brand {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+}
+
+.nav-group {
+  margin-bottom: 0.75rem;
+}
+/* .nav-group-title removed in favor of .accordion-toggle below */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s ease-out;
+  font-weight: 500;
+  font-size: 0.85rem;
+  border-left: 3px solid transparent;
+}
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+.nav-item.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border-left: 3px solid var(--primary);
+  font-weight: 600;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem 3rem;
+  margin-left: 0 !important; /* CRITICAL: Override old CSS that added double sidebar width margin */
+  overflow-y: auto;
+  
+  min-width: 0; /* CRITICAL: Allows flex child to shrink below content size */
+  max-width: 100%;
+}
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.page-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* User Profile Widget */
+.user-widget {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255,255,255,0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  border: 1px solid var(--glass-border);
+}
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Grid System */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+.grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+.grid-cols-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-cols-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+/* Dashboard Metric Cards */
+.metric-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.metric-title {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.metric-footer {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ----------------------------------------------------------------------
+   RESPONSIVE LAYOUT (Mobile & Tablet)
+   → Full mobile rules are in css/mobile.css
+   → Only tablet breakpoint kept here to not conflict
+---------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+}
+/* Note: max-width 768px rules moved to css/mobile.css */
+
+
+/* =========================================================================
+   MASSIVE GLASSMORPHISM & NEUMORPHISM OVERRIDES FOR ALL MODULES (PPDB, FINANCE, ACADEMIC)
+========================================================================= */
+
+/* Variable Mapping (Force all old variables to use Glassmorphism) */
+:root, [data-theme="light"], [data-theme="dark"] {
+  --bg-card: var(--glass-bg) !important;
+  --bg-main: transparent !important;
+  --bg-primary: transparent !important;
+  --bg-secondary: transparent !important;
+  --text-main: var(--text-primary) !important;
+  --primary-color: var(--primary) !important;
+  --accent-primary: var(--primary) !important;
+  --background-color: var(--body-color) !important;
+  --bg-elevated: var(--glass-bg-hover) !important;
+}
+
+/* Force Glassmorphism on all generic card and panel elements */
+.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow) !important;
+  border-radius: 16px !important;
+}
+
+/* Force Table Backgrounds to be transparent */
+table, thead, tbody, tr, th, td {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+  border-bottom-color: var(--glass-border) !important;
+}
+th {
+  background: var(--glass-bg-hover) !important; /* Slightly darker/frosted for header */
+}
+
+/* Force Input Fields to be Neumorphic/Glassmorphic */
+input, select, textarea, .form-control, .form-select, .form-input {
+  background: rgba(17, 24, 39, 0.05) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 8px !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05) !important; /* Neumorphic inner shadow */
+}
+[data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea,
+[data-theme="dark"] .form-control, [data-theme="dark"] .form-select, [data-theme="dark"] .form-input {
+  background: rgba(17, 24, 39, 0.4) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+input:focus, select:focus, textarea:focus, .form-control:focus {
+  outline: none !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px var(--primary-light), inset 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+/* Buttons Neumorphism/Glassmorphism */
+.btn-primary, .btn-secondary, button[type="submit"] {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 15px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+.btn-primary:hover, .btn-secondary:hover, button[type="submit"]:hover {
+  background: var(--primary-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+}
+.btn-outline {
+  background: transparent !important;
+  border: 1px solid var(--primary) !important;
+  color: var(--primary) !important;
+}
+.btn-outline:hover {
+  background: var(--primary-light) !important;
+  color: var(--primary) !important;
+}
+
+/* Fix specific colors in RAB headers etc */
+.rab-card-header {
+  background: var(--glass-bg-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Ensure background color doesn't peek through the corners of the table container */
+.table-responsive {
+  border-radius: 16px !important;
+  overflow: auto !important;
+  background: transparent !important;
+}
+
+
+/* =========================================================================
+   ULTIMATE FLUID LAYOUT & TRUE GLASSMORPHISM (REFERENCE MATCH)
+========================================================================= */
+
+/* 1. True Glassmorphism Background (Nature / Leaves) */
+body {
+  background-color: #121212 !important;
+  background-image: linear-gradient(to bottom, rgba(11, 19, 14, 0.55), rgba(11, 19, 14, 0.65)), url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  color: #ffffff !important;
+}
+
+/* Force text to be white/readable everywhere because of the dark glass */
+:root, [data-theme="light"], [data-theme="dark"] {
+  --text-primary: #ffffff !important;
+  --text-secondary: rgba(255, 255, 255, 0.7) !important;
+  --text-muted: rgba(255, 255, 255, 0.5) !important;
+}
+h1, h2, h3, h4, h5, h6, p, span, div {
+  color: var(--text-primary);
+}
+
+/* The exact glass effect from the reference */
+.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card, .topbar, .budget-summary {
+  background: rgba(25, 30, 25, 0.45) !important; /* Dark greenish tint */
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+  border-radius: 20px !important;
+}
+
+/* Ensure no inner elements have solid backgrounds */
+table, thead, tbody, tr, th, td {
+  background: transparent !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+th {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+input, select, textarea, .filter-select {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+option {
+  background: #1e293b !important;
+  color: white !important;
+}
+
+/* =========================================================================
+   HIDDEN SCROLLBARS (Scrollable but invisible)
+========================================================================= */
+/* For Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent;
+  display: none;
+}
+
+/* For Firefox and IE/Edge legacy */
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+
+/* Permanently remove theme toggle button from UI */
+.theme-toggle, #theme-toggle, [aria-label='Toggle Theme'] {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.metric-footer {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ----------------------------------------------------------------------
+   RESPONSIVE LAYOUT (Mobile & Tablet)
+   → Full mobile rules are in css/mobile.css
+   → Only tablet breakpoint kept here to not conflict
+---------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+}
+/* Note: max-width 768px rules moved to css/mobile.css */
+
+
+/* =========================================================================
+   MASSIVE GLASSMORPHISM & NEUMORPHISM OVERRIDES FOR ALL MODULES (PPDB, FINANCE, ACADEMIC)
+========================================================================= */
+
+/* Variable Mapping (Force all old variables to use Glassmorphism) */
+:root, [data-theme="light"], [data-theme="dark"] {
+  --bg-card: var(--glass-bg) !important;
+  --bg-main: transparent !important;
+  --bg-primary: transparent !important;
+  --bg-secondary: transparent !important;
+  --text-main: var(--text-primary) !important;
+  --primary-color: var(--primary) !important;
+  --accent-primary: var(--primary) !important;
+  --background-color: var(--body-color) !important;
+  --bg-elevated: var(--glass-bg-hover) !important;
+}
+
+/* Force Glassmorphism on all generic card and panel elements */
+.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow) !important;
+  border-radius: 16px !important;
+}
+
+/* Force Table Backgrounds to be transparent */
+table, thead, tbody, tr, th, td {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+  border-bottom-color: var(--glass-border) !important;
+}
+th {
+  background: var(--glass-bg-hover) !important; /* Slightly darker/frosted for header */
+}
+
+/* Force Input Fields to be Neumorphic/Glassmorphic */
+input, select, textarea, .form-control, .form-select, .form-input {
+  background: rgba(17, 24, 39, 0.05) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 8px !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05) !important; /* Neumorphic inner shadow */
+}
+[data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea,
+[data-theme="dark"] .form-control, [data-theme="dark"] .form-select, [data-theme="dark"] .form-input {
+  background: rgba(17, 24, 39, 0.4) !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+input:focus, select:focus, textarea:focus, .form-control:focus {
+  outline: none !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px var(--primary-light), inset 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+/* Buttons Neumorphism/Glassmorphism */
+.btn-primary, .btn-secondary, button[type="submit"] {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 15px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.2) !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+.btn-primary:hover, .btn-secondary:hover, button[type="submit"]:hover {
+  background: var(--primary-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+}
+.btn-outline {
+  background: transparent !important;
+  border: 1px solid var(--primary) !important;
+  color: var(--primary) !important;
+}
+.btn-outline:hover {
+  background: var(--primary-light) !important;
+  color: var(--primary) !important;
+}
+
+/* Fix specific colors in RAB headers etc */
+.rab-card-header {
+  background: var(--glass-bg-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Ensure background color doesn't peek through the corners of the table container */
+.table-responsive {
+  border-radius: 16px !important;
+  overflow: auto !important;
+  background: transparent !important;
+}
+
+
+/* =========================================================================
+   ULTIMATE FLUID LAYOUT & TRUE GLASSMORPHISM (REFERENCE MATCH)
+========================================================================= */
+
+/* 1. True Glassmorphism Background (Nature / Leaves) */
+body {
+  background-color: #121212 !important;
+  background-image: linear-gradient(to bottom, rgba(11, 19, 14, 0.55), rgba(11, 19, 14, 0.65)), url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  color: #ffffff !important;
+}
+
+/* Force text to be white/readable everywhere because of the dark glass */
+:root, [data-theme="light"], [data-theme="dark"] {
+  --text-primary: #ffffff !important;
+  --text-secondary: rgba(255, 255, 255, 0.7) !important;
+  --text-muted: rgba(255, 255, 255, 0.5) !important;
+}
+h1, h2, h3, h4, h5, h6, p, span, div {
+  color: var(--text-primary);
+}
+
+/* The exact glass effect from the reference */
+.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card, .topbar, .budget-summary {
+  background: rgba(25, 30, 25, 0.45) !important; /* Dark greenish tint */
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+  border-radius: 20px !important;
+}
+
+/* Ensure no inner elements have solid backgrounds */
+table, thead, tbody, tr, th, td {
+  background: transparent !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+th {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+input, select, textarea, .filter-select {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+input::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+option {
+  background: #1e293b !important;
+  color: white !important;
+}
+
+/* =========================================================================
+   HIDDEN SCROLLBARS (Scrollable but invisible)
+========================================================================= */
+/* For Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent;
+  display: none;
+}
+
+/* For Firefox and IE/Edge legacy */
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+
+/* Permanently remove theme toggle button from UI */
+.theme-toggle, #theme-toggle, [aria-label='Toggle Theme'] {
+  display: none !important;
+}
+/* Note: .topbar, .mobile-menu-btn, .sidebar-overlay, .sidebar-close-btn → see css/mobile.css */
+
+
+/* Old accordion styles removed */
+
+/* Old accordion icon styles removed */
+.nav-group-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+  overflow: hidden;
+}
+
+.accordion-group.active .nav-group-content {
+  grid-template-rows: 1fr;
+}
+
+.nav-group-content > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.nav-group-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* === NEW OVERHAUL SIDEBAR STYLES === */
+.sidebar-search-wrapper {
+  padding: 0 0.5rem 1rem 0.5rem;
+}
+.sidebar-search-container {
+  position: relative;
+}
+.sidebar-search-container .search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+.sidebar-search-input {
+  width: 100%;
+  padding: 0.6rem 0.75rem 0.6rem 2.25rem;
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  color: var(--text-primary) !important;
+  transition: all 0.2s ease;
+}
+.sidebar-search-input:focus {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.sidebar-bottom-section {
+  margin-top: auto;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.user-widget {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--glass-bg-hover);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--primary-light);
+}
+.user-info {
+  flex: 1;
+  overflow: hidden;
+}
+.user-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.user-email {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.sidebar-logout-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+.sidebar-logout-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+/* Override old Accordion Styles */
+.accordion-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted, #94a3b8);
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.25rem;
+  cursor: pointer;
+  transition: color 0.2s ease-out;
+}
+.accordion-toggle span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.accordion-toggle span::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0.5;
+  transition: all 0.2s ease;
+}
+.accordion-group.active .accordion-toggle span::before {
+  background: var(--primary);
+  opacity: 1;
+  box-shadow: 0 0 8px var(--primary-light);
+}
+.accordion-toggle:hover {
+  color: var(--text-primary, #f8fafc);
+}
+.accordion-icon {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  transition: transform 0.3s ease-out;
+}
+.accordion-group.active .accordion-icon {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* Fix sidebar scrolling */
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+/* Fix clock icon color on dark inputs */
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.8;
+}
+
+
+/* =========================================================================
+   COLLAPSIBLE MINI SIDEBAR
+========================================================================= */
+
+/* Toggle Button Styling */
+.sidebar-mini-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+.sidebar-mini-toggle:hover {
+  color: var(--primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Collapsed State Width */
+.sidebar.collapsed {
+  width: 70px;
+  min-width: 70px;
+  max-width: 70px;
+  padding: 1.5rem 0; /* Remove horizontal padding so items can be 100% wide */
+}
+
+/* Hide Elements when Collapsed */
+.sidebar.collapsed .sidebar-brand,
+.sidebar.collapsed .sidebar-search-wrapper,
+.sidebar.collapsed .nav-text,
+.sidebar.collapsed .user-info,
+.sidebar.collapsed .logout-text,
+.sidebar.collapsed .nav-group-title::before {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  padding: 0;
+  margin: 0;
+  border: none;
+  display: none !important;
+}
+
+/* 1. Accordion Toggle Completely Removed */
+.sidebar.collapsed .accordion-toggle {
+  display: none !important;
+}
+.sidebar.collapsed .nav-group {
+  margin-bottom: 0 !important;
+}
+.sidebar.collapsed .nav-group-content {
+  display: block !important;
+  height: auto !important;
+  grid-template-rows: auto !important;
+  overflow: visible !important;
+}
+.sidebar.collapsed .nav-group-inner {
+  display: block !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* 2. Header and Dividers */
+.sidebar.collapsed .sidebar-header {
+  flex-direction: column !important;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 1rem;
+}
+.sidebar.collapsed .sidebar-logo-icon {
+  margin: 0 !important;
+}
+
+/* 3. Icon Centering & Spacing */
+.sidebar.collapsed .nav-item {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  padding: 0.75rem 0 !important;
+  margin-bottom: 0.2rem !important;
+  border-radius: 0 !important;
+  border-left: none !important; /* Optionally move border to left edge of sidebar */
+}
+.sidebar.collapsed .nav-item.active {
+  border-left: 3px solid var(--primary) !important;
+}
+.sidebar.collapsed .nav-icon {
+  font-size: 1.25rem !important;
+  margin: 0 !important;
+}
+
+/* 4. User Widget & Logout */
+.sidebar.collapsed .sidebar-bottom-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0 !important;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: auto;
+  gap: 1rem;
+}
+.sidebar.collapsed .user-widget {
+  padding: 0 !important;
+  justify-content: center !important;
+  margin: 0 !important;
+}
+.sidebar.collapsed .user-avatar {
+  margin: 0 !important;
+}
+.sidebar.collapsed .sidebar-logout-btn {
+  padding: 0.5rem 0 !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+.sidebar.collapsed .sidebar-logout-btn i {
+  margin: 0 !important;
+  font-size: 1.25rem;
+}
+
+/* CSS Tooltip for Nav Items in Collapsed State */
+.sidebar.collapsed .nav-item {
+  position: relative;
+}
+.sidebar.collapsed .nav-item:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 5px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(17, 24, 39, 0.95);
+  color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 1;
+  z-index: 9999;
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Invisible pointer bridge for tooltip */
+.sidebar.collapsed .nav-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 10px;
+  height: 100%;
+  background: transparent;
+}
+
+
+/* =========================================================================
+   EXTRACTED INLINE STYLES FROM dashboard.html
+   ========================================================================= */
+.db-inline-1 { margin-bottom:1rem;color:var(--text-primary); }
+.db-inline-2 { padding:0.75rem 0;color:var(--text-muted);text-align:center; }
+.db-inline-3 { margin-bottom: 2rem; }
+.db-inline-4 { color:var(--accent); }
+.db-inline-5 { list-style:none; }
+.db-inline-6 { color:var(--warning); }
+.db-inline-7 { border-color:var(--accent); }
+.db-inline-8 { height:200px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);border:1px dashed var(--glass-border);border-radius:8px; }
+.db-inline-9 { color:var(--success); }
+.db-inline-10 { border-color:var(--warning); }

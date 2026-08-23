@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Registrasi PPDB 2027/2028 - SMP Annida</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+darkMode: "class",
+theme: {
+extend: {
+"colors": {
+"primary": "#10b981",
+"primary-dim": "#059669",
+"accent": "#34d399"
+},
+"fontFamily": {
+"headline-md": ["Literata"],
+"headline-lg": ["Literata"],
+"label-md": ["Nunito Sans"],
+"body-md": ["Nunito Sans"]
+}
+},
+},
+}
+</script>
+<style>
+/* Glassmorphism Classes */
+.glass-panel-custom {
+background: rgba(16, 26, 20, 0.4);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border: 1px solid rgba(255, 255, 255, 0.12);
+box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+.neon-glow-btn {
+box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+transition: all 0.3s ease;
+}
+.neon-glow-btn:hover {
+box-shadow: 0 0 25px rgba(16, 185, 129, 0.8);
+transform: translateY(-1px);
+}
+/* Stepper Styles */
+.step-indicator.active {
+background: #10b981;
+color: white;
+box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+}
+.step-indicator.completed {
+background: #047857;
+color: white;
+}
+/* Toast Styles */
+#toast-notification {
+transition: all 0.3s ease-in-out;
+transform: translateY(100px);
+opacity: 0;
+}
+#toast-notification.show {
+transform: translateY(0);
+opacity: 1;
+}
+</style>
+</head>
+<body class="bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-fixed text-white font-body-md min-h-screen flex flex-col antialiased">
+<div class="fixed inset-0 bg-black/35 z-[-1]"></div>
+<header class="bg-black/30 backdrop-blur-md border-b border-white/10 py-4 px-6 sticky top-0 z-50">
+<div class="max-w-7xl mx-auto flex justify-between items-center">
+<a class="flex items-center gap-2 font-headline-md text-2xl font-bold text-white" href="index.html">
+<img src="../../assets/logo/1.png" alt="Logo" class="h-9 w-auto object-contain">
+<span>SMP Annida</span>
+</a>
+<span class="text-xs md:text-sm font-semibold py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">PPDB 2027/2028</span>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center px-4 py-12">
+<div class="w-full max-w-3xl glass-panel-custom rounded-2xl p-6 md:p-8">
+<div class="mb-10">
+<div class="flex items-center justify-between max-w-lg mx-auto relative">
+<div class="absolute left-0 right-0 top-1/2 h-0.5 bg-white/10 z-0 -translate-y-1/2"></div>
+<div id="step-line-progress" class="absolute left-0 top-1/2 h-0.5 bg-primary z-0 -translate-y-1/2 transition-all duration-300" style="width: 0%;"></div>
+<div class="flex flex-col items-center z-10">
+<div class="step-indicator active w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 text-gray-400 transition-all" id="ind-1">1</div>
+<span class="text-[10px] md:text-xs text-gray-300 font-semibold mt-2">Ortu</span>
+</div>
+<div class="flex flex-col items-center z-10">
+<div class="step-indicator w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 text-gray-400 transition-all" id="ind-2">2</div>
+<span class="text-[10px] md:text-xs text-gray-300 font-semibold mt-2">Siswa</span>
+</div>
+<div class="flex flex-col items-center z-10">
+<div class="step-indicator w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 text-gray-400 transition-all" id="ind-3">3</div>
+<span class="text-[10px] md:text-xs text-gray-300 font-semibold mt-2">Program</span>
+</div>
+<div class="flex flex-col items-center z-10">
+<div class="step-indicator w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 text-gray-400 transition-all" id="ind-4">4</div>
+<span class="text-[10px] md:text-xs text-gray-300 font-semibold mt-2">Dokumen</span>
+</div>
+<div class="flex flex-col items-center z-10">
+<div class="step-indicator w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 text-gray-400 transition-all" id="ind-5">5</div>
+<span class="text-[10px] md:text-xs text-gray-300 font-semibold mt-2">Review</span>
+</div>
+</div>
+</div>
+<form id="registration-wizard" class="space-y-6">
+<div class="step-section" id="step-1">
+<h3 class="text-xl font-bold text-emerald-400 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">family_restroom</span>
+Langkah 1: Informasi Orang Tua / Wali
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+<div>
+<label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Nama Lengkap Ayah *</label>
+<input type="text" id="nama-ayah" required class="w-full bg-slate-900/60 border border-white/20 rounded-lg p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Nama lengkap Ayah Kandung">
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Nama Lengkap Ibu *</label>
+<input type="text" id="nama-ibu" required class="w-full bg-slate-900/60 border border-white/20 rounded-lg p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Nama lengkap Ibu Kandung">
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Nomor WhatsApp Wali (ID Login) *</label>
+<input type="tel" id="ortu-wa" required class="w-full bg-slate-900/60 border border-white/20 rounded-lg p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Contoh: 081299887766">
+<span class="text-[10px] text-gray-400 mt-1 block">Nomor WhatsApp aktif digunakan untuk akses portal dan pengiriman notifikasi.</span>
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Alamat Email Wali (Opsional)</label>
+<input type="email" id="ortu-email" class="w-full bg-slate-900/60 border border-white/20 rounded-lg p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" placeholder="nama@email.com">
+</div>
+<div class="md:col-span-2">
+<label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Password Portal Pendaftaran *</label>
+<input type="password" id="ortu-password" required minlength="6" class="w-full bg-slate-900/60 border border-white/20 rounded-lg p-3 text-white focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Minimal 6 karakter">
+<span class="text-[10px] text-gray-400 mt-1 block">Password ini digunakan untuk masuk kembali ke Dashboard Keuangan & Akademik siswa.</span>
+</div>
+</div>
+</div>
+<div class="step-section hidden" id="step-2">
+<h3 class="text-xl font-bold text-emerald-400 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">person</span>
+Langkah 2: Data Calon Siswa Baru
+</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+<div class="md:col-span-2">
+<label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Nama Lengkap Siswa *</label>
+<input type="text" id="siswa-nama" required class="w-full bg-slate-900/60 border border-white/20 rounded-lg p-3 text-white focus:border-primary" placeholder="Sesuai Akta Kelahiran / Ijazah">
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-300 uppercase mb-2">NIK Siswa (16 Digit) *</label>
+<input type="text" id="siswa-nik" required maxlength="16" minlength="16" class="w-full bg-slate-900/60 border border-white/20 rounded-lg p-3 text-white focus:border-primary" placeholder="16 digit Nomor Induk Kependudukan">
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-300 uppercase mb-2">NISN Siswa (10 Digit) *</label>
+<input type="text" id="siswa-nisn" required maxlength="10" minlength="10" class="w-full bg-slate-900/60 border border-white/20 rounded-lg p-3 text-white focus:border-primary" placeholder="10 digit Nomor Induk Siswa Nasional">
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Tanggal Lahir *</label>
+<input type="date" id="siswa-tgllahir" required class="w-full bg-slate-900/60 border border-white/20 rounded-lg p-3 text-white focus:border-primary">
+</div>
+<div>
+<label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Jenis Kelamin *</label>
+<div class="flex items-center gap-6 mt-3">
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="radio" name="siswa-jk" value="Laki-laki" checked class="text-primary focus:ring-primary bg-slate-900/60 border-white/20">
+<span>Laki-laki</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input type="radio" name="siswa-jk" value="Perempuan" class="text-primary focus:ring-primary bg-slate-900/60 border-white/20">
+<span>Perempuan</span>
+</label>
+</div>
+</div>
+<div class="md:col-span-2">
+<label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Asal Sekolah (SD / MI) *</label>
+<input type="text" id="siswa-asal-sekolah" required class="w-full bg-slate-900/60 border border-white/20 rounded-lg p-3 text-white focus:border-primary" placeholder="Nama SD / MI Asal">
+</div>
+</div>
+</div>
+<div class="step-section hidden" id="step-3">
+<h3 class="text-xl font-bold text-emerald-400 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">school</span>
+Langkah 3: Pilihan Program Pendidikan
+</h3>
+<input type="hidden" id="selected-program" value="reguler">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="prog-card border border-primary bg-primary/10 rounded-2xl p-6 cursor-pointer hover:shadow-xl transition-all" id="card-reguler" onclick="selectProgram('reguler')">
+<div class="flex justify-between items-center mb-4">
+<span class="material-symbols-outlined text-4xl text-emerald-400">school</span>
+<span class="material-symbols-outlined text-2xl text-emerald-400 font-bold" id="check-reguler">check_circle</span>
+</div>
+<h4 class="text-lg font-bold text-white mb-2">Program Reguler</h4>
+<p class="text-xs text-gray-300 leading-normal mb-4">Pendidikan umum formal inklusif berbasis Sekolah Alam harian (pulang sore). Tanpa asrama.</p>
+<div class="text-xs text-emerald-400 font-semibold border-t border-white/10 pt-3">
+SPP Bulanan: Rp 425.000
+</div>
+</div>
+<div class="prog-card border border-white/10 bg-slate-900/40 rounded-2xl p-6 cursor-pointer hover:shadow-xl transition-all" id="card-pondok" onclick="selectProgram('pondok')">
+<div class="flex justify-between items-center mb-4">
+<span class="material-symbols-outlined text-4xl text-emerald-400">home_work</span>
+<span class="material-symbols-outlined text-2xl text-gray-600" id="check-pondok">radio_button_unchecked</span>
+</div>
+<h4 class="text-lg font-bold text-white mb-2">Program Pondok (Boarding)</h4>
+<p class="text-xs text-gray-300 leading-normal mb-4">Sekolah umum formal terintegrasi asrama 24 jam dengan fokus bimbingan Tahfidz Al-Qur'an intensif.</p>
+<div class="text-xs text-emerald-400 font-semibold border-t border-white/10 pt-3">
+SPP Bulanan: Rp 1.100.000
+</div>
+</div>
+</div>
+</div>
+<div class="step-section hidden" id="step-4">
+<h3 class="text-xl font-bold text-emerald-400 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">upload_file</span>
+Langkah 4: Unggah Berkas Persyaratan (Opsional Saat Ini)
+</h3>
+<div class="space-y-4">
+<div class="border-2 border-dashed border-white/20 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-900/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-3xl text-emerald-400">assignment</span>
+<div class="text-left">
+<h5 class="text-sm font-bold">Kartu Keluarga (KK)</h5>
+<p class="text-[10px] text-gray-400">Format PDF/JPG/PNG maks 2MB</p>
+</div>
+</div>
+<input type="file" id="file-kk" class="text-xs text-gray-400 file:bg-white/10 file:border-0 file:text-white file:py-1.5 file:px-3 file:rounded-md file:cursor-pointer hover:file:bg-white/20" />
+</div>
+<div class="border-2 border-dashed border-white/20 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-900/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-3xl text-emerald-400">badge</span>
+<div class="text-left">
+<h5 class="text-sm font-bold">Akta Kelahiran Siswa</h5>
+<p class="text-[10px] text-gray-400">Format PDF/JPG/PNG maks 2MB</p>
+</div>
+</div>
+<input type="file" id="file-akta" class="text-xs text-gray-400 file:bg-white/10 file:border-0 file:text-white file:py-1.5 file:px-3 file:rounded-md file:cursor-pointer hover:file:bg-white/20" />
+</div>
+<div class="border-2 border-dashed border-white/20 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-900/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-3xl text-emerald-400">photo_camera</span>
+<div class="text-left">
+<h5 class="text-sm font-bold">Pas Foto Siswa (3x4)</h5>
+<p class="text-[10px] text-gray-400">Format JPG/PNG maks 2MB</p>
+</div>
+</div>
+<input type="file" id="file-foto" class="text-xs text-gray-400 file:bg-white/10 file:border-0 file:text-white file:py-1.5 file:px-3 file:rounded-md file:cursor-pointer hover:file:bg-white/20" />
+</div>
+</div>
+</div>
+<div class="step-section hidden" id="step-5">
+<h3 class="text-xl font-bold text-emerald-400 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">rate_review</span>
+Langkah 5: Tinjau &amp; Kirim Pendaftaran
+</h3>
+<div class="space-y-4">
+<div class="glass-panel-custom rounded-xl p-5 border border-white/5 space-y-4 text-sm">
+<div class="grid grid-cols-2 gap-y-2 text-left">
+<span class="text-gray-400">Nama Ayah:</span>
+<span class="font-bold text-white text-right" id="rev-ayah">--</span>
+<span class="text-gray-400">Nama Ibu:</span>
+<span class="font-bold text-white text-right" id="rev-ibu">--</span>
+<span class="text-gray-400">No. WhatsApp Wali:</span>
+<span class="font-bold text-white text-right text-emerald-400" id="rev-wa">--</span>
+<span class="text-gray-400">Nama Calon Siswa:</span>
+<span class="font-bold text-white text-right" id="rev-siswa">--</span>
+<span class="text-gray-400">NISN / NIK:</span>
+<span class="font-bold text-white text-right" id="rev-nisn-nik">--</span>
+<span class="text-gray-400">Program Terpilih:</span>
+<span class="font-bold text-white text-right uppercase text-primary" id="rev-program">--</span>
+</div>
+</div>
+<label class="flex items-start gap-3 mt-6 cursor-pointer">
+<input type="checkbox" id="declare-check" required class="text-primary focus:ring-primary rounded border-white/20 bg-slate-900/60 mt-1" />
+<span class="text-xs text-gray-300 leading-normal text-left">
+Saya menyatakan bahwa semua data yang diisi di atas adalah benar dan dapat dipertanggungjawabkan serta menyetujui syarat &amp; ketentuan pendaftaran SMP Annida Tahun Ajaran 2027/2028.
+</span>
+</label>
+</div>
+</div>
+<div class="flex justify-between items-center border-t border-white/10 pt-6 mt-8">
+<button type="button" id="btn-back" class="btn border border-white/20 text-white hover:bg-white/10 px-6 py-3 rounded-lg text-sm font-semibold transition-all invisible">
+← Kembali
+</button>
+<button type="button" id="btn-next" class="btn bg-primary text-white hover:bg-primary-dim px-8 py-3 rounded-lg text-sm font-semibold transition-all neon-glow-btn">
+Lanjut →
+</button>
+<button type="submit" id="btn-submit" class="btn bg-primary text-white hover:bg-primary-dim px-8 py-3 rounded-lg text-sm font-bold transition-all neon-glow-btn hidden">
+SUBMIT PENDAFTARAN 🟢
+</button>
+</div>
+</form>
+</div>
+</main>
+<div id="toast-notification" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 glass-panel-custom px-6 py-4 rounded-xl shadow-2xl border-l-4 border-emerald-500 max-w-sm flex items-center gap-3">
+<span class="material-symbols-outlined text-emerald-400" id="toast-icon">check_circle</span>
+<p class="text-sm font-semibold text-white" id="toast-msg">Sukses memuat formulir.</p>
+</div>
+<script type="module">
+import supabaseClient from '../../js/core/supabase.js';
+let currentStep = 1;
+const totalSteps = 5;
+const ind1 = document.getElementById('ind-1');
+const ind2 = document.getElementById('ind-2');
+const ind3 = document.getElementById('ind-3');
+const ind4 = document.getElementById('ind-4');
+const ind5 = document.getElementById('ind-5');
+const stepLine = document.getElementById('step-line-progress');
+const btnBack = document.getElementById('btn-back');
+const btnNext = document.getElementById('btn-next');
+const btnSubmit = document.getElementById('btn-submit');
+// Display Toast Helper
+function showToast(message, type = 'success') {
+const toast = document.getElementById('toast-notification');
+const icon = document.getElementById('toast-icon');
+const msg = document.getElementById('toast-msg');
+if (type === 'error') {
+toast.style.borderLeftColor = '#ef4444';
+icon.textContent = 'error';
+icon.style.color = '#ef4444';
+} else {
+toast.style.borderLeftColor = '#10b981';
+icon.textContent = 'check_circle';
+icon.style.color = '#10b981';
+}
+msg.textContent = message;
+toast.classList.add('show');
+setTimeout(() => {
+toast.classList.remove('show');
+}, 4000);
+}
+// Step Validator
+function validateStep(step) {
+if (step === 1) {
+const ayah = document.getElementById('nama-ayah').value.trim();
+const ibu = document.getElementById('nama-ibu').value.trim();
+const wa = document.getElementById('ortu-wa').value.trim();
+const password = document.getElementById('ortu-password').value.trim();
+if (!ayah || !ibu || !wa || !password) {
+showToast('Harap isi semua kolom wajib bertanda (*)', 'error');
+return false;
+}
+if (password.length < 6) {
+showToast('Password minimal berisi 6 karakter!', 'error');
+return false;
+}
+if (!/^[0-9+]{8,15}$/.test(wa)) {
+showToast('Format nomor WhatsApp tidak valid!', 'error');
+return false;
+}
+} else if (step === 2) {
+const nama = document.getElementById('siswa-nama').value.trim();
+const nik = document.getElementById('siswa-nik').value.trim();
+const nisn = document.getElementById('siswa-nisn').value.trim();
+const tgl = document.getElementById('siswa-tgllahir').value;
+const sekolah = document.getElementById('siswa-asal-sekolah').value.trim();
+if (!nama || !nik || !nisn || !tgl || !sekolah) {
+showToast('Harap lengkapi semua kolom biodata siswa!', 'error');
+return false;
+}
+if (nik.length !== 16) {
+showToast('Nomor NIK harus 16 digit angka!', 'error');
+return false;
+}
+if (nisn.length !== 10) {
+showToast('Nomor NISN harus 10 digit angka!', 'error');
+return false;
+}
+}
+return true;
+}
+// Wizard Nav Handler
+function updateWizardUI() {
+// Toggle steps visibilities
+document.querySelectorAll('.step-section').forEach(sec => sec.classList.add('hidden'));
+document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+// Update stepper dots classes
+const indicators = [ind1, ind2, ind3, ind4, ind5];
+indicators.forEach((ind, i) => {
+ind.className = 'step-indicator w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 text-gray-400 transition-all';
+if (i + 1 < currentStep) {
+ind.classList.add('completed');
+ind.textContent = '✓';
+} else if (i + 1 === currentStep) {
+ind.classList.add('active');
+ind.textContent = i + 1;
+} else {
+ind.textContent = i + 1;
+}
+});
+// Update connector line
+const progressPct = ((currentStep - 1) / (totalSteps - 1)) * 100;
+stepLine.style.width = `${progressPct}%`;
+// Back button visibility
+if (currentStep === 1) {
+btnBack.classList.add('invisible');
+} else {
+btnBack.classList.remove('invisible');
+}
+// Next / Submit buttons toggle
+if (currentStep === totalSteps) {
+btnNext.classList.add('hidden');
+btnSubmit.classList.remove('hidden');
+// Populate Review Screen
+document.getElementById('rev-ayah').textContent = document.getElementById('nama-ayah').value;
+document.getElementById('rev-ibu').textContent = document.getElementById('nama-ibu').value;
+document.getElementById('rev-wa').textContent = document.getElementById('ortu-wa').value;
+document.getElementById('rev-siswa').textContent = document.getElementById('siswa-nama').value;
+document.getElementById('rev-nisn-nik').textContent = `${document.getElementById('siswa-nisn').value} / ${document.getElementById('siswa-nik').value}`;
+const prog = document.getElementById('selected-program').value;
+document.getElementById('rev-program').textContent = prog === 'pondok' ? 'Sekolah + Pondok (Boarding)' : 'Reguler (Non-Pondok)';
+} else {
+btnNext.classList.remove('hidden');
+btnSubmit.classList.add('hidden');
+}
+}
+btnNext.addEventListener('click', () => {
+if (validateStep(currentStep)) {
+currentStep = Math.min(totalSteps, currentStep + 1);
+updateWizardUI();
+}
+});
+btnBack.addEventListener('click', () => {
+currentStep = Math.max(1, currentStep - 1);
+updateWizardUI();
+});
+// Handle Select Program
+window.selectProgram = function(prog) {
+document.getElementById('selected-program').value = prog;
+const cards = {
+reguler: document.getElementById('card-reguler'),
+pondok: document.getElementById('card-pondok')
+};
+const checks = {
+reguler: document.getElementById('check-reguler'),
+pondok: document.getElementById('check-pondok')
+};
+if (prog === 'reguler') {
+cards.reguler.className = "prog-card border border-primary bg-primary/10 rounded-2xl p-6 cursor-pointer hover:shadow-xl transition-all";
+checks.reguler.textContent = "check_circle";
+checks.reguler.className = "material-symbols-outlined text-2xl text-emerald-400 font-bold";
+cards.pondok.className = "prog-card border border-white/10 bg-slate-900/40 rounded-2xl p-6 cursor-pointer hover:shadow-xl transition-all";
+checks.pondok.textContent = "radio_button_unchecked";
+checks.pondok.className = "material-symbols-outlined text-2xl text-gray-600";
+} else {
+cards.pondok.className = "prog-card border border-primary bg-primary/10 rounded-2xl p-6 cursor-pointer hover:shadow-xl transition-all";
+checks.pondok.textContent = "check_circle";
+checks.pondok.className = "material-symbols-outlined text-2xl text-emerald-400 font-bold";
+cards.reguler.className = "prog-card border border-white/10 bg-slate-900/40 rounded-2xl p-6 cursor-pointer hover:shadow-xl transition-all";
+checks.reguler.textContent = "radio_button_unchecked";
+checks.reguler.className = "material-symbols-outlined text-2xl text-gray-600";
+}
+};
+// FORM SUBMIT INTEGRATION (SUPABASE ACTION)
+document.getElementById('registration-wizard').addEventListener('submit', async (e) => {
+e.preventDefault();
+const checkbox = document.getElementById('declare-check');
+if (!checkbox.checked) {
+showToast('Anda harus menyetujui pernyataan kebenaran data.', 'error');
+return;
+}
+btnSubmit.disabled = true;
+btnSubmit.textContent = 'Mengirim...';
+try {
+const ayah = document.getElementById('nama-ayah').value.trim();
+const ibu = document.getElementById('nama-ibu').value.trim();
+const wa = document.getElementById('ortu-wa').value.trim();
+const email = document.getElementById('ortu-email').value.trim();
+const password = document.getElementById('ortu-password').value.trim();
+const name = document.getElementById('siswa-nama').value.trim();
+const nik = document.getElementById('siswa-nik').value.trim();
+const nisn = document.getElementById('siswa-nisn').value.trim();
+const tgl = document.getElementById('siswa-tgllahir').value;
+const jk = document.querySelector('input[name="siswa-jk"]:checked').value;
+const sekolah = document.getElementById('siswa-asal-sekolah').value.trim();
+const prog = document.getElementById('selected-program').value;
+// 1. FORMAT PHONE TO E.164 REQUIRED BY SUPABASE (+62...)
+let formattedPhone = wa.replace(/[^0-9+]/g, '');
+if (formattedPhone.startsWith('0')) {
+formattedPhone = '+62' + formattedPhone.slice(1);
+} else if (formattedPhone.startsWith('62')) {
+formattedPhone = '+' + formattedPhone;
+} else if (!formattedPhone.startsWith('+')) {
+formattedPhone = '+' + formattedPhone;
+}
+// SUPABASE AUTH SIGNUP BY PHONE
+const { data: signUpData, error: authError } = await supabaseClient.auth.signUp({
+phone: formattedPhone,
+password: password,
+options: {
+data: {
+full_name: ayah,
+role: 'wali_murid'
+}
+}
+});
+if (authError) throw authError;
+const user = signUpData?.user;
+if (!user) throw new Error("Gagal mengambil data user auth.");
+const userId = user.id;
+// Generate No. Pendaftaran (Format: PPDB-2027-XXXXX)
+const randNum = Math.floor(10000 + Math.random() * 90000);
+const noPendaftaran = `PPDB-2027-${randNum}`;
+// 3. INSERT INTO pendaftaran (Returns id)
+const { data: regData, error: regError } = await supabaseClient
+.from('pendaftaran')
+.insert([{
+user_id: userId,
+no_pendaftaran: noPendaftaran,
+tipe_pendaftaran: prog,
+status_pendaftaran: 'Verifikasi'
+}])
+.select('id')
+.single();
+if (regError) throw regError;
+const pendaftaranId = regData.id;
+// 4. INSERT INTO biodata_siswa
+const { error: bioError } = await supabaseClient
+.from('biodata_siswa')
+.insert([{
+pendaftaran_id: pendaftaranId,
+nama_lengkap: name,
+nik: nik,
+nisn: nisn,
+tanggal_lahir: tgl,
+jenis_kelamin: jk
+}]);
+if (bioError) throw bioError;
+// 5. INSERT INTO data_orangtua
+const { error: ortuError } = await supabaseClient
+.from('data_orangtua')
+.insert([{
+pendaftaran_id: pendaftaranId,
+nama_ayah: ayah,
+nama_ibu: ibu,
+whatsapp: wa,
+email: email || null
+}]);
+if (ortuError) throw ortuError;
+// 6. INSERT INTO sekolah_asal
+const { error: schError } = await supabaseClient
+.from('sekolah_asal')
+.insert([{
+pendaftaran_id: pendaftaranId,
+nama_sekolah: sekolah
+}]);
+if (schError) throw schError;
+// Optional Upload Documents
+// Since configuring storage bucket could fail without initial configuration,
+// we wrap it in try-catch so it fails silently or stores fallback warnings.
+const fileKk = document.getElementById('file-kk').files[0];
+const fileAkta = document.getElementById('file-akta').files[0];
+const fileFoto = document.getElementById('file-foto').files[0];
+const uploadFile = async (file, path) => {
+if (!file) return;
+try {
+await supabaseClient.storage.from('ppdb_documents').upload(path, file);
+} catch(e) {
+console.warn("Storage upload skipped/failed:", e.message);
+}
+};
+if (fileKk) await uploadFile(fileKk, `${pendaftaranId}/kk_${fileKk.name}`);
+if (fileAkta) await uploadFile(fileAkta, `${pendaftaranId}/akta_${fileAkta.name}`);
+if (fileFoto) await uploadFile(fileFoto, `${pendaftaranId}/foto_${fileFoto.name}`);
+// Success redirection state
+localStorage.setItem('last_ppdb_no', noPendaftaran);
+window.location.href = 'success.html';
+} catch (err) {
+console.error("Registrasi Error:", err);
+showToast(err.message || 'Gagal menyimpan pendaftaran. Silakan coba lagi.', 'error');
+btnSubmit.disabled = false;
+btnSubmit.textContent = 'SUBMIT PENDAFTARAN 🟢';
+}
+});
+// Initialize UI
+updateWizardUI();
+</script>
+</body>
+</html>

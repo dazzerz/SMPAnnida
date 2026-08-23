@@ -1,0 +1,405 @@
+/**
+ * mobile.css – Comprehensive mobile responsive fixes for all pages
+ * Applied globally via style.css or included directly in HTML
+ * Covers: sidebar, topbar, overlay, grids, tables, forms, finance, academic, ppdb
+ */
+
+/* =========================================================================
+   SIDEBAR OVERLAY (backdrop when sidebar is open)
+   ========================================================================= */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.sidebar-overlay.show {
+  display: block;
+  opacity: 1;
+}
+
+/* =========================================================================
+   SIDEBAR CLOSE BUTTON (X inside sidebar, desktop hidden)
+   ========================================================================= */
+.sidebar-close-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--text-primary, #fff);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* =========================================================================
+   MOBILE HAMBURGER BUTTON (in topbar, desktop hidden)
+   ========================================================================= */
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-primary, #fff);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.mobile-menu-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* =========================================================================
+   TOPBAR (sticky navigation bar)
+   ========================================================================= */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  min-height: 60px;
+  flex-shrink: 0;
+}
+.topbar-left, .topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.topbar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+}
+.topbar-greeting {
+  font-size: 0.85rem;
+  color: var(--text-muted, #aaa);
+}
+
+/* =========================================================================
+   DESKTOP LAYOUT (min-width: 769px)
+   ========================================================================= */
+@media (min-width: 769px) {
+  /* Ensure body is flex row on desktop */
+  body {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .app-container, .app-layout {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  /* Sidebar is static/sticky on desktop */
+  .sidebar {
+    max-width: 260px; width: 100%;
+    min-max-width: 260px; width: 100%;
+    max-max-width: 260px; width: 100%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  /* Main content takes remaining width */
+  .main-content {
+    flex: 1 1 0%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Overlay always hidden on desktop */
+  .sidebar-overlay {
+    display: none !important;
+  }
+  .sidebar.collapsed {
+    width: 70px;
+    min-width: 70px;
+    max-width: 70px;
+  }
+}
+
+/* =========================================================================
+   MOBILE LAYOUT (max-width: 768px)
+   ========================================================================= */
+@media (max-width: 768px) {
+  /* Reset body to block stacking */
+  body {
+    display: block !important;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* App containers stack vertically */
+  .app-container, .app-layout {
+    display: block !important;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  /* Sidebar: fixed, slides in from left, hidden by default */
+  .sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    max-width: 280px; width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    height: 100vh !important;
+    z-index: 1000 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    /* Force solid glass background on mobile */
+    background: rgba(10, 20, 15, 0.96) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-right: 1px solid rgba(255,255,255,0.12) !important;
+  }
+
+  /* When sidebar is open */
+  .sidebar.open, .sidebar.active, .sidebar.show {
+    transform: translateX(0) !important;
+  }
+
+  /* Main content takes full width */
+  .main-content {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 100vh !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Show X button inside sidebar */
+  .sidebar-close-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Show hamburger button */
+  .mobile-menu-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Topbar padding on mobile */
+  .topbar {
+    padding: 0.75rem 1rem !important;
+    border-radius: 0 !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 200 !important;
+  }
+
+  /* ---- GRID FIXES ---- */
+  .grid-cols-1, .grid-cols-2, .grid-cols-3, .grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ---- PAGE HEADER ---- */
+  .page-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+
+  .page-title {
+    font-size: 1.4rem !important;
+  }
+
+  /* ---- CONTENT AREA PADDING ---- */
+  .content-area, .page-content {
+    padding: 1rem !important;
+  }
+
+  /* ---- TABLES ---- */
+  .table-responsive, .transactions-table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  table {
+    min-width: 600px;
+  }
+
+  /* ---- CARDS ---- */
+  .glass-panel, .card, .metric-card {
+    padding: 1rem !important;
+  }
+
+  /* ---- FORMS & FILTERS ---- */
+  .filter-bar {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+  .filter-bar > * {
+    width: 100% !important;
+  }
+
+  /* ---- TAB NAVIGATION ---- */
+  .tab-nav, .tab-header, .tabs {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+  .tab-btn, .tab-button {
+    flex: 1 1 auto !important;
+    min-width: 80px !important;
+    font-size: 12px !important;
+    padding: 8px 10px !important;
+    text-align: center !important;
+  }
+
+  /* ---- FINANCE-SPECIFIC ---- */
+  .summary-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem !important;
+  }
+  .budget-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+  }
+
+  /* ---- ACADEMIC-SPECIFIC ---- */
+  .dashboard-cards {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem !important;
+  }
+  .teacher-attendance-section {
+    padding: 0.75rem !important;
+  }
+
+  /* ---- PPDB-SPECIFIC ---- */
+  .ppdb-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ---- HIDE SCROLLBAR (mobile) ---- */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  /* ---- FIX OVERLAY CLICK ZONES ---- */
+  button, a {
+    touch-action: manipulation;
+  }
+}
+
+/* =========================================================================
+   TABLET (768px - 1024px)
+   ========================================================================= */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+  }
+  .grid-cols-4 { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-cols-3 { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+
+/* Override collapsible sidebar for mobile */
+@media (max-width: 768px) {
+  .sidebar-mini-toggle {
+    display: none !important;
+  }
+  .sidebar.collapsed {
+    max-width: 280px; width: 100% !important; /* Force back to overlay width */
+    min-width: 0 !important;
+    max-width: 100vw !important;
+  }
+  /* Completely disable collapsed mode styling on mobile */
+  .sidebar.collapsed {
+    padding: 1.5rem 0.75rem !important;
+  }
+  .sidebar.collapsed .sidebar-brand,
+  .sidebar.collapsed .sidebar-search-wrapper,
+  .sidebar.collapsed .nav-text,
+  .sidebar.collapsed .user-info,
+  .sidebar.collapsed .logout-text,
+  .sidebar.collapsed .nav-group-title::before {
+    opacity: 1 !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+    display: flex !important;
+  }
+  
+  .sidebar.collapsed .sidebar-search-wrapper,
+  .sidebar.collapsed .user-info {
+    display: block !important;
+  }
+  
+  .sidebar.collapsed .accordion-toggle {
+    display: flex !important;
+  }
+  .sidebar.collapsed .nav-group {
+    margin-bottom: 0.75rem !important;
+  }
+  .sidebar.collapsed .nav-group-content {
+    /* Reset to grid transition behavior */
+    display: grid !important;
+    overflow: hidden !important;
+  }
+  .sidebar.collapsed .sidebar-header {
+    flex-direction: row !important;
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .sidebar.collapsed .nav-item {
+    justify-content: flex-start !important;
+    padding: 0.65rem 1rem !important;
+    border-radius: 8px !important;
+  }
+  .sidebar.collapsed .nav-icon {
+    font-size: 1.2rem !important;
+    margin-right: 0.75rem !important;
+  }
+  .sidebar.collapsed .sidebar-bottom-section {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    border-top: none !important;
+    padding: 0 !important;
+  }
+  .sidebar.collapsed .user-widget {
+    justify-content: flex-start !important;
+  }
+  .sidebar.collapsed .user-avatar {
+    margin-right: 0.75rem !important;
+  }
+  .sidebar.collapsed .sidebar-logout-btn {
+    justify-content: flex-start !important;
+  }
+  .sidebar.collapsed .sidebar-logout-btn i {
+    margin-right: 0.5rem !important;
+  }
+}

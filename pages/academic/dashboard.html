@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistem Informasi Akademik</title>
+<link rel="icon" href="assets/1.png" type="image/png">
+<link rel="stylesheet" href="../../css/academic/main.css?v=3">
+<link rel="stylesheet" href="../../css/academic/dashboard.css?v=3">
+<link rel="stylesheet" href="../../css/academic/absensi.css?v=3">
+<link rel="stylesheet" href="../../css/academic/nilai.css?v=3">
+<link rel="stylesheet" href="../../css/academic/jadwal.css?v=3">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="../../css/mobile.css" />
+</head>
+<body>
+<div class="app-container">
+<aside class="sidebar" id="sidebar"></aside>
+<main class="main-content">
+<header class="topbar" id="topbar"></header>
+<div class="content-area">
+<section id="dashboard" class="page-section active">
+<h1>Dashboard Utama</h1>
+<div class="aca-inline-56">
+<p class="aca-inline-57">Selamat datang di Sistem Informasi Akademik.</p>
+<div id="dashboard-loading" class="aca-inline-58">
+Memuat statistik...
+</div>
+</div>
+<h2 class="aca-inline-59">Informasi Akademik</h2>
+<div class="dashboard-cards aca-inline-1">
+<div class="card glass">
+<h3 class="aca-inline-60">🏫 Total Kelas</h3>
+<p class="number" id="stat-kelas-total" class="aca-inline-61">0</p>
+</div>
+<div class="card glass">
+<h3 class="aca-inline-60">👨‍🏫 Total Wali Kelas</h3>
+<p class="number" id="stat-walikelas-total" class="aca-inline-61">0</p>
+</div>
+<div class="card glass aca-inline-2">
+<h3 class="aca-inline-60">📅 Tahun Ajaran Aktif</h3>
+<p class="number" id="stat-tahun-aktif" class="aca-inline-62">-</p>
+</div>
+<div class="card glass aca-inline-3">
+<h3 class="aca-inline-60">🗓️ Semester Aktif</h3>
+<p class="number" id="stat-semester-aktif" class="aca-inline-62">-</p>
+</div>
+</div>
+<h2 class="aca-inline-59">Ringkasan Siswa Hari Ini</h2>
+<div class="dashboard-cards aca-inline-4">
+<div class="card glass">
+<h3>👨‍🎓 Total Siswa</h3>
+<p class="number" id="stat-siswa-total">0</p>
+</div>
+<div class="card glass aca-inline-3">
+<h3>📋 Hadir Hari Ini</h3>
+<p class="number" id="stat-siswa-hadir" class="aca-inline-63">0</p>
+</div>
+<div class="card glass aca-inline-5">
+<h3>🤒 Sakit</h3>
+<p class="number" id="stat-siswa-sakit">0</p>
+</div>
+<div class="card glass aca-inline-2">
+<h3>📝 Izin</h3>
+<p class="number" id="stat-siswa-izin">0</p>
+</div>
+<div class="card glass aca-inline-6">
+<h3>❌ Alpha</h3>
+<p class="number" id="stat-siswa-alpha" class="aca-inline-64">0</p>
+</div>
+</div>
+<div class="aca-inline-65">
+<div>
+<h2 class="aca-inline-59">Kehadiran Guru Hari Ini</h2>
+<div class="dashboard-cards aca-inline-7">
+<div class="card glass">
+<h3 class="aca-inline-60">Jumlah Guru</h3>
+<p class="number" id="stat-guru-total" class="aca-inline-61">0</p>
+</div>
+<div class="card glass">
+<h3 class="aca-inline-60">Belum Check In</h3>
+<p class="number" id="stat-guru-belum" class="aca-inline-61">0</p>
+</div>
+<div class="card glass aca-inline-3">
+<h3 class="aca-inline-60">Sudah Check In</h3>
+<p class="number" id="stat-guru-in" class="aca-inline-66">0</p>
+</div>
+<div class="card glass aca-inline-2">
+<h3 class="aca-inline-60">Sudah Check Out</h3>
+<p class="number" id="stat-guru-out" class="aca-inline-67">0</p>
+</div>
+</div>
+</div>
+<div>
+<h2 class="aca-inline-59">Jurnal Guru Hari Ini</h2>
+<div class="dashboard-cards aca-inline-7">
+<div class="card glass aca-inline-8">
+<h3 class="aca-inline-60">Total Jurnal Terisi Hari Ini</h3>
+<p class="number" id="stat-jurnal-total" class="aca-inline-68">0</p>
+</div>
+<div class="card glass aca-inline-3">
+<h3 class="aca-inline-60">Guru Sudah Mengisi</h3>
+<p class="number" id="stat-jurnal-guru-sudah" class="aca-inline-61">0</p>
+</div>
+<div class="card glass aca-inline-5">
+<h3 class="aca-inline-60">Guru Belum Mengisi</h3>
+<p class="number" id="stat-jurnal-guru-belum" class="aca-inline-61">0</p>
+</div>
+</div>
+</div>
+</div>
+<h2 class="aca-inline-59">Statistik Jadwal & Akademik</h2>
+<div class="aca-inline-69">
+<div class="card glass">
+<h3 class="aca-inline-60">Total Jadwal Aktif</h3>
+<p class="number" id="stat-jadwal-aktif" class="aca-inline-67">0</p>
+</div>
+<div class="card glass">
+<h3 class="aca-inline-60">Guru Mengajar Hari Ini</h3>
+<p class="number" id="stat-jadwal-guru-today" class="aca-inline-61">0</p>
+</div>
+<div class="card glass">
+<h3 class="aca-inline-60">Kelas Aktif Hari Ini</h3>
+<p class="number" id="stat-jadwal-kelas-today" class="aca-inline-61">0</p>
+</div>
+<div class="card glass">
+<h3 class="aca-inline-60">Total Jam Hari Ini</h3>
+<p class="number" id="stat-jadwal-jam-today" class="aca-inline-61">0</p>
+</div>
+<div class="card glass aca-inline-6">
+<h3 class="aca-inline-60">Kelas Tanpa Jadwal</h3>
+<p class="number" id="stat-jadwal-kelas-kosong" class="aca-inline-70">0</p>
+</div>
+<div class="card glass aca-inline-6">
+<h3 class="aca-inline-60">Guru Tanpa Jadwal</h3>
+<p class="number" id="stat-jadwal-guru-kosong" class="aca-inline-70">0</p>
+</div>
+<div class="card glass aca-inline-5">
+<h3 class="aca-inline-60">Mapel Belum Dijadwal</h3>
+<p class="number" id="stat-jadwal-mapel-kosong" class="aca-inline-71">0</p>
+</div>
+</div>
+<div class="aca-inline-72">
+<div class="card glass">
+<h2 class="aca-inline-73">Grafik Kehadiran Siswa (7 Hari Terakhir)</h2>
+<div class="aca-inline-74">
+<div id="chart-empty" class="aca-inline-75">Belum ada data</div>
+<canvas id="attendance-chart" class="aca-inline-76"></canvas>
+</div>
+</div>
+</div>
+<div class="card glass aca-inline-4">
+<h2 class="aca-inline-73">Statistik Kehadiran Per Kelas (Hari Ini)</h2>
+<div class="table-responsive">
+<table class="data-table">
+<thead>
+<tr>
+<th>Kelas</th>
+<th class="aca-inline-77">Jml Siswa</th>
+<th class="aca-inline-77">Hadir</th>
+<th class="aca-inline-77">Sakit</th>
+<th class="aca-inline-77">Izin</th>
+<th class="aca-inline-77">Alpha</th>
+<th class="aca-inline-77">% Kehadiran</th>
+</tr>
+</thead>
+<tbody id="stat-class-tbody">
+<tr>
+<td colspan="7" class="aca-inline-78">Memuat data statistik kelas...</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h2 class="aca-inline-79">Aksi Cepat</h2>
+<div class="card glass aca-inline-9">
+<h3 class="aca-inline-80">Import Data Siswa (CSV)</h3>
+<p class="aca-inline-81">
+Unggah file .csv yang berisi kolom nama_lengkap, nisn, kelas, dan status_aktif.<br>
+<a href="docs/Format_Import_Siswa.csv" download="Format_Import_Siswa.csv" class="aca-inline-82">⬇️ Unduh Format CSV</a>
+</p>
+<div class="aca-inline-83">
+<input type="file" id="file-import-siswa" accept=".csv" class="input-control aca-inline-10">
+<button id="btn-import-siswa" class="btn-primary">Import Data</button>
+</div>
+<div id="import-status" class="aca-inline-84"></div>
+</div>
+</section>
+<section id="absensi" class="page-section aca-inline-11">
+<div class="section-header aca-inline-12">
+<div>
+<h2 class="aca-inline-57">📋 Absensi Siswa</h2>
+<p class="aca-inline-85">Input absensi per jam pelajaran</p>
+</div>
+<input type="date" id="attend-date" class="input-control aca-inline-13">
+</div>
+<div class="tab-nav aca-inline-14">
+<button class="tab-btn active" data-tab="input-absensi">📝 Input Absensi</button>
+<button class="tab-btn" data-tab="rekap-siswa">📊 Rekap Per Siswa</button>
+<button class="tab-btn" data-tab="pivot-absensi">📆 Rekap Harian</button>
+<button class="tab-btn" data-tab="export-absensi">📤 Export Excel</button>
+</div>
+<div id="tab-input-absensi" class="tab-content">
+<div id="schedule-list"></div>
+<div id="attend-form-panel" class="aca-inline-15">
+<div class="aca-inline-86">
+<button id="btn-attend-back" class="btn btn-outline btn-sm">← Kembali</button>
+<h3 id="attend-panel-title" class="aca-inline-87"></h3>
+<button id="btn-hadir-semua" class="btn btn-outline btn-sm">🟢 Hadir Semua</button>
+</div>
+<div class="card glass">
+<table class="data-table">
+<thead>
+<tr>
+<th class="aca-inline-88">No</th>
+<th>Nama Siswa</th>
+<th class="aca-inline-89">Status</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody id="attend-tbody"></tbody>
+</table>
+<div class="aca-inline-90">
+<button id="btn-attend-save" class="btn btn-primary" disabled>💾 Simpan Absensi</button>
+</div>
+</div>
+</div>
+</div>
+<div id="tab-rekap-siswa" class="tab-content aca-inline-15">
+<div class="filter-bar aca-inline-16">
+<select id="rekap-kelas" class="input-control">
+<option value="">-- Pilih Kelas --</option>
+</select>
+<select id="rekap-bulan" class="input-control">
+<option value="1">Januari</option>
+<option value="2">Februari</option>
+<option value="3">Maret</option>
+<option value="4">April</option>
+<option value="5">Mei</option>
+<option value="6">Juni</option>
+<option value="7">Juli</option>
+<option value="8" selected>Agustus</option>
+<option value="9">September</option>
+<option value="10">Oktober</option>
+<option value="11">November</option>
+<option value="12">Desember</option>
+</select>
+<select id="rekap-mapel-filter" class="input-control">
+<option value="">Semua Mapel</option>
+</select>
+<button id="btn-lihat-rekap-absensi-siswa" class="btn-primary">Lihat Rekap</button>
+</div>
+<div class="card glass aca-inline-17">
+<table class="data-table" id="table-rekap-siswa">
+<thead id="thead-rekap-siswa">
+<tr><th>Memuat...</th></tr>
+</thead>
+<tbody id="tbody-rekap-siswa"></tbody>
+</table>
+</div>
+</div>
+<div id="tab-pivot-absensi" class="tab-content aca-inline-15">
+<div class="filter-bar aca-inline-16">
+<select id="filter-kelas-rekap-absensi" class="input-control"><option value="">-- Pilih Kelas --</option></select>
+<input type="date" id="filter-dari-absensi" class="input-control">
+<input type="date" id="filter-sampai-absensi" class="input-control">
+<select id="filter-mapel-pivot" class="input-control">
+<option value="">Semua Mapel</option>
+</select>
+<button id="btn-lihat-rekap-absensi-harian" class="btn-primary">Tampilkan</button>
+</div>
+<div class="card glass aca-inline-17">
+<table class="data-table">
+<thead id="thead-pivot-absensi">
+<tr><th>Memuat...</th></tr>
+</thead>
+<tbody id="tbody-rekap-absensi"></tbody>
+</table>
+</div>
+</div>
+<div id="tab-export-absensi" class="tab-content aca-inline-15">
+<div class="card glass aca-inline-18">
+<h2 class="aca-inline-91">Export Rekap Absensi Bulanan</h2>
+<div class="aca-inline-92">
+<div class="form-group aca-inline-19">
+<label>Tahun Ajaran</label>
+<select id="export-tahun" class="input-control">
+<option value="">-- Pilih Tahun --</option>
+</select>
+</div>
+<div class="form-group aca-inline-19">
+<label>Semester</label>
+<select id="export-semester" class="input-control">
+<option value="">-- Pilih Semester --</option>
+</select>
+</div>
+<div class="form-group aca-inline-19">
+<label>Bulan</label>
+<select id="export-bulan" class="input-control">
+<option value="1">Januari</option>
+<option value="2">Februari</option>
+<option value="3">Maret</option>
+<option value="4">April</option>
+<option value="5">Mei</option>
+<option value="6">Juni</option>
+<option value="7">Juli</option>
+<option value="8" selected>Agustus</option>
+<option value="9">September</option>
+<option value="10">Oktober</option>
+<option value="11">November</option>
+<option value="12">Desember</option>
+</select>
+</div>
+<div class="form-group aca-inline-19">
+<label>Kelas</label>
+<select id="export-kelas" class="input-control">
+<option value="">-- Pilih Kelas --</option>
+</select>
+</div>
+<div class="form-group aca-inline-19">
+<label>Mapel (Opsional)</label>
+<select id="export-mapel" class="input-control">
+<option value="">Semua Mapel (Harian)</option>
+</select>
+</div>
+<button id="btn-export-excel" class="btn btn-outline aca-inline-20">
+📥 Export Excel
+</button>
+</div>
+</div>
+</div>
+</section>
+<section id="nilai" class="page-section aca-inline-11">
+<h1>Manajemen Nilai & Rapor</h1>
+<div class="card glass aca-inline-18">
+<h2 class="aca-inline-91">Input Nilai Baru</h2>
+<div class="aca-inline-93">
+<div class="form-group">
+<label>Pilih Kelas</label>
+<select id="select-kelas-nilai" class="input-control">
+<option value="">-- Pilih Kelas --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Pilih Siswa</label>
+<select id="select-siswa-nilai" class="input-control" disabled>
+<option value="">-- Pilih Siswa --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Mata Pelajaran</label>
+<select id="input-mapel-nilai" class="input-control">
+<option value="">-- Pilih Mapel --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Jenis Penilaian</label>
+<select id="select-jenis-nilai" class="input-control">
+<option value="Tugas">Tugas</option>
+<option value="Ulangan Harian">Ulangan Harian</option>
+<option value="UTS">UTS</option>
+<option value="UAS">UAS</option>
+</select>
+</div>
+<div class="form-group">
+<label>Nilai (0-100)</label>
+<input type="number" id="input-angka-nilai" class="input-control" min="0" max="100" placeholder="0">
+</div>
+</div>
+<button id="btn-simpan-nilai" class="btn-primary aca-inline-21">Simpan Nilai</button>
+<div id="status-simpan-nilai" class="aca-inline-84"></div>
+</div>
+<div class="card glass">
+<h2 class="aca-inline-91">Lihat Rekap Nilai Siswa (Rapor)</h2>
+<div class="aca-inline-94">
+<div class="form-group aca-inline-19">
+<label>Kelas</label>
+<select id="filter-kelas-rekap" class="input-control">
+<option value="">-- Pilih --</option>
+</select>
+</div>
+<div class="form-group aca-inline-22">
+<label>Siswa</label>
+<select id="filter-siswa-rekap" class="input-control" disabled>
+<option value="">-- Pilih --</option>
+</select>
+</div>
+<button id="btn-lihat-rekap" class="btn-primary aca-inline-23">Tampilkan</button>
+</div>
+<div class="table-responsive">
+<table class="data-table">
+<thead>
+<tr>
+<th>Mata Pelajaran</th>
+<th>Tugas</th>
+<th>UH</th>
+<th>UTS</th>
+<th>UAS</th>
+<th class="aca-inline-95">Rata-rata</th>
+</tr>
+</thead>
+<tbody id="tbody-rekap-nilai">
+<tr><td colspan="6" class="aca-inline-77">Pilih siswa untuk melihat nilai.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="jadwal" class="page-section aca-inline-11">
+<div class="aca-inline-56">
+<h1>Jadwal Pelajaran</h1>
+<button id="btn-tambah-jadwal" class="btn-primary aca-inline-24">
+<span class="aca-inline-96">+</span> Tambah Jadwal
+</button>
+</div>
+<div class="card glass">
+<div class="aca-inline-97">
+<div class="form-group aca-inline-25">
+<label>Cari Guru</label>
+<input type="text" id="filter-jadwal-guru" class="input-control" placeholder="Nama guru...">
+</div>
+<div class="form-group aca-inline-25">
+<label>Cari Kelas</label>
+<input type="text" id="filter-jadwal-kelas" class="input-control" placeholder="Nama kelas...">
+</div>
+<div class="form-group aca-inline-25">
+<label>Cari Mapel</label>
+<input type="text" id="filter-jadwal-mapel" class="input-control" placeholder="Nama mapel...">
+</div>
+<div class="form-group aca-inline-25">
+<label>Cari Ruangan</label>
+<input type="text" id="filter-jadwal-ruangan" class="input-control" placeholder="Ruangan...">
+</div>
+<div class="form-group aca-inline-25">
+<label>Hari</label>
+<select id="filter-jadwal-hari" class="input-control">
+<option value="">-- Semua --</option>
+<option value="Senin">Senin</option>
+<option value="Selasa">Selasa</option>
+<option value="Rabu">Rabu</option>
+<option value="Kamis">Kamis</option>
+<option value="Jumat">Jumat</option>
+<option value="Sabtu">Sabtu</option>
+</select>
+</div>
+<div class="form-group aca-inline-25">
+<label>Semester</label>
+<select id="filter-jadwal-semester" class="input-control">
+<option value="">-- Semua --</option>
+<option value="Ganjil">Ganjil</option>
+<option value="Genap">Genap</option>
+</select>
+</div>
+<div class="form-group aca-inline-25">
+<label>Status</label>
+<select id="filter-jadwal-status" class="input-control">
+<option value="">-- Semua --</option>
+<option value="Aktif">Aktif</option>
+<option value="Draft">Draft</option>
+<option value="Arsip">Arsip</option>
+</select>
+</div>
+</div>
+<div class="table-responsive">
+<table class="data-table">
+<thead>
+<tr>
+<th>Hari</th>
+<th>Jam</th>
+<th>Kelas</th>
+<th>Mata Pelajaran</th>
+<th>Guru</th>
+<th>Ruangan</th>
+<th>Semester</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody id="tbody-jadwal">
+<tr><td colspan="9" class="aca-inline-77">Memuat jadwal dari database...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="data-siswa" class="page-section aca-inline-11">
+<div class="aca-inline-56">
+<h1>Master Data Siswa</h1>
+<button id="btn-add-siswa" class="btn-primary">Tambah Siswa</button>
+</div>
+<div class="card glass">
+<div class="aca-inline-16">
+<div class="form-group aca-inline-19">
+<label>Status</label>
+<select id="filter-status-siswa" class="input-control">
+<option value="">Semua Status</option>
+<option value="Aktif">Aktif</option>
+<option value="Nonaktif">Nonaktif</option>
+</select>
+</div>
+<div class="form-group aca-inline-19">
+<label>Kelas</label>
+<select id="filter-kelas-siswa" class="input-control">
+<option value="">Semua Kelas</option>
+</select>
+</div>
+<div class="form-group aca-inline-26">
+<label>Cari Nama / NIS</label>
+<input type="text" id="filter-search-siswa" class="input-control" placeholder="Cari nama atau nis...">
+</div>
+</div>
+<div class="table-responsive">
+<table class="data-table">
+<thead>
+<tr>
+<th class="aca-inline-98">No</th>
+<th>NIS</th>
+<th>Nama Lengkap</th>
+<th>L/P</th>
+<th>Kelas</th>
+<th>Status</th>
+<th class="aca-inline-99">Aksi</th>
+</tr>
+</thead>
+<tbody id="tbody-siswa">
+<tr><td colspan="7" class="aca-inline-77">Memuat data siswa...</td></tr>
+</tbody>
+</table>
+</div>
+<div class="aca-inline-100">
+<div id="siswa-info">Menampilkan 0 dari 0 data</div>
+<div class="aca-inline-101" id="siswa-pagination">
+</div>
+</div>
+</div>
+</section>
+<section id="rapor" class="page-section aca-inline-11">
+<h1>Rapor Digital Siswa</h1>
+<style>
+@media print {
+body * { visibility: hidden; }
+#rapor-content, #rapor-content * { visibility: visible; }
+#rapor-content {
+position: absolute;
+left: 0;
+top: 0;
+width: 100%;
+padding: 0 !important;
+margin: 0 !important;
+}
+#rapor-preview-container {
+box-shadow: none !important;
+border: none !important;
+background: none !important;
+}
+}
+</style>
+<div class="aca-inline-102">
+<div class="card glass" id="rapor-filter-container">
+<h2 class="aca-inline-103">Filter Rapor</h2>
+<div class="form-group">
+<label>Tahun Ajaran</label>
+<select id="rapor-tahun" class="input-control">
+<option value="">-- Pilih Tahun --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Semester</label>
+<select id="rapor-semester" class="input-control">
+<option value="">-- Pilih Semester --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Kelas</label>
+<select id="rapor-kelas" class="input-control">
+<option value="">-- Pilih Kelas --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Siswa</label>
+<select id="rapor-siswa" class="input-control" disabled>
+<option value="">-- Pilih Siswa --</option>
+</select>
+</div>
+<button id="btn-tampilkan-rapor" class="btn-primary aca-inline-27">Tampilkan Rapor</button>
+</div>
+<div class="card glass" id="rapor-preview-container" class="aca-inline-104">
+<div id="rapor-content" class="aca-inline-105">
+<div class="aca-inline-106">
+<div class="aca-inline-107">
+<div class="aca-inline-108">LOGO</div>
+</div>
+<div class="aca-inline-109">
+<h2 class="aca-inline-110">LAPORAN HASIL BELAJAR SISWA</h2>
+<h3 class="aca-inline-111">SMP ANNIDA INTEGRATED SYSTEM</h3>
+<p class="aca-inline-112">Jl. Pendidikan No. 1, Kota Cerdas, Indonesia | Telp: (021) 1234567</p>
+</div>
+<div class="aca-inline-113"></div>
+</div>
+<div class="aca-inline-114">
+<div>
+<table class="aca-inline-27">
+<tr><td class="aca-inline-115">Nama Siswa</td><td>: <strong id="rapor-nama">-</strong></td></tr>
+<tr><td>NIS/NISN</td><td>: <span id="rapor-nis">-</span></td></tr>
+<tr><td>Wali Kelas</td><td>: <span id="rapor-wali">-</span></td></tr>
+</table>
+</div>
+<div>
+<table class="aca-inline-27">
+<tr><td class="aca-inline-115">Kelas</td><td>: <strong id="rapor-kelas-lbl">-</strong></td></tr>
+<tr><td>Semester</td><td>: <span id="rapor-semester-lbl">-</span></td></tr>
+<tr><td>Tahun Ajaran</td><td>: <span id="rapor-tahun-lbl">-</span></td></tr>
+</table>
+</div>
+</div>
+<table class="aca-inline-116" id="rapor-table">
+<thead>
+<tr class="aca-inline-117">
+<th class="aca-inline-118">Mata Pelajaran</th>
+<th class="aca-inline-119">Nilai</th>
+<th class="aca-inline-120">Predikat</th>
+<th class="aca-inline-118">Deskripsi</th>
+</tr>
+</thead>
+<tbody id="rapor-tbody">
+<tr><td colspan="4" class="aca-inline-121">Silakan pilih siswa dan klik Tampilkan Rapor</td></tr>
+</tbody>
+</table>
+<div class="aca-inline-122">
+<div>
+<h4 class="aca-inline-123">Ringkasan Nilai</h4>
+<table class="aca-inline-124">
+<tr><td class="aca-inline-125">Jumlah Mapel</td><td class="aca-inline-126" id="rapor-jml-mapel">-</td></tr>
+<tr><td class="aca-inline-125">Nilai Tertinggi</td><td class="aca-inline-126" id="rapor-max">-</td></tr>
+<tr><td class="aca-inline-125">Nilai Terendah</td><td class="aca-inline-126" id="rapor-min">-</td></tr>
+<tr><td class="aca-inline-127">Rata-rata</td><td class="aca-inline-128" id="rapor-rata">-</td></tr>
+<tr><td class="aca-inline-125">Predikat Akhir</td><td class="aca-inline-128" id="rapor-predikat-akhir">-</td></tr>
+<tr><td class="aca-inline-125">Ranking Kelas</td><td class="aca-inline-128" id="rapor-rank">-</td></tr>
+</table>
+</div>
+<div>
+<h4 class="aca-inline-123">Ketidakhadiran & Catatan</h4>
+<table class="aca-inline-129">
+<tr><td class="aca-inline-125">Hadir</td><td class="aca-inline-130" id="rapor-hadir">-</td><td class="aca-inline-131">hari</td></tr>
+<tr><td class="aca-inline-125">Sakit</td><td class="aca-inline-126" id="rapor-sakit">-</td><td class="aca-inline-125">hari</td></tr>
+<tr><td class="aca-inline-125">Izin</td><td class="aca-inline-126" id="rapor-izin">-</td><td class="aca-inline-125">hari</td></tr>
+<tr><td class="aca-inline-125">Tanpa Keterangan</td><td class="aca-inline-126" id="rapor-alpha">-</td><td class="aca-inline-125">hari</td></tr>
+</table>
+<div class="aca-inline-132">
+<div class="aca-inline-133">Total Jurnal Terkait Kelas:</div>
+<div class="aca-inline-134" id="rapor-jurnal-count">-</div>
+</div>
+</div>
+</div>
+<div class="aca-inline-135">
+<div>
+<p class="aca-inline-136">Mengetahui,<br>Orang Tua / Wali Siswa</p>
+<p class="aca-inline-137">( ........................................... )</p>
+</div>
+<div>
+<p class="aca-inline-136" id="rapor-date-lbl">Jakarta, -<br>Wali Kelas</p>
+<p class="aca-inline-137" id="rapor-ttd-wali">( ........................................... )</p>
+</div>
+</div>
+<div class="aca-inline-138">
+<div>
+<p class="aca-inline-136">Mengesahkan,<br>Kepala Sekolah</p>
+<p class="aca-inline-137">Dr. Ahmad Fathoni, M.Pd.</p>
+</div>
+</div>
+</div>
+<div class="aca-inline-139">
+<button id="btn-cetak-rapor" class="btn-primary aca-inline-28" disabled>🖨️ Cetak PDF</button>
+</div>
+</div>
+</div>
+</section>
+<section id="jurnal-guru" class="page-section aca-inline-11">
+<div class="aca-inline-56">
+<h1>Jurnal Guru</h1>
+<button id="btn-jurnal-save" class="btn-primary" disabled>Simpan Jurnal</button>
+</div>
+<div class="card glass">
+<div class="aca-inline-140">
+<div class="form-group">
+<label>Tanggal</label>
+<input type="date" id="jurnal-date" class="input-control">
+</div>
+<div class="form-group">
+<label>Kelas</label>
+<select id="jurnal-class" class="input-control">
+<option value="">-- Pilih Kelas --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Mapel</label>
+<select id="jurnal-subject" class="input-control">
+<option value="">-- Pilih Mapel --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Jam Pelajaran</label>
+<input type="text" id="jurnal-time" class="input-control" placeholder="Contoh: Ke-1 s/d 3">
+</div>
+</div>
+<div class="form-group aca-inline-29">
+<label>Materi Pokok</label>
+<input type="text" id="jurnal-material" class="input-control" placeholder="Masukkan materi utama yang diajarkan">
+</div>
+<div class="form-group aca-inline-25">
+<label>Catatan Kegiatan / Hambatan</label>
+<textarea id="jurnal-notes" class="input-control" rows="4" placeholder="Masukkan rincian kegiatan atau catatan khusus..." class="aca-inline-141"></textarea>
+</div>
+</div>
+<div class="card glass aca-inline-30">
+<div class="aca-inline-142">
+<h2 class="aca-inline-143">Riwayat Jurnal (Bulan Ini)</h2>
+<div class="aca-inline-144">
+<select id="jurnal-filter-teacher" class="input-control aca-inline-31"><option value="">Semua Guru</option></select><input type="month" id="jurnal-filter-month" class="input-control aca-inline-32">
+<button id="btn-jurnal-export" class="btn-primary aca-inline-33">
+📊 Export Excel
+</button>
+</div>
+</div>
+<div class="table-responsive">
+<table class="data-table">
+<thead>
+<tr>
+<th>Tanggal</th>
+<th>Guru</th>
+<th>Kelas</th>
+<th>Mapel</th>
+<th>Jam Ke-</th>
+<th>Materi Pokok</th>
+<th class="aca-inline-145">Aksi</th>
+</tr>
+</thead>
+<tbody id="jurnal-history-tbody">
+<tr>
+<td colspan="7" class="aca-inline-146">Memuat riwayat jurnal...</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pagination aca-inline-34">
+<div class="pagination-info" id="jurnal-pagination-info" class="aca-inline-147">Memuat halaman...</div>
+<div class="pagination-controls aca-inline-35">
+<button id="btn-jurnal-prev" class="btn aca-inline-36" disabled>&laquo; Prev</button>
+<button id="btn-jurnal-next" class="btn aca-inline-36" disabled>Next &raquo;</button>
+</div>
+</div>
+</div>
+</section>
+<section id="absensi-guru" class="page-section aca-inline-11">
+<div class="aca-inline-56">
+<h1>Absensi Guru</h1>
+<input type="date" id="tg-rekap-date" class="input-control aca-inline-37">
+</div>
+<div class="tab-nav aca-inline-14">
+<button class="tab-btn active" data-tab="tg-pribadi" id="btn-tg-tab-pribadi">Absensi Anda</button>
+<button class="tab-btn admin-only" data-tab="tg-rekap" id="btn-tg-tab-rekap" class="aca-inline-11">Rekap Harian (Admin)</button>
+</div>
+<div id="tab-tg-pribadi" class="tab-content aca-inline-38">
+<div class="card glass aca-inline-39">
+<div class="aca-inline-148">
+<div class="aca-inline-149">
+<div class="aca-inline-150">Tanggal</div>
+<div id="tg-date" class="aca-inline-151">-</div>
+</div>
+<div class="aca-inline-152">
+<div class="aca-inline-150">Jam Masuk</div>
+<div id="tg-checkin-time" class="aca-inline-153">--:--</div>
+</div>
+<div class="aca-inline-149">
+<div class="aca-inline-150">Jam Keluar</div>
+<div id="tg-checkout-time" class="aca-inline-154">--:--</div>
+</div>
+</div>
+<div class="aca-inline-155">
+<div>
+<h3 class="aca-inline-156">Foto Masuk</h3>
+<div id="tg-photo-in-container" class="aca-inline-157">
+<div id="tg-photo-in-placeholder" class="aca-inline-158">Belum ada foto</div>
+<img id="tg-photo-in" src="" class="aca-inline-159">
+</div>
+</div>
+<div>
+<h3 class="aca-inline-156">Foto Keluar</h3>
+<div id="tg-photo-out-container" class="aca-inline-157">
+<div id="tg-photo-out-placeholder" class="aca-inline-158">Belum ada foto</div>
+<img id="tg-photo-out" src="" class="aca-inline-159">
+</div>
+</div>
+</div>
+<div id="tg-camera-container" class="aca-inline-160">
+<video id="tg-video" class="aca-inline-161" autoplay playsinline></video>
+<canvas id="tg-canvas" class="aca-inline-11"></canvas>
+</div>
+<div class="aca-inline-77">
+<div class="aca-inline-162">
+<button id="btn-tg-camera" class="btn btn-primary aca-inline-10" disabled>Nyalakan Kamera</button>
+<input type="file" id="tg-file-input" accept="image/*" class="aca-inline-11">
+</div>
+<div id="tg-status-text" class="aca-inline-163">Memuat status absensi...</div>
+</div>
+</div>
+</div>
+<div id="tab-tg-rekap" class="tab-content aca-inline-11">
+<div class="card glass">
+<div class="aca-inline-142">
+<h2 class="aca-inline-143">Rekap Absensi Guru (Harian)</h2>
+<button id="btn-tg-export-excel" class="btn btn-outline aca-inline-24">
+<span class="aca-inline-164">📊</span> Export Excel
+</button>
+</div>
+<div class="table-responsive">
+<table class="data-table">
+<thead>
+<tr>
+<th>No</th>
+<th>Nama Guru</th>
+<th class="aca-inline-77">Jam Masuk</th>
+<th class="aca-inline-77">Foto Masuk</th>
+<th class="aca-inline-77">Jam Keluar</th>
+<th class="aca-inline-77">Foto Keluar</th>
+<th class="aca-inline-77">Lokasi</th>
+<th class="aca-inline-77">Status</th><th class="aca-inline-77">Aksi</th>
+</tr>
+</thead>
+<tbody id="tg-rekap-tbody">
+<tr><td colspan="7" class="aca-inline-78">Memuat rekap...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="guru" class="page-section aca-inline-11">
+<div class="aca-inline-56">
+<h1>Master Data Guru</h1>
+<button id="btn-add-guru" class="btn-primary">Tambah Guru</button>
+</div>
+<div class="card glass">
+<div class="aca-inline-16">
+<div class="form-group aca-inline-19">
+<label>Status</label>
+<select id="filter-status-guru" class="input-control">
+<option value="">Semua Status</option>
+<option value="Aktif">Aktif</option>
+<option value="Nonaktif">Nonaktif</option>
+</select>
+</div>
+<div class="form-group aca-inline-19">
+<label>Mata Pelajaran</label>
+<select id="filter-mapel-guru" class="input-control">
+<option value="">Semua Mapel</option>
+</select>
+</div>
+<div class="form-group aca-inline-19">
+<label>Wali Kelas</label>
+<select id="filter-wali-guru" class="input-control">
+<option value="">Semua Kelas</option>
+</select>
+</div>
+<div class="form-group aca-inline-26">
+<label>Cari Nama / NIP</label>
+<input type="text" id="filter-search-guru" class="input-control" placeholder="Cari nama atau nip...">
+</div>
+</div>
+<div class="table-responsive">
+<table class="data-table">
+<thead>
+<tr>
+<th class="aca-inline-98">No</th>
+<th>NIP</th>
+<th>Nama</th>
+<th>Mapel</th>
+<th>Wali Kelas</th>
+<th>Status</th>
+<th class="aca-inline-165">Aksi</th>
+</tr>
+</thead>
+<tbody id="tbody-guru">
+<tr><td colspan="7" class="aca-inline-77">Memuat data guru...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="mata-pelajaran" class="page-section aca-inline-11">
+<div class="aca-inline-56">
+<h1>Master Mata Pelajaran</h1>
+<button id="btn-add-mapel" class="btn-primary">Tambah Mapel</button>
+</div>
+<div class="card glass">
+<div class="aca-inline-16">
+<div class="form-group aca-inline-19">
+<label>Status</label>
+<select id="filter-status-mapel" class="input-control">
+<option value="">Semua Status</option>
+<option value="Aktif">Aktif</option>
+<option value="Nonaktif">Nonaktif</option>
+</select>
+</div>
+<div class="form-group aca-inline-19">
+<label>Kelompok</label>
+<select id="filter-kelompok-mapel" class="input-control">
+<option value="">Semua Kelompok</option>
+<option value="A">Kelompok A (Wajib)</option>
+<option value="B">Kelompok B (Wajib)</option>
+<option value="C">Kelompok C (Peminatan)</option>
+<option value="Mulok">Muatan Lokal</option>
+</select>
+</div>
+<div class="form-group aca-inline-19">
+<label>Guru Pengampu</label>
+<select id="filter-guru-mapel" class="input-control">
+<option value="">Semua Guru</option>
+</select>
+</div>
+<div class="form-group aca-inline-26">
+<label>Cari Nama / Kode</label>
+<input type="text" id="filter-search-mapel" class="input-control" placeholder="Cari nama atau kode mapel...">
+</div>
+</div>
+<div class="table-responsive">
+<table class="data-table">
+<thead>
+<tr>
+<th class="aca-inline-98">No</th>
+<th>Kode</th>
+<th>Nama</th>
+<th>Guru Pengampu</th>
+<th>Kelompok</th>
+<th class="aca-inline-77">KKM</th>
+<th class="aca-inline-77">Jam</th>
+<th class="aca-inline-77">Status</th><th class="aca-inline-77">Aksi</th>
+<th class="aca-inline-165">Aksi</th>
+</tr>
+</thead>
+<tbody id="tbody-mapel">
+<tr><td colspan="9" class="aca-inline-77">Memuat data mata pelajaran...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="kelas" class="page-section aca-inline-11">
+<div class="aca-inline-166">
+<div>
+<div class="aca-inline-56">
+<h1>Master Tahun Ajaran</h1>
+<button id="btn-add-tahun" class="btn-primary">Tambah Tahun Ajaran</button>
+</div>
+<div class="card glass">
+<div class="table-responsive">
+<table class="data-table">
+<thead>
+<tr>
+<th class="aca-inline-98">No</th>
+<th>Tahun Ajaran</th>
+<th>Semester</th>
+<th>Status</th>
+<th class="aca-inline-165">Aksi</th>
+</tr>
+</thead>
+<tbody id="tbody-tahun">
+<tr><td colspan="5" class="aca-inline-77">Memuat data tahun ajaran...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<hr class="aca-inline-167">
+<div>
+<div class="aca-inline-56">
+<h1>Master Kelas</h1>
+<button id="btn-add-kelas" class="btn-primary">Tambah Kelas</button>
+</div>
+<div class="card glass">
+<div class="aca-inline-16">
+<div class="form-group aca-inline-19">
+<label>Tingkat</label>
+<select id="filter-tingkat-kelas" class="input-control">
+<option value="">Semua Tingkat</option>
+<option value="7">Kelas 7</option>
+<option value="8">Kelas 8</option>
+<option value="9">Kelas 9</option>
+</select>
+</div>
+<div class="form-group aca-inline-19">
+<label>Status</label>
+<select id="filter-status-kelas" class="input-control">
+<option value="">Semua Status</option>
+<option value="Aktif">Aktif</option>
+<option value="Nonaktif">Nonaktif</option>
+</select>
+</div>
+<div class="form-group aca-inline-19">
+<label>Wali Kelas</label>
+<select id="filter-wali-kelas" class="input-control">
+<option value="">Semua Wali Kelas</option>
+</select>
+</div>
+<div class="form-group aca-inline-26">
+<label>Cari Nama Kelas</label>
+<input type="text" id="filter-search-kelas" class="input-control" placeholder="Cari nama kelas...">
+</div>
+</div>
+<div class="table-responsive">
+<table class="data-table">
+<thead>
+<tr>
+<th class="aca-inline-98">No</th>
+<th>Nama Kelas</th>
+<th class="aca-inline-77">Tingkat</th>
+<th>Wali Kelas</th>
+<th class="aca-inline-77">Ruangan</th>
+<th class="aca-inline-77">Kapasitas</th>
+<th class="aca-inline-77">Status</th><th class="aca-inline-77">Aksi</th>
+<th class="aca-inline-165">Aksi</th>
+</tr>
+</thead>
+<tbody id="tbody-kelas">
+<tr><td colspan="8" class="aca-inline-77">Memuat data kelas...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-migration" class="page-section aca-inline-11">
+<div id="db-readiness-banner" class="card glass aca-inline-40">
+<h1 class="aca-inline-168" id="db-readiness-status">🔴 DATABASE STATUS: NOT READY</h1>
+<p class="aca-inline-169" id="db-readiness-desc">
+Sistem belum siap untuk production. Selesaikan seluruh tahapan import di bawah ini.
+</p>
+<div class="aca-inline-170">
+<span>Master Data: <strong id="rb-master-count">0</strong></span>
+<span class="aca-inline-64">Errors: <strong id="rb-error-count">0</strong></span>
+<span class="aca-inline-171">Orphans: <strong id="rb-orphan-count">0</strong></span>
+<span class="aca-inline-172">Duplicates: <strong id="rb-duplicate-count">0</strong></span>
+</div>
+</div>
+<div class="card glass aca-inline-4">
+<div class="aca-inline-173">
+<h2 class="aca-inline-143">Database Health Checker</h2>
+<button id="btn-run-integrity" class="btn-primary aca-inline-41">Run Integrity Check</button>
+</div>
+<div class="dashboard-cards aca-inline-42">
+<div class="card glass"><h3 class="aca-inline-174">Teachers</h3><p class="number" id="hc-teachers">0</p></div>
+<div class="card glass"><h3 class="aca-inline-174">Students</h3><p class="number" id="hc-students">0</p></div>
+<div class="card glass"><h3 class="aca-inline-174">Subjects</h3><p class="number" id="hc-subjects">0</p></div>
+<div class="card glass"><h3 class="aca-inline-174">Classes</h3><p class="number" id="hc-classes">0</p></div>
+<div class="card glass"><h3 class="aca-inline-174">Academic Years</h3><p class="number" id="hc-years">0</p></div>
+<div class="card glass"><h3 class="aca-inline-174">Schedules</h3><p class="number" id="hc-schedules">0</p></div>
+</div>
+</div>
+<div class="card glass aca-inline-4">
+<h2 class="aca-inline-73">Import Wizard</h2>
+<p class="aca-inline-175">Import harus dilakukan secara berurutan. Pilih file Excel Anda untuk memulai.</p>
+<div class="aca-inline-176">
+<div class="form-group aca-inline-43">
+<label>Pilih Tahap Import</label>
+<select id="dm-type" class="input-control">
+<option value="">-- Pilih Langkah --</option>
+<option value="tahun" id="opt-tahun">Step 1: Academic Year</option>
+<option value="guru" id="opt-guru" disabled>Step 2: Teachers</option>
+<option value="mapel" id="opt-mapel" disabled>Step 3: Subjects</option>
+<option value="kelas" id="opt-kelas" disabled>Step 4: Classes</option>
+<option value="siswa" id="opt-siswa" disabled>Step 5: Students</option>
+<option value="jadwal" id="opt-jadwal" disabled>Step 6: Schedules</option>
+</select>
+</div>
+<button id="btn-dm-download" type="button" class="btn btn-outline" disabled>Download Template</button>
+<label class="btn btn-outline aca-inline-44" id="label-dm-upload">
+Upload Excel
+<input type="file" id="dm-upload" accept=".xlsx, .xls" class="aca-inline-11" disabled>
+</label>
+</div>
+<div id="panel-import-action" class="aca-inline-11">
+<div class="aca-inline-173">
+<h3 class="aca-inline-177">Preview Data</h3>
+<div class="aca-inline-178">
+<button id="btn-dm-clear" class="btn btn-outline">Clear Preview</button>
+<button id="btn-dm-import" class="btn-primary">Import Data Sekarang</button>
+</div>
+</div>
+<div class="form-group" id="dm-duplicate-strategy-container" class="aca-inline-179">
+<label>Strategi Duplikasi (Bila ada data sama)</label>
+<select id="dm-duplicate-strategy" class="input-control aca-inline-45">
+<option value="skip">Lewati (Skip)</option>
+<option value="update">Update Existing (Upsert)</option>
+<option value="cancel">Batalkan Import</option>
+</select>
+</div>
+<div class="aca-inline-180">
+<span>Total: <strong id="prev-total">0</strong></span>
+<span class="aca-inline-63">Valid: <strong id="prev-valid">0</strong></span>
+<span class="aca-inline-171">Update: <strong id="prev-update">0</strong></span>
+<span class="aca-inline-64">Error: <strong id="prev-error">0</strong></span>
+<span class="aca-inline-172">Duplicate: <strong id="prev-duplicate">0</strong></span>
+</div>
+<div class="table-responsive aca-inline-46">
+<table class="data-table">
+<thead><tr id="prev-thead"></tr></thead>
+<tbody id="prev-tbody"></tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="dm-progress-container" class="card glass aca-inline-47">
+<div class="aca-inline-173">
+<h2 class="aca-inline-143">Progress Import</h2>
+<button id="btn-download-error-report" class="btn btn-danger aca-inline-48">Download Error Report (Excel)</button>
+</div>
+<div class="aca-inline-181">
+<div id="dm-progress-bar" class="aca-inline-182"></div>
+</div>
+<div class="aca-inline-183">
+<span id="dm-progress-text">0%</span>
+<span id="dm-progress-stats">0 / 0</span>
+</div>
+<div id="dm-import-log" class="aca-inline-184">
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<div id="modal-guru" class="modal aca-inline-49">
+<div class="modal-content card glass aca-inline-50">
+<h2 id="modal-guru-title" class="aca-inline-18">Tambah Guru</h2>
+<form id="form-guru">
+<input type="hidden" id="guru-id">
+<div class="aca-inline-185">
+<div class="form-group">
+<label>NIP</label>
+<input type="text" id="guru-nip" class="input-control" placeholder="Nomor Induk Pegawai" required>
+</div>
+<div class="form-group">
+<label>Nama Guru</label>
+<input type="text" id="guru-nama" class="input-control" placeholder="Nama Lengkap dengan Gelar" required>
+</div>
+<div class="form-group">
+<label>Email</label>
+<input type="email" id="guru-email" class="input-control" placeholder="Email aktif">
+</div>
+<div class="form-group">
+<label>No HP</label>
+<input type="text" id="guru-hp" class="input-control" placeholder="Nomor HP/WA">
+</div>
+<div class="form-group">
+<label>Jenis Kelamin</label>
+<select id="guru-jk" class="input-control" required>
+<option value="">-- Pilih --</option>
+<option value="L">Laki-laki</option>
+<option value="P">Perempuan</option>
+</select>
+</div>
+<div class="form-group">
+<label>Status Guru</label>
+<select id="guru-status" class="input-control" required>
+<option value="GTY">Guru Tetap Yayasan (GTY)</option>
+<option value="GTT">Guru Tidak Tetap (GTT)</option>
+<option value="Honorer">Honorer</option>
+</select>
+</div>
+<div class="form-group">
+<label>Wali Kelas</label>
+<select id="guru-wali" class="input-control">
+<option value="">-- Bukan Wali Kelas --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Mata Pelajaran</label>
+<select id="guru-mapel" class="input-control">
+<option value="">-- Pilih Mapel --</option>
+</select>
+</div>
+<div class="form-group aca-inline-8">
+<label class="aca-inline-186">
+<input type="checkbox" id="guru-aktif" checked class="aca-inline-187">
+<span>Status Aktif Mengajar</span>
+</label>
+</div>
+</div>
+<div class="aca-inline-188">
+<button type="button" id="btn-close-modal-guru" class="btn btn-outline">Batal</button>
+<button type="submit" id="btn-save-guru" class="btn-primary">Simpan</button>
+</div>
+</form>
+</div>
+</div>
+<div id="modal-mapel" class="modal aca-inline-49">
+<div class="modal-content card glass aca-inline-50">
+<h2 id="modal-mapel-title" class="aca-inline-18">Tambah Mata Pelajaran</h2>
+<form id="form-mapel">
+<input type="hidden" id="mapel-id">
+<div class="aca-inline-185">
+<div class="form-group">
+<label>Kode Mapel</label>
+<input type="text" id="mapel-kode" class="input-control" placeholder="Contoh: MTK01" required>
+</div>
+<div class="form-group">
+<label>Nama Mapel</label>
+<input type="text" id="mapel-nama" class="input-control" placeholder="Contoh: Matematika Wajib" required>
+</div>
+<div class="form-group">
+<label>Kelompok</label>
+<select id="mapel-kelompok" class="input-control" required>
+<option value="">-- Pilih Kelompok --</option>
+<option value="A">Kelompok A (Wajib)</option>
+<option value="B">Kelompok B (Wajib)</option>
+<option value="C">Kelompok C (Peminatan)</option>
+<option value="Mulok">Muatan Lokal</option>
+</select>
+</div>
+<div class="form-group">
+<label>Guru Pengampu</label>
+<select id="mapel-guru" class="input-control">
+<option value="">-- Pilih Guru --</option>
+</select>
+</div>
+<div class="form-group">
+<label>KKM</label>
+<input type="number" id="mapel-kkm" class="input-control" placeholder="Contoh: 75" min="0" max="100" required>
+</div>
+<div class="form-group">
+<label>Jam Per Minggu</label>
+<input type="number" id="mapel-jam" class="input-control" placeholder="Contoh: 4" min="0" required>
+</div>
+<div class="form-group">
+<label>Urutan Tampil (Opsional)</label>
+<input type="number" id="mapel-urutan" class="input-control" placeholder="Contoh: 1" min="0">
+</div>
+<div class="form-group aca-inline-8">
+<label class="aca-inline-186">
+<input type="checkbox" id="mapel-aktif" checked class="aca-inline-187">
+<span>Status Aktif</span>
+</label>
+</div>
+</div>
+<div class="aca-inline-188">
+<button type="button" id="btn-close-modal-mapel" class="btn btn-outline">Batal</button>
+<button type="submit" id="btn-save-mapel" class="btn-primary">Simpan</button>
+</div>
+</form>
+</div>
+</div>
+<div id="modal-tahun" class="modal aca-inline-49">
+<div class="modal-content card glass aca-inline-51">
+<h2 id="modal-tahun-title" class="aca-inline-18">Tambah Tahun Ajaran</h2>
+<form id="form-tahun">
+<input type="hidden" id="tahun-id">
+<div class="form-group aca-inline-29">
+<label>Tahun Ajaran</label>
+<input type="text" id="tahun-nama" class="input-control" placeholder="Contoh: 2026/2027" required>
+</div>
+<div class="form-group aca-inline-29">
+<label>Semester</label>
+<select id="tahun-semester" class="input-control" required>
+<option value="Ganjil">Ganjil</option>
+<option value="Genap">Genap</option>
+</select>
+</div>
+<div class="form-group aca-inline-18">
+<label class="aca-inline-186">
+<input type="checkbox" id="tahun-aktif" class="aca-inline-187">
+<span>Set sebagai Aktif (Saat ini)</span>
+</label>
+<div class="aca-inline-189">Hanya boleh ada satu tahun ajaran yang aktif. Mengaktifkan ini akan menonaktifkan tahun ajaran lainnya.</div>
+</div>
+<div class="aca-inline-190">
+<button type="button" id="btn-close-modal-tahun" class="btn btn-outline">Batal</button>
+<button type="submit" id="btn-save-tahun" class="btn-primary">Simpan</button>
+</div>
+</form>
+</div>
+</div>
+<div id="modal-kelas" class="modal aca-inline-49">
+<div class="modal-content card glass aca-inline-50">
+<h2 id="modal-kelas-title" class="aca-inline-18">Tambah Kelas</h2>
+<form id="form-kelas">
+<input type="hidden" id="kelas-id">
+<div class="aca-inline-185">
+<div class="form-group">
+<label>Nama Kelas</label>
+<input type="text" id="kelas-nama" class="input-control" placeholder="Contoh: 7A" required>
+</div>
+<div class="form-group">
+<label>Tingkat</label>
+<select id="kelas-tingkat" class="input-control" required>
+<option value="">-- Pilih Tingkat --</option>
+<option value="7">Kelas 7</option>
+<option value="8">Kelas 8</option>
+<option value="9">Kelas 9</option>
+</select>
+</div>
+<div class="form-group">
+<label>Wali Kelas</label>
+<select id="kelas-wali" class="input-control">
+<option value="">-- Pilih Wali Kelas --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Ruangan</label>
+<input type="text" id="kelas-ruangan" class="input-control" placeholder="Contoh: R.01">
+</div>
+<div class="form-group">
+<label>Kapasitas Siswa</label>
+<input type="number" id="kelas-kapasitas" class="input-control" placeholder="Contoh: 32" min="1" required>
+</div>
+<div class="form-group aca-inline-52">
+<label class="aca-inline-186">
+<input type="checkbox" id="kelas-aktif" checked class="aca-inline-187">
+<span>Status Aktif</span>
+</label>
+</div>
+</div>
+<div class="aca-inline-188">
+<button type="button" id="btn-close-modal-kelas" class="btn btn-outline">Batal</button>
+<button type="submit" id="btn-save-kelas" class="btn-primary">Simpan</button>
+</div>
+</form>
+</div>
+</div>
+<div id="modal-jadwal" class="modal aca-inline-53">
+<div class="modal-content card glass aca-inline-54">
+<h2 id="modal-jadwal-title" class="aca-inline-18">Tambah Jadwal Pelajaran</h2>
+<form id="form-jadwal">
+<input type="hidden" id="jadwal-id">
+<div class="aca-inline-185">
+<div class="form-group">
+<label>Tahun Ajaran</label>
+<select id="jadwal-academic-year" class="input-control" required>
+<option value="">-- Pilih Tahun Ajaran --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Kelas</label>
+<select id="jadwal-class" class="input-control" required>
+<option value="">-- Pilih Kelas --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Guru Pengajar</label>
+<select id="jadwal-teacher" class="input-control" required>
+<option value="">-- Pilih Guru --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Mata Pelajaran</label>
+<select id="jadwal-subject" class="input-control" required>
+<option value="">-- Pilih Mata Pelajaran --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Hari</label>
+<select id="jadwal-day" class="input-control" required>
+<option value="">-- Pilih Hari --</option>
+<option value="Senin">Senin</option>
+<option value="Selasa">Selasa</option>
+<option value="Rabu">Rabu</option>
+<option value="Kamis">Kamis</option>
+<option value="Jumat">Jumat</option>
+<option value="Sabtu">Sabtu</option>
+</select>
+</div>
+<div class="form-group">
+<label>Ruangan</label>
+<input type="text" id="jadwal-room" class="input-control" placeholder="Contoh: Lab Komputer">
+</div>
+<div class="form-group">
+<label>Jam Mulai</label>
+<input type="time" id="jadwal-start-time" class="input-control" required>
+</div>
+<div class="form-group">
+<label>Jam Selesai</label>
+<input type="time" id="jadwal-end-time" class="input-control" required>
+</div>
+<div class="form-group">
+<label>Status Jadwal</label>
+<select id="jadwal-status" class="input-control" required>
+<option value="Aktif">Aktif</option>
+<option value="Draft">Draft</option>
+<option value="Arsip">Arsip</option>
+</select>
+</div>
+</div>
+<div class="form-group aca-inline-29">
+<label>Catatan (Opsional)</label>
+<textarea id="jadwal-notes" class="input-control" rows="2" placeholder="Catatan tambahan..." class="aca-inline-141"></textarea>
+</div>
+<div class="aca-inline-188">
+<button type="button" id="btn-close-modal-jadwal" class="btn btn-outline">Batal</button>
+<button type="submit" id="btn-save-jadwal" class="btn-primary">Simpan Jadwal</button>
+</div>
+</form>
+</div>
+</div>
+<div id="modal-siswa" class="modal aca-inline-53">
+<div class="modal-content card glass aca-inline-50">
+<h2 id="modal-siswa-title" class="aca-inline-18">Tambah Siswa</h2>
+<form id="form-siswa">
+<input type="hidden" id="siswa-id">
+<div class="aca-inline-185">
+<div class="form-group">
+<label>NIS</label>
+<input type="text" id="siswa-nis" class="input-control" required>
+</div>
+<div class="form-group">
+<label>NISN</label>
+<input type="text" id="siswa-nisn" class="input-control">
+</div>
+<div class="form-group aca-inline-8">
+<label>Nama Lengkap</label>
+<input type="text" id="siswa-nama" class="input-control" required>
+</div>
+<div class="form-group">
+<label>Jenis Kelamin</label>
+<select id="siswa-jk" class="input-control" required>
+<option value="">-- Pilih L/P --</option>
+<option value="L">Laki-laki</option>
+<option value="P">Perempuan</option>
+</select>
+</div>
+<div class="form-group">
+<label>Kelas</label>
+<select id="siswa-kelas" class="input-control">
+<option value="">-- Belum ada kelas --</option>
+</select>
+</div>
+<div class="form-group">
+<label>Nama Orang Tua</label>
+<input type="text" id="siswa-ortu" class="input-control">
+</div>
+<div class="form-group">
+<label>No HP Orang Tua</label>
+<input type="text" id="siswa-hp" class="input-control">
+</div>
+</div>
+<div class="form-group aca-inline-29">
+<label>Alamat</label>
+<textarea id="siswa-alamat" class="input-control" rows="2" class="aca-inline-141"></textarea>
+</div>
+<div class="form-group aca-inline-55">
+<label class="aca-inline-186">
+<input type="checkbox" id="siswa-aktif" checked class="aca-inline-187">
+<span>Status Aktif</span>
+</label>
+</div>
+<div class="aca-inline-188">
+<button type="button" id="btn-close-modal-siswa" class="btn btn-outline">Batal</button>
+<button type="submit" id="btn-save-siswa" class="btn-primary">Simpan</button>
+</div>
+</form>
+</div>
+</div>
+<script type="module" src="../../js/academic/entry.js"></script>
+<div id="toast-container"></div>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tentang Kami - Annida2PPDB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/ppdb/style.css">
+<style>
+/* Custom styles for About page */
+.profile-section {
+padding: 80px 0;
+background-color: var(--bg-card);
+}
+.profile-container {
+display: flex;
+align-items: center;
+gap: 50px;
+}
+.profile-text {
+flex: 1.2;
+}
+.profile-info {
+flex: 0.8;
+background-color: var(--bg-light);
+padding: 30px;
+border-radius: var(--radius-lg);
+border-left: 5px solid var(--primary-color);
+}
+.structure-section {
+padding: 80px 0;
+background-color: var(--bg-light);
+}
+.org-chart {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 30px;
+margin-top: 50px;
+}
+.chart-node {
+background-color: var(--bg-card);
+border: 2px solid var(--border-color);
+border-radius: var(--radius-md);
+padding: 15px 30px;
+text-align: center;
+box-shadow: var(--shadow-sm);
+position: relative;
+}
+.chart-node.lead {
+border-color: var(--primary-color);
+background-color: var(--secondary-light);
+}
+.chart-node h4 {
+margin-bottom: 2px;
+color: var(--primary-dark);
+}
+.chart-node span {
+font-size: 0.85rem;
+color: var(--text-muted);
+font-weight: 500;
+}
+.chart-level-2 {
+display:flex;flex-wrap:wrap;gap: 40px;
+justify-content: center;
+width: 100%;
+}
+.teachers-section {
+padding: 80px 0;
+background-color: var(--bg-card);
+}
+.teacher-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 30px;
+margin-top: 50px;
+}
+.teacher-card {
+background-color: var(--bg-card);
+border: 1px solid var(--border-color);
+border-radius: var(--radius-lg);
+overflow: hidden;
+box-shadow: var(--shadow-sm);
+transition: var(--transition);
+text-align: center;
+}
+.teacher-card:hover {
+transform: translateY(-5px);
+box-shadow: var(--shadow-md);
+border-color: var(--primary-light);
+}
+.teacher-avatar-large {
+width: 100px;
+height: 100px;
+background-color: var(--secondary-light);
+color: var(--primary-dark);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 2rem;
+font-weight: 700;
+margin: 30px auto 20px;
+border: 3px solid var(--primary-color);
+}
+.teacher-details {
+padding: 0 20px 30px;
+}
+.teacher-details h4 {
+margin-bottom: 5px;
+font-size: 1.15rem;
+}
+.teacher-role {
+font-size: 0.9rem;
+color: var(--primary-color);
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+margin-bottom: 10px;
+display: block;
+}
+.teacher-bio {
+font-size: 0.9rem;
+color: var(--text-muted);
+}
+@media (max-width: 768px) {
+.profile-container {
+flex-direction: column;
+}
+.chart-level-2 {
+flex-direction: column;
+align-items: center;
+gap: 20px;
+}
+}
+</style>
+<link rel="stylesheet" href="../../css/style.css" />
+<link rel="stylesheet" href="../../css/mobile.css" />
+</head>
+<body>
+<header class="navbar">
+<div class="container">
+<div class="logo">
+<a href="../index.html" class="logo-link">
+<img src="../assets/logo/1.png" alt="Logo Annida2PPDB" class="logo-icon">
+<span class="logo-text">Annida2PPDB</span>
+</a>
+</div>
+<nav class="nav-links">
+<a href="../index.html">Beranda</a>
+<a href="about.html" class="active">Tentang Kami</a>
+<a href="../index.html#program">Program</a>
+<a href="../index.html#alur">Alur Pendaftaran</a>
+<a href="../../index.html" class="btn btn-outline">Login</a>
+<a href="register.html" class="btn btn-primary">Daftar Sekarang</a>
+</nav>
+</div>
+</header>
+<main>
+<section class="profile-section">
+<div class="container profile-container">
+<div class="profile-text">
+<span class="badge">Profil Sekolah</span>
+<h2>SMP Sekolah Alam + Tahfidz</h2>
+<p>SMP Sekolah Alam + Tahfidz Annida 2 didirikan dengan komitmen untuk menyelenggarakan pendidikan tingkat menengah pertama yang mengintegrasikan kecintaan terhadap alam dengan pembentukan spiritualitas Islami melalui program Tahfidz Al-Qur'an.</p>
+<p>Kami meyakini bahwa proses belajar terbaik bagi remaja usia SMP adalah dengan bersentuhan langsung dengan realitas kehidupan melalui alam sebagai laboratorium pembelajaran terluas, seraya tetap menjaga hati dan pikiran dengan hafalan kalam Ilahi.</p>
+</div>
+<div class="profile-info">
+<h3 style="margin-bottom: 15px;">Visi & Misi</h3>
+<p><strong>Visi:</strong> Menjadi lembaga pendidikan sains berbasis alam terdepan yang melahirkan hafizh Qur'an berkarakter pemimpin dan peduli lingkungan.</p>
+<p style="margin: 0;"><strong>Misi Utama:</strong> Menyelenggarakan pembelajaran berbasis alam yang eksploratif, membimbing hafalan Al-Qur'an secara tartil, serta melatih kecakapan kepemimpinan praktis.</p>
+</div>
+</div>
+</section>
+<section class="structure-section">
+<div class="container text-center">
+<span class="badge">Struktur Organisasi</span>
+<h2>Struktur Guru & Manajemen</h2>
+<p class="section-subtitle">Struktur kepemimpinan akademik dan operasional sekolah.</p>
+<div class="org-chart">
+<div class="chart-node lead">
+<h4>Ustadz H. Ahmad, Lc</h4>
+<span>Kepala Sekolah & Pembina Tahfidz</span>
+</div>
+<div class="chart-level-2">
+<div class="chart-node">
+<h4>Ustadz Ridwan, M.Si</h4>
+<span>Waka Akademik & Kurikulum Alam</span>
+</div>
+<div class="chart-node">
+<h4>Ustadzah Fatimah, S.Pd</h4>
+<span>Waka Kesiswaan & Koordinator Tahfidz</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="teachers-section">
+<div class="container">
+<div class="text-center">
+<span class="badge">Pengajar Kami</span>
+<h2>Profil Guru Utama</h2>
+<p class="section-subtitle">Dibimbing oleh tenaga pendidik profesional dan berdedikasi tinggi.</p>
+</div>
+<div class="teacher-grid">
+<div class="teacher-card">
+<div class="teacher-avatar-large">HA</div>
+<div class="teacher-details">
+<span class="teacher-role">Kepala Sekolah</span>
+<h4>Ustadz H. Ahmad, Lc</h4>
+<p class="teacher-bio">Alumni Universitas Islam Madinah. Fokus pada pembangunan karakter Islami dan pembinaan hafalan Al-Qur'an siswa.</p>
+</div>
+</div>
+<div class="teacher-card">
+<div class="teacher-avatar-large">RW</div>
+<div class="teacher-details">
+<span class="teacher-role">Guru Sains & Alam</span>
+<h4>Ustadz Ridwan, M.Si</h4>
+<p class="teacher-bio">Alumni Magister Sains Lingkungan. Mengembangkan modul pembelajaran luar ruangan dan riset sains berbasis alam.</p>
+</div>
+</div>
+<div class="teacher-card">
+<div class="teacher-avatar-large">FT</div>
+<div class="teacher-details">
+<span class="teacher-role">Koordinator Tahfidz</span>
+<h4>Ustadzah Fatimah, S.Pd</h4>
+<p class="teacher-bio">Hafizhah 30 Juz dengan sanad. Berpengalaman 7 tahun membimbing hafalan intensif remaja putri.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer>
+<div class="container">
+<p>&copy; 2027 Annida2PPDB Management System. All rights reserved.</p>
+</div>
+</footer>
+</body>
+</html>
