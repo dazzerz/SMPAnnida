@@ -1,87 +1,12 @@
-﻿import re
+content = open(r'C:\Users\daffaakhdaan\Study Project\pages\ppdb\dashboard-wali.html', encoding='utf-8').read()
+import re
+lines = content.split('\n')
+div_depth = 0
+for i, line in enumerate(lines):
+    line = re.sub(r'<!--.*?-->', '', line)
+    opens = len(re.findall(r'<div\b', line, re.IGNORECASE))
+    closes = len(re.findall(r'</div\b', line, re.IGNORECASE))
+    div_depth += opens
+    div_depth -= closes
 
-# 1. Update HTML
-html_path = 'pages/ppdb/index.html'
-with open(html_path, 'r', encoding='utf-8') as f:
-    html = f.read()
-
-# Replace <div class="hero-image"> to the end of its block with the new slider
-# Wait, I previously changed hero-image to contain <div class="hero-photo-grid">, so the outer div is still <div class="hero-image"> ?
-# Let's check what it looks like now.
-
-# Let's just use regex to find <div class="hero-image"> and everything inside it up to its closing tag.
-# Since it's nested, we'll just replace the whole <div class="hero-image"> ... </div>
-
-hero_image_match = re.search(r'<div class="hero-image">.*?</div>\s*</div>\s*</section>', html, flags=re.DOTALL)
-if hero_image_match:
-    # We matched too far if we include </section>
-    pass
-
-new_slider_html = '''<div class="hero-image">
-    <!-- Slider Container -->
-    <div class="glass-slider-container">
-        <div class="slider-wrapper">
-            <!-- Slide 1 -->
-            <div class="slide active">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-1.jpg');"></div>
-                <img src="../../assets/images/aktivitas-1.jpg" alt="Aktivitas Belajar Kelas 1" class="slider-img" data-index="0">
-            </div>
-            <!-- Slide 2 -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-2.jpg');"></div>
-                <img src="../../assets/images/aktivitas-2.jpg" alt="Petugas Menyiapkan Proyektor" class="slider-img" data-index="1">
-            </div>
-            <!-- Slide 3 -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-3.jpg');"></div>
-                <img src="../../assets/images/aktivitas-3.jpg" alt="Siswa Bersama Guru di Depan Kelas" class="slider-img" data-index="2">
-            </div>
-            <!-- Slide 4 -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-4.jpg');"></div>
-                <img src="../../assets/images/aktivitas-4.jpg" alt="Siswa Belajar di Kelas" class="slider-img" data-index="3">
-            </div>
-            <!-- Slide 5 -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-5.jpg');"></div>
-                <img src="../../assets/images/aktivitas-5.jpg" alt="Kegiatan Bersama di Aula" class="slider-img" data-index="4">
-            </div>
-            <!-- Slide 6 (Portrait) -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-6.jpg');"></div>
-                <img src="../../assets/images/aktivitas-6.jpg" alt="Ujian Siswa Kelas Ujung Depan" class="slider-img" data-index="5">
-            </div>
-            <!-- Slide 7 (Portrait) -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-7.jpg');"></div>
-                <img src="../../assets/images/aktivitas-7.jpg" alt="Ujian Siswa Barisan Kanan" class="slider-img" data-index="6">
-            </div>
-            <!-- Slide 8 (Portrait) -->
-            <div class="slide">
-                <div class="slide-bg" style="background-image: url('../../assets/images/aktivitas-8.jpg');"></div>
-                <img src="../../assets/images/aktivitas-8.jpg" alt="Ujian Siswa Fokus Belajar" class="slider-img" data-index="7">
-            </div>
-        </div>
-        <!-- Tombol Navigasi Slider -->
-        <button class="slider-btn prev-btn" aria-label="Slide Sebelumnya">◀</button>
-        <button class="slider-btn next-btn" aria-label="Slide Berikutnya">▶</button>
-        <!-- Indikator Dots -->
-        <div class="slider-dots">
-            <span class="dot active" data-slide="0"></span>
-            <span class="dot" data-slide="1"></span>
-            <span class="dot" data-slide="2"></span>
-            <span class="dot" data-slide="3"></span>
-            <span class="dot" data-slide="4"></span>
-            <span class="dot" data-slide="5"></span>
-            <span class="dot" data-slide="6"></span>
-            <span class="dot" data-slide="7"></span>
-        </div>
-    </div>
-</div>'''
-
-# Replace exactly what is inside <div class="hero-image">
-html = re.sub(r'<div class="hero-image">.*?</div>\s*</div>\s*<!--', new_slider_html + '\n      </div>\n    <!--', html, flags=re.DOTALL)
-
-# Let's use a more precise regex. Wait, hero-photo-grid has 4 inner divs.
-html = re.sub(r'<div class="hero-image">.*?</div>\s*</div>\s*(?=</section>)', new_slider_html + '\n      </div>\n    ', html, flags=re.DOTALL)
-# Wait, this regex is too dangerous. I'll print the match before modifying to be safe.
+print(f'Final depth at end of file: {div_depth}')
