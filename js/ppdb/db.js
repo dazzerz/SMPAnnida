@@ -468,44 +468,61 @@ function updateTimelineUI(status) {
   const alertBox = document.getElementById('status-alert-box');
 
   if (status === 'Draft') {
-    badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '⚪ Menunggu DP';
-    desc.textContent = 'Formulir pendaftaran Anda sudah diterima. Silakan selesaikan pembayaran DP Komitmen Tahfidz (30%) di seksi Pembayaran DP di bawah ini untuk membuka akses pengunggahan berkas persyaratan.';
-    alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-slate-500/20 bg-slate-500/5 text-slate-400';
+    if (badge) {
+      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+      badge.textContent = '⚪ Menunggu DP';
+    }
+    if (desc) desc.textContent = 'Formulir pendaftaran Anda sudah diterima. Silakan selesaikan pembayaran DP Komitmen Tahfidz (30%) di seksi Pembayaran DP di bawah ini untuk membuka akses pengunggahan berkas persyaratan.';
+    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-slate-500/20 bg-slate-500/5 text-slate-400';
   } else if (status === 'Verifikasi') {
-    badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '🟡 Verifikasi Berkas';
-    desc.textContent = 'Bukti transfer DP Anda telah divalidasi oleh panitia. Berkas dokumen digital pendaftaran Anda sedang dalam antrean verifikasi oleh panitia PPDB.';
-    alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-yellow-500/20 bg-yellow-500/5 text-yellow-300';
+    if (badge) {
+      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+      badge.textContent = '🟡 Verifikasi Berkas';
+    }
+    if (desc) desc.textContent = 'Bukti transfer DP Anda telah divalidasi oleh panitia. Berkas dokumen digital pendaftaran Anda sedang dalam antrean verifikasi oleh panitia PPDB.';
+    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-yellow-500/20 bg-yellow-500/5 text-yellow-300';
   } else if (status === 'Pembayaran') {
-    badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '🔵 Pembayaran Formulir';
-    desc.textContent = 'Berkas terverifikasi! Silakan lakukan transfer pembayaran formulir pendaftaran ke rekening Yayasan.';
-    alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-blue-500/20 bg-blue-500/5 text-blue-300';
+    if (badge) {
+      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+      badge.textContent = '🔵 Pembayaran Formulir';
+    }
+    if (desc) desc.textContent = 'Berkas terverifikasi! Silakan lakukan transfer pembayaran formulir pendaftaran ke rekening Yayasan.';
+    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-blue-500/20 bg-blue-500/5 text-blue-300';
   } else if (status === 'Seleksi') {
-    badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '🟣 Tahap Tes Tahfidz';
-    desc.textContent = 'Berkas terverifikasi! Calon siswa dijadwalkan mengikuti tes pemetaan Tahfidz secara langsung. Panitia akan menginformasikan detail jadwal via WhatsApp.';
-    alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-purple-500/20 bg-purple-500/5 text-purple-300';
+    if (badge) {
+      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+      badge.textContent = '🟣 Tahap Tes Tahfidz';
+    }
+    if (desc) desc.textContent = 'Berkas terverifikasi! Calon siswa dijadwalkan mengikuti tes pemetaan Tahfidz secara langsung. Panitia akan menginformasikan detail jadwal via WhatsApp.';
+    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-purple-500/20 bg-purple-500/5 text-purple-300';
   } else if (status === 'Lulus') {
-    badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '🟢 Lulus';
-    desc.textContent = 'Selamat! Calon siswa dinyatakan LULUS tes pemetaan Tahfidz masuk SMP Annida. Silakan unduh Surat Kelulusan dan lakukan Daftar Ulang.';
-    alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 text-emerald-400';
+    if (badge) {
+      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+      badge.textContent = '🟢 Lulus';
+    }
+    if (desc) desc.textContent = 'Selamat! Calon siswa dinyatakan LULUS tes pemetaan Tahfidz masuk SMP Annida. Silakan unduh Surat Kelulusan dan lakukan Daftar Ulang.';
+    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 text-emerald-400';
     
-    // Show announcement texts
-    document.getElementById('announce-student-name').textContent = localStorage.getItem('last_student_name') || 'Ahmad Fulan';
+    // Show announcement texts safely
+    const announceName = document.getElementById('announce-student-name');
+    if (announceName) {
+      announceName.textContent = localStorage.getItem('last_student_name') || 'Ahmad Fulan';
+    }
   } else if (status === 'Revisi') {
-    badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = '🔴 Perlu Revisi Berkas';
-    desc.textContent = 'Panitia menemukan dokumen yang tidak sesuai persyaratan. Silakan periksa tab Berkas untuk melihat berkas yang perlu diunggah ulang beserta catatan admin.';
-    alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-red-500/20 bg-red-500/5 text-red-400';
+    if (badge) {
+      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+      badge.textContent = '🔴 Perlu Revisi Berkas';
+    }
+    if (desc) desc.textContent = 'Panitia menemukan dokumen yang tidak sesuai persyaratan. Silakan periksa tab Berkas untuk melihat berkas yang perlu diunggah ulang beserta catatan admin.';
+    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-red-500/20 bg-red-500/5 text-red-400';
   } else {
     // Default fallback
-    badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-    badge.textContent = status;
-    desc.textContent = 'Status pendaftaran Anda saat ini: ' + status;
-    alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-slate-500/20 bg-slate-500/5 text-slate-400';
+    if (badge) {
+      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+      badge.textContent = status;
+    }
+    if (desc) desc.textContent = 'Status pendaftaran Anda saat ini: ' + status;
+    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-slate-500/20 bg-slate-500/5 text-slate-400';
   }
 }
 
