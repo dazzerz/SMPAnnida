@@ -192,7 +192,7 @@ async function fetchMyRegistrationStatus(userId) {
         document.getElementById('siswa-nisn').value = biodata.nisn || '';
         document.getElementById('siswa-tempat-lahir').value = biodata.tempat_lahir || '';
         document.getElementById('siswa-tanggal-lahir').value = biodata.tanggal_lahir || '';
-        document.getElementById('siswa-alamat').value = biodata.alamat || '';
+        document.getElementById('siswa-alamat').value = biodata.alamat_lengkap || '';
       }
 
       if (ortu) {
@@ -355,11 +355,12 @@ async function saveSiswaForm(userId) {
     if (pError) throw pError;
 
     // 2. Upsert biodata
-    const { error: bError } = await db.from('biodata_siswa').upsert({
+    const biodataPayload = {
       pendaftaran_id: pendaftaranId,
-      nama_lengkap: localStorage.getItem('last_student_name') || 'Ahmad Fulan',
-      nik, nisn, tempat_lahir: tempatLahir, tanggal_lahir: tanggalLahir, alamat
-    }, { onConflict: 'pendaftaran_id' });
+      nama_lengkap: user.user_metadata?.full_name || 'Calon Siswa',
+      nik, nisn, tempat_lahir: tempatLahir, tanggal_lahir: tanggalLahir, alamat_lengkap: alamat
+    };
+    const { error: bError } = await db.from('biodata_siswa').upsert(biodataPayload, { onConflict: 'pendaftaran_id' });
 
     if (bError) throw bError;
 
@@ -689,13 +690,10 @@ window.viewRegistrationDetails = function(regId) {
   // Set Details UI text fields
   document.getElementById('detail-reg-id').textContent = r.id;
   document.getElementById('detail-siswa-nama').textContent = r.biodata_siswa ? r.biodata_siswa.nama_lengkap : '-';
-  document.getElementById('detail-siswa-nik-nisn').textContent = r.biodata_siswa ? `${r.biodata_siswa.nik} / ${r.biodata_siswa.nisn}` : '-';
-  document.getElementById('detail-siswa-ttl').textContent = r.biodata_siswa ? `${r.biodata_siswa.tempat_lahir || '-'}, ${r.biodata_siswa.tanggal_lahir}` : '-';
-  document.getElementById('detail-siswa-alamat').textContent = r.biodata_siswa ? r.biodata_siswa.alamat || '-' : '-';
-  
-  const schName = r.sekolah_asal ? r.sekolah_asal.nama_sekolah : '-';
-  const schNpsn = r.sekolah_asal ? r.sekolah_asal.npsn || '' : '';
-  document.getElementById('detail-siswa-sekolah').textContent = schNpsn ? `${schName} (NPSN: ${schNpsn})` : schName;
+  document.getElementById('detail-siswa-nik-nisn').textContent = r.biodata_siswa ? `${r.biodata_siswa.nik || '-'} / ${r.biodata_siswa.nisn || '-'}` : '-';
+  document.getElementById('detail-siswa-ttl').textContent = r.biodata_siswa ? `${r.biodata_siswa.tempat_lahir || '-'}, ${r.biodata_siswa.tanggal_lahir || '-'}` : '-';
+  document.getElementById('detail-siswa-sekolah').textContent = r.sekolah_asal ? `${r.sekolah_asal.nama_sekolah || '-'} (${r.sekolah_asal.npsn || '-'})` : '-';
+  document.getElementById('detail-siswa-alamat').textContent = r.biodata_siswa ? r.biodata_siswa.alamat_lengkap || '-' : '-';
 
   document.getElementById('detail-ortu-ayah').textContent = r.data_orangtua ? `${r.data_orangtua.nama_ayah} (${r.data_orangtua.pekerjaan_ayah || '-'})` : '-';
   document.getElementById('detail-ortu-ibu').textContent = r.data_orangtua ? `${r.data_orangtua.nama_ibu} (${r.data_orangtua.pekerjaan_ibu || '-'})` : '-';
@@ -1178,7 +1176,7 @@ window.exportDataToExcel = function() {
       "NISN": r.biodata_siswa?.nisn || "-",
       "Tempat Lahir": r.biodata_siswa?.tempat_lahir || "-",
       "Tanggal Lahir": r.biodata_siswa?.tanggal_lahir || "-",
-      "Alamat": r.biodata_siswa?.alamat || "-",
+      "Alamat": r.biodata_siswa?.alamat_lengkap || "-",
       "Nama Ayah": r.data_orangtua?.nama_ayah || "-",
       "Nama Ibu": r.data_orangtua?.nama_ibu || "-",
       "No WhatsApp": r.data_orangtua?.whatsapp || "-",
