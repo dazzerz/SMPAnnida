@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadRAB();
   } else {
     // Guest mode is not allowed for RAB Kelas
-    window.location.href = '../login.html';
+    if(window.smoothRedirect){window.smoothRedirect('../login.html');}else{window.location.href='../login.html';}
     return;
   }
 
@@ -576,3 +576,4 @@ function exportToExcel() {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 }
+

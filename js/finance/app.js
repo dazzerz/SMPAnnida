@@ -71,7 +71,7 @@ function updateGreeting(user) {
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
       logoutBtn.innerHTML = '<span class="nav-icon">🔑</span> Login';
-      logoutBtn.addEventListener('click', () => window.location.href = '../../login.html');
+      logoutBtn.addEventListener('click', () => if(window.smoothRedirect){window.smoothRedirect('../../login.html'));}else{window.location.href='../../login.html');}
     }
     
     // Hide Transaksi, Budget, and RAB Kelas in sidebar for guests
@@ -451,4 +451,5 @@ async function main() {
 }
 
 main();
+
 

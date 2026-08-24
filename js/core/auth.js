@@ -105,13 +105,13 @@ export async function handleLogin(e) {
       r = 'wali_murid';
     }
     if (r === 'calon_siswa' || r === 'wali_murid') {
-      window.location.href = './pages/ppdb/dashboard-wali.html';
+      if(window.smoothRedirect){window.smoothRedirect('./pages/ppdb/dashboard-wali.html');}else{window.location.href='./pages/ppdb/dashboard-wali.html';}
     } else if (r === 'finance') {
-      window.location.href = './pages/finance/dashboard.html';
+      if(window.smoothRedirect){window.smoothRedirect('./pages/finance/dashboard.html');}else{window.location.href='./pages/finance/dashboard.html';}
     } else if (r === 'teacher') {
-      window.location.href = './pages/academic/dashboard.html';
+      if(window.smoothRedirect){window.smoothRedirect('./pages/academic/dashboard.html');}else{window.location.href='./pages/academic/dashboard.html';}
     } else {
-      window.location.href = './dashboard.html'; 
+      if(window.smoothRedirect){window.smoothRedirect('./dashboard.html');}else{window.location.href='./dashboard.html';} 
     }
   }, 800);
 }
@@ -167,7 +167,7 @@ async function handleRegister(e) {
   setLoading('register-btn', false);
 
   if (data.session) {
-    setTimeout(() => { window.location.href = './login.html'; }, 800);
+    setTimeout(() => { if(window.smoothRedirect){window.smoothRedirect('./login.html');}else{window.location.href='./login.html';} }, 800);
   } else {
     document.getElementById('register-form').reset();
     setTimeout(() => switchTab('login'), 3000);
@@ -181,7 +181,7 @@ export async function handleLogout() {
   sessionStorage.removeItem('guest_mode_active');
   sessionStorage.removeItem('guest_stats');
   const isInPages = window.location.pathname.includes('/pages/');
-  window.location.href = isInPages ? '../../index.html' : './index.html';
+  if(window.smoothRedirect){window.smoothRedirect(isInPages ? '../../index.html' : './index.html');}else{window.location.href=isInPages ? '../../index.html' : './index.html';}
 }
 
 // ── AUTH GUARD ────────────────────────────────────
@@ -189,7 +189,7 @@ export async function requireAuth() {
   const { data: { user } } = await supabaseClient.auth.getUser();
   if (!user) {
     const isInPages = window.location.pathname.includes('/pages/');
-    window.location.href = isInPages ? '../../login.html' : './login.html';
+    if(window.smoothRedirect){window.smoothRedirect(isInPages ? '../../login.html' : './login.html');}else{window.location.href=isInPages ? '../../login.html' : './login.html';}
     return null;
   }
 
@@ -205,15 +205,15 @@ export async function requireAuth() {
 
   // Redirect based on role constraints
   if (role === 'teacher' && path.includes('/finance/')) {
-    window.location.href = '/pages/academic/dashboard.html';
+    if(window.smoothRedirect){window.smoothRedirect('/pages/academic/dashboard.html');}else{window.location.href='/pages/academic/dashboard.html';}
     return null;
   }
   if (role === 'finance' && path.includes('/academic/')) {
-    window.location.href = '/pages/finance/dashboard.html';
+    if(window.smoothRedirect){window.smoothRedirect('/pages/finance/dashboard.html');}else{window.location.href='/pages/finance/dashboard.html';}
     return null;
   }
   if ((role === 'calon_siswa' || role === 'wali_murid') && (path.includes('/academic/') || path.includes('/finance/') || path.endsWith('/dashboard.html') && !path.includes('/ppdb/'))) {
-    window.location.href = '/pages/ppdb/dashboard-wali.html';
+    if(window.smoothRedirect){window.smoothRedirect('/pages/ppdb/dashboard-wali.html');}else{window.location.href='/pages/ppdb/dashboard-wali.html';}
     return null;
   }
 
@@ -257,7 +257,7 @@ export function initAuthPage() {
 
   // Redirect if already logged in
   supabaseClient.auth.getUser().then(({ data: { user } }) => {
-    if (user) window.location.href = './login.html';
+    if (user) if(window.smoothRedirect){window.smoothRedirect('./login.html');}else{window.location.href='./login.html';}
   });
 
   // Tab buttons
@@ -278,3 +278,4 @@ export function initAuthPage() {
   setupPasswordToggles();
   setupThemeToggle('auth-theme-toggle');
 }
+
