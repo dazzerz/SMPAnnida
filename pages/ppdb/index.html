@@ -123,13 +123,13 @@
         <img src="../../assets/logo/1.png" alt="Logo Annida" class="h-8 md:h-9 w-auto object-contain">
         <span class="tracking-wide uppercase text-[1rem] md:text-xl hidden sm:inline">SMP ANNIDA</span>
       </a>
-      <nav class="hidden lg:flex gap-5 xl:gap-6 items-center text-[0.9rem] font-semibold">
-        <a class="text-white pb-1 shadow-[0_2px_0_0_#fff]" href="#home">Home</a>
-        <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#mengapa-kami">Mengapa Kami</a>
-        <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#program">Program</a>
-        <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#timeline">Timeline</a>
-        <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#biaya">Biaya</a>
-        <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#alur">Alur PPDB</a>
+            <nav class="hidden lg:flex gap-5 xl:gap-6 items-center text-[0.9rem] font-semibold">
+        <a class="scroll-link text-white pb-1 shadow-[0_2px_0_0_#fff,0_2px_12px_1px_rgba(255,255,255,0.9)]" href="#home">Home</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#mengapa-kami">Mengapa Kami</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#program">Program</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#timeline">Timeline</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#biaya">Biaya</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#alur">Alur PPDB</a>
       </nav>
       <div class="flex items-center gap-2 md:gap-3">
         <a href="../../index.html" class="text-xs md:text-sm font-semibold text-white border border-white/30 hover:bg-white/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-colors whitespace-nowrap">Portal Utama</a>
@@ -708,7 +708,37 @@
     </div>
   </footer>
 
-  <!-- Lightbox Modal untuk Memperbesar Gambar (Letakkan sebelum tag </body>) -->
+  <!-- Lightbox Modal untuk Memperbesar Gambar (Letakkan sebelum tag   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section[id], div[id="home"]');
+      const navLinks = document.querySelectorAll('.scroll-link');
+      
+      window.addEventListener('scroll', () => {
+        let current = '';
+        const scrollY = window.pageYOffset;
+        
+        sections.forEach(section => {
+          const sectionHeight = section.offsetHeight;
+          const sectionTop = section.offsetTop - 150;
+          if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            current = section.getAttribute('id');
+          }
+        });
+        
+        if (scrollY < 100) current = 'home';
+        
+        navLinks.forEach(link => {
+          link.classList.remove('text-white', 'shadow-[0_2px_0_0_#fff,0_2px_12px_1px_rgba(255,255,255,0.9)]');
+          link.classList.add('text-gray-200');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.remove('text-gray-200');
+            link.classList.add('text-white', 'shadow-[0_2px_0_0_#fff,0_2px_12px_1px_rgba(255,255,255,0.9)]');
+          }
+        });
+      });
+    });
+  </script>
+</body>) -->
   <div id="lightbox-modal" class="lightbox-modal" style="display:none;">
     <span class="lightbox-close">&times;</span>
     <button class="lightbox-nav lightbox-prev">◀</button>
@@ -844,8 +874,40 @@
       initLightboxListeners();
     }
   </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('section[id], div[id="home"]');
+      const navLinks = document.querySelectorAll('.scroll-link');
+      
+      window.addEventListener('scroll', () => {
+        let current = '';
+        const scrollY = window.pageYOffset;
+        
+        sections.forEach(section => {
+          const sectionHeight = section.offsetHeight;
+          const sectionTop = section.offsetTop - 150;
+          if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            current = section.getAttribute('id');
+          }
+        });
+        
+        if (scrollY < 100) current = 'home';
+        
+        navLinks.forEach(link => {
+          link.classList.remove('text-white', 'shadow-[0_2px_0_0_#fff,0_2px_12px_1px_rgba(255,255,255,0.9)]');
+          link.classList.add('text-gray-200');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.remove('text-gray-200');
+            link.classList.add('text-white', 'shadow-[0_2px_0_0_#fff,0_2px_12px_1px_rgba(255,255,255,0.9)]');
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
+
+
 
 
 
