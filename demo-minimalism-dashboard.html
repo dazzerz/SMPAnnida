@@ -27,6 +27,13 @@
       });
     });
   </script>
+<script>
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted || document.body.classList.contains('page-fade-out')) {
+      document.body.classList.remove('page-fade-out');
+    }
+  });
+</script>
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans flex h-screen overflow-hidden">
 
@@ -134,4 +141,5 @@
 
 </body>
 </html>
+
 

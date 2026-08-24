@@ -145,6 +145,13 @@
       });
     });
   </script>
+<script>
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted || document.body.classList.contains('page-fade-out')) {
+      document.body.classList.remove('page-fade-out');
+    }
+  });
+</script>
 </head>
 <body>
 
@@ -502,4 +509,5 @@
   </script>
 </body>
 </html>
+
 

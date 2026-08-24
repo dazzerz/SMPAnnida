@@ -67,6 +67,13 @@
       });
     });
   </script>
+<script>
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted || document.body.classList.contains('page-fade-out')) {
+      document.body.classList.remove('page-fade-out');
+    }
+  });
+</script>
 </head>
 <body>
   <div class="app-container">
@@ -590,5 +597,6 @@
   <script type="module" src="../../js/finance/entry.js"></script>
 </body>
 </html>
+
 
 
