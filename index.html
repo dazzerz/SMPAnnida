@@ -62,6 +62,13 @@
       transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out !important;
     }
   </style>
+<script>
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted || document.body.classList.contains('page-fade-out')) {
+      document.body.classList.remove('page-fade-out');
+    }
+  });
+</script>
 </head>
 <body class="bg-hero bg-cover bg-center bg-fixed text-white font-body-md min-h-screen flex flex-col">
 
@@ -320,3 +327,4 @@
   </script>
 </body>
 </html>
+
