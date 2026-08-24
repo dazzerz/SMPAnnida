@@ -680,7 +680,7 @@ async function main() {
 
   const user = await getOptionalUser();
   if (!user) {
-    window.location.href = '../../index.html';
+    window.location.href = '../../login.html';
     return;
   }
 

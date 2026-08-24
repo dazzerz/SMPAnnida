@@ -15,6 +15,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(root, 'index.html'),
+        login: resolve(root, 'login.html'),
         superDashboard: resolve(root, 'dashboard.html'),
         academicDashboard: resolve(root, 'pages/academic/dashboard.html'),
         financeDashboard: resolve(root, 'pages/finance/dashboard.html'),

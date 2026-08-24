@@ -1,272 +1,98 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - SMP Annida</title>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Website Resmi - SMP Annida</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Nunito Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet"/>
+  
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-
-    .hero-wrapper {
-      position: relative;
-      width: 100vw; 
-      height: 100vh;
-      /* KOSONGKAN BACKGROUND! Biarkan daun dari global body muncul */
-      overflow: hidden;
-    }
-
-    /* AREA KIRI: FOTO GEDUNG SAJA (60% LEBAR LAYAR) */
-    .building-mask {
-      position: absolute;
-      left: 0; top: 0;
-      width: 60vw; /* Lebar gedung 60% layar */
-      height: 100vh;
-      /* MASUKKAN FOTO GEDUNG DI SINI */
-      background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0) 50%), url('assets/images/gedung_sekolah.jpg') center center / cover no-repeat;
-      
-      /* Lekukan halus ke dalam di sudut kanan atas dan bawah */
-      border-top-right-radius: 60px;
-      border-bottom-right-radius: 60px;
-      
-      /* Bayangan drop shadow tebal agar menimpa sisi kanan */
-      box-shadow: 15px 0 35px rgba(0, 0, 0, 0.5);
-      z-index: 2;
-      
-      display: flex;
-      align-items: flex-end; /* Teks di bawah */
-      padding: 5rem;
-    }
-
-    .hero-text { color: white; z-index: 2; text-shadow: 0 4px 15px rgba(0,0,0,0.7); }
-    .hero-text h1 { font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.1; color: #ffffff !important; }
-    .hero-text p { font-size: 1.2rem; opacity: 0.9; }
-
-    /* AREA FORM DI KANAN (40% LEBAR LAYAR) */
-    .login-right-area {
-      position: absolute;
-      right: 0; top: 0;
-      width: 40vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 3rem;
-      z-index: 1;
-      /* TANPA BACKGROUND! Agar tembus ke daun global di belakangnya */
-    }
-
-    /* KARTU KACA GLASSMORPHISM PREMIUM */
-    .glass-login {
-      width: 100%;
-      max-width: 420px;
-      background: rgba(10, 26, 15, 0.45) !important; /* Hijau gelap transparan */
-      backdrop-filter: blur(15px) !important;
-      -webkit-backdrop-filter: blur(15px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Garis batas putih tipis */
-      border-radius: 20px !important;
-      padding: 40px !important;
-      color: white;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
-    }
-
-    /* 5. EFEK GLOWING INPUT & TOMBOL */
-    .glass-login input {
-      width: 100%; padding: 14px; margin-bottom: 1.5rem;
-      background: rgba(255,255,255,0.05) !important;
-      border: 1px solid rgba(255,255,255,0.2) !important;
-      border-radius: 12px; color: white !important; outline: none;
-      transition: all 0.3s ease;
-      font-size: 1rem;
-    }
-    .glass-login input:focus {
-      border-color: #22c55e !important;
-      background: rgba(34, 197, 94, 0.1) !important;
-      box-shadow: 0 0 15px rgba(34, 197, 94, 0.5) !important; /* Glowing Neon Hijau */
-    }
-    .glass-login input::placeholder {
-      color: rgba(255,255,255,0.4) !important;
-    }
-
-    .glass-login button {
-      width: 100%; padding: 14px;
-      background: #16a34a; color: white;
-      border: none; border-radius: 50px; font-weight: bold; font-size: 1.1rem;
-      box-shadow: 0 0 20px rgba(22, 163, 74, 0.5); /* Glowing Tombol */
-      cursor: pointer; transition: 0.3s;
-    }
-    .glass-login button:hover {
-      background: #15803d;
-      box-shadow: 0 0 25px rgba(22, 163, 74, 0.8);
-    }
-
-    /* Secondary Action Button styling (Outline style) */
-    .glass-login button.btn-guest {
-      background: transparent !important;
-      color: #22c55e !important;
-      border: 1px solid #22c55e !important;
-      box-shadow: none !important;
-      margin-top: 0;
-    }
-    .glass-login button.btn-guest:hover {
-      background: rgba(34, 197, 94, 0.1) !important;
-      box-shadow: none !important;
-    }
-
-    /* Logo and Header text alignment */
-    .login-header {
-       display: flex;
-       align-items: center;
-       gap: 15px; /* Jarak proporsional antara logo dan teks */
-       margin-bottom: 2rem;
-    }
-    .login-header img {
-       width: 45px; /* Ukuran logo disesuaikan */
-       height: auto;
-       object-fit: contain;
-    }
-    .login-header h2 {
-       font-size: 1.6rem;
-       font-weight: 700;
-       color: #ffffff;
-    }
-
-    .divider {
-      margin: 15px 0;
-      text-align: center;
-      color: rgba(255,255,255,0.4);
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-    }
-    .divider::before, .divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.15);
-      margin: 0 1rem;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .hero-wrapper {
-        display: flex;
-        flex-direction: column;
-        height: auto;
-        min-height: 100vh;
-        overflow-y: auto;
-      }
-      .building-mask {
-        position: relative !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 40vh !important;
-        border-top-right-radius: 0 !important;
-        border-bottom-right-radius: 40px !important;
-        border-bottom-left-radius: 40px !important;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.5) !important;
-        padding: 2rem 1.5rem !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        align-items: center !important;
-        text-align: center !important;
-      }
-      .hero-text {
-        text-align: center !important;
-      }
-      .hero-text h1 {
-        font-size: 2.2rem !important;
-        margin-bottom: 0.5rem !important;
-      }
-      .hero-text p {
-        font-size: 1rem !important;
-        max-width: 100% !important;
-      }
-      .login-right-area {
-        position: relative !important;
-        top: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
-        height: auto !important;
-        min-height: 60vh !important;
-        padding: 20px !important; /* Jarak 20px di kiri, kanan, bawah */
-        display: flex !important;
-        justify-content: center !important;
-        align-items: flex-start !important;
-      }
-      .glass-login {
-        padding: 30px 20px !important;
-        max-width: 100% !important;
-        border-radius: 20px !important;
-      }
+    body { font-family: 'Nunito Sans', sans-serif; }
+    
+    /* Efek Kaca (Glassmorphism) */
+    .glass-panel {
+      background: rgba(16, 26, 20, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
   </style>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/mobile.css" />
-  <script type="module">
-    import { handleLogin } from './js/core/auth.js?v=2';
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      const submitBtn = document.querySelector('.btn-submit');
-      if (submitBtn) {
-        submitBtn.addEventListener('click', handleLogin);
-      }
-      
-      const guestBtn = document.querySelector('.btn-guest');
-      if (guestBtn) {
-        guestBtn.addEventListener('click', () => {
-          sessionStorage.setItem('guest_mode_active', 'true');
-          localStorage.setItem('isGuest', 'true');
-          window.location.href = 'pages/academic/dashboard.html';
-        });
-      }
-    });
-  </script>
 </head>
-<body>
+<body class="bg-[url('./assets/images/gedung_sekolah.jpg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen text-white flex flex-col">
+  
+  <!-- Dark Overlay -->
+  <div class="fixed inset-0 bg-black/60 z-0"></div>
 
-  <div class="hero-wrapper">
-    
-    <!-- AREA KIRI -->
-    <div class="building-mask">
-      <div class="hero-text">
-        <h1>Selamat Datang di<br>Portal SMP Annida</h1>
-        <p>Akses terpadu untuk layanan akademik dan administrasi sekolah.</p>
+  <!-- Navbar -->
+  <header class="glass-panel sticky top-0 z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="#" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+        <img src="./assets/logo/1.png" alt="Logo SMP Annida" class="h-10 w-auto object-contain">
+        <span class="text-xl font-bold tracking-wide">SMP ANNIDA</span>
+      </a>
+      
+      <!-- Menu Lengkap sesuai Permintaan -->
+      <nav class="hidden lg:flex gap-8 font-semibold text-gray-200">
+        <a href="#" class="hover:text-[#10b981] transition-colors duration-200">Profil</a>
+        <a href="#" class="hover:text-[#10b981] transition-colors duration-200">Akademik</a>
+        <a href="#" class="hover:text-[#10b981] transition-colors duration-200">Kesiswaan</a>
+        <a href="#" class="hover:text-[#10b981] transition-colors duration-200">Fasilitas</a>
+        <a href="#" class="hover:text-[#10b981] transition-colors duration-200">Berita</a>
+      </nav>
+      
+      <!-- Tombol Navbar Mobile -->
+      <div class="lg:hidden flex items-center">
+        <button class="text-white hover:text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+        </button>
       </div>
     </div>
+  </header>
 
-    <!-- AREA KANAN -->
-    <div class="login-right-area">
-      <div class="glass-login">
+  <!-- Main Hero -->
+  <main class="flex-grow flex items-center justify-center relative z-10 px-4 text-center py-20">
+    <div class="max-w-4xl glass-panel p-10 md:p-16 rounded-3xl shadow-2xl">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+        Selamat Datang di<br><span class="text-[#10b981]">SMP Annida</span>
+      </h1>
+      <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+        Unggul, Berkarakter, dan Berlandaskan Nilai Islam. Bergabunglah dengan kami dalam mencetak generasi penerus bangsa.
+      </p>
+      
+      <!-- Akses Cepat (Dua Tombol) -->
+      <div class="flex flex-col sm:flex-row gap-5 justify-center">
         
-        <div class="login-header">
-           <img src="assets/logo/1.png" alt="Logo Annida">
-           <h2>SMPAnnida Portal</h2>
-        </div>
+        <!-- Tombol Portal PPDB -->
+        <a href="./pages/ppdb/index.html" class="bg-[#10b981] hover:bg-[#059669] text-white font-bold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-1 text-lg flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+          Portal PPDB
+        </a>
         
-        <p style="font-size: 0.85rem; opacity: 0.7; margin-bottom: 2rem; margin-top: -1rem; text-align: left;">Silakan masuk menggunakan akun Anda.</p>
+        <!-- Tombol Login Pegawai -->
+        <a href="./login.html" class="bg-transparent border-2 border-white/50 hover:border-white hover:bg-white/10 text-white font-bold py-3 px-8 rounded-full transition-all text-lg flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+          Login Pegawai
+        </a>
         
-        <div id="auth-message"></div>
-
-        <form>
-          <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; opacity: 0.8; text-align: left;">Email / No. WhatsApp (Khusus Wali Murid)</label>
-          <input type="text" id="login-email" placeholder="contoh@email.com atau 08123456789">
-          
-          <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; opacity: 0.8; text-align: left;">Password</label>
-          <input type="password" placeholder="••••••••">
-          
-          <button type="button" class="btn-submit" style="margin-bottom: 1rem;">Masuk</button>
-          
-          <div class="divider">Atau</div>
-          
-          <button type="button" class="btn-guest">Masuk Tanpa Login (Guest)</button>
-        </form>
-
       </div>
     </div>
+  </main>
 
-  </div>
+  <!-- Footer -->
+  <footer class="relative z-10 py-6 text-center text-sm text-gray-400 border-t border-white/10 bg-black/40">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div>&copy; 2026 SMP Annida. Hak Cipta Dilindungi.</div>
+      <div class="flex gap-4">
+        <a href="#" class="hover:text-white transition-colors">Instagram</a>
+        <a href="#" class="hover:text-white transition-colors">Kontak</a>
+      </div>
+    </div>
+  </footer>
 
 </body>
 </html>

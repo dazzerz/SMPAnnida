@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - SMP Annida</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+
+    .hero-wrapper {
+      position: relative;
+      width: 100vw; 
+      height: 100vh;
+      /* KOSONGKAN BACKGROUND! Biarkan daun dari global body muncul */
+      overflow: hidden;
+    }
+
+    /* AREA KIRI: FOTO GEDUNG SAJA (60% LEBAR LAYAR) */
+    .building-mask {
+      position: absolute;
+      left: 0; top: 0;
+      width: 60vw; /* Lebar gedung 60% layar */
+      height: 100vh;
+      /* MASUKKAN FOTO GEDUNG DI SINI */
+      background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0) 50%), url('assets/images/gedung_sekolah.jpg') center center / cover no-repeat;
+      
+      /* Lekukan halus ke dalam di sudut kanan atas dan bawah */
+      border-top-right-radius: 60px;
+      border-bottom-right-radius: 60px;
+      
+      /* Bayangan drop shadow tebal agar menimpa sisi kanan */
+      box-shadow: 15px 0 35px rgba(0, 0, 0, 0.5);
+      z-index: 2;
+      
+      display: flex;
+      align-items: flex-end; /* Teks di bawah */
+      padding: 5rem;
+    }
+
+    .hero-text { color: white; z-index: 2; text-shadow: 0 4px 15px rgba(0,0,0,0.7); }
+    .hero-text h1 { font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.1; color: #ffffff !important; }
+    .hero-text p { font-size: 1.2rem; opacity: 0.9; }
+
+    /* AREA FORM DI KANAN (40% LEBAR LAYAR) */
+    .login-right-area {
+      position: absolute;
+      right: 0; top: 0;
+      width: 40vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem;
+      z-index: 1;
+      /* TANPA BACKGROUND! Agar tembus ke daun global di belakangnya */
+    }
+
+    /* KARTU KACA GLASSMORPHISM PREMIUM */
+    .glass-login {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(10, 26, 15, 0.45) !important; /* Hijau gelap transparan */
+      backdrop-filter: blur(15px) !important;
+      -webkit-backdrop-filter: blur(15px) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important; /* Garis batas putih tipis */
+      border-radius: 20px !important;
+      padding: 40px !important;
+      color: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    /* 5. EFEK GLOWING INPUT & TOMBOL */
+    .glass-login input {
+      width: 100%; padding: 14px; margin-bottom: 1.5rem;
+      background: rgba(255,255,255,0.05) !important;
+      border: 1px solid rgba(255,255,255,0.2) !important;
+      border-radius: 12px; color: white !important; outline: none;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+    .glass-login input:focus {
+      border-color: #22c55e !important;
+      background: rgba(34, 197, 94, 0.1) !important;
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.5) !important; /* Glowing Neon Hijau */
+    }
+    .glass-login input::placeholder {
+      color: rgba(255,255,255,0.4) !important;
+    }
+
+    .glass-login button {
+      width: 100%; padding: 14px;
+      background: #16a34a; color: white;
+      border: none; border-radius: 50px; font-weight: bold; font-size: 1.1rem;
+      box-shadow: 0 0 20px rgba(22, 163, 74, 0.5); /* Glowing Tombol */
+      cursor: pointer; transition: 0.3s;
+    }
+    .glass-login button:hover {
+      background: #15803d;
+      box-shadow: 0 0 25px rgba(22, 163, 74, 0.8);
+    }
+
+    /* Secondary Action Button styling (Outline style) */
+    .glass-login button.btn-guest {
+      background: transparent !important;
+      color: #22c55e !important;
+      border: 1px solid #22c55e !important;
+      box-shadow: none !important;
+      margin-top: 0;
+    }
+    .glass-login button.btn-guest:hover {
+      background: rgba(34, 197, 94, 0.1) !important;
+      box-shadow: none !important;
+    }
+
+    /* Logo and Header text alignment */
+    .login-header {
+       display: flex;
+       align-items: center;
+       gap: 15px; /* Jarak proporsional antara logo dan teks */
+       margin-bottom: 2rem;
+    }
+    .login-header img {
+       width: 45px; /* Ukuran logo disesuaikan */
+       height: auto;
+       object-fit: contain;
+    }
+    .login-header h2 {
+       font-size: 1.6rem;
+       font-weight: 700;
+       color: #ffffff;
+    }
+
+    .divider {
+      margin: 15px 0;
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.15);
+      margin: 0 1rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .hero-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+      }
+      .building-mask {
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 40vh !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 40px !important;
+        border-bottom-left-radius: 40px !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.5) !important;
+        padding: 2rem 1.5rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+      }
+      .hero-text {
+        text-align: center !important;
+      }
+      .hero-text h1 {
+        font-size: 2.2rem !important;
+        margin-bottom: 0.5rem !important;
+      }
+      .hero-text p {
+        font-size: 1rem !important;
+        max-width: 100% !important;
+      }
+      .login-right-area {
+        position: relative !important;
+        top: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 60vh !important;
+        padding: 20px !important; /* Jarak 20px di kiri, kanan, bawah */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+      }
+      .glass-login {
+        padding: 30px 20px !important;
+        max-width: 100% !important;
+        border-radius: 20px !important;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mobile.css" />
+  <script type="module">
+    import { handleLogin } from './js/core/auth.js?v=2';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const submitBtn = document.querySelector('.btn-submit');
+      if (submitBtn) {
+        submitBtn.addEventListener('click', handleLogin);
+      }
+      
+      const guestBtn = document.querySelector('.btn-guest');
+      if (guestBtn) {
+        guestBtn.addEventListener('click', () => {
+          sessionStorage.setItem('guest_mode_active', 'true');
+          localStorage.setItem('isGuest', 'true');
+          window.location.href = 'pages/academic/dashboard.html';
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+
+  <div class="hero-wrapper">
+    
+    <!-- AREA KIRI -->
+    <div class="building-mask">
+      <div class="hero-text">
+        <h1>Selamat Datang di<br>Portal SMP Annida</h1>
+        <p>Akses terpadu untuk layanan akademik dan administrasi sekolah.</p>
+      </div>
+    </div>
+
+    <!-- AREA KANAN -->
+    <div class="login-right-area">
+      <div class="glass-login">
+        
+        <div class="login-header">
+           <img src="assets/logo/1.png" alt="Logo Annida">
+           <h2>SMPAnnida Portal</h2>
+        </div>
+        
+        <p style="font-size: 0.85rem; opacity: 0.7; margin-bottom: 2rem; margin-top: -1rem; text-align: left;">Silakan masuk menggunakan akun Anda.</p>
+        
+        <div id="auth-message"></div>
+
+        <form>
+          <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; opacity: 0.8; text-align: left;">Email / No. WhatsApp (Khusus Wali Murid)</label>
+          <input type="text" id="login-email" placeholder="contoh@email.com atau 08123456789">
+          
+          <label style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem; opacity: 0.8; text-align: left;">Password</label>
+          <input type="password" placeholder="••••••••">
+          
+          <button type="button" class="btn-submit" style="margin-bottom: 1rem;">Masuk</button>
+          
+          <div class="divider">Atau</div>
+          
+          <button type="button" class="btn-guest">Masuk Tanpa Login (Guest)</button>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
