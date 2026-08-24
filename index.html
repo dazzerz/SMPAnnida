@@ -36,6 +36,10 @@
     }
   </script>
   <style>
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
     .bg-hero {
       background-image: url('./assets/images/gedung_sekolah.jpg');
     }
@@ -64,19 +68,19 @@
       
       <!-- Navigation Links -->
       <nav class="hidden lg:flex gap-6 xl:gap-8 items-center text-[0.95rem] font-semibold">
-        <a class="text-white pb-1 shadow-[0_2px_0_0_#fff]" href="#">Beranda</a>
-        <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#profil">Tentang Kami</a>
-        <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#akademik">Akademik</a>
-        <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#kesiswaan">Kesiswaan</a>
+        <a class="scroll-link text-white pb-1 shadow-[0_2px_0_0_#fff]" href="#beranda">Beranda</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#profil">Tentang Kami</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#akademik">Akademik</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#kesiswaan">Kesiswaan</a>
         <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="./pages/ppdb/index.html">Portal PPDB</a>
-        <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#berita">Berita</a>
-        <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#kontak">Kontak</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#berita">Berita</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#kontak">Kontak</a>
       </nav>
     </div>
   </header>
 
   <!-- Hero Content -->
-  <main class="flex-grow flex items-center justify-center relative z-10 px-4 py-24 min-h-[80vh]">
+  <main id="beranda" class="flex-grow flex items-center justify-center relative z-10 px-4 py-24 min-h-[80vh]">
     <div class="glass-panel-custom p-10 md:p-16 rounded-3xl text-center max-w-4xl">
       <h1 class="font-headline-md text-4xl md:text-6xl font-bold mb-4 leading-tight">
         Website Resmi <br><span class="text-primary">SMP Annida</span>
@@ -258,5 +262,35 @@
     &copy; 2026 SMP Annida. Hak Cipta Dilindungi.<br>
     <span class="text-xs mt-2 inline-block opacity-50">Website Resmi Sistem Informasi Terpadu</span>
   </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('main#beranda, section[id], div#fasilitas');
+      const navLinks = document.querySelectorAll('.scroll-link');
+      
+      window.addEventListener('scroll', () => {
+        let current = '';
+        const scrollY = window.pageYOffset;
+        
+        sections.forEach(section => {
+          const sectionHeight = section.offsetHeight;
+          const sectionTop = section.offsetTop - 150; // offset untuk navbar yang melayang
+          if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            current = section.getAttribute('id');
+          }
+        });
+        
+        if (scrollY < 100) current = 'beranda';
+        
+        navLinks.forEach(link => {
+          link.classList.remove('text-white', 'shadow-[0_2px_0_0_#fff]');
+          link.classList.add('text-gray-200');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.remove('text-gray-200');
+            link.classList.add('text-white', 'shadow-[0_2px_0_0_#fff]');
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
