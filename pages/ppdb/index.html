@@ -111,7 +111,9 @@
   });
 </script>
 </head>
-<body class="bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-fixed text-white font-body-md antialiased min-h-screen flex flex-col">
+<body class="text-white font-body-md antialiased min-h-screen flex flex-col relative">
+  <!-- Fixed Background Layer to prevent iOS mobile cutoff -->
+  <div class="bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center fixed inset-0 w-full h-full -z-10"></div>
 
   <!-- Lapisan Gelap Overlay Global -->
   <div class="fixed inset-0 bg-black/25 z-[-1]"></div>
@@ -906,6 +908,7 @@
   </script>
 </body>
 </html>
+
 
 
 
