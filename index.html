@@ -70,7 +70,9 @@
   });
 </script>
 </head>
-<body class="bg-hero bg-cover bg-center bg-fixed text-white font-body-md min-h-screen flex flex-col">
+<body class="text-white font-body-md min-h-screen flex flex-col relative">
+  <!-- Fixed Background Layer to prevent iOS mobile cutoff -->
+  <div class="bg-hero bg-cover bg-center fixed inset-0 w-full h-full -z-10"></div>
 
   <!-- Lapisan Gelap (Overlay) -->
   <div class="fixed inset-0 bg-black/60 z-0 pointer-events-none"></div>
@@ -327,6 +329,7 @@
   </script>
 </body>
 </html>
+
 
 
 
