@@ -4,7 +4,7 @@ import { resolve } from 'path';
 const root = import.meta.dirname;
 
 export default defineConfig({
-  base: '/SMPAnnida/',
+  base: '/',
   resolve: {
     alias: {
       '@': resolve(root, './js'),
