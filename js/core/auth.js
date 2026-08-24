@@ -167,7 +167,7 @@ async function handleRegister(e) {
   setLoading('register-btn', false);
 
   if (data.session) {
-    setTimeout(() => { window.location.href = './index.html'; }, 800);
+    setTimeout(() => { window.location.href = './login.html'; }, 800);
   } else {
     document.getElementById('register-form').reset();
     setTimeout(() => switchTab('login'), 3000);
@@ -181,7 +181,7 @@ export async function handleLogout() {
   sessionStorage.removeItem('guest_mode_active');
   sessionStorage.removeItem('guest_stats');
   const isInPages = window.location.pathname.includes('/pages/');
-  window.location.href = isInPages ? '../../index.html' : './index.html';
+  window.location.href = isInPages ? '../../login.html' : './login.html';
 }
 
 // ── AUTH GUARD ────────────────────────────────────
@@ -189,7 +189,7 @@ export async function requireAuth() {
   const { data: { user } } = await supabaseClient.auth.getUser();
   if (!user) {
     const isInPages = window.location.pathname.includes('/pages/');
-    window.location.href = isInPages ? '../../index.html' : './index.html';
+    window.location.href = isInPages ? '../../login.html' : './login.html';
     return null;
   }
 
@@ -257,7 +257,7 @@ export function initAuthPage() {
 
   // Redirect if already logged in
   supabaseClient.auth.getUser().then(({ data: { user } }) => {
-    if (user) window.location.href = './index.html';
+    if (user) window.location.href = './login.html';
   });
 
   // Tab buttons

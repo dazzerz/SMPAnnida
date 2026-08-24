@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadRAB();
   } else {
     // Guest mode is not allowed for RAB Kelas
-    window.location.href = '../index.html';
+    window.location.href = '../login.html';
     return;
   }
 

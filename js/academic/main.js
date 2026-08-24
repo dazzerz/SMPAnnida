@@ -85,7 +85,7 @@ async function checkAuth() {
         authState.setAuth(_user, _teacher, _admin, _guest, _pembina || false);
 
         if (error || (!user && !_guest)) {
-            window.location.href = '../../index.html';
+            window.location.href = '../../login.html';
             return;
         }
 
@@ -118,7 +118,7 @@ async function checkAuth() {
                 await db.auth.signOut();
                 localStorage.removeItem('isGuest');
                 sessionStorage.removeItem('guest_mode_active');
-                window.location.href = '../../index.html';
+                window.location.href = '../../login.html';
             });
         }
 
@@ -127,7 +127,7 @@ async function checkAuth() {
 
     } catch (err) {
         console.error("Auth check failed:", err);
-        window.location.href = '../../index.html';
+        window.location.href = '../../login.html';
     }
 }
 // Jalankan cek auth
