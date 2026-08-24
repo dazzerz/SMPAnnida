@@ -118,7 +118,7 @@ async function checkAuth() {
                 await db.auth.signOut();
                 localStorage.removeItem('isGuest');
                 sessionStorage.removeItem('guest_mode_active');
-                window.location.href = '../../login.html';
+                window.location.href = '../../index.html';
             });
         }
 
