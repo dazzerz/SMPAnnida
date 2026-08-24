@@ -181,7 +181,7 @@ export async function handleLogout() {
   sessionStorage.removeItem('guest_mode_active');
   sessionStorage.removeItem('guest_stats');
   const isInPages = window.location.pathname.includes('/pages/');
-  window.location.href = isInPages ? '../../login.html' : './login.html';
+  window.location.href = isInPages ? '../../index.html' : './index.html';
 }
 
 // ── AUTH GUARD ────────────────────────────────────
