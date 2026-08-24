@@ -23,9 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Fallback untuk guest/testing jika Supabase credentials salah atau belum ada akun
                     
                     if (email.includes('admin')) {
-                        window.location.href = 'dashboard-admin.html';
+                        if(window.smoothRedirect){window.smoothRedirect('dashboard-admin.html');}else{window.location.href='dashboard-admin.html';}
                     } else {
-                        window.location.href = 'dashboard-wali.html';
+                        if(window.smoothRedirect){window.smoothRedirect('dashboard-wali.html');}else{window.location.href='dashboard-wali.html';}
                     }
                     return;
                 }
@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Cek apakah admin atau calon siswa
                 if (email.includes('admin')) {
-                    window.location.href = 'dashboard-admin.html';
+                    if(window.smoothRedirect){window.smoothRedirect('dashboard-admin.html');}else{window.location.href='dashboard-admin.html';}
                 } else {
-                    window.location.href = 'dashboard-wali.html';
+                    if(window.smoothRedirect){window.smoothRedirect('dashboard-wali.html');}else{window.location.href='dashboard-wali.html';}
                 }
             } catch (err) {
                 console.error("Login process error:", err);
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
 
                     showToast(`Registrasi Berhasil!\nNomor Pendaftaran Anda: ${noPendaftaran}`, 'success');
-                    window.location.href = 'dashboard-wali.html';
+                    if(window.smoothRedirect){window.smoothRedirect('dashboard-wali.html');}else{window.location.href='dashboard-wali.html';}
                 }
             } catch (err) {
                 console.error("Registration error:", err);
@@ -123,3 +123,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+

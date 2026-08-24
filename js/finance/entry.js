@@ -680,7 +680,7 @@ async function main() {
 
   const user = await getOptionalUser();
   if (!user) {
-    window.location.href = '../../login.html';
+    if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
     return;
   }
 
@@ -780,4 +780,5 @@ async function main() {
 }
 
 main();
+
 

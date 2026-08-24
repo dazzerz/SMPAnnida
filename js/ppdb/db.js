@@ -36,13 +36,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       // Direct guests to login
       if (window.location.pathname.includes('dashboard-')) {
-        window.location.href = '../../login.html';
+        if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
         return;
       }
     }
   } catch (e) {
     if (window.location.pathname.includes('dashboard-')) {
-      window.location.href = '../../login.html';
+      if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
       return;
     }
   }
@@ -97,12 +97,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         if (!roleData || (roleData.role !== 'admin' && roleData.role !== 'pembina')) {
           alert("Akses Ditolak: Anda tidak memiliki izin untuk mengakses halaman Admin.");
-          window.location.href = '../../login.html';
+          if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
           return;
         }
       } catch (err) {
         alert("Akses Ditolak: Gagal memverifikasi hak akses.");
-        window.location.href = '../../login.html';
+        if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
         return;
       }
     }
@@ -1248,3 +1248,4 @@ window.printPDFLulus = function() {
 
 function exportDataToExcel() { window.exportDataToExcel(); }
 function printPDFLulus() { window.printPDFLulus(); }
+
