@@ -5,94 +5,83 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>Website Resmi - SMP Annida</title>
   
-  <!-- Tailwind CSS via CDN -->
+  <!-- Tailwind CSS & Fonts (Identik dengan halaman PPDB) -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet"/>
   
-  <!-- Google Fonts: Nunito Sans -->
-  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet"/>
-  
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#10b981",
+            "primary-dim": "#059669",
+          },
+          fontFamily: {
+            "headline-md": ["Literata"],
+            "body-md": ["Nunito Sans"]
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { font-family: 'Nunito Sans', sans-serif; }
-    
-    /* Efek Kaca (Glassmorphism) */
-    .glass-panel {
-      background: rgba(16, 26, 20, 0.45);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+    .glass-panel-custom {
+      background: rgba(16, 26, 20, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     }
   </style>
 </head>
-<body class="bg-[url('./assets/images/gedung_sekolah.jpg')] bg-cover bg-center bg-no-repeat bg-fixed min-h-screen text-white flex flex-col">
-  
-  <!-- Dark Overlay -->
+<body class="bg-[url('./assets/images/gedung_sekolah.jpg')] bg-cover bg-center bg-fixed text-white font-body-md min-h-screen flex flex-col">
+
+  <!-- Lapisan Gelap (Overlay) -->
   <div class="fixed inset-0 bg-black/60 z-0"></div>
 
   <!-- Navbar -->
-  <header class="glass-panel sticky top-0 z-50 shadow-lg">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="#" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+  <header class="bg-black/30 backdrop-blur-md border-b border-white/10 w-full top-0 z-50 sticky shadow-sm">
+    <div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
+      <a class="flex items-center gap-3 font-headline-md text-2xl font-bold text-white hover:opacity-90 transition-opacity" href="#">
         <img src="./assets/logo/1.png" alt="Logo SMP Annida" class="h-10 w-auto object-contain">
-        <span class="text-xl font-bold tracking-wide">SMP ANNIDA</span>
+        <span>SMP Annida</span>
       </a>
-      
-      <!-- Menu Lengkap sesuai Permintaan -->
-      <nav class="hidden lg:flex gap-8 font-semibold text-gray-200">
-        <a href="#" class="hover:text-[#10b981] transition-colors duration-200">Profil</a>
-        <a href="#" class="hover:text-[#10b981] transition-colors duration-200">Akademik</a>
-        <a href="#" class="hover:text-[#10b981] transition-colors duration-200">Kesiswaan</a>
-        <a href="#" class="hover:text-[#10b981] transition-colors duration-200">Fasilitas</a>
-        <a href="#" class="hover:text-[#10b981] transition-colors duration-200">Berita</a>
+      <nav class="hidden lg:flex gap-8">
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-semibold" href="#">Profil</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-semibold" href="#">Akademik</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-semibold" href="#">Kesiswaan</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-semibold" href="#">Fasilitas</a>
+        <a class="text-gray-300 hover:text-primary transition-colors duration-200 font-semibold" href="#">Berita</a>
       </nav>
-      
-      <!-- Tombol Navbar Mobile -->
-      <div class="lg:hidden flex items-center">
-        <button class="text-white hover:text-gray-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-        </button>
-      </div>
     </div>
   </header>
 
-  <!-- Main Hero -->
-  <main class="flex-grow flex items-center justify-center relative z-10 px-4 text-center py-20">
-    <div class="max-w-4xl glass-panel p-10 md:p-16 rounded-3xl shadow-2xl">
-      <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">
-        Selamat Datang di<br><span class="text-[#10b981]">SMP Annida</span>
+  <!-- Hero Content -->
+  <main class="flex-grow flex items-center justify-center relative z-10 px-4 py-16">
+    <div class="glass-panel-custom p-10 md:p-16 rounded-3xl text-center max-w-4xl">
+      <h1 class="font-headline-md text-4xl md:text-6xl font-bold mb-4 leading-tight">
+        Website Resmi <br><span class="text-primary">SMP Annida</span>
       </h1>
-      <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
-        Unggul, Berkarakter, dan Berlandaskan Nilai Islam. Bergabunglah dengan kami dalam mencetak generasi penerus bangsa.
+      <p class="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed">
+        Membangun Generasi Cerdas, Berkarakter, dan Unggul Berlandaskan Nilai Islam.
       </p>
-      
-      <!-- Akses Cepat (Dua Tombol) -->
-      <div class="flex flex-col sm:flex-row gap-5 justify-center">
-        
-        <!-- Tombol Portal PPDB -->
-        <a href="./pages/ppdb/index.html" class="bg-[#10b981] hover:bg-[#059669] text-white font-bold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-1 text-lg flex items-center justify-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
-          Portal PPDB
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row justify-center gap-5">
+        <a href="./pages/ppdb/index.html" class="bg-primary hover:bg-primary-dim text-white font-bold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-1 text-lg">
+          Daftar PPDB Sekarang
         </a>
-        
-        <!-- Tombol Login Pegawai -->
-        <a href="./login.html" class="bg-transparent border-2 border-white/50 hover:border-white hover:bg-white/10 text-white font-bold py-3 px-8 rounded-full transition-all text-lg flex items-center justify-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+        <a href="./login.html" class="bg-transparent border-2 border-white/40 hover:border-white hover:bg-white/10 text-white font-bold py-3 px-8 rounded-full transition-all text-lg">
           Login Pegawai
         </a>
-        
       </div>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="relative z-10 py-6 text-center text-sm text-gray-400 border-t border-white/10 bg-black/40">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div>&copy; 2026 SMP Annida. Hak Cipta Dilindungi.</div>
-      <div class="flex gap-4">
-        <a href="#" class="hover:text-white transition-colors">Instagram</a>
-        <a href="#" class="hover:text-white transition-colors">Kontak</a>
-      </div>
-    </div>
+  <footer class="relative z-10 py-6 text-center text-sm text-gray-400 bg-black/40 border-t border-white/10">
+    &copy; 2026 SMP Annida. Hak Cipta Dilindungi.
   </footer>
-
 </body>
 </html>
