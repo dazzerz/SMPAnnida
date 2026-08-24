@@ -61,6 +61,9 @@
       transform: translateY(-10px) !important;
       transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out !important;
     }
+      /* Neon Active Line */
+    .nav-neon-active { position: relative; color: white !important; }
+    .nav-neon-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background-color: white; box-shadow: 0 0 10px 2px rgba(255,255,255,0.8); border-radius: 2px; }
   </style>
 <script>
   window.addEventListener('pageshow', function (event) {
@@ -88,7 +91,7 @@
       
       <!-- Navigation Links -->
       <nav class="hidden lg:flex gap-6 xl:gap-8 items-center text-[0.95rem] font-semibold">
-        <a class="scroll-link text-white pb-1 shadow-[0_2px_0_0_#fff,0_2px_12px_1px_rgba(255,255,255,0.9)]" href="#beranda">Beranda</a>
+        <a class="scroll-link nav-neon-active pb-1" href="#beranda">Beranda</a>
         <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#profil">Tentang Kami</a>
         <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#akademik">Akademik</a>
         <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#kesiswaan">Kesiswaan</a>
@@ -302,11 +305,11 @@
         if (scrollY < 100) current = 'beranda';
         
         navLinks.forEach(link => {
-          link.classList.remove('text-white', 'shadow-[0_2px_0_0_#fff,0_2px_12px_1px_rgba(255,255,255,0.9)]');
+          link.classList.remove('nav-neon-active');
           link.classList.add('text-gray-200');
           if (link.getAttribute('href') === '#' + current) {
             link.classList.remove('text-gray-200');
-            link.classList.add('text-white', 'shadow-[0_2px_0_0_#fff,0_2px_12px_1px_rgba(255,255,255,0.9)]');
+            link.classList.add('nav-neon-active');
           }
         });
       });
@@ -329,6 +332,7 @@
   </script>
 </body>
 </html>
+
 
 
 
