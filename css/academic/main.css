@@ -1,5 +1,5 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Inter', sans-serif; background-color: var(--background) !important; background-image: none !important; color: var(--text-main); line-height: 1.5; }
+body { font-family: 'Inter', sans-serif; background-color: var(--background); color: var(--text-main); line-height: 1.5; }
 .app-container { display: flex; min-height: 100vh; }
 /* Sidebar & Topbar */
 .sidebar { width: var(--sidebar-width); background-color: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; transition: transform 0.3s ease; }
