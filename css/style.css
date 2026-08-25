@@ -464,7 +464,7 @@ body {
 .main-content {
   flex: 1;
   padding: 2rem 3rem;
-  margin-left: 0 !important; /* CRITICAL: Override old CSS that added double sidebar width margin */
+  margin-left: 0; /* CRITICAL: Override old CSS that added double sidebar width margin */
   overflow-y: auto;
   
   min-width: 0; /* CRITICAL: Allows flex child to shrink below content size */
@@ -556,92 +556,92 @@ body {
 
 /* Variable Mapping (Force all old variables to use Glassmorphism) */
 :root, [data-theme="light"], [data-theme="dark"] {
-  --bg-card: var(--glass-bg) !important;
-  --bg-main: transparent !important;
-  --bg-primary: transparent !important;
-  --bg-secondary: transparent !important;
-  --text-main: var(--text-primary) !important;
-  --primary-color: var(--primary) !important;
-  --accent-primary: var(--primary) !important;
-  --background-color: var(--body-color) !important;
-  --bg-elevated: var(--glass-bg-hover) !important;
+  --bg-card: var(--glass-bg);
+  --bg-main: transparent;
+  --bg-primary: transparent;
+  --bg-secondary: transparent;
+  --text-main: var(--text-primary);
+  --primary-color: var(--primary);
+  --accent-primary: var(--primary);
+  --background-color: var(--body-color);
+  --bg-elevated: var(--glass-bg-hover);
 }
 
 /* Force Glassmorphism on all generic card and panel elements */
 .card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card {
-  background: var(--glass-bg) !important;
-  backdrop-filter: var(--glass-blur) !important;
-  -webkit-backdrop-filter: var(--glass-blur) !important;
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: var(--glass-shadow) !important;
-  border-radius: 16px !important;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 16px;
 }
 
 /* Force Table Backgrounds to be transparent */
 table, thead, tbody, tr, th, td {
-  background: transparent !important;
-  background-color: transparent !important;
-  color: var(--text-primary) !important;
-  border-bottom-color: var(--glass-border) !important;
+  background: transparent;
+  background-color: transparent;
+  color: var(--text-primary);
+  border-bottom-color: var(--glass-border);
 }
 th {
-  background: var(--glass-bg-hover) !important; /* Slightly darker/frosted for header */
+  background: var(--glass-bg-hover); /* Slightly darker/frosted for header */
 }
 
 /* Force Input Fields to be Neumorphic/Glassmorphic */
 input, select, textarea, .form-control, .form-select, .form-input {
-  background: rgba(17, 24, 39, 0.05) !important;
-  color: var(--text-primary) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: 8px !important;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05) !important; /* Neumorphic inner shadow */
+  background: rgba(17, 24, 39, 0.05);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Neumorphic inner shadow */
 }
 [data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea,
 [data-theme="dark"] .form-control, [data-theme="dark"] .form-select, [data-theme="dark"] .form-input {
-  background: rgba(17, 24, 39, 0.4) !important;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  background: rgba(17, 24, 39, 0.4);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 input:focus, select:focus, textarea:focus, .form-control:focus {
-  outline: none !important;
-  border-color: var(--primary) !important;
-  box-shadow: 0 0 0 3px var(--primary-light), inset 0 2px 4px rgba(0,0,0,0.05) !important;
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light), inset 0 2px 4px rgba(0,0,0,0.05);
 }
 
 /* Buttons Neumorphism/Glassmorphism */
 .btn-primary, .btn-secondary, button[type="submit"] {
-  background: var(--primary) !important;
-  color: #ffffff !important;
-  border: none !important;
-  box-shadow: 0 4px 15px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.2) !important;
-  border-radius: 8px !important;
-  transition: all 0.3s ease !important;
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 15px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.2);
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 .btn-primary:hover, .btn-secondary:hover, button[type="submit"]:hover {
-  background: var(--primary-hover) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 .btn-outline {
-  background: transparent !important;
-  border: 1px solid var(--primary) !important;
-  color: var(--primary) !important;
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
 }
 .btn-outline:hover {
-  background: var(--primary-light) !important;
-  color: var(--primary) !important;
+  background: var(--primary-light);
+  color: var(--primary);
 }
 
 /* Fix specific colors in RAB headers etc */
 .rab-card-header {
-  background: var(--glass-bg-hover) !important;
-  color: var(--text-primary) !important;
+  background: var(--glass-bg-hover);
+  color: var(--text-primary);
 }
 
 /* Ensure background color doesn't peek through the corners of the table container */
 .table-responsive {
-  border-radius: 16px !important;
-  overflow: auto !important;
-  background: transparent !important;
+  border-radius: 16px;
+  overflow: auto;
+  background: transparent;
 }
 
 
@@ -651,19 +651,19 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 
 /* 1. True Glassmorphism Background (Nature / Leaves) */
 body {
-  background-color: #121212 !important;
-  background-image: linear-gradient(to bottom, rgba(11, 19, 14, 0.55), rgba(11, 19, 14, 0.65)), url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop') !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-attachment: fixed !important;
-  color: #ffffff !important;
+  background-color: #121212;
+  background-image: linear-gradient(to bottom, rgba(11, 19, 14, 0.55), rgba(11, 19, 14, 0.65)), url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #ffffff;
 }
 
 /* Force text to be white/readable everywhere because of the dark glass */
 :root, [data-theme="light"], [data-theme="dark"] {
-  --text-primary: #ffffff !important;
-  --text-secondary: rgba(255, 255, 255, 0.7) !important;
-  --text-muted: rgba(255, 255, 255, 0.5) !important;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
 }
 h1, h2, h3, h4, h5, h6, p, span, div {
   color: var(--text-primary);
@@ -671,34 +671,34 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 
 /* The exact glass effect from the reference */
 .card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card, .topbar, .budget-summary {
-  background: rgba(25, 30, 25, 0.45) !important; /* Dark greenish tint */
-  backdrop-filter: blur(24px) !important;
-  -webkit-backdrop-filter: blur(24px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
-  border-radius: 20px !important;
+  background: rgba(25, 30, 25, 0.45); /* Dark greenish tint */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
 }
 
 /* Ensure no inner elements have solid backgrounds */
 table, thead, tbody, tr, th, td {
-  background: transparent !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  background: transparent;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.1);
 }
 th {
-  background: rgba(255, 255, 255, 0.05) !important;
+  background: rgba(255, 255, 255, 0.05);
 }
 input, select, textarea, .filter-select {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 input::placeholder {
-  color: rgba(255, 255, 255, 0.5) !important;
+  color: rgba(255, 255, 255, 0.5);
 }
 option {
-  background: #1e293b !important;
-  color: white !important;
+  background: #1e293b;
+  color: white;
 }
 
 /* =========================================================================
@@ -714,8 +714,8 @@ option {
 
 /* For Firefox and IE/Edge legacy */
 * {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 
@@ -751,92 +751,92 @@ option {
 
 /* Variable Mapping (Force all old variables to use Glassmorphism) */
 :root, [data-theme="light"], [data-theme="dark"] {
-  --bg-card: var(--glass-bg) !important;
-  --bg-main: transparent !important;
-  --bg-primary: transparent !important;
-  --bg-secondary: transparent !important;
-  --text-main: var(--text-primary) !important;
-  --primary-color: var(--primary) !important;
-  --accent-primary: var(--primary) !important;
-  --background-color: var(--body-color) !important;
-  --bg-elevated: var(--glass-bg-hover) !important;
+  --bg-card: var(--glass-bg);
+  --bg-main: transparent;
+  --bg-primary: transparent;
+  --bg-secondary: transparent;
+  --text-main: var(--text-primary);
+  --primary-color: var(--primary);
+  --accent-primary: var(--primary);
+  --background-color: var(--body-color);
+  --bg-elevated: var(--glass-bg-hover);
 }
 
 /* Force Glassmorphism on all generic card and panel elements */
 .card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card {
-  background: var(--glass-bg) !important;
-  backdrop-filter: var(--glass-blur) !important;
-  -webkit-backdrop-filter: var(--glass-blur) !important;
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: var(--glass-shadow) !important;
-  border-radius: 16px !important;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 16px;
 }
 
 /* Force Table Backgrounds to be transparent */
 table, thead, tbody, tr, th, td {
-  background: transparent !important;
-  background-color: transparent !important;
-  color: var(--text-primary) !important;
-  border-bottom-color: var(--glass-border) !important;
+  background: transparent;
+  background-color: transparent;
+  color: var(--text-primary);
+  border-bottom-color: var(--glass-border);
 }
 th {
-  background: var(--glass-bg-hover) !important; /* Slightly darker/frosted for header */
+  background: var(--glass-bg-hover); /* Slightly darker/frosted for header */
 }
 
 /* Force Input Fields to be Neumorphic/Glassmorphic */
 input, select, textarea, .form-control, .form-select, .form-input {
-  background: rgba(17, 24, 39, 0.05) !important;
-  color: var(--text-primary) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: 8px !important;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05) !important; /* Neumorphic inner shadow */
+  background: rgba(17, 24, 39, 0.05);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Neumorphic inner shadow */
 }
 [data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea,
 [data-theme="dark"] .form-control, [data-theme="dark"] .form-select, [data-theme="dark"] .form-input {
-  background: rgba(17, 24, 39, 0.4) !important;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  background: rgba(17, 24, 39, 0.4);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 input:focus, select:focus, textarea:focus, .form-control:focus {
-  outline: none !important;
-  border-color: var(--primary) !important;
-  box-shadow: 0 0 0 3px var(--primary-light), inset 0 2px 4px rgba(0,0,0,0.05) !important;
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light), inset 0 2px 4px rgba(0,0,0,0.05);
 }
 
 /* Buttons Neumorphism/Glassmorphism */
 .btn-primary, .btn-secondary, button[type="submit"] {
-  background: var(--primary) !important;
-  color: #ffffff !important;
-  border: none !important;
-  box-shadow: 0 4px 15px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.2) !important;
-  border-radius: 8px !important;
-  transition: all 0.3s ease !important;
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 15px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.2);
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 .btn-primary:hover, .btn-secondary:hover, button[type="submit"]:hover {
-  background: var(--primary-hover) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--primary-light), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 .btn-outline {
-  background: transparent !important;
-  border: 1px solid var(--primary) !important;
-  color: var(--primary) !important;
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
 }
 .btn-outline:hover {
-  background: var(--primary-light) !important;
-  color: var(--primary) !important;
+  background: var(--primary-light);
+  color: var(--primary);
 }
 
 /* Fix specific colors in RAB headers etc */
 .rab-card-header {
-  background: var(--glass-bg-hover) !important;
-  color: var(--text-primary) !important;
+  background: var(--glass-bg-hover);
+  color: var(--text-primary);
 }
 
 /* Ensure background color doesn't peek through the corners of the table container */
 .table-responsive {
-  border-radius: 16px !important;
-  overflow: auto !important;
-  background: transparent !important;
+  border-radius: 16px;
+  overflow: auto;
+  background: transparent;
 }
 
 
@@ -846,19 +846,19 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 
 /* 1. True Glassmorphism Background (Nature / Leaves) */
 body {
-  background-color: #121212 !important;
-  background-image: linear-gradient(to bottom, rgba(11, 19, 14, 0.55), rgba(11, 19, 14, 0.65)), url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop') !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-attachment: fixed !important;
-  color: #ffffff !important;
+  background-color: #121212;
+  background-image: linear-gradient(to bottom, rgba(11, 19, 14, 0.55), rgba(11, 19, 14, 0.65)), url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #ffffff;
 }
 
 /* Force text to be white/readable everywhere because of the dark glass */
 :root, [data-theme="light"], [data-theme="dark"] {
-  --text-primary: #ffffff !important;
-  --text-secondary: rgba(255, 255, 255, 0.7) !important;
-  --text-muted: rgba(255, 255, 255, 0.5) !important;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
 }
 h1, h2, h3, h4, h5, h6, p, span, div {
   color: var(--text-primary);
@@ -866,34 +866,34 @@ h1, h2, h3, h4, h5, h6, p, span, div {
 
 /* The exact glass effect from the reference */
 .card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card, .topbar, .budget-summary {
-  background: rgba(25, 30, 25, 0.45) !important; /* Dark greenish tint */
-  backdrop-filter: blur(24px) !important;
-  -webkit-backdrop-filter: blur(24px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
-  border-radius: 20px !important;
+  background: rgba(25, 30, 25, 0.45); /* Dark greenish tint */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
 }
 
 /* Ensure no inner elements have solid backgrounds */
 table, thead, tbody, tr, th, td {
-  background: transparent !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  background: transparent;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.1);
 }
 th {
-  background: rgba(255, 255, 255, 0.05) !important;
+  background: rgba(255, 255, 255, 0.05);
 }
 input, select, textarea, .filter-select {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 input::placeholder {
-  color: rgba(255, 255, 255, 0.5) !important;
+  color: rgba(255, 255, 255, 0.5);
 }
 option {
-  background: #1e293b !important;
-  color: white !important;
+  background: #1e293b;
+  color: white;
 }
 
 /* =========================================================================
@@ -909,14 +909,14 @@ option {
 
 /* For Firefox and IE/Edge legacy */
 * {
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 
 /* Permanently remove theme toggle button from UI */
 .theme-toggle, #theme-toggle, [aria-label='Toggle Theme'] {
-  display: none !important;
+  display: none;
 }
 /* Note: .topbar, .mobile-menu-btn, .sidebar-overlay, .sidebar-close-btn → see css/mobile.css */
 
@@ -965,15 +965,15 @@ option {
   width: 100%;
   padding: 0.6rem 0.75rem 0.6rem 2.25rem;
   font-size: 0.8rem;
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 12px !important;
-  color: var(--text-primary) !important;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: var(--text-primary);
   transition: all 0.2s ease;
 }
 .sidebar-search-input:focus {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .sidebar-bottom-section {
@@ -1150,57 +1150,57 @@ option {
   padding: 0;
   margin: 0;
   border: none;
-  display: none !important;
+  display: none;
 }
 
 /* 1. Accordion Toggle Completely Removed */
 .sidebar.collapsed .accordion-toggle {
-  display: none !important;
+  display: none;
 }
 .sidebar.collapsed .nav-group {
-  margin-bottom: 0 !important;
+  margin-bottom: 0;
 }
 .sidebar.collapsed .nav-group-content {
-  display: block !important;
-  height: auto !important;
-  grid-template-rows: auto !important;
-  overflow: visible !important;
+  display: block;
+  height: auto;
+  grid-template-rows: auto;
+  overflow: visible;
 }
 .sidebar.collapsed .nav-group-inner {
-  display: block !important;
-  padding: 0 !important;
-  margin: 0 !important;
+  display: block;
+  padding: 0;
+  margin: 0;
 }
 
 /* 2. Header and Dividers */
 .sidebar.collapsed .sidebar-header {
-  flex-direction: column !important;
+  flex-direction: column;
   gap: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid rgba(255,255,255,0.05);
   margin-bottom: 1rem;
 }
 .sidebar.collapsed .sidebar-logo-icon {
-  margin: 0 !important;
+  margin: 0;
 }
 
 /* 3. Icon Centering & Spacing */
 .sidebar.collapsed .nav-item {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  width: 100% !important;
-  padding: 0.75rem 0 !important;
-  margin-bottom: 0.2rem !important;
-  border-radius: 0 !important;
-  border-left: none !important; /* Optionally move border to left edge of sidebar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 0;
+  margin-bottom: 0.2rem;
+  border-radius: 0;
+  border-left: none; /* Optionally move border to left edge of sidebar */
 }
 .sidebar.collapsed .nav-item.active {
-  border-left: 3px solid var(--primary) !important;
+  border-left: 3px solid var(--primary);
 }
 .sidebar.collapsed .nav-icon {
-  font-size: 1.25rem !important;
-  margin: 0 !important;
+  font-size: 1.25rem;
+  margin: 0;
 }
 
 /* 4. User Widget & Logout */
@@ -1209,26 +1209,26 @@ option {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem 0 !important;
+  padding: 1rem 0;
   border-top: 1px solid rgba(255,255,255,0.05);
   margin-top: auto;
   gap: 1rem;
 }
 .sidebar.collapsed .user-widget {
-  padding: 0 !important;
-  justify-content: center !important;
-  margin: 0 !important;
+  padding: 0;
+  justify-content: center;
+  margin: 0;
 }
 .sidebar.collapsed .user-avatar {
-  margin: 0 !important;
+  margin: 0;
 }
 .sidebar.collapsed .sidebar-logout-btn {
-  padding: 0.5rem 0 !important;
-  justify-content: center !important;
-  width: 100% !important;
+  padding: 0.5rem 0;
+  justify-content: center;
+  width: 100%;
 }
 .sidebar.collapsed .sidebar-logout-btn i {
-  margin: 0 !important;
+  margin: 0;
   font-size: 1.25rem;
 }
 
