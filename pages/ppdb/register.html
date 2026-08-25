@@ -702,9 +702,12 @@
         const uploadFile = async (file, path) => {
           if (!file) return;
           try {
-            await supabaseClient.storage.from('ppdb_documents').upload(path, file);
+            const { error } = await supabaseClient.storage.from('ppdb_documents').upload(path, file);
+            if (error) throw error;
           } catch(e) {
-            console.warn("Storage upload skipped/failed:", e.message);
+            console.error("Storage upload failed:", e.message);
+            showToast("Gagal mengunggah dokumen: " + e.message, 'error');
+            throw new Error("Gagal mengunggah dokumen: " + e.message);
           }
         };
 

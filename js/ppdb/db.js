@@ -78,6 +78,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btnCetakLulus) {
       btnCetakLulus.addEventListener('click', printPDFLulus);
     }
+
+    // 5. Right to Erasure (Delete Data)
+    const btnDeleteData = document.getElementById('btn-delete-data');
+    if (btnDeleteData) {
+      btnDeleteData.addEventListener('click', async () => {
+        const confirm1 = confirm("PERINGATAN: Anda akan menghapus seluruh data pendaftaran Anda secara permanen. Tindakan ini tidak dapat dibatalkan.\n\nApakah Anda yakin ingin melanjutkan?");
+        if (confirm1) {
+          const confirm2 = confirm("Konfirmasi Terakhir: HAPUS SEMUA DATA SAYA?\n(Data pendaftaran, biodata, dokumen, dan history pembayaran terkait akan ikut terhapus otomatis melalui cascading delete)");
+          if (confirm2) {
+            await deleteMyRegistrationData();
+          }
+        }
+      });
+    }
   }
 
   // ==========================================
@@ -85,26 +99,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ==========================================
   const isAdminDashboard = document.getElementById('table-pendaftar-body');
   if (isAdminDashboard) {
-    // Basic authorization check
-    if (!userEmail.includes('admin') && !userEmail.includes('finance') && !userEmail.includes('pembina')) {
-      // Check if user role matches admin in db
-      try {
-        const { data: roleData } = await db
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', userId)
-          .maybeSingle();
-        
-        if (!roleData || (roleData.role !== 'admin' && roleData.role !== 'pembina')) {
-          alert("Akses Ditolak: Anda tidak memiliki izin untuk mengakses halaman Admin.");
-          if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
-          return;
-        }
-      } catch (err) {
-        alert("Akses Ditolak: Gagal memverifikasi hak akses.");
+    // Strict authorization check based on RBAC user_roles table
+    try {
+      const { data: roleData } = await db
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .maybeSingle();
+      
+      if (!roleData || (roleData.role !== 'admin' && roleData.role !== 'pembina')) {
+        alert("Akses Ditolak: Anda tidak memiliki izin untuk mengakses halaman Admin.");
         if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
         return;
       }
+    } catch (err) {
+      alert("Akses Ditolak: Gagal memverifikasi hak akses.");
+      if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
+      return;
     }
 
     // Load admin panel data
@@ -396,6 +407,40 @@ async function saveSiswaForm() {
   } finally {
     saveBtn.disabled = false;
     saveBtn.textContent = '💾 Simpan & Update Data';
+  }
+}
+
+async function deleteMyRegistrationData() {
+  const pendaftaranId = sessionStorage.getItem('pendaftaran_id');
+  if (!pendaftaranId) return;
+
+  const btnDeleteData = document.getElementById('btn-delete-data');
+  if (btnDeleteData) {
+    btnDeleteData.disabled = true;
+    btnDeleteData.textContent = '⏳ Menghapus...';
+  }
+
+  try {
+    const { error } = await db.from('pendaftaran').delete().eq('id', pendaftaranId);
+    if (error) throw error;
+
+    sessionStorage.removeItem('pendaftaran_id');
+    sessionStorage.removeItem('last_ppdb_no');
+    sessionStorage.removeItem('last_student_name');
+
+    alert("Data Anda telah berhasil dihapus dari sistem kami.");
+    if (window.smoothRedirect) {
+      window.smoothRedirect('../../index.html');
+    } else {
+      window.location.href = '../../index.html';
+    }
+  } catch (err) {
+    console.error("Gagal menghapus data:", err.message);
+    alert("Gagal menghapus data: " + err.message);
+    if (btnDeleteData) {
+      btnDeleteData.disabled = false;
+      btnDeleteData.innerHTML = '<span class="material-symbols-outlined text-base">delete_forever</span> Hapus Data Pendaftaran Saya';
+    }
   }
 }
 
