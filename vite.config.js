@@ -24,7 +24,8 @@ export default defineConfig({
         ppdbDashboardWali: resolve(root, 'pages/ppdb/dashboard-wali.html'),
         ppdbIndex: resolve(root, 'pages/ppdb/index.html'),
         ppdbRegister: resolve(root, 'pages/ppdb/register.html'),
-        ppdbSuccess: resolve(root, 'pages/ppdb/success.html')
+        ppdbSuccess: resolve(root, 'pages/ppdb/success.html'),
+        ppdbPrivacyPolicy: resolve(root, 'pages/ppdb/privacy-policy.html')
       }
     }
   }
