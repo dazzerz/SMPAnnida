@@ -38,7 +38,7 @@
   <style>
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: 100px;
+      scroll-padding-top: 140px;
     }
       .glass-panel-custom {
       background: rgba(16, 26, 20, 0.4);
@@ -96,8 +96,10 @@
   });
 </script>
 </head>
-<body class="bg-hero bg-cover bg-center text-white font-body-md min-h-screen flex flex-col">
+<body class="text-white font-body-md min-h-screen flex flex-col">
   
+  <!-- Fixed Background Layer (Mencegah melar di mobile) -->
+  <div class="fixed inset-0 z-[-1] bg-hero bg-cover bg-center"></div>
 
   <!-- Lapisan Gelap (Overlay) -->
   <div class="fixed inset-0 bg-black/60 z-0 pointer-events-none"></div>
