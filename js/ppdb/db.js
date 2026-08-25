@@ -4,12 +4,26 @@
 import supabaseClient from '../core/supabase.js';
 import { escapeHTML } from '../core/utils.js';
 import { getOptionalUser } from '../core/auth.js';
+import CryptoJS from 'crypto-js';
 
 const db = supabaseClient;
 
 // Global state variables for Admin
 let allRegistrations = [];
 let selectedRegForVerif = null;
+
+// Helper for decryption
+function decryptNik(encryptedText) {
+  if (!encryptedText) return '-';
+  try {
+    const bytes = CryptoJS.AES.decrypt(encryptedText, import.meta.env.VITE_ENCRYPTION_KEY || 'AnnidaPDP2026Rahasia!');
+    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+    return decrypted || encryptedText; // Kembalikan plaintext lama jika decrypt kosong
+  } catch (e) {
+    return encryptedText; // Kembalikan plaintext lama jika error
+  }
+}
+
 let currentDocVerification = {
   kartu_keluarga: { status: 'pending', note: '' },
   akta_kelahiran: { status: 'pending', note: '' },
@@ -199,7 +213,7 @@ async function fetchMyRegistrationStatus(userId) {
 
       // Pre-fill form fields
       if (biodata) {
-        document.getElementById('siswa-nik').value = biodata.nik || '';
+        document.getElementById('siswa-nik').value = decryptNik(biodata.nik) || '';
         document.getElementById('siswa-nisn').value = biodata.nisn || '';
         document.getElementById('siswa-tempat-lahir').value = biodata.tempat_lahir || '';
         document.getElementById('siswa-tanggal-lahir').value = biodata.tanggal_lahir || '';
@@ -373,10 +387,13 @@ async function saveSiswaForm() {
     if (pError) throw pError;
 
     // 2. Upsert biodata
+    const secretKey = import.meta.env.VITE_ENCRYPTION_KEY || 'AnnidaPDP2026Rahasia!';
+    const encryptedNik = nik ? CryptoJS.AES.encrypt(nik, secretKey).toString() : null;
+
     const biodataPayload = {
       pendaftaran_id: pendaftaranId,
       nama_lengkap: user.user_metadata?.full_name || 'Calon Siswa',
-      nik, nisn, tempat_lahir: tempatLahir, tanggal_lahir: tanggalLahir, alamat_lengkap: alamat
+      nik: encryptedNik, nisn, tempat_lahir: tempatLahir, tanggal_lahir: tanggalLahir, alamat_lengkap: alamat
     };
     const { error: bError } = await db.from('biodata_siswa').upsert(biodataPayload, { onConflict: 'pendaftaran_id' });
 
@@ -747,7 +764,18 @@ window.viewRegistrationDetails = function(regId) {
   // Set Details UI text fields
   document.getElementById('detail-reg-id').textContent = r.id;
   document.getElementById('detail-siswa-nama').textContent = r.biodata_siswa ? r.biodata_siswa.nama_lengkap : '-';
-  document.getElementById('detail-siswa-nik-nisn').textContent = r.biodata_siswa ? `${r.biodata_siswa.nik || '-'} / ${r.biodata_siswa.nisn || '-'}` : '-';
+  
+  let maskedNik = '-';
+  if (r.biodata_siswa && r.biodata_siswa.nik) {
+    const asli = decryptNik(r.biodata_siswa.nik);
+    if (asli && asli.length > 4) {
+      maskedNik = '*'.repeat(asli.length - 4) + asli.slice(-4);
+    } else {
+      maskedNik = asli;
+    }
+  }
+  document.getElementById('detail-siswa-nik-nisn').textContent = r.biodata_siswa ? `${maskedNik} / ${r.biodata_siswa.nisn || '-'}` : '-';
+  
   document.getElementById('detail-siswa-ttl').textContent = r.biodata_siswa ? `${r.biodata_siswa.tempat_lahir || '-'}, ${r.biodata_siswa.tanggal_lahir || '-'}` : '-';
   document.getElementById('detail-siswa-sekolah').textContent = r.sekolah_asal ? `${r.sekolah_asal.nama_sekolah || '-'} (${r.sekolah_asal.npsn || '-'})` : '-';
   document.getElementById('detail-siswa-alamat').textContent = r.biodata_siswa ? r.biodata_siswa.alamat_lengkap || '-' : '-';
@@ -1230,7 +1258,7 @@ window.exportDataToExcel = function() {
       "No": index + 1,
       "No. Pendaftaran": r.no_pendaftaran || "-",
       "Nama Lengkap": r.biodata_siswa?.nama_lengkap || "-",
-      "NIK": r.biodata_siswa?.nik || "-",
+      "NIK": decryptNik(r.biodata_siswa?.nik) || "-",
       "NISN": r.biodata_siswa?.nisn || "-",
       "Tempat Lahir": r.biodata_siswa?.tempat_lahir || "-",
       "Tanggal Lahir": r.biodata_siswa?.tanggal_lahir || "-",
