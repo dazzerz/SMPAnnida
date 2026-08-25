@@ -128,7 +128,7 @@
     import supabaseClient from '../../js/core/supabase.js';
 
     document.addEventListener('DOMContentLoaded', async () => {
-      const regNo = localStorage.getItem('last_ppdb_no') || 'PPDB-2027-73892';
+      const regNo = sessionStorage.getItem('last_ppdb_no') || 'PPDB-2027-73892';
       document.getElementById('display-reg-no').textContent = regNo;
       
       const btnChat = document.getElementById('btn-chat-admin');

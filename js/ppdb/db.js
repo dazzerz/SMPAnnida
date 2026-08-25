@@ -159,8 +159,8 @@ async function fetchMyRegistrationStatus(userId) {
 
     if (pendaftaran) {
       // Save ID for further operations
-      localStorage.setItem('pendaftaran_id', pendaftaran.id);
-      localStorage.setItem('last_ppdb_no', pendaftaran.no_pendaftaran);
+      sessionStorage.setItem('pendaftaran_id', pendaftaran.id);
+      sessionStorage.setItem('last_ppdb_no', pendaftaran.no_pendaftaran);
 
       // Render Reg No & Program on UI
       document.getElementById('siswa-display-reg-no').textContent = pendaftaran.no_pendaftaran;
@@ -330,7 +330,7 @@ async function saveSiswaForm() {
   }
   const userId = user.id;
 
-  const pendaftaranId = localStorage.getItem('pendaftaran_id');
+  const pendaftaranId = sessionStorage.getItem('pendaftaran_id');
   if (!pendaftaranId) return;
 
   const tipe = document.getElementById('tipe_pendaftaran_dashboard').value;
@@ -411,7 +411,7 @@ async function submitPaymentConfirmation() {
     msg.classList.remove('hidden');
     
     // Auto-update status to "Seleksi" in backend simulation
-    const pId = localStorage.getItem('pendaftaran_id');
+    const pId = sessionStorage.getItem('pendaftaran_id');
     if (pId) {
       db.from('pendaftaran')
         .update({ status_pendaftaran: 'Seleksi' })
@@ -526,7 +526,7 @@ function updateTimelineUI(status) {
     // Show announcement texts safely
     const announceName = document.getElementById('announce-student-name');
     if (announceName) {
-      announceName.textContent = localStorage.getItem('last_student_name') || 'Ahmad Fulan';
+      announceName.textContent = sessionStorage.getItem('last_student_name') || 'Ahmad Fulan';
     }
     const btnCetakLulus = document.getElementById('btn-cetak-lulus');
     if (btnCetakLulus) {
@@ -1080,7 +1080,7 @@ function renderMonthlyChart(data) {
 }
 
 window.updateDocUploadStatus = async function(docType, fileName, fileUrl = null) {
-  const pendaftaranId = localStorage.getItem('pendaftaran_id');
+  const pendaftaranId = sessionStorage.getItem('pendaftaran_id');
   if (!pendaftaranId) return;
 
   try {
@@ -1126,7 +1126,7 @@ window.updateDocUploadStatus = async function(docType, fileName, fileUrl = null)
 };
 
 window.submitDpPayment = async function(fileName, fileUrl = null) {
-  const pId = localStorage.getItem('pendaftaran_id');
+  const pId = sessionStorage.getItem('pendaftaran_id');
   if (!pId) {
     alert("Data pendaftaran tidak ditemukan.");
     return;
@@ -1219,7 +1219,7 @@ window.printPDFLulus = function() {
   }
   
   // Mengisi teks ke pdf-nama dan pdf-nisn
-  pdfNama.textContent = localStorage.getItem('last_student_name') || 'Fulan';
+  pdfNama.textContent = sessionStorage.getItem('last_student_name') || 'Fulan';
   
   const inputNisn = document.getElementById('siswa-nisn');
   pdfNisn.textContent = inputNisn && inputNisn.value ? inputNisn.value : '-';
