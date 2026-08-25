@@ -564,8 +564,8 @@
             const base64Data = e.target.result.split(',')[1];
             const gasUrl = 'https://script.google.com/macros/s/AKfycbwK_BdUAcDMdUTGaM3aLmNJ5i_enWm2vFnE6mtT3wJNEhKIxWsLofudDYGrWpvJMwM/exec';
             
-            const noPendaftaran = localStorage.getItem('last_ppdb_no') || 'UNKNOWN';
-            const namaSiswa = localStorage.getItem('last_student_name') || 'Calon Siswa';
+            const noPendaftaran = sessionStorage.getItem('last_ppdb_no') || 'UNKNOWN';
+            const namaSiswa = sessionStorage.getItem('last_student_name') || 'Calon Siswa';
             
             const payload = {
               filename: file.name,
@@ -630,8 +630,8 @@
           const base64Data = e.target.result.split(',')[1];
           const gasUrl = 'https://script.google.com/macros/s/AKfycbwK_BdUAcDMdUTGaM3aLmNJ5i_enWm2vFnE6mtT3wJNEhKIxWsLofudDYGrWpvJMwM/exec';
           
-          const noPendaftaran = localStorage.getItem('last_ppdb_no') || 'UNKNOWN';
-          const namaSiswa = localStorage.getItem('last_student_name') || 'Calon Siswa';
+          const noPendaftaran = sessionStorage.getItem('last_ppdb_no') || 'UNKNOWN';
+          const namaSiswa = sessionStorage.getItem('last_student_name') || 'Calon Siswa';
           
           const payload = {
             filename: file.name,

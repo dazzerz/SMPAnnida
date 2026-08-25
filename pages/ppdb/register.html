@@ -347,10 +347,20 @@
               </div>
             </div>
             
+            <!-- Consent 1: Kebenaran Data -->
             <label class="flex items-start gap-3 mt-6 cursor-pointer">
               <input type="checkbox" id="declare-check" required class="text-primary focus:ring-primary rounded border-white/20 bg-slate-900/60 mt-1" />
               <span class="text-xs text-gray-300 leading-normal text-left">
-                Saya menyatakan bahwa semua data yang diisi di atas adalah benar dan dapat dipertanggungjawabkan serta menyetujui syarat &amp; ketentuan pendaftaran SMP Annida Tahun Ajaran 2027/2028.
+                Saya menyatakan bahwa semua data yang saya isi di atas adalah <strong class="text-white">benar dan dapat dipertanggungjawabkan</strong> sesuai dokumen asli.
+              </span>
+            </label>
+            <!-- Consent 2: Persetujuan Pemrosesan Data Pribadi (WAJIB UU PDP Ps. 20) -->
+            <label class="flex items-start gap-3 mt-3 cursor-pointer">
+              <input type="checkbox" id="consent-pdp-check" required class="text-primary focus:ring-primary rounded border-white/20 bg-slate-900/60 mt-1" />
+              <span class="text-xs text-gray-300 leading-normal text-left">
+                Saya <strong class="text-white">menyetujui pemrosesan data pribadi</strong> saya dan anak saya oleh SMP Annida untuk keperluan seleksi PPDB, administrasi akademik, dan pengelolaan pembayaran, sesuai dengan
+                <a href="privacy-policy.html" target="_blank" class="text-emerald-400 underline hover:text-emerald-300 font-semibold">Kebijakan Privasi SMP Annida</a>.
+                Saya memahami bahwa saya dapat menarik persetujuan ini sewaktu-waktu.
               </span>
             </label>
           </div>
@@ -571,6 +581,12 @@
         return;
       }
 
+      const consentPdp = document.getElementById('consent-pdp-check');
+      if (!consentPdp.checked) {
+        showToast('Anda harus menyetujui Kebijakan Privasi kami sebelum mendaftar.', 'error');
+        return;
+      }
+
       btnSubmit.disabled = true;
       btnSubmit.textContent = 'Mengirim...';
 
@@ -697,7 +713,7 @@
         if (fileFoto) await uploadFile(fileFoto, `${pendaftaranId}/foto_${fileFoto.name}`);
 
         // Success redirection state
-        localStorage.setItem('last_ppdb_no', noPendaftaran);
+        sessionStorage.setItem('last_ppdb_no', noPendaftaran);
         window.location.href = 'success.html';
 
       } catch (err) {
