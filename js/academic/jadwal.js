@@ -209,9 +209,13 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.btn-delete-jadwal').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-                if (!confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) return;
-                
+
                 const id = e.target.getAttribute('data-id');
+
+                // Styled confirmation dialog (replaces native confirm())
+                const confirmed = await confirmDialog('Apakah Anda yakin ingin menghapus jadwal ini? Tindakan ini tidak dapat dibatalkan.');
+                if (!confirmed) return;
+
                 const btnEl = e.target;
                 btnEl.disabled = true;
                 btnEl.textContent = 'Menghapus...';
@@ -228,6 +232,43 @@ document.addEventListener('DOMContentLoaded', () => {
                     btnEl.disabled = false;
                     btnEl.textContent = 'Hapus';
                 }
+            });
+        });
+    }
+
+    // Helper: Styled Confirmation Dialog (replaces native confirm())
+    function confirmDialog(message) {
+        return new Promise((resolve) => {
+            // Overlay backdrop
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); z-index:99999; display:flex; align-items:center; justify-content:center; padding:1rem;';
+
+            // Dialog card (uses existing app design system classes)
+            const box = document.createElement('div');
+            box.className = 'card glass';
+            box.style.cssText = 'max-width:400px; width:100%; border-radius:16px; padding:1.5rem; text-align:center;';
+            box.innerHTML = `
+                <div style="font-size:2.5rem; margin-bottom:0.5rem;">⚠️</div>
+                <h3 style="margin:0 0 0.5rem; font-size:1.1rem; font-weight:600;">Konfirmasi Hapus</h3>
+                <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.25rem;">${escapeHTML(message)}</p>
+                <div style="display:flex; gap:0.75rem;">
+                    <button type="button" data-act="cancel" class="btn btn-outline" style="flex:1;">Batal</button>
+                    <button type="button" data-act="ok" class="btn btn-danger" style="flex:1;">Ya, Hapus</button>
+                </div>
+            `;
+
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+
+            const close = (result) => {
+                overlay.remove();
+                resolve(result);
+            };
+
+            box.querySelector('[data-act="ok"]').addEventListener('click', () => close(true));
+            box.querySelector('[data-act="cancel"]').addEventListener('click', () => close(false));
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) close(false);
             });
         });
     }
@@ -408,4 +449,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // Attach to global scope for nav links to trigger
     window.loadDataJadwal = loadJadwal;
 });
-
