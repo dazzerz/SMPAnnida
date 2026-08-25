@@ -77,6 +77,19 @@
       animation-play-state: paused;
     }
     .nav-neon-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background-color: white; box-shadow: 0 0 10px 2px rgba(255,255,255,0.8); border-radius: 2px; }
+
+    /* Fix background rendering di Tailwind CDN */
+    .bg-hero-fixed {
+      background-image: url('./assets/images/bg-mobile.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    @media (min-width: 768px) {
+      .bg-hero-fixed {
+        background-image: url('./assets/images/gedung_sekolah.jpg');
+      }
+    }
   </style>
 <script>
   window.addEventListener('pageshow', function (event) {
@@ -89,7 +102,7 @@
 <body class="text-white font-body-md min-h-screen flex flex-col">
   
   <!-- Fixed Background Layer (Ultimate Mobile Safari Fix - tanpa background-attachment) -->
-  <div class="fixed top-0 left-0 w-screen h-screen -z-10 bg-[url('./assets/images/bg-mobile.jpg')] md:bg-[url('./assets/images/gedung_sekolah.jpg')] bg-cover bg-center bg-no-repeat"></div>
+  <div class="fixed top-0 left-0 w-screen h-screen -z-10 bg-hero-fixed"></div>
 
   <!-- Lapisan Gelap (Overlay) -->
   <div class="fixed inset-0 bg-black/60 z-0 pointer-events-none"></div>
