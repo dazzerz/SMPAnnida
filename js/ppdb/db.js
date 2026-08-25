@@ -421,6 +421,11 @@ async function deleteMyRegistrationData() {
   }
 
   try {
+    // 1. Hapus akun Auth (akan cascade ke data lainnya jika ada constraint)
+    const { error: rpcError } = await db.rpc('delete_my_account');
+    if (rpcError) throw rpcError;
+
+    // 2. Hapus pendaftaran secara eksplisit (sebagai fallback)
     const { error } = await db.from('pendaftaran').delete().eq('id', pendaftaranId);
     if (error) throw error;
 
