@@ -1,3 +1,400 @@
-Anda tambahkan file ke chat → Saya edit & kirim balik → 
-Anda salin ke project → Anda commit sendiri → 
-Anda jalankan build/deploy sendiri
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Website Resmi - SMP Annida</title>
+  
+  <!-- SEO & WhatsApp Thumbnail (Open Graph) -->
+  <meta name="description" content="Website Resmi SMP Annida. Membangun Generasi Cerdas, Berkarakter, dan Unggul Berlandaskan Nilai Islam."/>
+  <meta property="og:title" content="Website Resmi - SMP Annida" />
+  <meta property="og:description" content="Membangun Generasi Cerdas, Berkarakter, dan Unggul Berlandaskan Nilai Islam. Dapatkan informasi akademik, fasilitas, dan pendaftaran PPDB di sini." />
+  <meta property="og:image" content="https://smpannida.sch.id/gedung_sekolah.jpg" />
+  <meta property="og:url" content="https://smpannida.sch.id/" />
+  <meta property="og:type" content="website" />
+  
+  <!-- Tailwind CSS & Fonts (Identik dengan halaman PPDB) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Nunito Sans & Literata -->
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#10b981",
+            "primary-dim": "#059669",
+          },
+          fontFamily: {
+            "headline-md": ["Literata"],
+            "body-md": ["Nunito Sans"]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 140px;
+    }
+      .glass-panel-custom {
+      background: rgba(16, 26, 20, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+    /* Efek Transisi Halaman */
+    body { animation: pageFadeIn 0.4s ease-out forwards; }
+    @keyframes pageFadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .page-fade-out {
+      opacity: 0 !important;
+      transform: translateY(-10px) !important;
+      transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out !important;
+    }
+          /* Neon Active Line */
+    .nav-neon-active { position: relative; color: white !important; }
+    .nav-neon-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background-color: white; box-shadow: 0 0 10px 2px rgba(255,255,255,0.8); border-radius: 2px; }
+    
+    /* Infinite Marquee Photo Gallery Keyframes & Styles */
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(-250px * 8 - 1.5rem * 8)); }
+    }
+    .slider-track {
+      display: flex;
+      width: calc((250px * 16) + (1.5rem * 15));
+      animation: scroll 30s linear infinite;
+      gap: 1.5rem;
+    }
+    .slider-track:hover {
+      animation-play-state: paused;
+    }
+    .bg-hero {
+      background-image: url('./assets/images/bg-mobile.jpg');
+      background-attachment: scroll;
+    }
+    @media (min-width: 768px) {
+      .bg-hero {
+        background-image: url('./assets/images/gedung_sekolah.jpg');
+        background-attachment: fixed;
+      }
+    }
+    .nav-neon-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background-color: white; box-shadow: 0 0 10px 2px rgba(255,255,255,0.8); border-radius: 2px; }
+  </style>
+<script>
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted || document.body.classList.contains('page-fade-out')) {
+      document.body.classList.remove('page-fade-out');
+    }
+  });
+</script>
+</head>
+<body class="text-white font-body-md min-h-screen flex flex-col">
+  
+  <!-- Fixed Background Layer (Mencegah melar di mobile) -->
+  <div class="fixed inset-0 z-[-1] bg-hero bg-cover bg-center"></div>
+
+  <!-- Lapisan Gelap (Overlay) -->
+  <div class="fixed inset-0 bg-black/60 z-0 pointer-events-none"></div>
+
+  <!-- Navbar (Floating Glassmorphism Pill) -->
+  <header class="sticky top-6 z-50 flex justify-center px-4 w-full">
+    <div class="flex justify-between items-center px-6 md:px-8 py-3 w-full max-w-5xl bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-full">
+      <!-- Logo -->
+      <a class="flex items-center gap-3 font-headline-md text-xl md:text-2xl font-bold text-white hover:opacity-90 transition-opacity" href="#">
+        <img src="./assets/logo/1.png" alt="Logo SMP Annida" class="h-8 md:h-10 w-auto object-contain">
+        <span class="tracking-wide uppercase text-[1.1rem] md:text-xl">SMP ANNIDA</span>
+      </a>
+      
+      <!-- Navigation Links -->
+      <nav class="hidden lg:flex gap-6 xl:gap-8 items-center text-[0.95rem] font-semibold">
+        <a class="scroll-link nav-neon-active pb-1" href="#beranda">Beranda</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#profil">Tentang Kami</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#akademik">Akademik</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#kesiswaan">Kesiswaan</a>
+        <a class="text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="./pages/ppdb/index.html">Portal PPDB</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#berita">Berita</a>
+        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#kontak">Kontak</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Content -->
+  <main id="beranda" class="flex-grow flex items-center justify-center relative z-10 px-4 py-24 min-h-[80vh]">
+    <div class="glass-panel-custom p-10 md:p-16 rounded-3xl text-center max-w-4xl">
+      <h1 class="font-headline-md text-4xl md:text-6xl font-bold mb-4 leading-tight">
+        Website Resmi <br><span class="text-primary">SMP Annida</span>
+      </h1>
+      <p class="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed">
+        Membangun Generasi Cerdas, Berkarakter, dan Unggul Berlandaskan Nilai Islam.
+      </p>
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row justify-center gap-4 flex-wrap">
+        <a href="./pages/ppdb/index.html" class="bg-primary hover:bg-primary-dim text-white font-bold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)] transition-all transform hover:-translate-y-1 text-lg">
+          Daftar PPDB Sekarang
+        </a>
+        <a href="./login.html" class="bg-transparent border-2 border-white/40 hover:border-white hover:bg-white/10 text-white font-bold py-3 px-6 rounded-full transition-all text-lg">
+          Login Guru
+        </a>
+        <a href="./login.html" class="bg-transparent border-2 border-white/40 hover:border-white hover:bg-white/10 text-white font-bold py-3 px-6 rounded-full transition-all text-lg">
+          Login Orang Tua
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- GALERI FASILITAS & KEGIATAN -->
+  <section class="py-12 px-6 lg:px-0 relative z-30 overflow-hidden mt-10">
+    <div class="max-w-7xl mx-auto mb-6 text-center">
+      <h2 class="font-headline-md text-3xl md:text-4xl text-white mb-2"><span class="text-primary">Gallery</span> Sekolah</h2>
+    </div>
+    <div class="relative w-full max-w-7xl mx-auto glass-panel-custom rounded-2xl p-4 overflow-hidden border border-white/10 shadow-2xl">
+      <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#0b1320] to-transparent z-30 pointer-events-none"></div>
+      <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#0b1320] to-transparent z-30 pointer-events-none"></div>
+      <div class="slider-container overflow-hidden w-full">
+        <div class="slider-track flex gap-6">
+          <img src="./assets/images/aktivitas-1.jpg" alt="Aktivitas 1" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-2.jpg" alt="Aktivitas 2" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-3.jpg" alt="Aktivitas 3" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-4.jpg" alt="Aktivitas 4" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-5.jpg" alt="Aktivitas 5" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-6.jpg" alt="Aktivitas 6" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-7.jpg" alt="Aktivitas 7" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-8.jpg" alt="Aktivitas 8" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-1.jpg" alt="Aktivitas 1" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-2.jpg" alt="Aktivitas 2" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-3.jpg" alt="Aktivitas 3" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-4.jpg" alt="Aktivitas 4" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-5.jpg" alt="Aktivitas 5" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-6.jpg" alt="Aktivitas 6" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-7.jpg" alt="Aktivitas 7" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+          <img src="./assets/images/aktivitas-8.jpg" alt="Aktivitas 8" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Profil Section -->
+  <section id="profil" class="relative z-10 py-20 px-6 bg-black/40 border-t border-white/5">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="font-headline-md text-3xl md:text-4xl font-bold text-center mb-12"><span class="text-primary">Profil</span> Sekolah</h2>
+      <div class="grid md:grid-cols-2 gap-10">
+        <div class="glass-panel-custom p-8 rounded-2xl">
+          <h3 class="text-2xl font-bold mb-4 text-white">Visi & Misi</h3>
+          <p class="text-gray-300 mb-4 leading-relaxed"><strong>Visi:</strong> Terwujudnya generasi Qur'ani yang cerdas, terampil, dan berakhlakul karimah dalam menghadapi tantangan global.</p>
+          <p class="text-gray-300 leading-relaxed"><strong>Misi:</strong> Menyelenggarakan pendidikan yang memadukan kurikulum nasional dan nilai-nilai Islam, serta membina karakter siswa melalui pembiasaan ibadah harian.</p>
+        </div>
+        <div class="glass-panel-custom p-8 rounded-2xl">
+          <h3 class="text-2xl font-bold mb-4 text-white">Sejarah Singkat</h3>
+          <p class="text-gray-300 leading-relaxed">SMP Annida didirikan dengan semangat luhur untuk memberikan alternatif pendidikan tingkat menengah yang tidak hanya berfokus pada keunggulan akademik semata, tetapi juga pada pembentukan pondasi akhlak yang kuat. Dedikasi kami adalah mencetak pemimpin masa depan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Akademik Section -->
+  <section id="akademik" class="relative z-10 py-20 px-6 border-t border-white/5">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="font-headline-md text-3xl md:text-4xl font-bold mb-12"><span class="text-primary">Akademik</span> & Kurikulum</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="glass-panel-custom p-8 rounded-2xl border-t-4 border-t-primary">
+          <h4 class="text-xl font-bold mb-3">Kurikulum Merdeka</h4>
+          <p class="text-gray-300 text-sm leading-relaxed">Menerapkan sistem pembelajaran berbasis proyek yang interaktif untuk memacu kreativitas siswa.</p>
+        </div>
+        <div class="glass-panel-custom p-8 rounded-2xl border-t-4 border-t-primary">
+          <h4 class="text-xl font-bold mb-3">Islamic Studies</h4>
+          <p class="text-gray-300 text-sm leading-relaxed">Tahfidz Al-Qur'an, Bahasa Arab, dan Fiqih menjadi mata pelajaran unggulan yang diajarkan setiap hari.</p>
+        </div>
+        <div class="glass-panel-custom p-8 rounded-2xl border-t-4 border-t-primary">
+          <h4 class="text-xl font-bold mb-3">Tenaga Pendidik</h4>
+          <p class="text-gray-300 text-sm leading-relaxed">Diasuh oleh guru-guru muda profesional, lulusan universitas terkemuka yang berdedikasi tinggi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kesiswaan & Fasilitas Section -->
+  <section id="kesiswaan" class="relative z-10 py-20 px-6 bg-black/40 border-t border-white/5">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-16">
+        <!-- Kesiswaan -->
+        <div>
+          <h2 class="font-headline-md text-3xl md:text-4xl font-bold mb-8"><span class="text-primary">Kesiswaan</span></h2>
+          <p class="text-gray-300 mb-6 leading-relaxed">Kami mendukung penyaluran bakat dan minat siswa melalui berbagai wadah ekstrakurikuler yang aktif dan berprestasi.</p>
+          <ul class="space-y-3 text-gray-200">
+            <li class="flex items-center gap-3"><span class="text-primary text-xl">✔</span> Organisasi Siswa Intra Sekolah (OSIS)</li>
+            <li class="flex items-center gap-3"><span class="text-primary text-xl">✔</span> Pramuka & Pasukan Pengibar Bendera</li>
+            <li class="flex items-center gap-3"><span class="text-primary text-xl">✔</span> Rohani Islam (Rohis) & Hadroh</li>
+            <li class="flex items-center gap-3"><span class="text-primary text-xl">✔</span> Futsal & Olahraga Pilihan</li>
+          </ul>
+        </div>
+        <!-- Fasilitas -->
+        <div id="fasilitas">
+          <h2 class="font-headline-md text-3xl md:text-4xl font-bold mb-8"><span class="text-primary">Fasilitas</span></h2>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="glass-panel-custom p-4 rounded-xl text-center hover:bg-white/5 transition-colors">
+              <div class="text-primary text-3xl mb-2">💻</div>
+              <div class="font-bold text-sm">Lab Komputer</div>
+            </div>
+            <div class="glass-panel-custom p-4 rounded-xl text-center hover:bg-white/5 transition-colors">
+              <div class="text-primary text-3xl mb-2">🕌</div>
+              <div class="font-bold text-sm">Masjid Sekolah</div>
+            </div>
+            <div class="glass-panel-custom p-4 rounded-xl text-center hover:bg-white/5 transition-colors">
+              <div class="text-primary text-3xl mb-2">📚</div>
+              <div class="font-bold text-sm">Perpustakaan</div>
+            </div>
+            <div class="glass-panel-custom p-4 rounded-xl text-center hover:bg-white/5 transition-colors">
+              <div class="text-primary text-3xl mb-2">⚽</div>
+              <div class="font-bold text-sm">Lapangan Olahraga</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Berita Section -->
+  <section id="berita" class="relative z-10 py-20 px-6 border-t border-white/5">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="font-headline-md text-3xl md:text-4xl font-bold mb-12"><span class="text-primary">Berita</span> & Informasi</h2>
+      <div class="glass-panel-custom p-8 rounded-3xl max-w-3xl mx-auto bg-gradient-to-r from-primary/20 to-transparent text-left flex flex-col md:flex-row gap-6 items-center">
+        <div class="bg-primary/20 p-4 rounded-2xl">
+          <div class="text-primary font-bold text-xl text-center">Info<br>PPDB</div>
+        </div>
+        <div>
+          <h4 class="text-2xl font-bold mb-2">Pendaftaran Siswa Baru Telah Dibuka!</h4>
+          <p class="text-gray-300 mb-4">Jangan lewatkan kesempatan untuk bergabung bersama SMP Annida. Kuota terbatas untuk gelombang pertama.</p>
+          <a href="./pages/ppdb/index.html" class="text-primary font-bold hover:underline">Daftar Sekarang &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kontak & Lokasi Section -->
+  <section id="kontak" class="relative z-10 py-20 px-6 bg-black/40 border-t border-white/5">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="font-headline-md text-3xl md:text-4xl font-bold text-center mb-12"><span class="text-primary">Kontak</span> & Lokasi</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+        <!-- Contact details -->
+        <div class="glass-panel-custom rounded-2xl p-8 flex flex-col justify-between">
+          <div>
+            <h3 class="text-2xl font-bold text-white mb-6">Hubungi Kami</h3>
+            <p class="text-gray-300 text-sm leading-relaxed mb-8">
+              Untuk pertanyaan lebih mendalam mengenai pendaftaran, kurikulum sekolah, fasilitas, atau informasi lainnya, Anda dapat mengunjungi kantor kami atau menghubungi kami melalui saluran berikut:
+            </p>
+            
+            <div class="space-y-4 text-sm">
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-primary">location_on</span>
+                <div>
+                  <span class="font-bold text-white block">Alamat Sekolah</span>
+                  <span class="text-gray-300">Gg. Al-Ikhlas No.47, RT.002/RW.05, Kp.Rawa atug, Desa Cibening, Kec. Setu, Kabupaten Bekasi, Jawa Barat 17320</span>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">chat</span>
+                <div>
+                  <span class="font-bold text-white block">WhatsApp Sekolah</span>
+                  <span class="text-gray-300">+62 812-8957-5462 (Fast Response)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="border-t border-white/10 pt-6 mt-8 flex flex-wrap gap-4">
+            <a href="https://wa.me/6281289575462" target="_blank" class="bg-primary hover:bg-primary-dim text-white font-bold py-2.5 px-6 rounded-lg text-sm flex items-center gap-1.5 transition-all">
+              💬 Chat WhatsApp
+            </a>
+            <a href="tel:+6281289575462" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold py-2.5 px-6 rounded-lg text-sm transition-all">
+              Hubungi Telepon
+            </a>
+          </div>
+        </div>
+
+        <!-- Maps embed -->
+        <div class="rounded-2xl overflow-hidden border border-white/10 h-[400px] lg:h-auto min-h-[350px]">
+          <iframe 
+            src="https://maps.google.com/maps?q=Pondok%20Pesantren%20Annida%20Al%20Islamy%202%20Setu%20Bekasi&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="relative z-10 py-8 text-center text-sm text-gray-400 bg-black/80 border-t border-white/10">
+    &copy; 2026 SMP Annida. Hak Cipta Dilindungi.<br>
+    <span class="text-xs mt-2 inline-block opacity-50">Website Resmi Sistem Informasi Terpadu</span>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('main#beranda, section[id], div#fasilitas');
+      const navLinks = document.querySelectorAll('.scroll-link');
+      
+      window.addEventListener('scroll', () => {
+        let current = '';
+        const scrollY = window.pageYOffset;
+        
+        sections.forEach(section => {
+          const sectionHeight = section.offsetHeight;
+          const sectionTop = section.offsetTop - 150; // offset untuk navbar yang melayang
+          if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            current = section.getAttribute('id');
+          }
+        });
+        
+        if (scrollY < 100) current = 'beranda';
+        
+        navLinks.forEach(link => {
+          link.classList.remove('nav-neon-active');
+          link.classList.add('text-gray-200');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.remove('text-gray-200');
+            link.classList.add('nav-neon-active');
+          }
+        });
+      });
+      
+      // Efek Transisi Keluar (Page Fade Out)
+      document.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href && !href.startsWith('#') && this.target !== '_blank') {
+            e.preventDefault();
+            document.body.classList.add('page-fade-out');
+            setTimeout(() => {
+              window.location.href = this.href;
+            }, 300);
+          }
+        });
+      });
+      
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
