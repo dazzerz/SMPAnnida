@@ -1,4 +1,4 @@
-import Chart from 'chart.js/auto';
+import Chart from 'https://cdn.jsdelivr.net/npm/chart.js/auto/+esm';
 import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { escapeHTML } from '../core/utils.js';
@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
             importStatus.textContent = 'Membaca file...'; importStatus.style.color = 'var(--text-muted)';
             btnImportSiswa.disabled = true;
 
-            const { default: Papa } = await import('papaparse'); Papa.parse(file, {
+            const { default: Papa } = await import('https://cdn.jsdelivr.net/npm/papaparse@5.4.1/+esm'); Papa.parse(file, {
                 header: true, skipEmptyLines: true,
                 complete: async function(results) {
                     try {
