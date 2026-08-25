@@ -278,4 +278,19 @@ export function initAuthPage() {
   setupPasswordToggles();
   setupThemeToggle('auth-theme-toggle');
 }
+// ── AUTO-LOGOUT (30 Menit Idle) ───────────────────
+let idleTimeout;
 
+function resetTimer() {
+  clearTimeout(idleTimeout);
+  idleTimeout = setTimeout(() => {
+    handleLogout();
+  }, 1800000); // 30 minutes
+}
+
+window.addEventListener('mousemove', resetTimer);
+window.addEventListener('keydown', resetTimer);
+window.addEventListener('scroll', resetTimer);
+window.addEventListener('click', resetTimer);
+
+resetTimer();
