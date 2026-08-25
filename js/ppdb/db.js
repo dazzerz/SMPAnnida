@@ -411,13 +411,10 @@ async function saveSiswaForm() {
 }
 
 async function deleteMyRegistrationData() {
-  const pendaftaranId = sessionStorage.getItem('pendaftaran_id');
-  if (!pendaftaranId) return;
-
   const btnDeleteData = document.getElementById('btn-delete-data');
   if (btnDeleteData) {
     btnDeleteData.disabled = true;
-    btnDeleteData.textContent = '⏳ Menghapus...';
+    btnDeleteData.textContent = 'Proses Menghapus...';
   }
 
   try {
@@ -425,9 +422,12 @@ async function deleteMyRegistrationData() {
     const { error: rpcError } = await db.rpc('delete_my_account');
     if (rpcError) throw rpcError;
 
-    // 2. Hapus pendaftaran secara eksplisit (sebagai fallback)
-    const { error } = await db.from('pendaftaran').delete().eq('id', pendaftaranId);
-    if (error) throw error;
+    // 2. Hapus pendaftaran secara eksplisit (sebagai fallback jika masih ada)
+    const pendaftaranId = sessionStorage.getItem('pendaftaran_id');
+    if (pendaftaranId) {
+      const { error } = await db.from('pendaftaran').delete().eq('id', pendaftaranId);
+      if (error) console.error("Hapus pendaftaran fallback error:", error);
+    }
 
     sessionStorage.removeItem('pendaftaran_id');
     sessionStorage.removeItem('last_ppdb_no');
