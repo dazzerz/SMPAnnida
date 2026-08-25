@@ -141,8 +141,7 @@ html {
 
 body {
   font-family: var(--font-family);
-  background-color: var(--bg-primary) !important;
-  background-image: none !important;
+  background-color: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
   line-height: 1.6;

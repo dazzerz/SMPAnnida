@@ -4,7 +4,7 @@
 import supabaseClient from '../core/supabase.js';
 import { escapeHTML } from '../core/utils.js';
 import { getOptionalUser } from '../core/auth.js';
-import CryptoJS from 'https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/+esm';
+import CryptoJS from 'crypto-js';
 
 const db = supabaseClient;
 
@@ -16,7 +16,7 @@ let selectedRegForVerif = null;
 function decryptNik(encryptedText) {
   if (!encryptedText) return '-';
   try {
-    const bytes = CryptoJS.AES.decrypt(encryptedText, (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_ENCRYPTION_KEY ? import.meta.env.VITE_ENCRYPTION_KEY : null) || 'AnnidaPDP2026Rahasia!');
+    const bytes = CryptoJS.AES.decrypt(encryptedText, import.meta.env.VITE_ENCRYPTION_KEY || 'AnnidaPDP2026Rahasia!');
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
     return decrypted || encryptedText; // Kembalikan plaintext lama jika decrypt kosong
   } catch (e) {
@@ -387,7 +387,7 @@ async function saveSiswaForm() {
     if (pError) throw pError;
 
     // 2. Upsert biodata
-const secretKey = (typeof import.meta !== 'undefined' && import.meta.env && (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_ENCRYPTION_KEY ? import.meta.env.VITE_ENCRYPTION_KEY : null)) ? (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_ENCRYPTION_KEY ? import.meta.env.VITE_ENCRYPTION_KEY : null) : 'AnnidaPDP2026Rahasia!';
+    const secretKey = import.meta.env.VITE_ENCRYPTION_KEY || 'AnnidaPDP2026Rahasia!';
     const encryptedNik = nik ? CryptoJS.AES.encrypt(nik, secretKey).toString() : null;
 
     const biodataPayload = {

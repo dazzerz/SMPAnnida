@@ -1,4 +1,4 @@
-import Chart from 'https://cdn.jsdelivr.net/npm/chart.js/auto/+esm';
+import Chart from 'chart.js/auto';
 // =====================================================
 // ANNIDA2FINANCE - Charts Module (Chart.js)
 // =====================================================
