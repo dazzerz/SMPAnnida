@@ -1,0 +1,6 @@
+{
+  "name": "SMP Annida Integrated System",
+  "description": "Sistem Informasi Manajemen Terpadu SMP Annida yang mencakup modul Keuangan, Akademik, dan Penerimaan Peserta Didik Baru (PPDB).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
