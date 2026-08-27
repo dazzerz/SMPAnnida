@@ -404,3 +404,4 @@ export function injectTopbar(containerId, options = {}) {
         </div>
     `;
 }
+
