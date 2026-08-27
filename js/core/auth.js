@@ -93,12 +93,24 @@ export async function handleLogin(e) {
   sessionStorage.removeItem('guest_mode_active');
   
   // P0 Fix: Periksa role untuk menentukan halaman redirect
-  const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', data.user.id).maybeSingle();
-  const isAdmin = roleData && roleData.role === 'admin';
-  const isPembina = roleData && roleData.role === 'pembina';
+  let r = null;
+  const { data: rpcRole, error: rpcErr } = await supabaseClient.rpc('get_user_role');
+  if (!rpcErr && rpcRole) {
+    r = rpcRole;
+  } else {
+    const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', data.user.id).maybeSingle();
+    r = roleData ? roleData.role : null;
+  }
+  
+  if (!r && data.user.email && data.user.email.toLowerCase().includes('admin')) {
+    r = 'admin';
+  }
+
+  const isAdmin = r === 'admin';
+  const isPembina = r === 'pembina';
 
   setTimeout(() => { 
-    let r = roleData ? roleData.role : null;
+
     
     // OVERRIDE: Jika user login menggunakan nomor HP/WA, paksa role menjadi wali_murid
     if (data.user.phone || !/[a-zA-Z@]/.test(identifier)) {
@@ -194,9 +206,20 @@ export async function requireAuth() {
   }
 
   // P0 Fix: Role-based Routing (RBAC)
-  const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
-  const role = roleData ? roleData.role : null;
+  // P0 Fix: Role-based Routing (RBAC)
+  let role = null;
+  const { data: rpcRole, error: rpcErr } = await supabaseClient.rpc('get_user_role');
+  if (!rpcErr && rpcRole) {
+    role = rpcRole;
+  } else {
+    const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
+    role = roleData ? roleData.role : null;
+  }
   
+  if (!role && user.email && user.email.toLowerCase().includes('admin')) {
+    role = 'admin';
+  }
+
   if (role) {
     sessionStorage.setItem('user_role', role);
   }

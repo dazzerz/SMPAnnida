@@ -1,19 +1,21 @@
-import pg8000.native
-db = pg8000.native.Connection('postgres', host='db.vxrgezyfxzynpucuomci.supabase.co', password='Annida12409.', database='postgres', port=5432)
-sql = """
-CREATE OR REPLACE FUNCTION public.delete_my_account()
-RETURNS void
+import psycopg2
+DATABASE_URL = 'postgresql://postgres:Annida12409.@db.vxrgezyfxzynpucuomci.supabase.co:5432/postgres'
+sql = '''CREATE OR REPLACE FUNCTION public.get_user_role()
+RETURNS text
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public
-AS $$
+AS 
+DECLARE
+    v_role text;
 BEGIN
-  IF auth.uid() IS NULL THEN
-    RAISE EXCEPTION 'Not logged in';
-  END IF;
-  DELETE FROM auth.users WHERE id = auth.uid();
+    SELECT role INTO v_role FROM public.user_roles WHERE user_id = auth.uid();
+    RETURN v_role;
 END;
-$$;
-"""
-db.run(sql)
-print('SUCCESS')
+;'''
+conn = psycopg2.connect(DATABASE_URL)
+cur = conn.cursor()
+cur.execute(sql)
+conn.commit()
+cur.close()
+conn.close()
+print('RPC created successfully!')
