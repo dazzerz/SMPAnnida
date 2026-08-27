@@ -117,7 +117,9 @@
   });
 </script>
 </head>
-<body class="bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center md:bg-fixed text-white font-body-md antialiased min-h-screen flex flex-col">
+<body class="text-white font-body-md antialiased min-h-screen flex flex-col">
+  <!-- Fixed Background Layer (Mencegah melar di mobile) -->
+  <div class="fixed inset-0 z-[-2] bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center"></div>
   
 
   <!-- Lapisan Gelap Overlay Global -->
@@ -913,6 +915,9 @@
   </script>
 </body>
 </html>
+
+
+
 
 
 

@@ -76,7 +76,9 @@
   });
 </script>
 </head>
-<body class="bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-fixed text-white font-body-md min-h-screen flex flex-col antialiased">
+<body class="text-white font-body-md min-h-screen flex flex-col antialiased">
+  <!-- Fixed Background Layer (Mencegah melar di mobile) -->
+  <div class="fixed inset-0 z-[-2] bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center"></div>
 
   <!-- Dark Overlay -->
   <div class="fixed inset-0 bg-black/35 z-[-1]"></div>
@@ -175,5 +177,8 @@
   </script>
 </body>
 </html>
+
+
+
 
 
