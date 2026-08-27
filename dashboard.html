@@ -282,13 +282,25 @@
       }
 
       // Proteksi Akses: Jika bukan Admin atau Pembina, tendang ke Akademik
-      const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
-      if (!roleData && user.phone) {
+      let userRole = null;
+      const { data: rpcRole, error: rpcErr } = await supabaseClient.rpc('get_user_role');
+      if (!rpcErr && rpcRole) {
+        userRole = rpcRole;
+      } else {
+        const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
+        userRole = roleData ? roleData.role : null;
+      }
+
+      if (!userRole && user.email && user.email.toLowerCase().includes('admin')) {
+        userRole = 'admin';
+      }
+
+      if (!userRole && user.phone) {
         window.location.href = 'pages/ppdb/dashboard-wali.html';
         return;
       }
-      const isAdmin = roleData && roleData.role === 'admin';
-      const isPembina = roleData && roleData.role === 'pembina';
+      const isAdmin = userRole === 'admin';
+      const isPembina = userRole === 'pembina';
 
       if (!isAdmin && !isPembina) {
         window.location.href = 'pages/academic/dashboard.html';

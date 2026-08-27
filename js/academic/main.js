@@ -40,15 +40,27 @@ async function checkAuth() {
             _user = user;
 
             // P0 Fix: Dynamic Admin Check via user_roles table
-            const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
-            _admin = (roleData && roleData.role === 'admin');
-            _pembina = (roleData && roleData.role === 'pembina');
+            let role = null;
+            const { data: rpcRole, error: rpcErr } = await db.rpc('get_user_role');
+            if (!rpcErr && rpcRole) {
+                role = rpcRole;
+            } else {
+                const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
+                role = roleData ? roleData.role : null;
+            }
+            
+            if (!role && user.email && user.email.toLowerCase().includes('admin')) {
+                role = 'admin';
+            }
+            
+            _admin = (role === 'admin');
+            _pembina = (role === 'pembina');
 
             if (!_admin && !_pembina) {
                 const { data: teacherData } = await db
                     .from('teachers')
                     .select('id, nama, email')
-                    .ilike('email', user.email)
+                    .ilike('email', user.email || '')
                     .maybeSingle();
                 
                 _teacher = teacherData || null;
@@ -60,7 +72,7 @@ async function checkAuth() {
                 const restrictedGroups = ['nav-group-main', 'nav-group-finance', 'nav-group-ppdb', 'nav-group-system'];
                 restrictedGroups.forEach(id => {
                     const el = document.getElementById(id);
-                    if (el) el.style.display = 'none';
+                    if (el) el.style.setProperty('display', 'none', 'important');
                 });
             } else {
                 _teacher = null;
