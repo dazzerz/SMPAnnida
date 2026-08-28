@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/dazzerz/SMPAnnida#readme",
   "devDependencies": {
+    "pg": "^8.23.0",
     "vite": "^8.2.1"
   },
   "dependencies": {
