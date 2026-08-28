@@ -1,5 +1,6 @@
 import { authState } from './authState.js';
 import { injectSidebar, injectTopbar } from '../core/layout.js';
+import { resolveUserRole } from '../core/auth.js';
 injectTopbar('topbar', {
   greeting: '',
   title: '',
@@ -39,19 +40,8 @@ async function checkAuth() {
 
             _user = user;
 
-            // P0 Fix: Dynamic Admin Check via user_roles table
-            let role = null;
-            const { data: rpcRole, error: rpcErr } = await db.rpc('get_user_role');
-            if (!rpcErr && rpcRole) {
-                role = rpcRole;
-            } else {
-                const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
-                role = roleData ? roleData.role : null;
-            }
-            
-            if (!role && user.email && user.email.toLowerCase().includes('admin')) {
-                role = 'admin';
-            }
+            // Resolve role cleanly via centralized helper
+            const role = await resolveUserRole(user);
             
             _admin = (role === 'admin');
             _pembina = (role === 'pembina');

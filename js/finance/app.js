@@ -71,7 +71,13 @@ function updateGreeting(user) {
     const logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
       logoutBtn.innerHTML = '<span class="nav-icon">🔑</span> Login';
-      logoutBtn.addEventListener('click', () => if(window.smoothRedirect){window.smoothRedirect('../../login.html'));}else{window.location.href='../../login.html');}
+      logoutBtn.addEventListener('click', () => {
+        if (window.smoothRedirect) {
+          window.smoothRedirect('../../login.html');
+        } else {
+          window.location.href = '../../login.html';
+        }
+      });
     }
     
     // Hide Transaksi, Budget, and RAB Kelas in sidebar for guests
@@ -271,6 +277,10 @@ function closeModal() {
 
 // ── Main ──────────────────────────────────────────
 async function main() {
+  injectSidebar('sidebar');
+  injectTopbar('topbar', { greeting: 'Selamat Datang, 👋', title: 'Memuat...' });
+  applySavedTheme();
+
   // Clear guest unlock state on page refresh
   const navEntries = performance.getEntriesByType('navigation');
   if (navEntries.length > 0 && navEntries[0].type === 'reload') {
@@ -279,10 +289,6 @@ async function main() {
 
   const user = await requireAuth();
   if (!user) return;
-
-  injectSidebar('sidebar');
-  injectTopbar('topbar', { greeting: 'Selamat Datang, 👋', title: 'Memuat...' });
-  applySavedTheme();
 
   updateGreeting(user);
   initSidebar(user);
