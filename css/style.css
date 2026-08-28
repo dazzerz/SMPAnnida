@@ -659,14 +659,11 @@ body {
   color: #ffffff !important;
 }
 
-/* Force text to be white/readable everywhere because of the dark glass */
-:root, [data-theme="light"], [data-theme="dark"] {
-  --text-primary: #ffffff !important;
-  --text-secondary: rgba(255, 255, 255, 0.7) !important;
-  --text-muted: rgba(255, 255, 255, 0.5) !important;
-}
-h1, h2, h3, h4, h5, h6, p, span, div {
-  color: var(--text-primary);
+/* Text colors for dark glass theme */
+.dark-theme, [data-theme="dark"] {
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
 }
 
 /* The exact glass effect from the reference */
@@ -863,14 +860,11 @@ body::before {
   background-position: center !important;
 }
 
-/* Force text to be white/readable everywhere because of the dark glass */
-:root, [data-theme="light"], [data-theme="dark"] {
-  --text-primary: #ffffff !important;
-  --text-secondary: rgba(255, 255, 255, 0.7) !important;
-  --text-muted: rgba(255, 255, 255, 0.5) !important;
-}
-h1, h2, h3, h4, h5, h6, p, span, div {
-  color: var(--text-primary);
+/* Text colors for dark glass theme */
+.dark-theme, [data-theme="dark"] {
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
 }
 
 /* The exact glass effect from the reference */

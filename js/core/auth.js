@@ -47,6 +47,39 @@ function setLoading(btnId, isLoading) {
   btn.disabled = isLoading;
 }
 
+// ── USER ROLE RESOLVER ────────────────────────────
+export async function resolveUserRole(user) {
+  if (!user) return null;
+  let role = null;
+  try {
+    const { data: rpcRole, error: rpcErr } = await supabaseClient.rpc('get_user_role');
+    if (!rpcErr && rpcRole) {
+      role = rpcRole;
+    } else {
+      const { data: roleData } = await supabaseClient
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      role = roleData ? roleData.role : null;
+    }
+  } catch (err) {
+    console.warn('resolveUserRole error:', err);
+  }
+
+  // Fallback if admin keyword is present in email
+  if (!role && user.email && user.email.toLowerCase().includes('admin')) {
+    role = 'admin';
+  }
+
+  // Fallback for phone login if role not explicitly set in database
+  if (!role && user.phone) {
+    role = 'wali_murid';
+  }
+
+  return role;
+}
+
 // ── LOGIN ─────────────────────────────────────────
 export async function handleLogin(e) {
   e.preventDefault();
@@ -92,30 +125,10 @@ export async function handleLogin(e) {
   localStorage.removeItem('isGuest');
   sessionStorage.removeItem('guest_mode_active');
   
-  // P0 Fix: Periksa role untuk menentukan halaman redirect
-  let r = null;
-  const { data: rpcRole, error: rpcErr } = await supabaseClient.rpc('get_user_role');
-  if (!rpcErr && rpcRole) {
-    r = rpcRole;
-  } else {
-    const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', data.user.id).maybeSingle();
-    r = roleData ? roleData.role : null;
-  }
-  
-  if (!r && data.user.email && data.user.email.toLowerCase().includes('admin')) {
-    r = 'admin';
-  }
-
-  const isAdmin = r === 'admin';
-  const isPembina = r === 'pembina';
+  // Periksa role untuk menentukan halaman redirect
+  let r = await resolveUserRole(data.user);
 
   setTimeout(() => { 
-
-    
-    // OVERRIDE: Jika user login menggunakan nomor HP/WA, paksa role menjadi wali_murid
-    if (data.user.phone || !/[a-zA-Z@]/.test(identifier)) {
-      r = 'wali_murid';
-    }
     if (r === 'calon_siswa' || r === 'wali_murid') {
       if(window.smoothRedirect){window.smoothRedirect('./pages/ppdb/dashboard-wali.html');}else{window.location.href='./pages/ppdb/dashboard-wali.html';}
     } else if (r === 'finance') {
@@ -205,20 +218,7 @@ export async function requireAuth() {
     return null;
   }
 
-  // P0 Fix: Role-based Routing (RBAC)
-  // P0 Fix: Role-based Routing (RBAC)
-  let role = null;
-  const { data: rpcRole, error: rpcErr } = await supabaseClient.rpc('get_user_role');
-  if (!rpcErr && rpcRole) {
-    role = rpcRole;
-  } else {
-    const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
-    role = roleData ? roleData.role : null;
-  }
-  
-  if (!role && user.email && user.email.toLowerCase().includes('admin')) {
-    role = 'admin';
-  }
+  const role = await resolveUserRole(user);
 
   if (role) {
     sessionStorage.setItem('user_role', role);
