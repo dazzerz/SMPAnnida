@@ -121,8 +121,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         .eq('user_id', userId)
         .maybeSingle();
       
-      if (!roleData || (roleData.role !== 'admin' && roleData.role !== 'pembina')) {
-        alert("Akses Ditolak: Anda tidak memiliki izin untuk mengakses halaman Admin.");
+      if (!roleData || !['admin', 'pembina', 'panitia_ppdb'].includes(roleData.role)) {
+        alert("Akses Ditolak: Anda tidak memiliki izin untuk mengakses halaman Admin PPDB.");
         if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
         return;
       }
