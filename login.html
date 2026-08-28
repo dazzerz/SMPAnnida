@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+  <script>
+    (function() {
+      var t = localStorage.getItem('smpannida_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - SMP Annida</title>
@@ -206,8 +212,11 @@
   <link rel="stylesheet" href="css/mobile.css" />
   <script type="module">
     import { handleLogin } from './js/core/auth.js?v=2';
+    import { bindThemeSwitcher } from './js/core/theme.js';
     
     document.addEventListener('DOMContentLoaded', () => {
+      bindThemeSwitcher('theme-toggle-btn');
+
       const submitBtn = document.querySelector('.btn-submit');
       if (submitBtn) {
         submitBtn.addEventListener('click', handleLogin);
@@ -262,6 +271,17 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         Kembali ke Portal
       </a>
+
+      <!-- Theme Toggle Button -->
+      <button id="theme-toggle-btn" class="theme-toggle-btn" style="position: absolute; top: 2rem; right: 2rem; z-index: 10; cursor: pointer; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px; border-radius: 50%; backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; transition: 0.3s;" aria-label="Ganti Mode Tema" title="Ganti Mode Terang / Gelap">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+        </svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
       
     <!-- AREA KIRI -->
     <div class="building-mask">
