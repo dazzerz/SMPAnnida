@@ -1,4 +1,4 @@
-﻿/* =========================================================================
+/* =========================================================================
    SMP Annida - Clean Emerald Dual-Theme (Light & Dark Glassmorphism)
    ========================================================================= */
 
@@ -70,6 +70,10 @@
   /* Chart Colors */
   --chart-grid: rgba(203, 213, 225, 0.4);
   --chart-text: #64748b;
+
+  /* Leaf Background Photo Filter - Fresh Emerald / Bright Green */
+  --leaf-filter: brightness(1.25) saturate(1.8) hue-rotate(25deg);
+  --leaf-opacity: 0.22;
 }
 
 /* ── 2. DARK THEME (Emerald Dark Glassmorphism) ── */
@@ -137,6 +141,10 @@
   /* Chart Colors */
   --chart-grid: rgba(255, 255, 255, 0.08);
   --chart-text: #94a3b8;
+
+  /* Leaf Background Photo Filter - Dark Emerald Ambient */
+  --leaf-filter: brightness(0.65) saturate(1.2) hue-rotate(0deg);
+  --leaf-opacity: 0.12;
 }
 
 /* ── 3. BASE & COMPONENT ADAPTATIONS ── */
@@ -201,3 +209,29 @@ input:focus, select:focus, textarea:focus {
 [data-theme="dark"] .theme-toggle-btn .moon-icon { display: none; }
 [data-theme="light"] .theme-toggle-btn .sun-icon { display: none; }
 [data-theme="light"] .theme-toggle-btn .moon-icon { display: block; }
+
+/* ── 5. LEAF PHOTO BACKGROUND ADAPTATIONS ── */
+.bg-leaf-layer,
+.bg-hero,
+.building-mask::before,
+.hero-wrapper::before {
+  filter: var(--leaf-filter) !important;
+  opacity: var(--leaf-opacity, 0.22) !important;
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('../assets/images/bg-utama.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  pointer-events: none;
+  z-index: -2;
+  filter: var(--leaf-filter);
+  opacity: var(--leaf-opacity);
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
