@@ -172,11 +172,11 @@
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
-    /* Force solid glass background on mobile */
-    background: rgba(10, 20, 15, 0.96) !important;
+    /* Theme-adaptive glass background on mobile */
+    background: var(--sidebar-bg, rgba(10, 20, 15, 0.96)) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
-    border-right: 1px solid rgba(255,255,255,0.12) !important;
+    border-right: 1px solid var(--sidebar-border, rgba(255,255,255,0.12)) !important;
   }
 
   /* When sidebar is open */
