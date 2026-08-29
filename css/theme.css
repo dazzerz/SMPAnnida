@@ -308,6 +308,59 @@ body::before {
   text-shadow: 0 2px 10px rgba(5, 150, 105, 0.15) !important;
 }
 
+/* Budget & RAB Adaptation for Light Mode */
+[data-theme="light"] .budget-summary {
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.95), rgba(240, 253, 244, 0.85)) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.1) !important;
+}
+[data-theme="light"] .budget-summary-title {
+  color: #475569 !important;
+  font-weight: 700 !important;
+}
+[data-theme="light"] .budget-summary-value {
+  color: #059669 !important;
+  font-weight: 800 !important;
+  text-shadow: 0 2px 10px rgba(5, 150, 105, 0.15) !important;
+}
+[data-theme="light"] .budget-summary-sub {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .budget-card,
+[data-theme="light"] .budget-full-card {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: var(--glass-shadow) !important;
+}
+[data-theme="light"] .budget-category-name,
+[data-theme="light"] .budget-name {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+[data-theme="light"] .budget-spent {
+  color: #059669 !important;
+  font-weight: 800 !important;
+}
+[data-theme="light"] .budget-total,
+[data-theme="light"] .budget-of,
+[data-theme="light"] .budget-status {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .rab-card {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+}
+[data-theme="light"] .rab-card-header {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9) !important;
+}
+[data-theme="light"] .rab-card-body {
+  color: #334155 !important;
+}
+
 /* Headings & Text */
 [data-theme="light"] h1, 
 [data-theme="light"] h2, 
@@ -319,7 +372,7 @@ body::before {
 }
 
 [data-theme="light"] p, 
-[data-theme="light"] span:not(.badge):not(.material-symbols-outlined):not(.metric-value), 
+[data-theme="light"] span:not(.badge):not(.material-symbols-outlined):not(.metric-value):not(.budget-summary-value):not(.budget-spent):not(.text-stat-number), 
 [data-theme="light"] label,
 [data-theme="light"] .text-gray-200, 
 [data-theme="light"] .text-gray-300, 
@@ -377,7 +430,84 @@ body::before {
   color: #0f172a !important;
 }
 
-/* ── 5. TOGGLE BUTTON & RESPONSIVE UX ── */
+/* ── 5. DARK THEME COMPREHENSIVE OVERRIDES ── */
+[data-theme="dark"] .budget-summary {
+  background: linear-gradient(135deg, rgba(6, 78, 59, 0.6), rgba(15, 23, 42, 0.8)) !important;
+  border: 1px solid rgba(52, 211, 153, 0.25) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+[data-theme="dark"] .budget-summary-title {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+[data-theme="dark"] .budget-summary-value {
+  color: #34d399 !important;
+  font-weight: 800 !important;
+}
+[data-theme="dark"] .budget-summary-sub {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+[data-theme="dark"] .budget-card,
+[data-theme="dark"] .budget-full-card {
+  background: rgba(15, 23, 42, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+[data-theme="dark"] .budget-category-name,
+[data-theme="dark"] .budget-name {
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+}
+[data-theme="dark"] .budget-spent {
+  color: #34d399 !important;
+  font-weight: 800 !important;
+}
+[data-theme="dark"] .budget-total,
+[data-theme="dark"] .budget-of,
+[data-theme="dark"] .budget-status {
+  color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .rab-card {
+  background: rgba(15, 23, 42, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+[data-theme="dark"] .rab-card-header {
+  color: #f8fafc !important;
+  font-weight: 700 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+[data-theme="dark"] .rab-card-body {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .aca-inline-104 {
+  background: rgba(15, 23, 42, 0.85) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+[data-theme="dark"] .aca-inline-117,
+[data-theme="dark"] #rapor-table th {
+  background-color: rgba(30, 41, 59, 0.8) !important;
+  color: #f1f5f9 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+[data-theme="dark"] #rapor-table td,
+[data-theme="dark"] .aca-inline-118,
+[data-theme="dark"] .aca-inline-119,
+[data-theme="dark"] .aca-inline-120,
+[data-theme="dark"] .aca-inline-121,
+[data-theme="dark"] .aca-inline-125,
+[data-theme="dark"] .aca-inline-126,
+[data-theme="dark"] .aca-inline-127,
+[data-theme="dark"] .aca-inline-128,
+[data-theme="dark"] .aca-inline-130,
+[data-theme="dark"] .aca-inline-131,
+[data-theme="dark"] .aca-inline-132 {
+  color: #e2e8f0 !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ── 6. TOGGLE BUTTON & RESPONSIVE UX ── */
 .table-responsive, .table-container {
   width: 100%;
   overflow-x: auto;

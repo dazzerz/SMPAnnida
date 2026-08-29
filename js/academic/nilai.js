@@ -211,10 +211,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         raporTbody.insertAdjacentHTML('beforeend', `
                             <tr>
-                                <td style="border: 1px solid #000; padding: 8px;">${escapeHTML(mapel)}</td>
-                                <td style="border: 1px solid #000; padding: 8px; text-align: center;">${avgMapel}</td>
-                                <td style="border: 1px solid #000; padding: 8px; text-align: center; font-weight: bold;">${predikat}</td>
-                                <td style="border: 1px solid #000; padding: 8px;">${deskripsi}</td>
+                                <td class="aca-inline-118">${escapeHTML(mapel)}</td>
+                                <td class="aca-inline-119">${avgMapel}</td>
+                                <td class="aca-inline-120 font-bold">${predikat}</td>
+                                <td class="aca-inline-118">${deskripsi}</td>
                             </tr>
                         `);
                     }
