@@ -18,6 +18,7 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&amp;display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../../css/theme.css">
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -42,7 +43,6 @@
   <style>
     html { scroll-behavior: smooth; }
     
-    /* Neon Glow Emerald Green CTA Button */
     .neon-glow-btn {
       box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
       transition: all 0.3s ease;
@@ -52,16 +52,14 @@
       transform: translateY(-2px);
     }
     
-    /* Glassmorphism Styles */
     .glass-panel-custom {
-      background: rgba(16, 26, 20, 0.35);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      background: var(--glass-bg, rgba(16, 26, 20, 0.35));
+      backdrop-filter: var(--glass-blur, blur(12px));
+      -webkit-backdrop-filter: var(--glass-blur, blur(12px));
+      border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
+      box-shadow: var(--glass-shadow, 0 8px 32px rgba(0, 0, 0, 0.3));
     }
     
-    /* FAQ Accordion Transitions */
     .faq-answer {
       max-height: 0;
       overflow: hidden;
@@ -77,7 +75,6 @@
       transform: rotate(180deg);
     }
     
-    /* Infinite Marquee Photo Gallery Keyframes & Styles */
     @keyframes scroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(calc(-250px * 8 - 1.5rem * 8)); }
@@ -91,17 +88,12 @@
     .slider-track:hover {
       animation-play-state: paused;
     }
-      /* Neon Active Line */
-    .nav-neon-active { position: relative; color: white !important; }
-    .nav-neon-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background-color: white; box-shadow: 0 0 10px 2px rgba(255,255,255,0.8); border-radius: 2px; }
-  </style>
-  <style>
+    
     body { animation: pageFadeIn 0.3s ease-out forwards; }
     @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
     .page-fade-out { opacity: 0 !important; transition: opacity 0.3s ease-out !important; }
-      /* Neon Active Line */
-    .nav-neon-active { position: relative; color: white !important; }
-    .nav-neon-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background-color: white; box-shadow: 0 0 10px 2px rgba(255,255,255,0.8); border-radius: 2px; }
+    .nav-neon-active { position: relative; color: var(--primary, #059669) !important; font-weight: 700; }
+    .nav-neon-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background-color: var(--primary, #059669); border-radius: 2px; }
   </style>
   <script>
     window.smoothRedirect = function(url) {
@@ -119,63 +111,50 @@
         });
       });
     });
+    window.addEventListener('pageshow', function (event) {
+      if (event.persisted || document.body.classList.contains('page-fade-out')) {
+        document.body.classList.remove('page-fade-out');
+      }
+    });
   </script>
-<script>
-  window.addEventListener('pageshow', function (event) {
-    if (event.persisted || document.body.classList.contains('page-fade-out')) {
-      document.body.classList.remove('page-fade-out');
-    }
-  });
-</script>
-  <link rel="stylesheet" href="../../css/theme.css">
 </head>
-<body class="text-white font-body-md antialiased min-h-screen flex flex-col">
-  <!-- Fixed Background Layer (Mencegah melar di mobile) -->
-  <div class="fixed inset-0 z-[-2] bg-[url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center"></div>
-  
-
-  <!-- Lapisan Gelap Overlay Global -->
-  <div class="fixed inset-0 bg-black/25 z-[-1]"></div>
+<body class="font-body-md antialiased min-h-screen flex flex-col">
+  <!-- Adaptive Overlay Layer on top of botanical nature wallpaper -->
+  <div class="fixed inset-0 z-[-1] bg-white/80 dark:bg-black/75 backdrop-blur-sm transition-colors duration-300 pointer-events-none"></div>
 
   <!-- TopNavBar Shared Component -->
-    <header class="sticky top-6 z-50 flex justify-center px-4 w-full">
-    <div class="flex justify-between items-center px-5 md:px-6 py-2.5 w-full max-w-7xl bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.3)] rounded-full">
-      <a class="flex items-center gap-2 md:gap-3 font-headline-md text-xl md:text-2xl font-bold text-white hover:opacity-90 transition-opacity" href="#home">
+  <header class="sticky top-6 z-50 flex justify-center px-4 w-full">
+    <div class="flex justify-between items-center px-5 md:px-6 py-2.5 w-full max-w-7xl bg-white/70 dark:bg-slate-900/60 backdrop-blur-md border border-white/80 dark:border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-full">
+      <a class="flex items-center gap-2 md:gap-3 font-headline-md text-xl md:text-2xl font-bold hover:opacity-90 transition-opacity text-slate-900 dark:text-white" href="#home">
         <img src="../../assets/logo/1.png" alt="Logo Annida" class="h-8 md:h-9 w-auto object-contain">
         <span class="tracking-wide uppercase text-[1rem] md:text-xl hidden sm:inline">SMP ANNIDA</span>
       </a>
-            <nav class="hidden lg:flex gap-5 xl:gap-6 items-center text-[0.9rem] font-semibold">
+      <nav class="hidden lg:flex gap-5 xl:gap-6 items-center text-[0.9rem] font-semibold text-slate-700 dark:text-gray-200">
         <a class="scroll-link nav-neon-active pb-1" href="#home">Home</a>
-        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#mengapa-kami">Mengapa Kami</a>
-        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#program">Program</a>
-        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#timeline">Timeline</a>
-        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#biaya">Biaya</a>
-        <a class="scroll-link text-gray-200 hover:text-white hover:shadow-[0_2px_0_0_rgba(255,255,255,0.5)] transition-all pb-1" href="#alur">Alur PPDB</a>
+        <a class="scroll-link hover:text-emerald-600 dark:hover:text-white transition-all pb-1" href="#mengapa-kami">Mengapa Kami</a>
+        <a class="scroll-link hover:text-emerald-600 dark:hover:text-white transition-all pb-1" href="#program">Program</a>
+        <a class="scroll-link hover:text-emerald-600 dark:hover:text-white transition-all pb-1" href="#timeline">Timeline</a>
+        <a class="scroll-link hover:text-emerald-600 dark:hover:text-white transition-all pb-1" href="#biaya">Biaya</a>
+        <a class="scroll-link hover:text-emerald-600 dark:hover:text-white transition-all pb-1" href="#alur">Alur PPDB</a>
       </nav>
       <div class="flex items-center gap-2 md:gap-3">
-        <a href="../../index.html" class="text-xs md:text-sm font-semibold text-white border border-white/30 hover:bg-white/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-colors whitespace-nowrap">Portal Utama</a>
+        <a href="../../index.html" class="text-xs md:text-sm font-semibold border border-slate-300 dark:border-white/30 text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-colors whitespace-nowrap">Portal Utama</a>
         <a class="text-xs md:text-sm font-semibold bg-primary text-white px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-primary-dim transition-colors shadow-[0_0_10px_rgba(16,185,129,0.4)] whitespace-nowrap" href="register.html">Daftar Sekarang</a>
+        <!-- Theme Toggle Switcher -->
+        <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Ganti Mode Tema" title="Ganti Mode Terang / Gelap">
+          <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+          <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </button>
       </div>
     </div>
-  
-      <!-- Theme Toggle Switcher -->
-      <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Ganti Mode Tema" title="Ganti Mode Terang / Gelap">
-        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
-        </svg>
-        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-        </svg>
-      </button>
-
-</header>
+  </header>
 
   <main class="flex-grow">
-    
-    <!-- ═══════════════════════════════════════════ -->
-    <!-- 1. HERO SECTION -->
-    <!-- ═══════════════════════════════════════════ -->
     <section class="relative pt-20 pb-28 px-6 lg:px-0" id="home">
       <div class="max-w-7xl mx-auto text-center">
         <span class="inline-block py-1 px-3 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-sm font-semibold mb-6">Penerimaan Peserta Didik Baru (PPDB) 2027/2028</span>
@@ -647,6 +626,7 @@
     </section>
 
     <!-- ═══════════════════════════════════════════ -->
+        <!-- ═══════════════════════════════════════════ -->
     <!-- 7. LOKASI & CONTACT INFO -->
     <!-- ═══════════════════════════════════════════ -->
     <section class="py-16 px-6 lg:px-0 border-t border-white/10" id="lokasi">
@@ -655,42 +635,42 @@
           <!-- Contact details -->
           <div class="glass-panel-custom rounded-2xl p-8 border border-white/10 flex flex-col justify-between">
             <div>
-              <h3 class="text-2xl font-bold text-white mb-6">Hubungi Kantor Panitia PPDB</h3>
-              <p class="text-gray-300 text-sm leading-relaxed mb-8">
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-6">Hubungi Kantor Panitia PPDB</h3>
+              <p class="text-slate-600 dark:text-gray-300 text-sm leading-relaxed mb-8">
                 Untuk pertanyaan lebih mendalam mengenai kurikulum Sekolah Alam, fasilitas asrama pondok, atau kendala dalam portal pengunggahan berkas online, Anda dapat mengunjungi kantor kami atau menghubungi kami melalui saluran berikut:
               </p>
               
               <div class="space-y-4 text-sm">
                 <div class="flex items-start gap-3">
-                  <span class="material-symbols-outlined text-emerald-400">location_on</span>
+                  <span class="material-symbols-outlined text-emerald-500">location_on</span>
                   <div>
-                    <span class="font-bold text-white block">Alamat Sekolah dan Pondok Pesantren</span>
-                    <span class="text-gray-300">Gg. Al-Ikhlas No.47, RT.002/RW.05, Kp.Rawa atug, Desa Cibening, Kec. Setu, Kabupaten Bekasi, Jawa Barat 17320</span>
+                    <span class="font-bold text-slate-900 dark:text-white block">Alamat Sekolah dan Pondok Pesantren</span>
+                    <span class="text-slate-600 dark:text-gray-300">Gg. Al-Ikhlas No.47, RT.002/RW.05, Kp.Rawa atug, Desa Cibening, Kec. Setu, Kabupaten Bekasi, Jawa Barat 17320</span>
                   </div>
                 </div>
 
                 <div class="flex items-center gap-3">
-                  <span class="material-symbols-outlined text-emerald-400">chat</span>
+                  <span class="material-symbols-outlined text-emerald-500">chat</span>
                   <div>
-                    <span class="font-bold text-white block">WhatsApp Panitia</span>
-                    <span class="text-gray-300">+62 812-8957-5462 (Fast Response)</span>
+                    <span class="font-bold text-slate-900 dark:text-white block">WhatsApp Panitia</span>
+                    <span class="text-slate-600 dark:text-gray-300">+62 812-8957-5462 (Fast Response)</span>
                   </div>
                 </div>
               </div>
             </div>
             
-            <div class="border-t border-white/10 pt-6 mt-8 flex gap-4">
-              <a href="https://wa.me/6281289575462" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-lg text-sm flex items-center gap-1.5 transition-all">
+            <div class="border-t border-slate-200 dark:border-white/10 pt-6 mt-8 flex gap-4">
+              <a href="https://wa.me/6281289575462" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-lg text-sm flex items-center gap-1.5 transition-all shadow-md">
                 💬 Chat WhatsApp
               </a>
-              <a href="tel:+6281289575462" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold py-2.5 px-6 rounded-lg text-sm transition-all">
+              <a href="tel:+6281289575462" class="bg-white/50 dark:bg-white/10 hover:bg-white/80 dark:hover:bg-white/20 border border-slate-300 dark:border-white/20 text-slate-800 dark:text-white font-bold py-2.5 px-6 rounded-lg text-sm transition-all">
                 Hubungi Panitia
               </a>
             </div>
           </div>
 
           <!-- Maps embed -->
-          <div class="rounded-2xl overflow-hidden border border-white/10 h-[400px] lg:h-auto min-h-[350px]">
+          <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 h-[400px] lg:h-auto min-h-[350px]">
             <iframe 
               src="https://maps.google.com/maps?q=Pondok%20Pesantren%20Annida%20Al%20Islamy%202%20Setu%20Bekasi&t=&z=15&ie=UTF8&iwloc=&output=embed" 
               width="100%" 
@@ -704,44 +684,43 @@
         </div>
       </div>
     </section>
-
   </main>
 
   <!-- Footer Shared Component -->
-  <footer class="bg-black/40 backdrop-blur-md border-t border-white/10 mt-auto">
+  <footer class="bg-white/60 dark:bg-black/40 backdrop-blur-md border-t border-slate-200 dark:border-white/10 mt-auto">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 px-6 py-12 w-full max-w-7xl mx-auto">
       <div class="col-span-1 md:col-span-1">
-        <div class="flex items-center gap-2 font-headline-md text-xl text-white mb-4">
+        <div class="flex items-center gap-2 font-headline-md text-xl text-slate-900 dark:text-white mb-4">
           <img src="../../assets/logo/1.png" alt="Logo Annida" class="h-10 w-auto object-contain">
           <span>SMP Annida</span>
         </div>
-        <p class="text-sm text-gray-300 leading-relaxed">
+        <p class="text-sm text-slate-600 dark:text-gray-300 leading-relaxed">
           Membentuk santri berjiwa Qur'ani, literat, tangguh, dan berwawasan lingkungan global.
         </p>
       </div>
       <div class="col-span-1 md:col-span-3 flex flex-col md:flex-row gap-8 md:justify-end">
         <div class="flex flex-col gap-2">
-          <span class="font-bold text-white mb-2 text-sm uppercase tracking-wider">Navigasi</span>
-          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="#home">Home</a>
-          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="#mengapa-kami">Mengapa Kami</a>
-          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="#program">Program</a>
-          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="#biaya">Biaya</a>
+          <span class="font-bold text-slate-900 dark:text-white mb-2 text-sm uppercase tracking-wider">Navigasi</span>
+          <a class="text-sm text-slate-600 dark:text-gray-300 hover:underline hover:text-primary transition-all" href="#home">Home</a>
+          <a class="text-sm text-slate-600 dark:text-gray-300 hover:underline hover:text-primary transition-all" href="#mengapa-kami">Mengapa Kami</a>
+          <a class="text-sm text-slate-600 dark:text-gray-300 hover:underline hover:text-primary transition-all" href="#program">Program</a>
+          <a class="text-sm text-slate-600 dark:text-gray-300 hover:underline hover:text-primary transition-all" href="#biaya">Biaya</a>
         </div>
         <div class="flex flex-col gap-2">
-          <span class="font-bold text-white mb-2 text-sm uppercase tracking-wider">Bantuan</span>
-          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="#lokasi">Hubungi Kami</a>
-          <a class="text-sm text-gray-300 hover:underline hover:text-primary transition-all" href="../../index.html">Portal Utama</a>
+          <span class="font-bold text-slate-900 dark:text-white mb-2 text-sm uppercase tracking-wider">Bantuan</span>
+          <a class="text-sm text-slate-600 dark:text-gray-300 hover:underline hover:text-primary transition-all" href="#lokasi">Hubungi Kami</a>
+          <a class="text-sm text-slate-600 dark:text-gray-300 hover:underline hover:text-primary transition-all" href="../../index.html">Portal Utama</a>
         </div>
       </div>
     </div>
-    <div class="border-t border-white/5 w-full">
-      <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center text-xs text-gray-400">
+    <div class="border-t border-slate-200 dark:border-white/5 w-full">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center text-xs text-slate-500 dark:text-gray-400">
         <span>© 2027 SMP Annida PPDB Portal. All rights reserved.</span>
       </div>
     </div>
   </footer>
 
-  <!-- Lightbox Modal untuk Memperbesar Gambar (Letakkan sebelum tag   <script>
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
       const sections = document.querySelectorAll('section[id], div[id="home"]');
       const navLinks = document.querySelectorAll('.scroll-link');
@@ -762,9 +741,7 @@
         
         navLinks.forEach(link => {
           link.classList.remove('nav-neon-active');
-          link.classList.add('text-gray-200');
           if (link.getAttribute('href') === '#' + current) {
-            link.classList.remove('text-gray-200');
             link.classList.add('nav-neon-active');
           }
         });
@@ -772,182 +749,6 @@
     });
   </script>
   <script type="module" src="../../js/core/theme.js"></script>
-</body>) -->
-  <div id="lightbox-modal" class="lightbox-modal" style="display:none;">
-    <span class="lightbox-close">&times;</span>
-    <button class="lightbox-nav lightbox-prev">◀</button>
-    <img class="lightbox-content" id="lightbox-img" src="" alt="Perbesar Foto">
-    <button class="lightbox-nav lightbox-next">▶</button>
-    <div id="lightbox-caption" class="lightbox-caption"></div>
-  </div>
-
-  <!-- FLOATING WHATSAPP CTA -->
-  <a href="https://wa.me/6281289575462" target="_blank" class="fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-400 text-white rounded-full px-5 py-3 shadow-[0_4px_15px_rgba(16,185,129,0.4)] hover:shadow-[0_6px_20px_rgba(16,185,129,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-2 z-50 font-bold text-sm">
-    <span class="material-symbols-outlined text-lg leading-none">chat</span>
-    <span>👋 Butuh bantuan?</span>
-  </a>
-
-  <!-- Custom JS -->
   <script type="module" src="../../js/ppdb/script.js"></script>
-  
-  <!-- INTERACTIVE LOGIC (SIMULATOR & ACCORDION) -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1. FAQ Accordion Logic
-      const faqTriggers = document.querySelectorAll('.faq-trigger');
-      faqTriggers.forEach(trigger => {
-        trigger.addEventListener('click', () => {
-          const item = trigger.closest('.faq-item');
-          const isActive = item.classList.contains('active');
-          
-          // Close all FAQ items
-          document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
-          
-          // Open clicked one if it wasn't active
-          if (!isActive) {
-            item.classList.add('active');
-          }
-        });
-      });
-
-      // 2. Cost Simulator Logic
-      const programSelect = document.getElementById('sim-program');
-      const anakInput = document.getElementById('sim-anak');
-      const outBiayaAwal = document.getElementById('out-biaya-awal');
-      const outBiayaBulanan = document.getElementById('out-biaya-bulanan');
-
-      const PRICING = {
-        reguler: { awal: 3250000, spp: 425000 },
-        pondok: { awal: 4500000, spp: 1100000 }
-      };
-
-      function updateEstimates() {
-        const prog = programSelect.value;
-        const count = Math.max(1, parseInt(anakInput.value) || 1);
-        
-        const rates = PRICING[prog] || PRICING.reguler;
-        const totalAwal = rates.awal * count;
-        const totalSpp = rates.spp * count;
-
-        outBiayaAwal.textContent = 'Rp ' + totalAwal.toLocaleString('id-ID');
-        outBiayaBulanan.textContent = 'Rp ' + totalSpp.toLocaleString('id-ID') + (count > 1 ? ` (${count} Anak)` : '');
-      }
-
-      programSelect.addEventListener('change', updateEstimates);
-      anakInput.addEventListener('input', updateEstimates);
-      
-      // Run once at start
-      updateEstimates();
-    });
-  </script>
-
-  <!-- Lightbox Modal -->
-  <div id="lightbox-modal" class="fixed inset-0 z-[9999] hidden bg-black/90 backdrop-blur-sm flex justify-center items-center opacity-0 transition-opacity duration-300">
-    <!-- Tombol Close -->
-    <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white hover:text-red-500 text-4xl font-bold z-50 transition-colors">&times;</button>
-    
-    <!-- Container Foto -->
-    <div class="relative w-full max-w-5xl px-4 flex justify-center">
-      <img id="lightbox-img" src="" alt="Fasilitas Annida" class="max-h-[85vh] rounded-2xl shadow-2xl scale-95 transition-transform duration-300">
-    </div>
-  </div>
-
-  <script>
-    window.openLightbox = function(imageSrc) {
-      const modal = document.getElementById('lightbox-modal');
-      const img = document.getElementById('lightbox-img');
-      if (!modal || !img) return;
-      
-      img.src = imageSrc;
-      modal.classList.remove('hidden');
-      
-      // Trigger animasi fade in & scale
-      setTimeout(() => {
-        modal.classList.remove('opacity-0');
-        img.classList.remove('scale-95');
-        img.classList.add('scale-100');
-      }, 10);
-    };
-
-    window.closeLightbox = function() {
-      const modal = document.getElementById('lightbox-modal');
-      const img = document.getElementById('lightbox-img');
-      if (!modal || !img) return;
-      
-      // Trigger animasi fade out
-      modal.classList.add('opacity-0');
-      img.classList.remove('scale-100');
-      img.classList.add('scale-95');
-      
-      setTimeout(() => {
-        modal.classList.add('hidden');
-        img.src = '';
-      }, 300);
-    };
-
-    // Tutup lightbox jika area background hitam diklik
-    document.getElementById('lightbox-modal').addEventListener('click', function(e) {
-      if (e.target === this) window.closeLightbox();
-    });
-
-    // Bulletproof click handler binding for sliding track images
-    const initLightboxListeners = () => {
-      const sliderImages = document.querySelectorAll('.slider-track img');
-      sliderImages.forEach(img => {
-        img.addEventListener('click', function() {
-          if (window.openLightbox) {
-            window.openLightbox(this.src);
-          }
-        });
-      });
-    };
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initLightboxListeners);
-    } else {
-      initLightboxListeners();
-    }
-  </script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const sections = document.querySelectorAll('section[id], div[id="home"]');
-      const navLinks = document.querySelectorAll('.scroll-link');
-      
-      window.addEventListener('scroll', () => {
-        let current = '';
-        const scrollY = window.pageYOffset;
-        
-        sections.forEach(section => {
-          const sectionHeight = section.offsetHeight;
-          const sectionTop = section.offsetTop - 150;
-          if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-            current = section.getAttribute('id');
-          }
-        });
-        
-        if (scrollY < 100) current = 'home';
-        
-        navLinks.forEach(link => {
-          link.classList.remove('nav-neon-active');
-          link.classList.add('text-gray-200');
-          if (link.getAttribute('href') === '#' + current) {
-            link.classList.remove('text-gray-200');
-            link.classList.add('nav-neon-active');
-          }
-        });
-      });
-    });
-  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
