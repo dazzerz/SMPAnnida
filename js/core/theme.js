@@ -1,4 +1,4 @@
-﻿/**
+/**
  * theme.js – Standalone Dual-Theme Manager for SMP Annida
  * Handles: Zero-FOUC initialization, localStorage persistence, System theme matching, & Chart.js live updates.
  */
@@ -60,11 +60,21 @@ export function initTheme() {
 export function bindThemeSwitcher(btnElementOrId = 'theme-toggle-btn') {
   const btn = typeof btnElementOrId === 'string' ? document.getElementById(btnElementOrId) : btnElementOrId;
   if (!btn) return;
-  // Remove existing listeners by clone or clean bind
   btn.onclick = (e) => {
     e.preventDefault();
     toggleTheme();
   };
+}
+
+// Global click delegation for all theme toggle buttons
+if (typeof document !== 'undefined') {
+  document.addEventListener('click', (e) => {
+    const toggleTarget = e.target.closest('#theme-toggle-btn, .theme-toggle-btn');
+    if (toggleTarget) {
+      e.preventDefault();
+      toggleTheme();
+    }
+  });
 }
 
 // Auto-run early execution

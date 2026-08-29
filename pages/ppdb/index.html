@@ -122,6 +122,7 @@
     }
   });
 </script>
+  <link rel="stylesheet" href="../../css/theme.css">
 </head>
 <body class="text-white font-body-md antialiased min-h-screen flex flex-col">
   <!-- Fixed Background Layer (Mencegah melar di mobile) -->
@@ -151,7 +152,19 @@
         <a class="text-xs md:text-sm font-semibold bg-primary text-white px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-primary-dim transition-colors shadow-[0_0_10px_rgba(16,185,129,0.4)] whitespace-nowrap" href="register.html">Daftar Sekarang</a>
       </div>
     </div>
-  </header>
+  
+      <!-- Theme Toggle Switcher -->
+      <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Ganti Mode Tema" title="Ganti Mode Terang / Gelap">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+        </svg>
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
+
+</header>
 
   <main class="flex-grow">
     
@@ -753,6 +766,7 @@
       });
     });
   </script>
+  <script type="module" src="../../js/core/theme.js"></script>
 </body>) -->
   <div id="lightbox-modal" class="lightbox-modal" style="display:none;">
     <span class="lightbox-close">&times;</span>
