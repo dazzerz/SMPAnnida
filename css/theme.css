@@ -312,6 +312,7 @@ tbody tr:hover {
   padding: 0;
   flex-shrink: 0;
   touch-action: manipulation;
+  z-index: 40;
 }
 
 .theme-toggle-btn:hover {
@@ -320,10 +321,82 @@ tbody tr:hover {
   border-color: var(--primary);
 }
 
-[data-theme="dark"] .theme-toggle-btn .sun-icon { display: block; }
-[data-theme="dark"] .theme-toggle-btn .moon-icon { display: none; }
-[data-theme="light"] .theme-toggle-btn .sun-icon { display: none; }
-[data-theme="light"] .theme-toggle-btn .moon-icon { display: block; }
+[data-theme="dark"] .theme-toggle-btn .sun-icon { display: block !important; }
+[data-theme="dark"] .theme-toggle-btn .moon-icon { display: none !important; }
+[data-theme="light"] .theme-toggle-btn .sun-icon { display: none !important; }
+[data-theme="light"] .theme-toggle-btn .moon-icon { display: block !important; }
+
+/* ── 5. LIGHT MODE COMPREHENSIVE OVERRIDES (Eliminates hardcoded dark colors) ── */
+[data-theme="light"] body,
+html[data-theme="light"] body,
+body:not(.dark) {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] h1, [data-theme="light"] h2, [data-theme="light"] h3, 
+[data-theme="light"] h4, [data-theme="light"] h5, [data-theme="light"] h6,
+html:not(.dark) h1, html:not(.dark) h2, html:not(.dark) h3 {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] p, [data-theme="light"] span:not(.badge):not(.material-symbols-outlined), 
+[data-theme="light"] label,
+[data-theme="light"] .text-gray-200, [data-theme="light"] .text-gray-300, 
+[data-theme="light"] .text-slate-300, [data-theme="light"] .text-slate-400 {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .text-white:not(.btn):not(.badge):not(.bg-primary):not([class*="bg-emerald"]):not([class*="bg-blue"]):not([class*="bg-red"]):not(.neon-glow-btn) {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .bg-black\/60,
+[data-theme="light"] .bg-black\/40,
+[data-theme="light"] .bg-black\/35,
+[data-theme="light"] .bg-black\/30,
+[data-theme="light"] .bg-black\/25 {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+[data-theme="light"] .bg-\[\#121c2c\],
+[data-theme="light"] .bg-\[\#0b1320\],
+[data-theme="light"] .bg-\[\#0b1319\],
+[data-theme="light"] .bg-slate-900,
+[data-theme="light"] .bg-slate-800 {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .glass-panel-custom,
+[data-theme="light"] .glass-card,
+[data-theme="light"] .glass-login {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.08) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] th {
+  background-color: rgba(241, 245, 249, 0.85) !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] td {
+  color: #1e293b !important;
+}
+
+[data-theme="light"] input, 
+[data-theme="light"] select, 
+[data-theme="light"] textarea {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: #94a3b8 !important;
+}
 
 /* Mobile Adaptations */
 @media (max-width: 768px) {
