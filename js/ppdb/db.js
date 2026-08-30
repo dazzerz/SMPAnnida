@@ -490,6 +490,93 @@ async function submitPaymentConfirmation() {
   }, 1500);
 }
 
+
+function updateAnnouncementTab(status, studentName) {
+  const announceIcon = document.getElementById('announce-icon-wrapper');
+  const announceBadge = document.getElementById('announce-status-badge');
+  const announceText = document.getElementById('display-announcement-text');
+  const announceActions = document.getElementById('announce-actions-container');
+  const announceHelp = document.getElementById('announce-help-container');
+  const btnCetakLulus = document.getElementById('btn-cetak-lulus');
+
+  if (!announceText) return;
+
+  const cleanName = studentName && studentName !== '-' ? studentName : 'Calon Siswa';
+
+  if (status === 'Lulus') {
+    if (announceIcon) {
+      announceIcon.textContent = '🎉';
+      announceIcon.className = 'w-20 h-20 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-4xl mx-auto';
+    }
+    if (announceBadge) {
+      announceBadge.className = 'inline-flex items-center px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider';
+      announceBadge.textContent = '🟢 Diterima / Lulus';
+    }
+    announceText.innerHTML = `Selamat! Calon siswa atas nama <strong class="text-white">${escapeHTML(cleanName)}</strong> dinyatakan <strong>LULUS / DITERIMA</strong> seleksi penerimaan murid baru SMP Annida Tahun Ajaran 2027/2028.`;
+    
+    if (announceActions) announceActions.classList.remove('hidden');
+    if (btnCetakLulus) btnCetakLulus.classList.remove('hidden');
+    if (announceHelp) announceHelp.classList.remove('hidden');
+  } else if (status === 'Tidak Lulus' || status === 'Ditolak') {
+    if (announceIcon) {
+      announceIcon.textContent = 'ℹ️';
+      announceIcon.className = 'w-20 h-20 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center justify-center text-4xl mx-auto';
+    }
+    if (announceBadge) {
+      announceBadge.className = 'inline-flex items-center px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-bold uppercase tracking-wider';
+      announceBadge.textContent = '🔴 Belum Memenuhi Syarat';
+    }
+    announceText.innerHTML = `Mohon Maaf, calon siswa atas nama <strong class="text-white">${escapeHTML(cleanName)}</strong> belum memenuhi kriteria penerimaan tahun ajaran 2027/2028. Terima kasih atas partisipasi dan minat Ayah/Bunda mendaftar di SMP Annida.`;
+    
+    if (announceActions) announceActions.classList.add('hidden');
+    if (btnCetakLulus) btnCetakLulus.classList.add('hidden');
+    if (announceHelp) announceHelp.classList.remove('hidden');
+  } else if (status === 'Seleksi') {
+    if (announceIcon) {
+      announceIcon.textContent = '📖';
+      announceIcon.className = 'w-20 h-20 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center text-4xl mx-auto';
+    }
+    if (announceBadge) {
+      announceBadge.className = 'inline-flex items-center px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold uppercase tracking-wider';
+      announceBadge.textContent = '🟣 Tahap Seleksi Tes Tahfidz';
+    }
+    announceText.innerHTML = `Berkas persyaratan calon siswa atas nama <strong class="text-white">${escapeHTML(cleanName)}</strong> telah <strong>LOLOS VERIFIKASI</strong>. Calon siswa dijadwalkan mengikuti <strong>Tes Pemetaan Tahfidz & Wawancara</strong>. Silakan hadir sesuai jadwal seleksi yang telah diinformasikan Panitia PPDB.`;
+    
+    if (announceActions) announceActions.classList.add('hidden');
+    if (btnCetakLulus) btnCetakLulus.classList.add('hidden');
+    if (announceHelp) announceHelp.classList.remove('hidden');
+  } else if (status === 'Revisi') {
+    if (announceIcon) {
+      announceIcon.textContent = '⚠️';
+      announceIcon.className = 'w-20 h-20 rounded-full bg-red-500/10 text-red-400 border border-red-500/20 flex items-center justify-center text-4xl mx-auto';
+    }
+    if (announceBadge) {
+      announceBadge.className = 'inline-flex items-center px-3 py-1 rounded-full bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-bold uppercase tracking-wider';
+      announceBadge.textContent = '🔴 Perlu Revisi Dokumen';
+    }
+    announceText.innerHTML = `Panitia menemukan dokumen persyaratan calon siswa atas nama <strong class="text-white">${escapeHTML(cleanName)}</strong> yang belum sesuai. Silakan buka tab <strong>Berkas</strong> untuk mengunggah ulang dokumen yang ditandai revisi.`;
+    
+    if (announceActions) announceActions.classList.add('hidden');
+    if (btnCetakLulus) btnCetakLulus.classList.add('hidden');
+    if (announceHelp) announceHelp.classList.remove('hidden');
+  } else {
+    // Default: Draft / Verifikasi / Menunggu DP
+    if (announceIcon) {
+      announceIcon.textContent = '⏳';
+      announceIcon.className = 'w-20 h-20 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-4xl mx-auto';
+    }
+    if (announceBadge) {
+      announceBadge.className = 'inline-flex items-center px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold uppercase tracking-wider';
+      announceBadge.textContent = '🟡 Dalam Proses Verifikasi';
+    }
+    announceText.innerHTML = `Pendaftaran calon siswa atas nama <strong class="text-white">${escapeHTML(cleanName)}</strong> sedang dalam proses peninjauan dan verifikasi berkas oleh Panitia PPDB. Pengumuman hasil seleksi akan diperbarui setelah berkas dinyatakan lengkap dan tes seleksi diselesaikan.`;
+    
+    if (announceActions) announceActions.classList.add('hidden');
+    if (btnCetakLulus) btnCetakLulus.classList.add('hidden');
+    if (announceHelp) announceHelp.classList.remove('hidden');
+  }
+}
+
 function updateTimelineUI(status) {
   // Update stepper labels dynamically
   const text3 = document.getElementById('step-text-3');
@@ -850,7 +937,7 @@ window.saveAdminVerification = async function(newStatus) {
   const id = selectedRegForVerif.id;
   const noDaftar = selectedRegForVerif.no_pendaftaran;
   const waNumber = selectedRegForVerif.data_orangtua ? selectedRegForVerif.data_orangtua.whatsapp : '';
-  const studentName = selectedRegForVerif.biodata_siswa ? selectedRegForVerif.biodata_siswa.nama_lengkap : '';
+  const studentName = selectedRegForVerif.biodata_siswa ? selectedRegForVerif.biodata_siswa.nama_lengkap : 'Calon Siswa';
 
   // Gather notes
   ['kartu_keluarga', 'akta_kelahiran', 'ijazah'].forEach(docType => {
@@ -898,10 +985,12 @@ window.saveAdminVerification = async function(newStatus) {
       } else if (newStatus === 'Revisi') {
         statusMsg = 'Perlu Revisi Dokumen:\n' + rejectedDocs.join('\n');
       } else if (newStatus === 'Lulus') {
-        statusMsg = 'Selamat! Calon siswa dinyatakan LULUS Tes Seleksi Pemetaan Tahfidz masuk SMP Annida.';
+        statusMsg = 'Selamat! Calon siswa dinyatakan LULUS Seleksi PPDB SMP Annida.';
+      } else if (newStatus === 'Tidak Lulus') {
+        statusMsg = 'Mohon Maaf, pendaftaran calon siswa belum memenuhi kriteria penerimaan tahun ini.';
       }
 
-      const rawMsg = `Halo Ayah/Bunda dari ${studentName},\n\nPendaftaran PPDB SMP Annida No. Registrasi *${noDaftar}* telah diperiksa oleh Panitia.\n\n*Status:* ${statusMsg}\n\nSilakan masuk ke portal PPDB untuk memproses langkah berikutnya:\nhttps://dazzerz.github.io/SMPAnnida/`;
+      const rawMsg = `Halo Ayah/Bunda dari ${studentName},\n\nPendaftaran PPDB SMP Annida No. Registrasi *${noDaftar}* telah diperiksa oleh Panitia.\n\n*Status:* ${statusMsg}\n\nSilakan masuk ke portal PPDB untuk memproses langkah berikutnya:\nhttps://smpannida.sch.id/`;
       const encodedMsg = encodeURIComponent(rawMsg);
       const sanitizedPhone = waNumber.replace(/[^0-9]/g, '');
       const waUrl = `https://wa.me/${sanitizedPhone}?text=${encodedMsg}`;
@@ -1011,6 +1100,37 @@ window.adminSaveHafalan = async function() {
   } catch (err) {
     console.error("Gagal menyimpan hafalan:", err.message);
     alert("Gagal menyimpan hafalan: " + err.message);
+  }
+};
+
+
+window.adminSetTidakLulus = async function(paramId) {
+  const select = document.getElementById('seleksi-student-select');
+  const regId = paramId || (select ? select.value : null);
+  if (!regId) {
+    alert("Silakan pilih calon siswa terlebih dahulu!");
+    return;
+  }
+  const student = allRegistrations.find(r => r.id === regId);
+  if (!student) return;
+  
+  const name = student.biodata_siswa ? student.biodata_siswa.nama_lengkap : 'Calon Murid';
+  
+  const confirmReject = confirm(`Apakah Anda yakin ingin menyatakan ${name} TIDAK LULUS Seleksi PPDB?`);
+  if (!confirmReject) return;
+
+  try {
+    const { error } = await db
+      .from('pendaftaran')
+      .update({ status_pendaftaran: 'Tidak Lulus' })
+      .eq('id', regId);
+
+    if (error) throw error;
+    alert(`Status ${name} berhasil diubah menjadi TIDAK LULUS.`);
+    await fetchAllRegistrations();
+  } catch (err) {
+    console.error("Gagal mengubah status:", err.message);
+    alert("Gagal mengubah status: " + err.message);
   }
 };
 
