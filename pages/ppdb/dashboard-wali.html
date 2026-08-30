@@ -498,28 +498,34 @@
     <!-- ========================================================================= -->
     <div id="tab-pengumuman" class="tab-panel space-y-6">
       <div class="max-w-2xl mx-auto glass-card rounded-2xl p-8 shadow-2xl text-center space-y-6">
-        <div class="w-20 h-20 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-4xl mx-auto">🎉</div>
+        <div id="announce-icon-wrapper" class="w-20 h-20 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-4xl mx-auto">
+          ⏳
+        </div>
         
         <div class="space-y-2">
           <h2 class="text-2xl font-bold text-white">Pengumuman Hasil Seleksi</h2>
-          <span class="inline-flex items-center px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider">
-            🟢 Diterima / Lulus
+          <span id="announce-status-badge" class="inline-flex items-center px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold uppercase tracking-wider">
+            🟡 Dalam Proses Verifikasi
           </span>
         </div>
         
-        <p class="text-slate-300 leading-relaxed text-sm md:text-base max-w-lg mx-auto" id="display-announcement-text">
-          Selamat! Calon siswa atas nama <strong class="text-white" id="announce-student-name">Ahmad Fulan</strong> dinyatakan **LULUS** seleksi penerimaan murid baru SMP Annida Tahun Ajaran 2027/2028.
-        </p>
+        <div class="text-slate-300 leading-relaxed text-sm md:text-base max-w-lg mx-auto" id="display-announcement-text">
+          Memuat status pendaftaran dan hasil seleksi...
+        </div>
         
-        <button type="button" id="btn-cetak-lulus" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition-all hidden mx-auto flex items-center justify-center gap-2"><span class="material-symbols-outlined align-middle">print</span> Cetak Bukti Kelulusan</button>
-        
-        <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-          <a href="#" class="btn bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all text-sm">
-            📄 Download Surat Kelulusan
-          </a>
-          <button class="btn bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold px-6 py-3 rounded-xl transition-all text-sm" onclick="alert('Informasi: Akun Anda sedang dipindahkan ke Portal Akademik Utama. Tim kami akan menghubungi Anda untuk SPP dan penentuan kelas.')">
+        <div id="announce-actions-container" class="flex flex-col sm:flex-row justify-center gap-4 pt-4 hidden">
+          <button type="button" id="btn-cetak-lulus" class="btn bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all text-sm flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-sm">print</span> Download Surat Kelulusan
+          </button>
+          <button type="button" id="btn-konfirmasi-daftar-ulang" class="btn bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold px-6 py-3 rounded-xl transition-all text-sm" onclick="alert('Informasi: Data kelulusan Anda telah tercatat. Tim Panitia PPDB akan segera menghubungi Anda melalui WhatsApp untuk proses administrasi dan penentuan kelas.')">
             ✓ Konfirmasi Daftar Ulang
           </button>
+        </div>
+
+        <div id="announce-help-container" class="pt-2 hidden">
+          <a href="https://wa.me/6281234567890?text=Halo%20Panitia%20PPDB%20SMP%20Annida,%20saya%20ingin%20menanyakan%20status%20pendaftaran" target="_blank" class="inline-flex items-center gap-2 text-xs text-emerald-400 hover:underline">
+            <span class="material-symbols-outlined text-xs">chat</span> Hubungi Panitia PPDB via WhatsApp
+          </a>
         </div>
       </div>
     </div>
