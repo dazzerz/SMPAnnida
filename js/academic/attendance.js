@@ -242,6 +242,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const kelas = s.classes?.nama_kelas || '-';
                 const mapel = s.subjects?.nama_mapel || '-';
                 const guru  = s.teachers?.nama || '-';
+                const classId = s.classes?.id || '';
+                const subjectId = s.subjects?.id || '';
+                const timeFormatted = `${jamMulai} - ${jamSelesai}`;
 
                 return `
                     <div class="schedule-card ${filled ? 'filled' : 'unfilled'}" 
@@ -259,17 +262,53 @@ document.addEventListener('DOMContentLoaded', () => {
                                 ${authState.isAdmin ? `• 👨‍🏫 ${escapeHTML(guru)}` : ''}
                             </div>
                         </div>
-                        <button class="btn btn-primary btn-sm btn-input-absensi" data-schedule-id="${s.grouped_ids.join(',')}">
-                            ${filled ? '✏️ Edit' : '📝 Input'}
-                        </button>
+                        <div class="schedule-card-actions">
+                            <button class="btn btn-primary btn-input-absensi" data-schedule-id="${s.grouped_ids.join(',')}">
+                                ${filled ? '✏️ Edit' : '📝 Input Absensi'}
+                            </button>
+                            <button class="btn btn-quick-jurnal" 
+                                    data-class-id="${classId}" 
+                                    data-subject-id="${subjectId}" 
+                                    data-time="${timeFormatted}" 
+                                    data-date="${date}"
+                                    title="Langsung isi Jurnal Mengajar untuk mapel ini">
+                                📖 Isi Jurnal
+                            </button>
+                        </div>
                     </div>`;
             }).join('');
 
             document.querySelectorAll('.btn-input-absensi').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
                     const scheduleIdStr = e.currentTarget.getAttribute('data-schedule-id');
                     const schedule = groupedSchedules.find(s => s.grouped_ids.join(',') === scheduleIdStr);
                     if (schedule) await openAttendanceForm(schedule, date);
+                });
+            });
+
+            document.querySelectorAll('.btn-quick-jurnal').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const classId = e.currentTarget.getAttribute('data-class-id');
+                    const subjectId = e.currentTarget.getAttribute('data-subject-id');
+                    const timeStr = e.currentTarget.getAttribute('data-time');
+                    const dateStr = e.currentTarget.getAttribute('data-date');
+                    
+                    if (window.prefillJurnalForm) {
+                        window.prefillJurnalForm({
+                            date: dateStr,
+                            classId: classId,
+                            subjectId: subjectId,
+                            time: timeStr
+                        });
+                    }
+                    window.location.hash = 'jurnal-guru';
+                    
+                    const jSec = document.getElementById('jurnal-guru');
+                    if (jSec) {
+                        jSec.scrollIntoView({ behavior: 'smooth' });
+                    }
                 });
             });
 
