@@ -138,6 +138,11 @@
         <a class="scroll-link hover:text-emerald-600 dark:hover:text-white transition-all pb-1" href="#alur">Alur PPDB</a>
       </nav>
       <div class="flex items-center gap-2 md:gap-3">
+        <!-- Login Wali Murid Outline Glass Button -->
+        <a href="../../login.html" class="hidden sm:inline-flex items-center gap-1.5 text-xs md:text-sm font-semibold border border-emerald-500/50 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/20 px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-all whitespace-nowrap shadow-sm">
+          <span class="material-symbols-outlined text-[16px]">login</span>
+          <span>Login Wali Murid</span>
+        </a>
         <a href="../../index.html" class="text-xs md:text-sm font-semibold border border-slate-300 dark:border-white/30 text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-colors whitespace-nowrap">Portal Utama</a>
         <a class="text-xs md:text-sm font-semibold bg-primary text-white px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-primary-dim transition-colors shadow-[0_0_10px_rgba(16,185,129,0.4)] whitespace-nowrap" href="register.html">Daftar Sekarang</a>
         <!-- Theme Toggle Switcher -->
@@ -150,9 +155,37 @@
             <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
           </svg>
         </button>
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobile-menu-toggle" class="lg:hidden text-slate-700 dark:text-white p-1.5 rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-colors focus:outline-none" aria-label="Buka Menu Navigasi">
+          <span class="material-symbols-outlined text-2xl align-middle">menu</span>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile Navigation Drawer / Dropdown -->
+  <div id="mobile-menu-drawer" class="hidden lg:hidden fixed inset-x-4 top-24 z-50 p-5 rounded-2xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl border border-slate-200 dark:border-white/20 shadow-2xl transition-all space-y-4">
+    <nav class="flex flex-col space-y-2.5 font-semibold text-slate-800 dark:text-slate-200 text-sm">
+      <a class="mobile-nav-link hover:text-emerald-500 py-1.5 px-3 rounded-lg hover:bg-emerald-500/10 transition-colors" href="#home">Home</a>
+      <a class="mobile-nav-link hover:text-emerald-500 py-1.5 px-3 rounded-lg hover:bg-emerald-500/10 transition-colors" href="#mengapa-kami">Mengapa Kami</a>
+      <a class="mobile-nav-link hover:text-emerald-500 py-1.5 px-3 rounded-lg hover:bg-emerald-500/10 transition-colors" href="#program">Program</a>
+      <a class="mobile-nav-link hover:text-emerald-500 py-1.5 px-3 rounded-lg hover:bg-emerald-500/10 transition-colors" href="#timeline">Timeline</a>
+      <a class="mobile-nav-link hover:text-emerald-500 py-1.5 px-3 rounded-lg hover:bg-emerald-500/10 transition-colors" href="#biaya">Biaya</a>
+      <a class="mobile-nav-link hover:text-emerald-500 py-1.5 px-3 rounded-lg hover:bg-emerald-500/10 transition-colors" href="#alur">Alur PPDB</a>
+    </nav>
+    <div class="border-t border-slate-200 dark:border-white/10 pt-3 flex flex-col space-y-2">
+      <a href="../../login.html" class="w-full text-center text-sm font-semibold border border-emerald-500/50 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/20 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-base">login</span>
+        Login Wali Murid
+      </a>
+      <a href="../../index.html" class="w-full text-center text-sm font-semibold border border-slate-300 dark:border-white/30 text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 py-2.5 rounded-xl transition-colors">
+        Portal Utama
+      </a>
+      <a href="register.html" class="w-full text-center text-sm font-semibold bg-primary text-white py-2.5 rounded-xl hover:bg-primary-dim transition-colors shadow-md">
+        Daftar Sekarang
+      </a>
+    </div>
+  </div>
 
   <main class="flex-grow">
     <section class="relative pt-20 pb-28 px-6 lg:px-0" id="home">
@@ -707,7 +740,8 @@
           <a class="text-sm text-slate-600 dark:text-gray-300 hover:underline hover:text-primary transition-all" href="#biaya">Biaya</a>
         </div>
         <div class="flex flex-col gap-2">
-          <span class="font-bold text-slate-900 dark:text-white mb-2 text-sm uppercase tracking-wider">Bantuan</span>
+          <span class="font-bold text-slate-900 dark:text-white mb-2 text-sm uppercase tracking-wider">Bantuan & Akun</span>
+          <a class="text-sm text-slate-600 dark:text-gray-300 hover:underline hover:text-primary transition-all" href="../../login.html">Login Wali Murid</a>
           <a class="text-sm text-slate-600 dark:text-gray-300 hover:underline hover:text-primary transition-all" href="#lokasi">Hubungi Kami</a>
           <a class="text-sm text-slate-600 dark:text-gray-300 hover:underline hover:text-primary transition-all" href="../../index.html">Portal Utama</a>
         </div>
@@ -746,6 +780,28 @@
           }
         });
       });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('mobile-menu-toggle');
+      const drawer = document.getElementById('mobile-menu-drawer');
+      if (toggleBtn && drawer) {
+        toggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          drawer.classList.toggle('hidden');
+        });
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+          link.addEventListener('click', () => {
+            drawer.classList.add('hidden');
+          });
+        });
+        document.addEventListener('click', (e) => {
+          if (!drawer.contains(e.target) && !toggleBtn.contains(e.target)) {
+            drawer.classList.add('hidden');
+          }
+        });
+      }
     });
   </script>
   <script type="module" src="../../js/core/theme.js"></script>
