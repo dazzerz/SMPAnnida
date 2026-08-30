@@ -12,6 +12,7 @@ export default defineConfig({
     }
   },
   build: {
+    chunkSizeWarningLimit: 500,
     rollupOptions: {
       input: {
         main: resolve(root, 'index.html'),
@@ -26,6 +27,33 @@ export default defineConfig({
         ppdbRegister: resolve(root, 'pages/ppdb/register.html'),
         ppdbSuccess: resolve(root, 'pages/ppdb/success.html'),
         ppdbPrivacyPolicy: resolve(root, 'pages/ppdb/privacy-policy.html')
+      },
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('@supabase')) {
+              return 'vendor-supabase';
+            }
+            if (id.includes('chart.js')) {
+              return 'vendor-charts';
+            }
+            if (id.includes('xlsx')) {
+              return 'vendor-xlsx';
+            }
+            if (id.includes('jspdf')) {
+              return 'vendor-jspdf';
+            }
+            if (id.includes('html2canvas')) {
+              return 'vendor-html2canvas';
+            }
+            if (id.includes('papaparse') || id.includes('dompurify')) {
+              return 'vendor-utils';
+            }
+            if (id.includes('crypto-js')) {
+              return 'vendor-crypto';
+            }
+          }
+        }
       }
     }
   }

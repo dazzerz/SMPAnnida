@@ -9,7 +9,7 @@
   --color-scheme: light;
 
   /* Nature Background Image & Filters - Balanced Soft Eye-Comfort */
-  --bg-nature-image: url('../assets/images/bg-light.jpg');
+  --bg-nature-image: url('../assets/images/bg-light.webp');
   --leaf-filter: saturate(1.2) contrast(1.05) brightness(0.96);
   --leaf-opacity: 0.30;
 
@@ -91,7 +91,7 @@
   --color-scheme: dark;
 
   /* Nature Background Image & Filters - Deep Emerald Midnight */
-  --bg-nature-image: url('../assets/images/bg-dark.jpg');
+  --bg-nature-image: url('../assets/images/bg-dark.webp');
   --leaf-filter: brightness(0.95) saturate(1.2) contrast(1.05);
   --leaf-opacity: 0.38;
 
