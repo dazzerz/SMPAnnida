@@ -8,17 +8,15 @@
 [data-theme="light"] {
   --color-scheme: light;
 
-  /* Nature Background Image & Filters */
+  /* Nature Background Image & Filters - Balanced Soft Eye-Comfort */
   --bg-nature-image: url('../assets/images/bg-light.jpg');
-  --leaf-filter: brightness(1.05) saturate(1.15);
-  --leaf-opacity: 0.32;
+  --leaf-filter: saturate(1.2) contrast(1.05) brightness(0.96);
+  --leaf-opacity: 0.30;
 
-  /* Canvas Background: Fresh Soft Emerald & Sky Mesh Gradient */
-  --bg-canvas: radial-gradient(at 0% 0%, #e6fcf5 0px, transparent 50%),
-               radial-gradient(at 100% 0%, #f0f9ff 0px, transparent 50%),
-               radial-gradient(at 100% 100%, #f8fafc 0px, transparent 50%),
-               radial-gradient(at 0% 100%, #ecfdf5 0px, transparent 50%),
-               #f8fafc;
+  /* Canvas Background: Soft Sage / Mint Canvas with gentle emerald glow */
+  --bg-canvas-color: #f3f7f4;
+  --bg-canvas: radial-gradient(circle at center, rgba(16, 185, 129, 0.06) 0%, rgba(243, 247, 244, 0.45) 100%),
+               #f3f7f4;
   --bg-canvas-attachment: fixed;
 
   /* Glass Card & Surfaces - Pure Frosted White Glass */
@@ -92,15 +90,15 @@
 [data-theme="dark"] {
   --color-scheme: dark;
 
-  /* Nature Background Image & Filters */
+  /* Nature Background Image & Filters - Deep Emerald Midnight */
   --bg-nature-image: url('../assets/images/bg-dark.jpg');
-  --leaf-filter: brightness(0.85) saturate(1.15);
-  --leaf-opacity: 0.35;
+  --leaf-filter: brightness(0.95) saturate(1.2) contrast(1.05);
+  --leaf-opacity: 0.38;
 
-  /* Canvas Background: Dark Green & Slate Mesh */
-  --bg-canvas: radial-gradient(at 0% 0%, rgba(6, 78, 59, 0.45) 0px, transparent 40%),
-               radial-gradient(at 100% 100%, rgba(2, 44, 34, 0.45) 0px, transparent 40%),
-               #0b1319;
+  /* Canvas Background: Deep Emerald & Luminous Forest Glow */
+  --bg-canvas-color: #0b1713;
+  --bg-canvas: radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, rgba(5, 20, 15, 0.75) 100%),
+               #0b1713;
   --bg-canvas-attachment: fixed;
 
   /* Glass Card & Surfaces */
@@ -171,9 +169,14 @@
 }
 
 /* ── 3. BASE & BOTANICAL BACKGROUND ── */
+html {
+  background-color: var(--bg-canvas-color, #0b1713);
+}
+
 body {
   background: var(--bg-canvas) !important;
   background-attachment: var(--bg-canvas-attachment) !important;
+  background-color: var(--bg-canvas-color, #0b1713) !important;
   color: var(--text-primary) !important;
   transition: background 0.3s ease, color 0.3s ease;
   min-height: 100vh;
