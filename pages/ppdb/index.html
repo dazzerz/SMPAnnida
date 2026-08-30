@@ -425,91 +425,91 @@
     <!-- ═══════════════════════════════════════════ -->
     <!-- 5. BIAYA & SIMULATOR BIAYA -->
     <!-- ═══════════════════════════════════════════ -->
-    <section class="py-16 px-6 lg:px-0 border-t border-white/10" id="biaya">
+    <section class="py-16 px-6 lg:px-0 border-t border-slate-200 dark:border-white/10" id="biaya">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
           <h2 class="font-headline-lg text-3xl md:text-4xl text-primary mb-3">Rincian Biaya &amp; Simulator Interaktif</h2>
-          <p class="text-gray-200">Informasi biaya transparan dan alat bantu estimasi anggaran pendaftaran secara instan.</p>
+          <p class="text-slate-600 dark:text-gray-200">Informasi biaya transparan dan alat bantu estimasi anggaran pendaftaran secara instan.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           <!-- Rate details -->
           <div class="space-y-6">
-            <div class="glass-panel-custom rounded-2xl p-6 border border-white/10">
-              <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-emerald-400">payments</span>
+            <div class="glass-panel-custom rounded-2xl p-6 border border-slate-200 dark:border-white/10">
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-500">payments</span>
                 Tarif Biaya Pendidikan
               </h3>
-              <div class="divide-y divide-white/10 text-sm">
+              <div class="divide-y divide-slate-200 dark:divide-white/10 text-sm">
                 <div class="py-3 flex justify-between">
-                  <span class="text-gray-300">Uang Pendaftaran Awal (Reguler)</span>
-                  <span class="font-bold text-white">Rp 3.250.000</span>
+                  <span class="text-slate-600 dark:text-gray-300">Uang Pendaftaran Awal (Reguler)</span>
+                  <span class="font-bold text-slate-900 dark:text-white">Rp 3.250.000</span>
                 </div>
                 <div class="py-3 flex justify-between">
-                  <span class="text-gray-300">Uang Pendaftaran Awal (Pondok)</span>
-                  <span class="font-bold text-white">Rp 4.500.000</span>
+                  <span class="text-slate-600 dark:text-gray-300">Uang Pendaftaran Awal (Pondok)</span>
+                  <span class="font-bold text-slate-900 dark:text-white">Rp 4.500.000</span>
                 </div>
                 <div class="py-3 flex justify-between">
-                  <span class="text-gray-300">SPP Bulanan (Reguler)</span>
-                  <span class="font-bold text-white">Rp 425.000 / Bulan</span>
+                  <span class="text-slate-600 dark:text-gray-300">SPP Bulanan (Reguler)</span>
+                  <span class="font-bold text-slate-900 dark:text-white">Rp 425.000 / Bulan</span>
                 </div>
                 <div class="py-3 flex justify-between">
-                  <span class="text-gray-300">SPP Bulanan (Pondok)</span>
-                  <span class="font-bold text-white">Rp 1.100.000 / Bulan</span>
+                  <span class="text-slate-600 dark:text-gray-300">SPP Bulanan (Pondok)</span>
+                  <span class="font-bold text-slate-900 dark:text-white">Rp 1.100.000 / Bulan</span>
                 </div>
               </div>
             </div>
             
-            <div class="glass-panel-custom rounded-2xl p-6 border border-white/5 bg-emerald-950/20">
-              <h4 class="font-bold text-emerald-400 mb-2 flex items-center gap-1">
+            <div class="glass-panel-custom rounded-2xl p-6 border border-emerald-500/20 bg-emerald-500/10 dark:bg-emerald-950/20">
+              <h4 class="font-bold text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-1">
                 <span class="material-symbols-outlined text-sm">info</span>
                 Catatan Penting
               </h4>
-              <p class="text-xs text-gray-300 leading-relaxed">
+              <p class="text-xs text-slate-600 dark:text-gray-300 leading-relaxed">
                 Biaya masuk awal sudah mencakup seragam sekolah (3 stel), sewa lemari asrama (khusus pondok), modul kitab tahfidz, kasur asrama (pondok), rapot, pas foto, dan kegiatan tahunan semester ganjil. Tidak ada biaya pembangunan tambahan tersembunyi.
               </p>
             </div>
           </div>
 
-          <!-- Cost Simulator (Killer Feature!) -->
-          <div class="glass-panel-custom rounded-2xl p-8 border border-white/12 relative">
+          <!-- Cost Simulator (Interactive Feature) -->
+          <div class="glass-panel-custom rounded-2xl p-8 border border-slate-200 dark:border-white/12 relative shadow-lg">
             <div class="absolute top-0 right-0 bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Simulator</div>
-            <h3 class="text-xl font-bold text-white mb-6">Simulator Estimasi Anggaran</h3>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Simulator Estimasi Anggaran</h3>
             
             <div class="space-y-4">
               <div>
-                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Pilih Program Pendidikan</label>
-                <select id="sim-program" class="w-full bg-slate-900/60 text-white border border-white/20 rounded-lg p-3">
+                <label class="block text-xs font-semibold text-slate-600 dark:text-gray-300 uppercase mb-2">Pilih Program Pendidikan</label>
+                <select id="sim-program" class="w-full bg-white/90 dark:bg-slate-900/60 text-slate-900 dark:text-white border border-slate-300 dark:border-white/20 rounded-lg p-3 cursor-pointer">
                   <option value="reguler">Program Reguler (Non-Pondok)</option>
                   <option value="pondok">Program Pondok (Boarding)</option>
                 </select>
               </div>
               
               <div>
-                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Jenjang Pendidikan</label>
-                <select id="sim-jenjang" class="w-full bg-slate-900/60 text-white border border-white/20 rounded-lg p-3 opacity-80" disabled>
+                <label class="block text-xs font-semibold text-slate-600 dark:text-gray-300 uppercase mb-2">Jenjang Pendidikan</label>
+                <select id="sim-jenjang" class="w-full bg-white/90 dark:bg-slate-900/60 text-slate-900 dark:text-white border border-slate-300 dark:border-white/20 rounded-lg p-3 opacity-80 cursor-not-allowed" disabled>
                   <option value="smp">SMP (Sekolah Menengah Pertama)</option>
                 </select>
               </div>
               
               <div>
-                <label class="block text-xs font-semibold text-gray-300 uppercase mb-2">Jumlah Anak yang Didaftarkan</label>
-                <input type="number" id="sim-anak" class="w-full bg-slate-900/60 text-white border border-white/20 rounded-lg p-3 text-center font-bold" value="1" min="1" max="10" />
+                <label class="block text-xs font-semibold text-slate-600 dark:text-gray-300 uppercase mb-2">Jumlah Anak yang Didaftarkan</label>
+                <input type="number" id="sim-anak" class="w-full bg-white/90 dark:bg-slate-900/60 text-slate-900 dark:text-white border border-slate-300 dark:border-white/20 rounded-lg p-3 text-center font-bold" value="1" min="1" max="10" />
               </div>
               
               <!-- Result Screen -->
-              <div class="bg-black/30 border border-white/10 rounded-xl p-5 mt-6">
+              <div class="bg-emerald-50/80 dark:bg-black/30 border border-emerald-200 dark:border-white/10 rounded-xl p-5 mt-6 transition-colors">
                 <div class="flex justify-between items-center mb-3">
-                  <span class="text-xs text-gray-300 font-semibold uppercase">Estimasi Biaya Masuk Awal</span>
-                  <span class="text-lg font-bold text-white" id="out-biaya-awal">Rp 3.250.000</span>
+                  <span class="text-xs text-slate-600 dark:text-gray-300 font-semibold uppercase">Estimasi Biaya Masuk Awal</span>
+                  <span class="text-lg font-bold text-slate-900 dark:text-white" id="out-biaya-awal">Rp 3.250.000</span>
                 </div>
-                <div class="flex justify-between items-center border-t border-white/10 pt-3">
-                  <span class="text-xs text-gray-300 font-semibold uppercase">Estimasi Biaya Bulanan (SPP)</span>
-                  <span class="text-lg font-bold text-emerald-400" id="out-biaya-bulanan">Rp 425.000</span>
+                <div class="flex justify-between items-center border-t border-slate-200 dark:border-white/10 pt-3">
+                  <span class="text-xs text-slate-600 dark:text-gray-300 font-semibold uppercase">Estimasi Biaya Bulanan (SPP)</span>
+                  <span class="text-lg font-bold text-emerald-600 dark:text-emerald-400" id="out-biaya-bulanan">Rp 425.000</span>
                 </div>
               </div>
               
-              <a href="register.html" class="w-full bg-primary hover:bg-primary-dim text-white font-bold py-3.5 rounded-lg transition-all text-center block mt-6 text-sm">
+              <a href="register.html" class="w-full bg-primary hover:bg-primary-dim text-white font-bold py-3.5 rounded-lg transition-all text-center block mt-6 text-sm shadow-md">
                 Lanjut ke Pendaftaran
               </a>
             </div>
