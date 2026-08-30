@@ -6,6 +6,7 @@
  * - X button inside sidebar also closes it
  */
 import { bindThemeSwitcher } from './theme.js';
+import { handleLogout } from './auth.js';
 
 export function injectSidebar(containerId) {
     const container = document.getElementById(containerId);
@@ -382,6 +383,19 @@ export function injectSidebar(containerId) {
         });
     }
 
+}
+
+// Global Event Delegation for all Logout buttons across all pages
+if (typeof document !== 'undefined' && !window.__logout_listener_bound) {
+  window.__logout_listener_bound = true;
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('#logout-btn, .sidebar-logout-btn, [data-action="logout"]');
+    if (btn) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleLogout();
+    }
+  });
 }
 
 export function injectTopbar(containerId, options = {}) {
