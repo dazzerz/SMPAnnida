@@ -215,6 +215,35 @@ document.addEventListener('DOMContentLoaded', () => {
         elSubject.innerHTML += subjData.map(s => `<option value="${s.id}">${escapeHTML(s.nama_mapel)}</option>`).join('');
     }
 
+    
+    // Expose Global Helper to Pre-Fill Jurnal Form from Absensi Shortcut
+    window.prefillJurnalForm = async function(prefillData) {
+        if (!prefillData) return;
+        try {
+            if (elDate && prefillData.date) {
+                elDate.value = prefillData.date;
+                await loadSchedulesForDate();
+            }
+            if (elClass && prefillData.classId) {
+                elClass.value = prefillData.classId;
+                populateSubjects();
+            }
+            if (elSubject && prefillData.subjectId) {
+                elSubject.value = prefillData.subjectId;
+                populateTime();
+            }
+            if (elTime && prefillData.time) {
+                elTime.value = prefillData.time;
+            }
+            if (elMaterial) {
+                elMaterial.focus();
+            }
+            validate();
+        } catch (err) {
+            console.warn("Prefill Jurnal error:", err);
+        }
+    };
+
     function populateTime() {
         elTime.value = '';
         if (!elClass.value || !elSubject.value) return;
