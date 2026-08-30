@@ -213,6 +213,20 @@ async function fetchMyRegistrationStatus(userId) {
 
       // Pre-fill form fields
       if (biodata) {
+        const elNamaLengkap = document.getElementById('siswa-nama-lengkap');
+        if (elNamaLengkap) elNamaLengkap.value = biodata.nama_lengkap || '';
+
+        const elJk = document.getElementById('siswa-jenis-kelamin');
+        if (elJk) {
+          if (biodata.jenis_kelamin === 'L' || biodata.jenis_kelamin === 'Laki-laki') {
+            elJk.value = 'Laki-laki';
+          } else if (biodata.jenis_kelamin === 'P' || biodata.jenis_kelamin === 'Perempuan') {
+            elJk.value = 'Perempuan';
+          } else {
+            elJk.value = biodata.jenis_kelamin || '';
+          }
+        }
+
         document.getElementById('siswa-nik').value = decryptNik(biodata.nik) || '';
         document.getElementById('siswa-nisn').value = biodata.nisn || '';
         document.getElementById('siswa-tempat-lahir').value = biodata.tempat_lahir || '';
@@ -359,6 +373,8 @@ async function saveSiswaForm() {
   if (!pendaftaranId) return;
 
   const tipe = document.getElementById('tipe_pendaftaran_dashboard').value;
+  const namaLengkap = document.getElementById('siswa-nama-lengkap')?.value.trim() || user.user_metadata?.full_name || 'Calon Siswa';
+  const jenisKelamin = document.getElementById('siswa-jenis-kelamin')?.value || '';
   const nik = document.getElementById('siswa-nik').value;
   const nisn = document.getElementById('siswa-nisn').value;
   const tempatLahir = document.getElementById('siswa-tempat-lahir').value;
@@ -392,8 +408,13 @@ async function saveSiswaForm() {
 
     const biodataPayload = {
       pendaftaran_id: pendaftaranId,
-      nama_lengkap: user.user_metadata?.full_name || 'Calon Siswa',
-      nik: encryptedNik, nisn, tempat_lahir: tempatLahir, tanggal_lahir: tanggalLahir, alamat_lengkap: alamat
+      nama_lengkap: namaLengkap,
+      jenis_kelamin: jenisKelamin,
+      nik: encryptedNik,
+      nisn,
+      tempat_lahir: tempatLahir,
+      tanggal_lahir: tanggalLahir,
+      alamat_lengkap: alamat
     };
     const { error: bError } = await db.from('biodata_siswa').upsert(biodataPayload, { onConflict: 'pendaftaran_id' });
 
@@ -851,6 +872,10 @@ window.viewRegistrationDetails = function(regId) {
   // Set Details UI text fields
   document.getElementById('detail-reg-id').textContent = r.id;
   document.getElementById('detail-siswa-nama').textContent = r.biodata_siswa ? r.biodata_siswa.nama_lengkap : '-';
+  const elDetailJk = document.getElementById('detail-siswa-jk');
+  if (elDetailJk) {
+    elDetailJk.textContent = (r.biodata_siswa && r.biodata_siswa.jenis_kelamin) ? r.biodata_siswa.jenis_kelamin : '-';
+  }
   
   let maskedNik = '-';
   if (r.biodata_siswa && r.biodata_siswa.nik) {
