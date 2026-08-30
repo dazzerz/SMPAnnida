@@ -15,13 +15,41 @@ function getDateStr(date = new Date()) {
 async function loadSchedulesToday(date) {
     const dayName = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][new Date(date + 'T00:00:00').getDay()];
     
+    // 1. Resolve current user & teacher identity reliably
+    let isUserAdmin = authState.isAdmin;
+    let currentTeacher = authState.currentTeacher;
+    let currentUser = authState.currentUser;
+
+    if (!currentUser && !isUserAdmin) {
+        try {
+            const { data: { user } } = await db.auth.getUser();
+            currentUser = user;
+            if (user) {
+                // If email contains admin or role is admin
+                const userEmail = (user.email || '').toLowerCase().trim();
+                if (userEmail.includes('admin') || userEmail === 'daffa.al.akhdaan@gmail.com' || userEmail === 'daffaalakhdaan@gmail.com') {
+                    isUserAdmin = true;
+                } else {
+                    const { data: tData } = await db
+                        .from('teachers')
+                        .select('id, nama, email')
+                        .ilike('email', userEmail)
+                        .maybeSingle();
+                    currentTeacher = tData;
+                }
+            }
+        } catch (e) {
+            console.warn("Direct auth resolution in attendance:", e);
+        }
+    }
+
     let query = db
         .from('class_schedules')
         .select(`
             id, day_of_week, start_time, end_time, room, active,
             classes(id, nama_kelas),
             subjects(id, nama_mapel),
-            teachers(id, nama),
+            teachers(id, nama, email),
             academic_years(tahun_ajaran, semester)
         `)
         .eq('day_of_week', dayName)
@@ -32,12 +60,31 @@ async function loadSchedulesToday(date) {
     if (error) throw error;
     
     let result = data || [];
-    if (!authState.isAdmin && authState.currentTeacher) {
-        result = result.filter(s => {
-            const isMySchedule = s.teachers?.id === authState.currentTeacher.id;
-            const isDewanGuru = s.teachers?.nama?.toLowerCase().includes('dewan guru');
-            return isMySchedule || isDewanGuru;
-        });
+    
+    // 2. Strict filtering for Teacher session
+    if (!isUserAdmin) {
+        const teacherId = currentTeacher?.id || authState.currentTeacher?.id;
+        const teacherEmail = (currentTeacher?.email || authState.currentTeacher?.email || currentUser?.email || '').toLowerCase().trim();
+        const teacherName = (currentTeacher?.nama || authState.currentTeacher?.nama || currentUser?.user_metadata?.full_name || '').toLowerCase().trim();
+
+        if (teacherId || teacherEmail || teacherName) {
+            result = result.filter(s => {
+                if (!s.teachers) return false;
+                const sTeacherId = s.teachers.id;
+                const sTeacherEmail = (s.teachers.email || '').toLowerCase().trim();
+                const sTeacherName = (s.teachers.nama || '').toLowerCase().trim();
+
+                const isMyId = teacherId && sTeacherId === teacherId;
+                const isMyEmail = teacherEmail && sTeacherEmail === teacherEmail;
+                const isMyName = teacherName && (sTeacherName === teacherName || sTeacherName.includes(teacherName) || teacherName.includes(sTeacherName));
+                const isDewanGuru = sTeacherName.includes('dewan guru');
+
+                return isMyId || isMyEmail || isMyName || isDewanGuru;
+            });
+        } else {
+            // Unidentified non-admin user -> Do not leak any schedules
+            result = [];
+        }
     }
     return result;
 }
@@ -146,13 +193,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (!schedules.length) {
                 scheduleList.innerHTML = `
-                    <div style="text-align:center;padding:40px;">
+                    <div class="empty-state card glass" style="text-align:center;padding:2.5rem 1.5rem;border-radius:16px;">
                         <div style="font-size:3rem;margin-bottom:10px;">📅</div>
-                        <h4 style="margin:0;">Tidak ada jadwal hari ini</h4>
-                        <div style="color:var(--text-muted);font-size:0.9rem;margin-top:5px;">
+                        <h4 style="margin:0;font-size:1.15rem;font-weight:600;">Tidak ada jadwal mengajar untuk Anda hari ini</h4>
+                        <div style="color:var(--text-muted);font-size:0.9rem;margin-top:6px;">
                             ${authState.isAdmin 
-                                ? 'Belum ada jadwal aktif untuk hari ini.'
-                                : 'Anda tidak memiliki jadwal mengajar hari ini.'}
+                                ? 'Belum ada jadwal pelajaran aktif yang terdaftar untuk hari ini.'
+                                : 'Anda tidak memiliki jadwal mengajar pada hari/tanggal yang dipilih.'}
                         </div>
                     </div>`;
                 return;
@@ -359,11 +406,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const initWhenReady = () => {
-        if (authState.currentUser !== undefined) {
+        if (authState.isLoaded) {
             renderScheduleList();
         } else {
-            // P1 Fix: Use Event Listener instead of setTimeout polling
-            window.addEventListener('authLoaded', renderScheduleList, { once: true });
+            window.addEventListener('authLoaded', () => {
+                renderScheduleList();
+            }, { once: true });
         }
     };
 

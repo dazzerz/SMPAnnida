@@ -1,14 +1,13 @@
 // =========================================================================
-// P2 FIX: ENCAPSULATED AUTH MODULE (ACADEMIC)
+// ENCAPSULATED AUTH MODULE (ACADEMIC)
 // =========================================================================
-// Modul ini menggantikan pemakaian variabel global authState.isAdmin dkk.
-// Ini mencegah state dimanipulasi dari console F12 oleh pengguna jahil.
 
 let _currentUser = null;
 let _currentTeacher = null;
 let _isAdmin = false;
 let _isPembina = false;
 let _isGuest = false;
+let _isLoaded = false;
 
 export const authState = {
     get currentUser() { return _currentUser; },
@@ -16,6 +15,7 @@ export const authState = {
     get isAdmin() { return _isAdmin; },
     get isPembina() { return _isPembina; },
     get isGuest() { return _isGuest; },
+    get isLoaded() { return _isLoaded; },
     
     setAuth(user, teacher, admin, guest, pembina = false) {
         _currentUser = user;
@@ -23,6 +23,6 @@ export const authState = {
         _isAdmin = admin;
         _isGuest = guest;
         _isPembina = pembina;
+        _isLoaded = true;
     }
 };
-
