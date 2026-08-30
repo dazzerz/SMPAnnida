@@ -885,12 +885,12 @@
                 <section id="absensi-guru" class="page-section aca-inline-11">
                     <div class="aca-inline-56">
                         <h1>Absensi Guru</h1>
-                        <input type="date" id="tg-rekap-date" class="input-control aca-inline-37">
+                        <input type="date" id="tg-rekap-date" class="input-control aca-inline-37 admin-only hidden" style="display: none;">
                     </div>
                     
                     <div class="tab-nav aca-inline-14">
                         <button class="tab-btn active" data-tab="tg-pribadi" id="btn-tg-tab-pribadi">Absensi Anda</button>
-                        <button class="tab-btn admin-only" data-tab="tg-rekap" id="btn-tg-tab-rekap" class="aca-inline-11">Rekap Harian (Admin)</button>
+                        <button class="tab-btn admin-only hidden" data-tab="tg-rekap" id="btn-tg-tab-rekap" style="display: none;">Rekap Harian (Admin)</button>
                     </div>
 
                     <!-- TAB PRIBADI -->
@@ -944,7 +944,7 @@
                     </div>
 
                     <!-- TAB REKAP (ADMIN ONLY) -->
-                    <div id="tab-tg-rekap" class="tab-content aca-inline-11">
+                    <div id="tab-tg-rekap" class="tab-content admin-only hidden" style="display: none;">
                         <div class="card glass">
                             <div class="aca-inline-142">
                                 <h2 class="aca-inline-143">Rekap Absensi Guru (Harian)</h2>
