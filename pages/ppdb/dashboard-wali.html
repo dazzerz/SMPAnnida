@@ -292,6 +292,7 @@
         <h2 class="text-xl lg:text-2xl font-bold text-white mb-6">✏️ Lengkapi Data Pendaftaran</h2>
         
         <form id="multiStepForm" class="space-y-6">
+          <div id="wali-draft-indicator" class="hidden text-xs text-emerald-400 font-medium py-2 px-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 mb-4 transition-all"></div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Program Pendaftaran -->
             <div class="md:col-span-2">
@@ -745,6 +746,13 @@
     </div>
   </div>
   <script type="module" src="../../js/core/theme.js"></script>
+  <script type="module">
+    import { setupAutoSaveDraft } from '../../js/ppdb/draft.js';
+    import '../../js/core/telemetry.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      setupAutoSaveDraft('multiStepForm', 'ppdb_dashboard_draft', 'wali-draft-indicator');
+    });
+  </script>
 </body>
 </html>
 

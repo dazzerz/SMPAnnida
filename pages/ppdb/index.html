@@ -170,6 +170,93 @@
       }
     });
   </script>
+  <!-- PWA & Mobile Meta -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#059669" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="/logo_1x1.png" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <!-- BreadcrumbList Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Beranda",
+        "item": "https://smpannida.sch.id/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "PPDB SMP Annida",
+        "item": "https://smpannida.sch.id/pages/ppdb/index.html"
+      }
+    ]
+  }
+  </script>
+
+  <!-- FAQPage Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Apa saja program pendidikan yang tersedia di SMP Annida?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SMP Annida menyediakan 2 program utama: Program Reguler (Sekolah Alam Harian tanpa asrama) dan Program Pondok Pesantren (Boarding School terpadu dengan fokus Tahfidz Al-Qur'an intensif)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Bagaimana alur pendaftaran siswa baru (PPDB) SMP Annida?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Alur pendaftaran terdiri dari: 1. Registrasi online melalui website, 2. Pembayaran DP Komitmen Tahfidz (30%), 3. Pengisian formulir biodata lengkap, 4. Unggah berkas dokumen (KK, Akta, Ijazah/SKL), 5. Ujian seleksi pemetaan Tahfidz & wawancara, 6. Pengumuman kelulusan dan daftar ulang."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Berapa estimasi biaya SPP bulanan di SMP Annida?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Estimasi SPP bulanan untuk Program Reguler adalah Rp 425.000/bulan, sedangkan Program Pondok (Boarding) adalah Rp 1.100.000/bulan."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Event Schema (PPDB Gelombang 1) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "Penerimaan Peserta Didik Baru (PPDB) SMP Annida 2027/2028",
+    "startDate": "2026-09-01T08:00:00+07:00",
+    "endDate": "2027-06-30T17:00:00+07:00",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/MixedEventAttendanceMode",
+    "location": {
+      "@type": "Place",
+      "name": "SMP Annida Setu",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Setu",
+        "addressRegion": "Jawa Barat",
+        "addressCountry": "ID"
+      }
+    },
+    "description": "Pendaftaran Peserta Didik Baru SMP Annida Tahun Ajaran 2027/2028 berbasis Sekolah Alam dan Tahfidz Al-Qur'an."
+  }
+  </script>
 </head>
 <body class="font-body-md antialiased min-h-screen flex flex-col">
   <!-- Adaptive Overlay Layer on top of botanical nature wallpaper -->

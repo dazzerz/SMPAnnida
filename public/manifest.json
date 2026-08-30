@@ -1,0 +1,24 @@
+{
+  "name": "SMP Annida Portal Terpadu",
+  "short_name": "SMP Annida",
+  "description": "Sistem Informasi Manajemen Terpadu & Portal PPDB SMP Annida",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1713",
+  "theme_color": "#059669",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo_1x1.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
