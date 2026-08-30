@@ -37,12 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tryInitJurnal = () => {
         if (isInit) return;
-        if (authState.currentUser !== undefined) {
+        if (authState.isLoaded) {
             if (authState.isAdmin || authState.currentTeacher) {
                 initJurnal();
             }
         } else {
-            // P1 Fix: Use Event Listener instead of setTimeout polling
             window.addEventListener('authLoaded', () => {
                 if (!isInit && (authState.isAdmin || authState.currentTeacher)) {
                     initJurnal();
