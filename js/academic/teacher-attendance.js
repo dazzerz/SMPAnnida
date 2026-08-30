@@ -1,6 +1,7 @@
 import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { showToast, escapeHTML } from '../core/utils.js';
+import { resolveUserRole } from '../core/auth.js';
 
 const db = supabaseClient;
 
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isCameraOpen = false;
     let hasLoaded = false;
     let attendanceRecord = null; // Store current record
+    let isAdmin = false;
     
     // YYYY-MM-DD local
     const getTodayStr = () => {
@@ -50,20 +52,64 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const today = getTodayStr();
 
+    async function checkIsAdmin(user) {
+        if (!user) return false;
+        if (authState.isAdmin) return true;
+        const role = await resolveUserRole(user);
+        return (role === 'admin') || (user.email === 'daffa.al.akhdaan@gmail.com');
+    }
+
     async function initAuth() {
         const { data: { session } } = await db.auth.getSession();
         if (session && session.user) {
             currentTeacherId = session.user.id;
-            // Cek admin secara langsung untuk menghindari race condition dengan main.js
-            if (session.user.email === 'daffa.al.akhdaan@gmail.com') {
-                if (btnTabRekap) btnTabRekap.style.display = 'inline-block';
+            isAdmin = await checkIsAdmin(session.user);
+
+            if (isAdmin) {
+                if (btnTabRekap) {
+                    btnTabRekap.style.setProperty('display', 'inline-block', 'important');
+                    btnTabRekap.classList.remove('hidden');
+                }
                 if (dateRekap) {
                     dateRekap.value = today;
                     dateRekap.addEventListener('change', loadRekap);
                 }
+            } else {
+                // Non-admin (Guru biasa): sembunyikan seluruh UI rekap admin
+                if (btnTabRekap) {
+                    btnTabRekap.style.setProperty('display', 'none', 'important');
+                    btnTabRekap.classList.add('hidden');
+                }
+                if (tabRekap) {
+                    tabRekap.style.setProperty('display', 'none', 'important');
+                    tabRekap.classList.add('hidden');
+                }
+                if (dateRekap) {
+                    dateRekap.style.setProperty('display', 'none', 'important');
+                    dateRekap.classList.add('hidden');
+                }
+                if (btnTabPribadi) {
+                    btnTabPribadi.classList.add('active');
+                }
+                if (tabPribadi) {
+                    tabPribadi.style.display = 'block';
+                    tabPribadi.classList.remove('hidden');
+                }
             }
         } else if (authState.isGuest) {
             currentTeacherId = '00000000-0000-0000-0000-000000000000';
+            if (btnTabRekap) {
+                btnTabRekap.style.setProperty('display', 'none', 'important');
+                btnTabRekap.classList.add('hidden');
+            }
+            if (tabRekap) {
+                tabRekap.style.setProperty('display', 'none', 'important');
+                tabRekap.classList.add('hidden');
+            }
+            if (dateRekap) {
+                dateRekap.style.setProperty('display', 'none', 'important');
+                dateRekap.classList.add('hidden');
+            }
         }
     }
 
@@ -335,16 +381,29 @@ document.addEventListener('DOMContentLoaded', () => {
             btnTabPribadi.classList.add('active');
             btnTabRekap.classList.remove('active');
             tabPribadi.style.display = 'block';
+            tabPribadi.classList.remove('hidden');
             tabRekap.style.display = 'none';
-            if (dateRekap) dateRekap.style.display = 'none';
+            tabRekap.classList.add('hidden');
+            if (dateRekap) {
+                dateRekap.style.display = 'none';
+                dateRekap.classList.add('hidden');
+            }
         });
+
         btnTabRekap.addEventListener('click', () => {
+            if (!isAdmin) {
+                showToast('Akses dibatasi hanya untuk Administrator.', 'error');
+                return;
+            }
             btnTabRekap.classList.add('active');
             btnTabPribadi.classList.remove('active');
             tabRekap.style.display = 'block';
+            tabRekap.classList.remove('hidden');
             tabPribadi.style.display = 'none';
+            tabPribadi.classList.add('hidden');
             if (dateRekap) {
                 dateRekap.style.display = 'inline-block';
+                dateRekap.classList.remove('hidden');
                 loadRekap();
             }
         });
@@ -352,7 +411,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadRekap() {
         const { data: { session } } = await db.auth.getSession();
-        if (!session || session.user.email !== 'daffa.al.akhdaan@gmail.com') return;
+        if (!session || !session.user) return;
+        const userIsAdmin = await checkIsAdmin(session.user);
+        if (!userIsAdmin) return;
 
         const d = dateRekap.value || today;
         if (tbodyRekap) tbodyRekap.innerHTML = '<tr><td colspan="7" style="text-align: center;">Memuat data...</td></tr>';
@@ -525,11 +586,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
     };
 
+    window.addEventListener('authLoaded', () => {
+        initAuth();
+    });
+
     initAuth().then(() => {
-        if (!currentTeacherId) {
-            // Maybe they are a teacher in the database, fetch by email fallback if needed, 
-            // but we removed FK so session.user.id is fine.
-        }
         if (absensiSection && absensiSection.style.display !== 'none') {
             loadAttendance();
         }
