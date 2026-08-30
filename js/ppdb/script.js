@@ -377,4 +377,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // 7. PPDB Budget Estimator / Calculator Simulator
+    const simProgram = document.getElementById('sim-program');
+    const simJenjang = document.getElementById('sim-jenjang');
+    const simAnak = document.getElementById('sim-anak');
+    const outAwal = document.getElementById('out-biaya-awal');
+    const outBulanan = document.getElementById('out-biaya-bulanan');
+
+    if (simProgram && simAnak && outAwal && outBulanan) {
+        const rates = {
+            reguler: { biayaAwal: 3250000, spp: 425000 },
+            pondok: { biayaAwal: 4500000, spp: 1100000 }
+        };
+
+        const calculateBudget = () => {
+            const prog = simProgram.value || 'reguler';
+            let count = parseInt(simAnak.value, 10);
+            if (isNaN(count) || count < 1) count = 1;
+            if (count > 20) count = 20;
+
+            const currentRate = rates[prog] || rates.reguler;
+            const totalBiayaAwal = currentRate.biayaAwal * count;
+            const totalSPP = currentRate.spp * count;
+
+            outAwal.textContent = `Rp ${totalBiayaAwal.toLocaleString('id-ID')}`;
+            outBulanan.textContent = `Rp ${totalSPP.toLocaleString('id-ID')}`;
+        };
+
+        simProgram.addEventListener('change', calculateBudget);
+        if (simJenjang) simJenjang.addEventListener('change', calculateBudget);
+        simAnak.addEventListener('input', calculateBudget);
+        simAnak.addEventListener('change', calculateBudget);
+        simAnak.addEventListener('keyup', calculateBudget);
+
+        // Initial Calculation
+        calculateBudget();
+    }
 });
