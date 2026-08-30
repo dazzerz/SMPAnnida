@@ -597,3 +597,33 @@ body::before {
     gap: 0.5rem;
   }
 }
+
+/* ── 8. SKELETON SHIMMER LOADING STATES ── */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.15) 37%, rgba(255, 255, 255, 0.05) 63%) !important;
+  background-size: 400% 100% !important;
+  animation: skeleton-shimmer 1.4s ease infinite !important;
+  border-radius: 8px;
+}
+
+[data-theme="light"] .skeleton {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.04) 25%, rgba(0, 0, 0, 0.09) 37%, rgba(0, 0, 0, 0.04) 63%) !important;
+  background-size: 400% 100% !important;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+.skeleton-text {
+  height: 14px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  display: block;
+}
+
+.skeleton-card {
+  min-height: 100px;
+  border-radius: 16px;
+}

@@ -133,6 +133,13 @@
   });
 </script>
   <link rel="stylesheet" href="../../css/theme.css">
+  <!-- PWA & Mobile Meta -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#059669" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="/logo_1x1.png" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
 </head>
 <body class="font-body-md min-h-screen flex flex-col antialiased">
   <!-- Adaptive Overlay Layer on top of botanical nature wallpaper -->
@@ -778,6 +785,13 @@
     updateWizardUI();
   </script>
   <script type="module" src="../../js/core/theme.js"></script>
+  <script type="module">
+    import { setupAutoSaveDraft, clearAutoSaveDraft } from '../../js/ppdb/draft.js';
+    import '../../js/core/telemetry.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      setupAutoSaveDraft('reg-form', 'ppdb_register_draft', 'draft-indicator');
+    });
+  </script>
 </body>
 </html>
 

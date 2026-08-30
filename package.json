@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "test": "node scripts/test-integrity.js"
   },
   "repository": {
     "type": "git",
