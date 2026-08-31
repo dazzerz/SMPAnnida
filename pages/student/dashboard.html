@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; frame-src 'self' https://www.google.com https://maps.google.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co;" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <script>
+    (function() {
+      var t = localStorage.getItem('smpannida_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      if (t === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Siswa — SMP Annida</title>
+  <link rel="icon" href="/logo_1x1.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..700&family=Nunito+Sans:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="../../src/style.css" />
+  <link rel="stylesheet" href="../../css/academic/absensi.css" />
+  <link rel="stylesheet" href="../../css/mobile.css" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#059669" />
+  <style>
+    body { animation: pageFadeIn 0.3s ease-out forwards; }
+    @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .page-fade-out { opacity: 0 !important; transition: opacity 0.3s ease-out !important; }
+    .student-card-badge {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.4));
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+  </style>
+</head>
+<body class="text-white font-body-md min-h-screen flex flex-col bg-slate-950">
+
+  <!-- Background Layer -->
+  <div class="fixed inset-0 z-[-1] bg-cover bg-center" style="background-image: url('../../assets/images/bg-dark.webp');"></div>
+  <div class="fixed inset-0 bg-black/60 z-0 pointer-events-none"></div>
+
+  <!-- App Wrapper -->
+  <div class="relative z-10 flex min-h-screen">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-slate-900/80 backdrop-blur-xl border-r border-white/10 p-6 flex flex-col justify-between hidden md:flex" id="student-sidebar">
+      <div>
+        <!-- Brand / Logo -->
+        <a href="../../index.html" class="flex items-center gap-3 mb-8">
+          <img src="/logo_1x1.png" alt="Logo SMP Annida" class="w-10 h-10 object-contain rounded-full shadow-md">
+          <div>
+            <div class="font-headline-md font-bold text-lg text-emerald-400">SMP ANNIDA</div>
+            <div class="text-[0.7rem] text-gray-400 uppercase tracking-wider font-semibold">Portal Siswa</div>
+          </div>
+        </a>
+
+        <!-- Navigation Menu -->
+        <nav class="space-y-1.5 text-sm font-medium">
+          <a href="#beranda" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all active bg-white/10 text-white font-semibold" data-target="panel-beranda">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">dashboard</span>
+            <span>Beranda</span>
+          </a>
+          <a href="#jadwal" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-jadwal">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">calendar_month</span>
+            <span>Jadwal Pelajaran</span>
+          </a>
+          <a href="#presensi" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-presensi">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">fact_check</span>
+            <span>Presensi Saya</span>
+          </a>
+          <a href="#materi" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-materi">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">menu_book</span>
+            <span>Jurnal & Materi</span>
+          </a>
+          <a href="#tahfidz" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-tahfidz">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">auto_stories</span>
+            <span>Tracker Tahfidz</span>
+          </a>
+          <a href="#nilai" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-nilai">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">grade</span>
+            <span>Nilai & Rapor</span>
+          </a>
+          <a href="#berkas" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-berkas">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">folder_shared</span>
+            <span>Berkas PPDB</span>
+          </a>
+          <a href="#akun" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-akun">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">manage_accounts</span>
+            <span>Pengaturan Akun</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- User Profile & Logout Widget -->
+      <div class="border-t border-white/10 pt-4">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center font-bold text-emerald-400 text-lg" id="user-avatar-initial">S</div>
+          <div class="flex-1 overflow-hidden">
+            <div class="font-semibold text-sm truncate text-white" id="user-display-name">Memuat...</div>
+            <div class="text-[0.75rem] text-gray-400 truncate" id="user-display-class">Siswa Aktif</div>
+          </div>
+        </div>
+        <button id="btn-student-logout" class="w-full bg-white/5 hover:bg-rose-500/20 text-rose-300 hover:text-rose-200 border border-white/10 hover:border-rose-500/40 font-semibold py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-sm">logout</span>
+          <span>Keluar Sesi</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
+      
+      <!-- Top Mobile Bar -->
+      <div class="flex md:hidden items-center justify-between bg-slate-900/80 backdrop-blur-md p-4 rounded-2xl border border-white/10 mb-6">
+        <div class="flex items-center gap-3">
+          <img src="/logo_1x1.png" alt="Logo" class="w-8 h-8 rounded-full">
+          <div>
+            <h3 class="font-bold text-sm text-emerald-400">Portal Siswa</h3>
+            <p class="text-[0.7rem] text-gray-300" id="mobile-student-name">Memuat...</p>
+          </div>
+        </div>
+        <button id="btn-mobile-logout" class="p-2 bg-rose-500/20 text-rose-300 rounded-lg text-xs">
+          <span class="material-symbols-outlined text-sm">logout</span>
+        </button>
+      </div>
+
+      <!-- PANEL 1: BERANDA -->
+      <section id="panel-beranda" class="student-panel space-y-6">
+        <!-- Digital Student Card -->
+        <div class="p-6 md:p-8 rounded-3xl bg-gradient-to-r from-emerald-900/60 via-slate-900/80 to-slate-900/80 border border-emerald-500/30 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
+            <div class="flex items-center gap-4 md:gap-6">
+              <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center font-headline-md text-2xl md:text-3xl font-bold text-emerald-300 shadow-inner" id="hero-avatar">
+                👨‍🎓
+              </div>
+              <div>
+                <span class="inline-block px-3 py-1 rounded-full text-[0.75rem] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 mb-2">
+                  ✅ Santri / Siswa Aktif
+                </span>
+                <h1 class="font-headline-md text-2xl md:text-3xl font-bold text-white mb-1" id="hero-student-name">Memuat Data Siswa...</h1>
+                <p class="text-sm text-gray-300 flex flex-wrap gap-x-4 gap-y-1">
+                  <span>NISN: <b class="text-emerald-300" id="hero-student-nisn">-</b></span>
+                  <span>Kelas: <b class="text-emerald-300" id="hero-student-class">-</b></span>
+                  <span>Email: <b class="text-emerald-300" id="hero-student-email">-</b></span>
+                </p>
+              </div>
+            </div>
+            <div class="flex flex-col items-end gap-2 text-right">
+              <div class="text-xs text-gray-400">Tahun Ajaran 2026/2027</div>
+              <div class="text-lg font-bold text-emerald-400 font-headline-md">SMP ANNIDA SETU</div>
+            </div>
+          </div>
+          <div class="absolute -right-10 -bottom-10 opacity-10 text-[10rem] select-none pointer-events-none">🏫</div>
+        </div>
+
+        <!-- Quick Metric Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl">
+              📊
+            </div>
+            <div>
+              <div class="text-xs text-gray-400">Kehadiran Bulan Ini</div>
+              <div class="text-xl font-bold text-white" id="stat-attendance">100%</div>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl">
+              📿
+            </div>
+            <div>
+              <div class="text-xs text-gray-400">Capaian Tahfidz</div>
+              <div class="text-xl font-bold text-white" id="stat-tahfidz">- Juz</div>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl">
+              📅
+            </div>
+            <div>
+              <div class="text-xs text-gray-400">Jadwal Hari Ini</div>
+              <div class="text-xl font-bold text-white" id="stat-today-classes">- Mapel</div>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl">
+              📁
+            </div>
+            <div>
+              <div class="text-xs text-gray-400">Status Berkas PPDB</div>
+              <div class="text-xl font-bold text-emerald-400" id="stat-ppdb-docs">Terverifikasi</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Today Schedules Preview & Announcements -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+              <span class="text-emerald-400">📅</span> Jadwal Pelajaran Hari Ini
+            </h3>
+            <div id="today-schedules-list" class="space-y-3">
+              <div class="text-sm text-gray-400 text-center py-6">Memuat jadwal hari ini...</div>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+              <span class="text-emerald-400">📢</span> Pengumuman Sekolah
+            </h3>
+            <div class="space-y-3 text-xs text-gray-300">
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                <div class="font-semibold text-white mb-1">Setoran Hafalan Mingguan</div>
+                <p>Jadwal setoran Ziyadah dan Muraja'ah bersama musyrif setiap hari Senin & Kamis ba'da Ashar.</p>
+              </div>
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                <div class="font-semibold text-white mb-1">Kegiatan Eco Green Project</div>
+                <p>Praktik lapangan sekolah alam diadakan setiap hari Rabu. Kenakan seragam lapangan rapi.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 2: JADWAL PELAJARAN -->
+      <section id="panel-jadwal" class="student-panel hidden space-y-6">
+        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+          <div class="flex justify-between items-center mb-6">
+            <div>
+              <h2 class="text-xl font-bold font-headline-md text-white">Jadwal Pelajaran Mingguan</h2>
+              <p class="text-xs text-gray-400">Jadwal aktif kelas Anda di SMP Annida</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="weekly-schedule-grid">
+            <div class="text-center py-8 text-gray-400 col-span-full">Memuat jadwal mingguan...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 3: PRESENSI SAYA -->
+      <section id="panel-presensi" class="student-panel hidden space-y-6">
+        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Riwayat Presensi & Kehadiran</h2>
+          <p class="text-xs text-gray-400 mb-6">Pencatatan presensi real-time oleh guru mata pelajaran</p>
+          
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-xs uppercase bg-white/5 border-b border-white/10 text-gray-400">
+                <tr>
+                  <th class="py-3 px-4">Tanggal</th>
+                  <th class="py-3 px-4">Mata Pelajaran</th>
+                  <th class="py-3 px-4">Jam</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4">Catatan</th>
+                </tr>
+              </thead>
+              <tbody id="student-attendance-tbody" class="divide-y divide-white/5 text-gray-300">
+                <tr><td colspan="5" class="py-6 text-center text-gray-400">Memuat data presensi...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 4: JURNAL & MATERI -->
+      <section id="panel-materi" class="student-panel hidden space-y-6">
+        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Linimasa Jurnal & Materi Pembelajaran</h2>
+          <p class="text-xs text-gray-400 mb-6">Arsip materi yang diajarkan oleh guru pengampu di kelas Anda</p>
+          <div id="student-journal-feed" class="space-y-4">
+            <div class="text-center py-8 text-gray-400">Memuat catatan materi jurnal...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 5: TRACKER TAHFIDZ -->
+      <section id="panel-tahfidz" class="student-panel hidden space-y-6">
+        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Tracker Setoran Tahfidz Al-Qur'an</h2>
+          <p class="text-xs text-gray-400 mb-6">Pencatatan hafalan Ziyadah & Muraja'ah bersama Musyrif</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-xs uppercase bg-white/5 border-b border-white/10 text-gray-400">
+                <tr>
+                  <th class="py-3 px-4">Tanggal</th>
+                  <th class="py-3 px-4">Juz</th>
+                  <th class="py-3 px-4">Surah & Ayat</th>
+                  <th class="py-3 px-4">Kategori</th>
+                  <th class="py-3 px-4">Kelancaran</th>
+                  <th class="py-3 px-4">Catatan Musyrif</th>
+                </tr>
+              </thead>
+              <tbody id="student-tahfidz-tbody" class="divide-y divide-white/5 text-gray-300">
+                <tr><td colspan="6" class="py-6 text-center text-gray-400">Belum ada riwayat setoran tahfidz.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 6: NILAI & RAPOR -->
+      <section id="panel-nilai" class="student-panel hidden space-y-6">
+        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Transkrip Nilai & Capaian Akademik</h2>
+          <p class="text-xs text-gray-400 mb-6">Rekapitulasi penilaian tugas, UTS, dan UAS</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="text-xs uppercase bg-white/5 border-b border-white/10 text-gray-400">
+                <tr>
+                  <th class="py-3 px-4">Mata Pelajaran</th>
+                  <th class="py-3 px-4">Jenis Penilaian</th>
+                  <th class="py-3 px-4">Nilai Angka</th>
+                  <th class="py-3 px-4">Semester</th>
+                  <th class="py-3 px-4">Tahun Ajaran</th>
+                </tr>
+              </thead>
+              <tbody id="student-grades-tbody" class="divide-y divide-white/5 text-gray-300">
+                <tr><td colspan="5" class="py-6 text-center text-gray-400">Memuat data nilai akademik...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 7: BERKAS PPDB -->
+      <section id="panel-berkas" class="student-panel hidden space-y-6">
+        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Berkas Digital Pendaftaran PPDB</h2>
+          <p class="text-xs text-gray-400 mb-6">Arsip dokumen persyaratan yang diunggah saat pendaftaran masuk</p>
+          <div id="student-ppdb-docs-list" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-5 rounded-xl bg-white/5 border border-white/10">
+              <div class="font-bold text-sm text-white mb-1">📄 Kartu Keluarga (KK)</div>
+              <div class="text-xs text-emerald-400 font-semibold mb-3">✅ Terverifikasi Panitia</div>
+              <span class="text-xs text-gray-400">Tersimpan di Cloud Storage</span>
+            </div>
+            <div class="p-5 rounded-xl bg-white/5 border border-white/10">
+              <div class="font-bold text-sm text-white mb-1">📄 Akta Kelahiran</div>
+              <div class="text-xs text-emerald-400 font-semibold mb-3">✅ Terverifikasi Panitia</div>
+              <span class="text-xs text-gray-400">Tersimpan di Cloud Storage</span>
+            </div>
+            <div class="p-5 rounded-xl bg-white/5 border border-white/10">
+              <div class="font-bold text-sm text-white mb-1">📄 Ijazah / SKL SD</div>
+              <div class="text-xs text-emerald-400 font-semibold mb-3">✅ Terverifikasi Panitia</div>
+              <span class="text-xs text-gray-400">Tersimpan di Cloud Storage</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PANEL 8: PENGATURAN AKUN -->
+      <section id="panel-akun" class="student-panel hidden space-y-6">
+        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 max-w-xl">
+          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Keamanan Akun & Ganti Password</h2>
+          <p class="text-xs text-gray-400 mb-6">Perbarui kata sandi akun portal Anda secara berkala</p>
+          
+          <form id="form-change-password" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-gray-300 mb-1">Password Baru</label>
+              <input type="password" id="new-password" required minlength="6" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500" placeholder="Minimal 6 karakter">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-300 mb-1">Konfirmasi Password Baru</label>
+              <input type="password" id="confirm-new-password" required minlength="6" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500" placeholder="Ulangi password baru">
+            </div>
+            <button type="submit" id="btn-save-password" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2.5 px-6 rounded-xl text-sm transition-all shadow-md">
+              Simpan Password Baru
+            </button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL: FORCED PASSWORD UPDATE ON FIRST LOGIN -->
+  <div id="modal-forced-password" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-emerald-500/40 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl">
+      <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl mb-4 border border-emerald-500/40">
+        🔒
+      </div>
+      <h3 class="font-headline-md text-2xl font-bold text-white mb-2">Ganti Password Perdana</h3>
+      <p class="text-xs text-gray-300 mb-6 leading-relaxed">
+        Demi keamanan akun Anda, Anda diwajibkan untuk membuat kata sandi pribadi baru pada saat pertama kali masuk ke Portal Siswa.
+      </p>
+      <form id="form-forced-password" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Kata Sandi Baru</label>
+          <input type="password" id="forced-new-password" required minlength="6" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500" placeholder="Minimal 6 karakter">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 mb-1">Konfirmasi Kata Sandi Baru</label>
+          <input type="password" id="forced-confirm-password" required minlength="6" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500" placeholder="Ketik ulang kata sandi">
+        </div>
+        <button type="submit" id="btn-forced-save" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-6 rounded-xl text-sm transition-all shadow-lg">
+          Aktifkan Akun & Lanjutkan
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="../../js/student/dashboard.js"></script>
+</body>
+</html>

@@ -99,6 +99,16 @@ const utilsPath = 'js/core/utils.js';
 const utilsContent = fs.readFileSync(utilsPath, 'utf8');
 assert(!utilsContent.includes('toast.innerHTML ='), 'showToast does not use vulnerable innerHTML for message');
 
+
+// Test 7: Student Portal Assets & Schema Validation
+console.log('\n[TEST 7] Student Portal & Email Generation:');
+assert(fs.existsSync('pages/student/dashboard.html'), 'pages/student/dashboard.html exists');
+assert(fs.existsSync('js/student/dashboard.js'), 'js/student/dashboard.js exists');
+
+const stdHtml = fs.readFileSync('pages/student/dashboard.html', 'utf8');
+assert(stdHtml.includes('Portal Siswa'), 'pages/student/dashboard.html contains title Portal Siswa');
+assert(stdHtml.includes('modal-forced-password'), 'pages/student/dashboard.html contains forced password modal');
+
 console.log('\n--- TEST SUMMARY ---');
 console.log(`Total Passed: ${passed}, Total Failed: ${failed}`);
 if (failed > 0) {
