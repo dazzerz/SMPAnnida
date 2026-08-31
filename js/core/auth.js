@@ -50,6 +50,31 @@ function setLoading(btnId, isLoading) {
 // ── USER ROLE RESOLVER ────────────────────────────
 export async function resolveUserRole(user) {
   if (!user) return null;
+
+  // 1. Direct check in user_metadata
+  if (user.user_metadata?.role === 'siswa') {
+    return 'siswa';
+  }
+
+  // 2. School domain resolution
+  if (user.email && user.email.toLowerCase().endsWith('@smpannida.sch.id')) {
+    const cleanEmail = user.email.toLowerCase().trim();
+    if (cleanEmail.includes('admin')) return 'admin';
+
+    try {
+      const { data: teacher } = await supabaseClient
+        .from('teachers')
+        .select('id')
+        .ilike('email', cleanEmail)
+        .maybeSingle();
+
+      if (teacher) return 'teacher';
+      return 'siswa'; // Official student email
+    } catch (e) {
+      console.warn('Teacher check error:', e);
+    }
+  }
+
   let role = null;
   try {
     const { data: rpcRole, error: rpcErr } = await supabaseClient.rpc('get_user_role');
