@@ -140,87 +140,91 @@ if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-theme');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Navigasi SPA Berbasis Hash (Routing)
-    const navLinks = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('.page-section');
-    
-    function handleHashChange() {
-        let hash = window.location.hash.replace('#', '') || 'dashboard';
-        if (!document.getElementById(hash)) {
-            hash = 'section-dashboard';
-        }
-        
-        navLinks.forEach(l => l.classList.remove('active'));
-        sections.forEach(s => s.style.display = 'none');
-        
-        const activeLink = document.querySelector(`.nav-link[data-target="${hash}"]`) || document.querySelector(`.nav-link[href="#${hash}"]`);
-        if (activeLink) activeLink.classList.add('active');
-        
-        const targetSection = document.getElementById(hash);
-        if (targetSection) targetSection.style.display = 'block';
 
-        if (window.innerWidth < 1024) {
-            document.getElementById('sidebar').classList.remove('open');
-            const overlay = document.querySelector('.overlay');
-            if(overlay) overlay.classList.remove('active');
-        }
+// ── SPA Router & Section Switcher ──
+export function handleAcademicHashChange() {
+    let hash = window.location.hash.replace('#', '') || 'dashboard';
+    if (!document.getElementById(hash)) {
+        hash = 'dashboard';
     }
     
-    // Update hash when a link is clicked
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
+    document.querySelectorAll('.nav-link, .nav-item').forEach(l => l.classList.remove('active'));
+    document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
+    
+    const activeLink = document.querySelector(`.nav-link[data-target="${hash}"]`) || 
+                       document.querySelector(`.nav-link[href*="#${hash}"]`) || 
+                       document.querySelector(`#nav-group-academic [data-target="${hash}"]`);
+    if (activeLink) activeLink.classList.add('active');
+    
+    const targetSection = document.getElementById(hash);
+    if (targetSection) {
+        targetSection.style.display = 'block';
+    }
+
+    if (window.innerWidth < 1024) {
+        document.getElementById('sidebar')?.classList.remove('open');
+        const overlay = document.getElementById('sidebar-overlay') || document.querySelector('.overlay');
+        if (overlay) overlay.classList.remove('show', 'active');
+    }
+}
+
+window.addEventListener('hashchange', handleAcademicHashChange);
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', handleAcademicHashChange);
+} else {
+    handleAcademicHashChange();
+}
+
+// Global click delegation for academic navigation
+document.addEventListener('click', (e) => {
+    const link = e.target.closest('#nav-group-academic .nav-item, .nav-link');
+    if (link) {
+        const href = link.getAttribute('href');
+        const target = link.getAttribute('data-target') || (href && href.includes('#') ? href.split('#')[1] : null);
+        if (target && document.getElementById(target)) {
             e.preventDefault();
-            const targetId = link.getAttribute('data-target');
-            window.location.hash = targetId;
-        });
-    });
-
-    window.addEventListener('hashchange', handleHashChange);
-    // Initial load
-    handleHashChange();
-
-    // Toggle Sidebar – delegates to layout.js helpers if available
-    const menuToggle = document.getElementById('menu-toggle');
-    if(menuToggle) {
-        menuToggle.addEventListener('click', () => {
-            if (window._openSidebar && window._closeSidebar) {
-                const sidebar = document.getElementById('sidebar');
-                if (sidebar && sidebar.classList.contains('open')) {
-                    window._closeSidebar();
-                } else {
-                    window._openSidebar();
-                }
-            }
-        });
-    }
-
-    // Also close sidebar when nav link is clicked on mobile
-    document.querySelectorAll('.nav-item.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth < 1024 && window._closeSidebar) {
-                window._closeSidebar();
-            }
-        });
-    });
-
-
-
-    // Toggle Dark Mode
-    const btnThemeToggle = document.getElementById('btn-theme-toggle');
-    if (btnThemeToggle) {
-        // Set icon awal
-        btnThemeToggle.textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
-        
-        btnThemeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
-            const isDark = document.body.classList.contains('dark-theme');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            btnThemeToggle.textContent = isDark ? '☀️' : '🌙';
-        });
+            window.location.hash = target;
+            handleAcademicHashChange();
+        }
     }
 });
 
+
+// Toggle Sidebar – delegates to layout.js helpers if available
+const menuToggle = document.getElementById('menu-toggle');
+if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+        if (window._openSidebar && window._closeSidebar) {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar && sidebar.classList.contains('open')) {
+                window._closeSidebar();
+            } else {
+                window._openSidebar();
+            }
+        }
+    });
+}
+
+// Also close sidebar when nav link is clicked on mobile
+document.querySelectorAll('.nav-item.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth < 1024 && window._closeSidebar) {
+            window._closeSidebar();
+        }
+    });
+});
+
+// Toggle Dark Mode
+const btnThemeToggle = document.getElementById('btn-theme-toggle');
+if (btnThemeToggle) {
+    btnThemeToggle.textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
+    btnThemeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-theme');
+        const isDark = document.body.classList.contains('dark-theme');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        btnThemeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
+}
+
 // Legacy loadAbsensiClasses removed in favor of Master Kelas (kelas.js)
-
-
