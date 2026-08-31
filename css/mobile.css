@@ -425,15 +425,31 @@
    PWA & MOBILE AUDIT ENHANCEMENTS
    ========================================================================= */
 
-/* Modals & Dialogs on Mobile */
+/* Universal Modal Overlay Controls */
 .modal, .modal-backdrop {
-  padding: 1rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  z-index: 1100 !important;
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99999;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 1rem;
 }
-.modal.hidden, .modal-backdrop.hidden {
+
+.modal.active,
+.modal.show,
+.modal.open,
+.modal.is-active,
+.modal-overlay.active {
+  display: flex !important;
+}
+
+.modal.hidden,
+.modal-backdrop.hidden {
   display: none !important;
 }
 .modal-content, .modal-dialog, .modal-card, .modal-body {

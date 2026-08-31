@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
             inputStatus.value = 'Aktif';
         }
 
-        modalJadwal.style.display = 'flex';
+        modalJadwal.style.display = 'flex'; modalJadwal.classList.remove('hidden'); this.modal?.classList.remove('hidden');
     }
 
     if (btnTambahJadwal) {
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnCloseModalJadwal) {
         btnCloseModalJadwal.addEventListener('click', () => {
-            modalJadwal.style.display = 'none';
+            modalJadwal.style.display = 'none'; modalJadwal.classList.add('hidden'); this.modal?.classList.add('hidden');
         });
     }
 
@@ -418,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showToast('Jadwal berhasil ditambahkan', 'success');
                 }
                 
-                modalJadwal.style.display = 'none';
+                modalJadwal.style.display = 'none'; modalJadwal.classList.add('hidden'); this.modal?.classList.add('hidden');
                 await loadJadwal();
                 if (window.refreshDashboardStats) window.refreshDashboardStats();
             } catch (err) {
