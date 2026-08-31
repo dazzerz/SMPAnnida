@@ -85,3 +85,18 @@ body.guest-mode input[type="file"] {
     pointer-events: none;
     opacity: 0.5;
 }
+
+/* Universal Modal Fixed Overlay */
+.modal {
+  display: none;
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0, 0, 0, 0.75) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  z-index: 99999 !important;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 1rem;
+}
