@@ -15,6 +15,7 @@ let masterSubjects = [];
 let activeReviewAssignmentId = null;
 
 export function initLmsTeacherModule() {
+    initCbtTeacherModule();
     loadLmsDropdowns();
     loadAssignments();
     initLmsEventListeners();
@@ -395,4 +396,350 @@ if (typeof document !== 'undefined') {
     } else {
         document.addEventListener('DOMContentLoaded', initLmsTeacherModule);
     }
+}
+
+
+// ── 2. CBT QUIZ MANAGER & SMART TEXT PARSER ────────────────────────────
+let allCbtQuizzes = [];
+
+export function initCbtTeacherModule() {
+    loadCbtDropdowns();
+    loadCbtQuizzes();
+    initCbtEventListeners();
+}
+
+async function loadCbtDropdowns() {
+    try {
+        const [clsRes, mapelRes] = await Promise.all([
+            db.from('classes').select('id, nama_kelas').order('nama_kelas'),
+            db.from('subjects').select('id, nama_mapel').order('nama_mapel')
+        ]);
+
+        const selClass = document.getElementById('quiz-class-select');
+        const filterClass = document.getElementById('filter-cbt-class');
+        const selSubject = document.getElementById('quiz-subject-select');
+        const filterSubject = document.getElementById('filter-cbt-subject');
+
+        const classes = clsRes.data || [];
+        const subjects = mapelRes.data || [];
+
+        if (selClass) {
+            selClass.innerHTML = '<option value="">-- Pilih Kelas --</option><option value="Semua">Semua Kelas</option>' + 
+                classes.map(c => `<option value="${c.nama_kelas}">${c.nama_kelas}</option>`).join('');
+        }
+        if (filterClass) {
+            filterClass.innerHTML = '<option value="">Semua Kelas</option>' + 
+                classes.map(c => `<option value="${c.nama_kelas}">${c.nama_kelas}</option>`).join('');
+        }
+        if (selSubject) {
+            selSubject.innerHTML = '<option value="">-- Pilih Mapel --</option>' + 
+                subjects.map(s => `<option value="${s.nama_mapel}">${s.nama_mapel}</option>`).join('');
+        }
+        if (filterSubject) {
+            filterSubject.innerHTML = '<option value="">Semua Mata Pelajaran</option>' + 
+                subjects.map(s => `<option value="${s.nama_mapel}">${s.nama_mapel}</option>`).join('');
+        }
+    } catch (err) {
+        console.error('Gagal memuat dropdown CBT:', err);
+    }
+}
+
+export async function loadCbtQuizzes() {
+    const tbody = document.getElementById('tbody-cbt-quizzes');
+    const parserSelect = document.getElementById('parser-target-quiz');
+    if (!tbody) return;
+
+    try {
+        const { data: quizzes, error } = await db
+            .from('quizzes')
+            .select(`
+                *,
+                quiz_questions ( id ),
+                quiz_attempts ( id, total_score )
+            `)
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        allCbtQuizzes = quizzes || [];
+        renderCbtTable(allCbtQuizzes);
+
+        if (parserSelect) {
+            parserSelect.innerHTML = '<option value="">-- Pilih Ujian CBT --</option>' + 
+                allCbtQuizzes.map(q => `<option value="${q.id}">${q.title} (${q.class_name} • ${q.subject})</option>`).join('');
+        }
+    } catch (err) {
+        console.error('Gagal memuat kuis CBT admin:', err);
+        if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="aca-inline-22 text-rose-400">Gagal: ${escapeHTML(err.message)}</td></tr>`;
+    }
+}
+
+function renderCbtTable(list) {
+    const tbody = document.getElementById('tbody-cbt-quizzes');
+    if (!tbody) return;
+
+    const filterCls = document.getElementById('filter-cbt-class')?.value || '';
+    const filterSub = document.getElementById('filter-cbt-subject')?.value || '';
+    const query = document.getElementById('search-cbt-quiz')?.value.toLowerCase().trim() || '';
+
+    let filtered = list;
+    if (filterCls) filtered = filtered.filter(q => q.class_name === filterCls || q.class_name === 'Semua');
+    if (filterSub) filtered = filtered.filter(q => q.subject === filterSub);
+    if (query) filtered = filtered.filter(q => q.title.toLowerCase().includes(query));
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="aca-inline-22">Belum ada ujian CBT. Klik "+ Buat Ujian CBT Baru" untuk membuat.</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = filtered.map((q, idx) => {
+        const qCount = (q.quiz_questions || []).length;
+        const attCount = (q.quiz_attempts || []).length;
+
+        return `
+            <tr>
+                <td>${idx + 1}</td>
+                <td>
+                    <div class="font-bold text-white">${escapeHTML(q.title)}</div>
+                    <div class="text-xs text-emerald-400">${qCount} Butir Soal</div>
+                </td>
+                <td><span class="badge badge-primary">${escapeHTML(q.class_name)}</span></td>
+                <td>${escapeHTML(q.subject)}</td>
+                <td><span class="text-xs text-amber-300">${q.duration_minutes} Menit</span></td>
+                <td>
+                    <span class="text-xs font-semibold px-2 py-1 rounded bg-blue-500/20 text-blue-300">
+                        ${attCount} Siswa Mengerjakan
+                    </span>
+                </td>
+                <td>
+                    <div class="flex items-center gap-1.5">
+                        <button class="btn-open-parser-for-quiz btn-sm btn-primary" data-id="${q.id}" title="Tambah Soal via Text Parser">+ Soal</button>
+                        <button class="btn-del-quiz btn-sm btn-danger" data-id="${q.id}" title="Hapus Ujian">🗑️</button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+
+    tbody.querySelectorAll('.btn-open-parser-for-quiz').forEach(btn => {
+        btn.onclick = () => {
+            const id = btn.getAttribute('data-id');
+            const modal = document.getElementById('modal-text-parser');
+            const sel = document.getElementById('parser-target-quiz');
+            if (sel) sel.value = id;
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.classList.remove('hidden');
+            }
+        };
+    });
+
+    tbody.querySelectorAll('.btn-del-quiz').forEach(btn => {
+        btn.onclick = async () => {
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            const id = btn.getAttribute('data-id');
+            if (!confirm('Hapus ujian CBT ini beserta seluruh butir soal dan jawaban siswa?')) return;
+
+            try {
+                const { error } = await db.from('quizzes').delete().eq('id', id);
+                if (error) throw error;
+                showToast('Ujian CBT berhasil dihapus.', 'success');
+                await loadCbtQuizzes();
+            } catch (err) {
+                showToast('Gagal menghapus kuis: ' + err.message, 'error');
+            }
+        };
+    });
+}
+
+function initCbtEventListeners() {
+    const btnCreate = document.getElementById('btn-create-quiz-cbt');
+    const modalQuiz = document.getElementById('modal-quiz-cbt');
+    const btnCloseQuiz = document.getElementById('btn-close-quiz-modal');
+    const formQuiz = document.getElementById('form-quiz-cbt');
+
+    const btnOpenParser = document.getElementById('btn-open-text-parser');
+    const modalParser = document.getElementById('modal-text-parser');
+    const btnCloseParser = document.getElementById('btn-close-parser-modal');
+    const btnCancelParser = document.getElementById('btn-cancel-parser');
+    const btnExecParser = document.getElementById('btn-execute-parser');
+
+    const filterCls = document.getElementById('filter-cbt-class');
+    const filterSub = document.getElementById('filter-cbt-subject');
+    const searchInput = document.getElementById('search-cbt-quiz');
+
+    if (btnCreate) btnCreate.onclick = () => {
+        if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+        formQuiz.reset();
+        modalQuiz.style.display = 'flex';
+        modalQuiz.classList.remove('hidden');
+    };
+
+    if (btnCloseQuiz) btnCloseQuiz.onclick = () => {
+        modalQuiz.style.display = 'none';
+        modalQuiz.classList.add('hidden');
+    };
+
+    if (btnOpenParser) btnOpenParser.onclick = () => {
+        if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+        modalParser.style.display = 'flex';
+        modalParser.classList.remove('hidden');
+    };
+
+    if (btnCloseParser) btnCloseParser.onclick = () => {
+        modalParser.style.display = 'none';
+        modalParser.classList.add('hidden');
+    };
+
+    if (btnCancelParser) btnCancelParser.onclick = () => {
+        modalParser.style.display = 'none';
+        modalParser.classList.add('hidden');
+    };
+
+    if (filterCls) filterCls.onchange = () => renderCbtTable(allCbtQuizzes);
+    if (filterSub) filterSub.onchange = () => renderCbtTable(allCbtQuizzes);
+    if (searchInput) searchInput.oninput = () => renderCbtTable(allCbtQuizzes);
+
+    if (formQuiz) {
+        formQuiz.onsubmit = async (e) => {
+            e.preventDefault();
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+
+            const title = document.getElementById('quiz-title-input').value.trim();
+            const cls = document.getElementById('quiz-class-select').value;
+            const sub = document.getElementById('quiz-subject-select').value;
+            const duration = parseInt(document.getElementById('quiz-duration-input').value) || 60;
+            const antiCheat = document.getElementById('quiz-anticheat-select').value === 'true';
+
+            const { data: { user } } = await db.auth.getUser();
+            const teacherName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Guru Annida';
+
+            try {
+                const { data: newQuiz, error } = await db.from('quizzes').insert({
+                    teacher_id: user?.id,
+                    teacher_name: teacherName,
+                    class_name: cls,
+                    subject: sub,
+                    title: title,
+                    duration_minutes: duration,
+                    anti_cheat_enabled: antiCheat,
+                    status: 'published'
+                }).select().single();
+
+                if (error) throw error;
+
+                showToast('Ujian CBT berhasil dibuat! Silakan input butir soal.', 'success');
+                modalQuiz.style.display = 'none';
+                modalQuiz.classList.add('hidden');
+
+                // Buka parser otomatis untuk kuis baru ini
+                const targetSel = document.getElementById('parser-target-quiz');
+                if (targetSel) targetSel.value = newQuiz.id;
+                modalParser.style.display = 'flex';
+                modalParser.classList.remove('hidden');
+
+                await loadCbtQuizzes();
+            } catch (err) {
+                showToast('Gagal membuat kuis CBT: ' + err.message, 'error');
+            }
+        };
+    }
+
+    if (btnExecParser) {
+        btnExecParser.onclick = async () => {
+            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+            const targetQuizId = document.getElementById('parser-target-quiz').value;
+            const rawText = document.getElementById('parser-raw-text').value.trim();
+
+            if (!targetQuizId) return showToast('Pilih ujian tujuan terlebih dahulu!', 'warning');
+            if (!rawText) return showToast('Tempelkan teks kumpulan soal!', 'warning');
+
+            const parsedQuestions = parseRawQuestions(rawText, targetQuizId);
+            if (parsedQuestions.length === 0) {
+                return showToast('Format teks tidak dikenali. Pastikan ada penomoran soal (1. 2. dst)', 'warning');
+            }
+
+            btnExecParser.textContent = 'Menyimpan...';
+            try {
+                const { error } = await db.from('quiz_questions').insert(parsedQuestions);
+                if (error) throw error;
+
+                showToast(`Berhasil mem-parsing dan menyimpan ${parsedQuestions.length} butir soal!`, 'success');
+                modalParser.style.display = 'none';
+                modalParser.classList.add('hidden');
+                document.getElementById('parser-raw-text').value = '';
+                await loadCbtQuizzes();
+            } catch (err) {
+                showToast('Gagal menyimpan butir soal: ' + err.message, 'error');
+            } finally {
+                btnExecParser.textContent = 'Proses & Simpan Butir Soal';
+            }
+        };
+    }
+}
+
+function parseRawQuestions(text, quizId) {
+    // Split by numbered question pattern: e.g. "1.", "2.", "3."
+    const blocks = text.split(/\n(?=\d+[.)]\s+)/g);
+    const questions = [];
+
+    blocks.forEach((block, idx) => {
+        const trimmed = block.trim();
+        if (!trimmed) return;
+
+        const lines = trimmed.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        if (lines.length === 0) return;
+
+        let qText = lines[0].replace(/^\d+[.)]\s+/, '');
+        const options = [];
+        let correctKey = null;
+        let explanation = '';
+        let type = 'multiple_choice';
+
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i];
+            // Option match: A. B. C. D. E.
+            const optMatch = line.match(/^([A-Ea-e])[.)]\s+(.+)/);
+            // Key match: Kunci: A / Kunci Jawaban: B
+            const keyMatch = line.match(/^(?:kunci|jawaban|key)(?:\s*jawaban)?:?\s*([A-Ea-e]|essay)/i);
+            // Explanation match: Pembahasan: ... / Ket: ...
+            const expMatch = line.match(/^(?:pembahasan|penjelasan|alasan):?\s*(.+)/i);
+
+            if (optMatch) {
+                options.push({
+                    key: optMatch[1].toUpperCase(),
+                    text: optMatch[2]
+                });
+            } else if (keyMatch) {
+                const val = keyMatch[1].toUpperCase();
+                if (val === 'ESSAY' || val === 'URAIAN') {
+                    type = 'essay';
+                } else {
+                    correctKey = val;
+                }
+            } else if (expMatch) {
+                explanation = expMatch[1];
+            } else if (!optMatch && !keyMatch && !expMatch && options.length === 0) {
+                // Continuation of question text
+                qText += ' ' + line;
+            }
+        }
+
+        if (options.length === 0) {
+            type = 'essay';
+        }
+
+        questions.push({
+            quiz_id: quizId,
+            question_order: idx + 1,
+            type: type,
+            question_text: qText,
+            options: options.length > 0 ? options : null,
+            correct_key: correctKey || (options.length > 0 ? options[0].key : null),
+            points: 10,
+            explanation: explanation || null
+        });
+    });
+
+    return questions;
 }

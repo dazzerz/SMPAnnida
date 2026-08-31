@@ -166,6 +166,33 @@ assert(acaDashHtml.includes('id="modal-review-submissions"'), 'Academic dashboar
 const lmsTeacherJs = fs.readFileSync('js/academic/lms.js', 'utf8');
 assert(lmsTeacherJs.includes('openReviewSubmissionsModal'), 'LMS teacher JS includes review and grading modal');
 
+
+// Test 11: CBT Online Exam (Anti-Cheat) & Smart Text Parser Validation
+console.log('\n[TEST 11] CBT Online Exam (Anti-Cheat) & Smart Parser Validation:');
+const cbtSql = fs.readFileSync('database/migrations/cbt_and_elearning_modules.sql', 'utf8');
+assert(cbtSql.includes('CREATE TABLE IF NOT EXISTS public.quizzes'), 'CBT migration creates quizzes table');
+assert(cbtSql.includes('CREATE TABLE IF NOT EXISTS public.quiz_questions'), 'CBT migration creates quiz_questions table');
+assert(cbtSql.includes('CREATE TABLE IF NOT EXISTS public.quiz_attempts'), 'CBT migration creates quiz_attempts table');
+assert(cbtSql.includes('CREATE TABLE IF NOT EXISTS public.learning_modules'), 'CBT migration creates learning_modules table');
+
+const studentHtml = fs.readFileSync('pages/student/dashboard.html', 'utf8');
+assert(studentHtml.includes('id="panel-cbt"'), 'Portal siswa includes panel-cbt section');
+assert(studentHtml.includes('id="modal-cbt-runner"'), 'Portal siswa includes modal-cbt-runner fullscreen');
+assert(studentHtml.includes('id="modal-cbt-results"'), 'Portal siswa includes modal-cbt-results discussion view');
+
+const studentJs2 = fs.readFileSync('js/student/dashboard.js', 'utf8');
+assert(studentJs2.includes('startCbtExam'), 'Portal siswa JS includes startCbtExam runner');
+assert(studentJs2.includes('initAntiCheatTracking'), 'Portal siswa JS includes anti-cheat visibility tracking');
+assert(studentJs2.includes('showCbtResultsAndDiscussion'), 'Portal siswa JS includes instant results discussion');
+
+const acaHtml2 = fs.readFileSync('pages/academic/dashboard.html', 'utf8');
+assert(acaHtml2.includes('id="cbt-admin"'), 'Academic dashboard includes cbt-admin section');
+assert(acaHtml2.includes('id="modal-quiz-cbt"'), 'Academic dashboard includes modal-quiz-cbt');
+assert(acaHtml2.includes('id="modal-text-parser"'), 'Academic dashboard includes modal-text-parser');
+
+const lmsJs2 = fs.readFileSync('js/academic/lms.js', 'utf8');
+assert(lmsJs2.includes('parseRawQuestions'), 'LMS JS includes smart text parser');
+
 console.log('\n--- TEST SUMMARY ---');
 console.log(`Total Passed: ${passed}, Total Failed: ${failed}`);
 if (failed > 0) {

@@ -73,9 +73,13 @@
             <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">fact_check</span>
             <span>Presensi Saya</span>
           </a>
+          <a href="#cbt" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-cbt">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">quiz</span>
+            <span>Ujian CBT Online</span>
+          </a>
           <a href="#tugas" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-tugas">
             <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">assignment</span>
-            <span>Tugas & E-Learning</span>
+            <span>Tugas & PR</span>
           </a>
           <a href="#materi" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-materi">
             <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">menu_book</span>
@@ -147,8 +151,11 @@
           <a href="#presensi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-presensi">
             <span class="material-symbols-outlined text-xs">fact_check</span> Presensi
           </a>
+          <a href="#cbt" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-cbt">
+            <span class="material-symbols-outlined text-xs">quiz</span> Ujian CBT
+          </a>
           <a href="#tugas" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-tugas">
-            <span class="material-symbols-outlined text-xs">assignment</span> Tugas LMS
+            <span class="material-symbols-outlined text-xs">assignment</span> Tugas
           </a>
           <a href="#materi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-materi">
             <span class="material-symbols-outlined text-xs">menu_book</span> Materi
@@ -310,6 +317,29 @@
       </section>
 
       
+      
+      <!-- PANEL: UJIAN & KUIS CBT ONLINE (ANTI-CHEAT) -->
+      <section id="panel-cbt" class="student-panel hidden space-y-6">
+        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-bold font-headline-md text-white mb-1">Ujian & Kuis Online (CBT Anti-Cheat)</h2>
+              <p class="text-xs text-gray-400">Kerjakan ujian dengan pengawasan integritas waktu dan deteksi tab otomatis</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">security</span> Anti-Cheat Aktif
+              </span>
+            </div>
+          </div>
+
+          <!-- Feed Daftar Ujian CBT -->
+          <div id="student-cbt-feed" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="text-center py-8 text-gray-400 col-span-full">Memuat daftar ujian aktif...</div>
+          </div>
+        </div>
+      </section>
+
       <!-- PANEL: TUGAS & E-LEARNING (LMS) -->
       <section id="panel-tugas" class="student-panel hidden space-y-6">
         <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
@@ -533,6 +563,124 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+
+  <!-- MODAL CBT EXAM RUNNER (FULLSCREEN FOCUS MODE) -->
+  <div id="modal-cbt-runner" class="modal hidden">
+    <div class="modal-content card glass max-w-5xl w-full p-6 rounded-2xl bg-slate-950 border border-white/20 text-white space-y-6 flex flex-col max-h-[95vh] overflow-hidden">
+      <!-- Top Exam Header -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/10 pb-4">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-md text-[0.7rem] font-bold bg-emerald-500/20 text-emerald-300" id="cbt-exam-subject">Mata Pelajaran</span>
+          <h3 class="text-lg font-bold text-white mt-1" id="cbt-exam-title">Judul Ujian</h3>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="px-3 py-1 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold flex items-center gap-1" id="cbt-tab-alert-badge">
+            <span class="material-symbols-outlined text-sm">tab</span>
+            <span>Tab Switch: <span id="cbt-tab-switch-count">0</span></span>
+          </div>
+          <div class="px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-sm font-black flex items-center gap-1.5" id="cbt-timer-badge">
+            <span class="material-symbols-outlined text-base animate-pulse">timer</span>
+            <span id="cbt-timer-text">60:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question & Navigator Area -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 overflow-y-auto pr-1">
+        <!-- Question Box (3 cols) -->
+        <div class="lg:col-span-3 space-y-4">
+          <div class="flex items-center justify-between text-xs text-gray-400">
+            <span>Nomor Soal: <span class="font-bold text-white text-base" id="cbt-current-q-num">1</span> dari <span id="cbt-total-q-num">10</span></span>
+            <span class="px-2 py-0.5 rounded bg-white/10 text-gray-300" id="cbt-question-type-badge">Pilihan Ganda</span>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white/5 border border-white/10 text-sm text-gray-100 leading-relaxed font-medium" id="cbt-question-text">
+            Pertanyaan ujian akan dimuat di sini...
+          </div>
+
+          <!-- Options Container for PG / Essay -->
+          <div id="cbt-options-container" class="space-y-2.5">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Question Number Navigator (1 col) -->
+        <div class="p-4 rounded-2xl bg-slate-900 border border-white/10 space-y-3 flex flex-col justify-between">
+          <div>
+            <div class="text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">Navigasi Soal</div>
+            <div class="grid grid-cols-5 gap-2" id="cbt-nav-grid">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <div class="text-[0.7rem] text-gray-400 space-y-1 border-t border-white/10 pt-2">
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span> Sudah Dijawab</div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-amber-500 inline-block"></span> Ragu-ragu</div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-white/10 inline-block"></span> Belum Dijawab</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <div class="flex items-center justify-between border-t border-white/10 pt-4">
+        <button id="btn-cbt-prev" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-gray-300 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">arrow_back</span> Sebelumnya
+        </button>
+
+        <button id="btn-cbt-doubt" class="px-4 py-2 rounded-xl text-xs font-semibold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">flag</span> Ragu-ragu
+        </button>
+
+        <div class="flex items-center gap-2">
+          <button id="btn-cbt-next" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-gray-300 flex items-center gap-1">
+            Selanjutnya <span class="material-symbols-outlined text-sm">arrow_forward</span>
+          </button>
+          <button id="btn-cbt-submit" class="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-600 text-white flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
+            <span class="material-symbols-outlined text-sm">check_circle</span> Kumpulkan Ujian
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CBT RESULTS & FULL DISCUSSION (MODE PEMBAHASAN LENGKAP) -->
+  <div id="modal-cbt-results" class="modal hidden">
+    <div class="modal-content card glass max-w-4xl w-full p-6 rounded-2xl bg-slate-950 border border-white/20 text-white space-y-6 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b border-white/10 pb-3">
+        <div>
+          <h3 class="text-xl font-bold text-emerald-400" id="results-quiz-title">Hasil Ujian & Pembahasan</h3>
+          <p class="text-xs text-gray-400" id="results-quiz-subtitle">Koreksi otomatis dan ulasan butir soal</p>
+        </div>
+        <button id="btn-close-results-modal" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold">✕ Tutup</button>
+      </div>
+
+      <!-- Score Banner -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-center">
+          <div class="text-xs text-emerald-300">Total Skor</div>
+          <div class="text-3xl font-black text-emerald-400" id="results-total-score">0</div>
+        </div>
+        <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30 text-center">
+          <div class="text-xs text-blue-300">Jawaban Benar</div>
+          <div class="text-2xl font-bold text-blue-400" id="results-correct-count">0</div>
+        </div>
+        <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-center">
+          <div class="text-xs text-rose-300">Jawaban Salah</div>
+          <div class="text-2xl font-bold text-rose-400" id="results-wrong-count">0</div>
+        </div>
+        <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-center">
+          <div class="text-xs text-amber-300">Pelanggaran Tab</div>
+          <div class="text-2xl font-bold text-amber-400" id="results-tab-switches">0</div>
+        </div>
+      </div>
+
+      <!-- Discussion Questions Breakdown -->
+      <div class="space-y-4" id="results-discussion-list">
+        <!-- Rendered by JS -->
+      </div>
     </div>
   </div>
 
