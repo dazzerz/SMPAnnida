@@ -11,7 +11,7 @@ body { font-family: 'Inter', sans-serif; background-color: var(--background); co
 .nav-link:hover { background-color: rgba(74, 222, 128, 0.05); color: var(--primary); }
 .nav-link.active { background-color: rgba(74, 222, 128, 0.1); color: var(--primary); border-left-color: var(--primary); }
 .main-content { flex: 1; display: flex; flex-direction: column; overflow-x: hidden; }
-.topbar { height: var(--topbar-height); background-color: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; position: sticky; top: 0; z-index: 10; }
+.topbar { height: var(--topbar-height); background-color: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; position: sticky !important; top: 0 !important; z-index: 500 !important; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
 .menu-toggle { display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); }
 .user-profile { display: flex; align-items: center; gap: 10px; font-weight: 500; }
 .btn-logout { background: none; border: none; color: var(--danger); font-weight: bold; cursor: pointer; padding: 5px 10px; border-radius: 5px; font-size: 13px; margin-right: 10px;}

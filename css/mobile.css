@@ -66,12 +66,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 500 !important;
   min-height: 60px;
   flex-shrink: 0;
+  background: var(--topbar-bg, rgba(11, 19, 25, 0.92)) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.12)) !important;
 }
 .topbar-left, .topbar-right {
   display: flex;
@@ -211,12 +215,20 @@
 
   /* Topbar padding on mobile */
   .topbar {
-    padding: 0.75rem 1rem !important;
-    border-radius: 0 !important;
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 200 !important;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 500 !important;
+  min-height: 60px;
+  flex-shrink: 0;
+  background: var(--topbar-bg, rgba(11, 19, 25, 0.92)) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.12)) !important;
+}
 
   /* ---- GRID FIXES ---- */
   .grid-cols-1, .grid-cols-2, .grid-cols-3, .grid-cols-4 {
@@ -402,4 +414,9 @@
   .sidebar.collapsed .sidebar-logout-btn i {
     margin-right: 0.5rem !important;
   }
+}
+
+/* Global Mobile Bottom Safe Padding (No cut-off buttons) */
+.content-area, .page-content, .student-panel, .main-content {
+  padding-bottom: 5rem !important;
 }
