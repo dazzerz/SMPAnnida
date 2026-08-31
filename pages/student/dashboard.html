@@ -116,46 +116,49 @@
     <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
       
       
-      <!-- Mobile Scrollable Pill Navigation Bar -->
-      <div class="flex md:hidden overflow-x-auto whitespace-nowrap gap-2 pb-2 mb-4 scrollbar-none border-b border-white/10">
-        <a href="#beranda" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-600 text-white shadow-sm flex items-center gap-1.5 shrink-0" data-target="panel-beranda">
-          <span class="material-symbols-outlined text-sm">dashboard</span> Beranda
-        </a>
-        <a href="#jadwal" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-jadwal">
-          <span class="material-symbols-outlined text-sm">calendar_month</span> Jadwal
-        </a>
-        <a href="#presensi" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-presensi">
-          <span class="material-symbols-outlined text-sm">fact_check</span> Presensi
-        </a>
-        <a href="#materi" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-materi">
-          <span class="material-symbols-outlined text-sm">menu_book</span> Materi
-        </a>
-        <a href="#tahfidz" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-tahfidz">
-          <span class="material-symbols-outlined text-sm">auto_stories</span> Tahfidz
-        </a>
-        <a href="#nilai" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-nilai">
-          <span class="material-symbols-outlined text-sm">grade</span> Nilai
-        </a>
-        <a href="#berkas" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-berkas">
-          <span class="material-symbols-outlined text-sm">folder_shared</span> Berkas
-        </a>
-        <a href="#akun" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-akun">
-          <span class="material-symbols-outlined text-sm">manage_accounts</span> Akun
-        </a>
-      </div>
-
-      <!-- Top Mobile Bar -->
-      <div class="flex md:hidden items-center justify-between bg-slate-900/80 backdrop-blur-md p-4 rounded-2xl border border-white/10 mb-6">
-        <div class="flex items-center gap-3">
-          <img src="/logo_1x1.png" alt="Logo" class="w-8 h-8 rounded-full">
-          <div>
-            <h3 class="font-bold text-sm text-emerald-400">Portal Siswa</h3>
-            <p class="text-[0.7rem] text-gray-300" id="mobile-student-name">Memuat...</p>
+      <!-- Sticky Mobile Top Bar & Pill Navigation -->
+      <div class="md:hidden sticky top-0 z-40 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-3 mb-6 shadow-xl space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <img src="/logo_1x1.png" alt="Logo" class="w-8 h-8 rounded-full">
+            <div>
+              <h3 class="font-bold text-sm text-emerald-400 leading-tight">Portal Siswa</h3>
+              <p class="text-[0.7rem] text-gray-300 truncate max-w-[180px]" id="mobile-student-name">Memuat...</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btn-mobile-logout" class="p-1.5 bg-rose-500/20 text-rose-300 rounded-lg text-xs flex items-center gap-1 font-semibold" title="Keluar Sesi">
+              <span class="material-symbols-outlined text-sm">logout</span>
+            </button>
           </div>
         </div>
-        <button id="btn-mobile-logout" class="p-2 bg-rose-500/20 text-rose-300 rounded-lg text-xs">
-          <span class="material-symbols-outlined text-sm">logout</span>
-        </button>
+
+        <div class="flex overflow-x-auto whitespace-nowrap gap-1.5 pb-1 scrollbar-none border-t border-white/10 pt-2">
+          <a href="#beranda" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-600 text-white shadow-sm flex items-center gap-1 shrink-0" data-target="panel-beranda">
+            <span class="material-symbols-outlined text-xs">dashboard</span> Beranda
+          </a>
+          <a href="#jadwal" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-jadwal">
+            <span class="material-symbols-outlined text-xs">calendar_month</span> Jadwal
+          </a>
+          <a href="#presensi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-presensi">
+            <span class="material-symbols-outlined text-xs">fact_check</span> Presensi
+          </a>
+          <a href="#materi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-materi">
+            <span class="material-symbols-outlined text-xs">menu_book</span> Materi
+          </a>
+          <a href="#tahfidz" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-tahfidz">
+            <span class="material-symbols-outlined text-xs">auto_stories</span> Tahfidz
+          </a>
+          <a href="#nilai" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-nilai">
+            <span class="material-symbols-outlined text-xs">grade</span> Nilai
+          </a>
+          <a href="#berkas" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-berkas">
+            <span class="material-symbols-outlined text-xs">folder_shared</span> Berkas
+          </a>
+          <a href="#akun" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-akun">
+            <span class="material-symbols-outlined text-xs">manage_accounts</span> Akun
+          </a>
+        </div>
       </div>
 
       <!-- PANEL 1: BERANDA -->

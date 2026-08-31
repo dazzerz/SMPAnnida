@@ -116,7 +116,7 @@
   <link rel="apple-touch-icon" href="/logo_1x1.png" />
   <script type="module" src="/js/core/pwa.js"></script>
 </head>
-<body class="bg-mesh-pattern min-h-screen flex items-center justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden w-full">
+<body class="bg-mesh-pattern min-h-screen flex flex-col justify-start lg:justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto w-full pb-16 sm:pb-8">
 
   <!-- Subtle Ambient Glow Orbs -->
   <div class="absolute -top-32 -left-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -128,28 +128,28 @@
     <!-- ========================================================================= -->
     <!-- SISI KIRI (lg:col-span-5): BRANDING & INFORMASI SINGKAT -->
     <!-- ========================================================================= -->
-    <div class="lg:col-span-5 bg-slate-950/70 p-6 sm:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10 relative overflow-hidden">
+    <div class="lg:col-span-5 bg-slate-950/70 p-5 sm:p-6 lg:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10 relative overflow-hidden">
       
       <!-- Top Branding -->
-      <div class="space-y-4">
+      <div class="space-y-3 lg:space-y-4">
         <div class="flex items-center gap-3">
-          <img src="/assets/logo/1.png" alt="Logo SMP Annida" class="w-12 h-12 object-contain drop-shadow" onerror="this.onerror=null; this.src='assets/logo/1.png';">
+          <img src="/assets/logo/1.png" alt="Logo SMP Annida" class="w-10 h-10 lg:w-12 lg:h-12 object-contain drop-shadow" onerror="this.onerror=null; this.src='assets/logo/1.png';">
           <div>
-            <h1 class="font-serif-annida text-lg font-bold text-white tracking-tight uppercase">SMP Annida</h1>
+            <h1 class="font-serif-annida text-base lg:text-lg font-bold text-white tracking-tight uppercase">SMP Annida</h1>
             <span class="text-[0.65rem] uppercase tracking-wider font-bold text-emerald-400 block">Al-Islamy Setu Bekasi</span>
           </div>
         </div>
         
         <div class="space-y-1">
-          <h2 class="text-sm font-bold text-slate-200">Sistem Informasi Akademik Terpadu</h2>
-          <p class="text-xs text-slate-400 leading-relaxed">
+          <h2 class="text-xs lg:text-sm font-bold text-slate-200">Sistem Informasi Akademik Terpadu</h2>
+          <p class="text-[0.75rem] lg:text-xs text-slate-400 leading-relaxed hidden sm:block">
             Akses satu pintu untuk seluruh civitas akademika dan layanan pendidikan Islam.
           </p>
         </div>
       </div>
 
-      <!-- Center Role Access Chips (Hidden on small mobile if tight, visible on sm+) -->
-      <div class="my-4 sm:my-6 space-y-2.5 hidden sm:block">
+      <!-- Center Role Access Chips (Desktop Only: lg:block, completely hidden on mobile to avoid push-down) -->
+      <div class="my-6 space-y-2.5 hidden lg:block">
         <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
           <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
             <span class="material-symbols-outlined text-sm">school</span>
@@ -181,8 +181,8 @@
         </div>
       </div>
 
-      <!-- Bottom Actions & Links -->
-      <div class="pt-4 border-t border-white/10 flex flex-col gap-2.5">
+      <!-- Bottom Actions & Links (Desktop Only: lg:flex) -->
+      <div class="pt-4 border-t border-white/10 hidden lg:flex flex-col gap-2.5">
         <a href="https://wa.me/6281289575462?text=Assalamu%27alaikum%20Admin%20SMP%20Annida,%20saya%20membutuhkan%20bantuan%20login%20akun." target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-emerald-950/40 hover:bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 text-xs font-semibold transition-all">
           <span class="flex items-center gap-2">
             <span class="material-symbols-outlined text-sm text-emerald-400">support_agent</span>
@@ -303,15 +303,24 @@
         </form>
 
         <!-- Bottom Links -->
-        <div class="pt-3 border-t border-white/10 text-center space-y-2">
-          <p class="text-xs text-slate-400">
-            Calon siswa baru? 
-            <a href="/pages/ppdb/register.html" class="text-emerald-400 hover:text-emerald-300 font-bold hover:underline">
-              Daftar PPDB Online ↗
+        <div class="pt-3 border-t border-white/10 text-center space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
+            <span>Calon siswa baru? 
+              <a href="/pages/ppdb/register.html" class="text-emerald-400 hover:text-emerald-300 font-bold hover:underline">
+                Daftar PPDB ↗
+              </a>
+            </span>
+            <a href="https://wa.me/6281289575462?text=Assalamu%27alaikum%20Admin%20SMP%20Annida,%20saya%20butuh%20bantuan%20login." target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:underline flex items-center gap-1 font-semibold">
+              <span class="material-symbols-outlined text-sm">support_agent</span> Bantuan TU
             </a>
-          </p>
-          <div class="flex items-center justify-center gap-3 text-[0.68rem] text-slate-500">
-            <span>© 2026 SMP Annida Al-Islamy</span>
+          </div>
+
+          <div class="flex items-center justify-center gap-3 text-[0.7rem] text-slate-500 pt-1">
+            <a href="/index.html" class="hover:text-slate-300 transition-colors flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">arrow_back</span> Website Utama
+            </a>
+            <span>•</span>
+            <span>© 2026 SMP Annida</span>
             <span>•</span>
             <a href="/pages/ppdb/privacy-policy.html" class="hover:text-slate-300">Privasi</a>
           </div>
