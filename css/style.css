@@ -569,7 +569,7 @@ body {
 }
 
 /* Force Glassmorphism on all generic card and panel elements */
-.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card {
+.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card {
   background: var(--glass-bg) !important;
   backdrop-filter: var(--glass-blur) !important;
   -webkit-backdrop-filter: var(--glass-blur) !important;
@@ -664,7 +664,6 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 [data-theme="dark"] .dashboard-card, 
 [data-theme="dark"] .glass-panel, 
 [data-theme="dark"] .table-container, 
-[data-theme="dark"] .modal, 
 [data-theme="dark"] .modal-content, 
 [data-theme="dark"] .rab-card, 
 [data-theme="dark"] .transactions-table-wrapper, 
@@ -770,7 +769,7 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 }
 
 /* Force Glassmorphism on all generic card and panel elements */
-.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card {
+.card, .auth-card, .metric-card, .dashboard-card, .glass-panel, .table-container, .modal-content, .rab-card, .transactions-table-wrapper, .sidebar, .budget-card {
   background: var(--glass-bg) !important;
   backdrop-filter: var(--glass-blur) !important;
   -webkit-backdrop-filter: var(--glass-blur) !important;
