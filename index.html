@@ -57,21 +57,41 @@
     "logo": "https://smpannida.sch.id/logo.png",
     "image": "https://smpannida.sch.id/gedung_sekolah.jpg",
     "description": "Sekolah Menengah Pertama berbasis Sekolah Alam dan Program Tahfidz Al-Qur'an terpadu di Setu, Bekasi.",
+    "telephone": "+6281289575462",
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": "Gg. Al-Ikhlas No.47, RT.002/RW.05, Kp.Rawa atug, Desa Cibening",
       "addressLocality": "Setu",
       "addressRegion": "Jawa Barat",
+      "postalCode": "17320",
       "addressCountry": "ID"
     },
+    "hasMap": "https://maps.google.com/maps?q=Pondok%20Pesantren%20Annida%20Al%20Islamy%202%20Setu%20Bekasi",
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
+        ],
+        "opens": "07:00",
+        "closes": "16:00"
+      }
+    ],
     "educationalLevel": "Sekolah Menengah Pertama (SMP)",
     "sameAs": [
-      "https://smpannida.sch.id"
+      "https://smpannida.sch.id",
+      "https://g.page/r/CZyYooMda2rDECE/review"
     ]
   }
   </script>
 
   <!-- Tailwind CSS & Fonts (Identik dengan halaman PPDB) -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  
   <!-- Google Fonts: Nunito Sans & Literata -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -144,7 +164,7 @@
         background-attachment: fixed;
       }
     }
-    .nav-neon-active::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px; background-color: white; box-shadow: 0 0 10px 2px rgba(255,255,255,0.8); border-radius: 2px; }
+    
   </style>
 <script>
   window.addEventListener('pageshow', function (event) {
@@ -388,12 +408,15 @@
             </div>
           </div>
           
-          <div class="border-t border-white/10 pt-6 mt-8 flex flex-wrap gap-4">
-            <a href="https://wa.me/6281289575462" target="_blank" class="bg-primary hover:bg-primary-dim text-white font-bold py-2.5 px-6 rounded-lg text-sm flex items-center gap-1.5 transition-all">
+          <div class="border-t border-white/10 pt-6 mt-8 flex flex-wrap gap-4 items-center">
+            <a href="https://wa.me/6281289575462" target="_blank" rel="noopener noreferrer" class="bg-primary hover:bg-primary-dim text-white font-bold py-2.5 px-6 rounded-lg text-sm flex items-center gap-1.5 transition-all">
               💬 Chat WhatsApp
             </a>
-            <a href="tel:+6281289575462" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold py-2.5 px-6 rounded-lg text-sm transition-all">
-              Hubungi Telepon
+            <a href="tel:+6281289575462" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold py-2.5 px-6 rounded-lg text-sm transition-all flex items-center gap-1.5">
+              📞 Hubungi Telepon
+            </a>
+            <a href="https://g.page/r/CZyYooMda2rDECE/review" target="_blank" rel="noopener noreferrer" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-6 rounded-lg text-sm flex items-center gap-1.5 transition-all shadow-sm">
+              ⭐ Beri Ulasan Google
             </a>
           </div>
         </div>
@@ -466,14 +489,3 @@
   <script type="module" src="./js/core/theme.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
