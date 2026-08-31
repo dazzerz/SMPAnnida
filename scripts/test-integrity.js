@@ -87,6 +87,18 @@ requiredFiles.forEach(f => {
   assert(fs.existsSync(f), `File exists: ${f}`);
 });
 
+
+// Test 6: Security Hardening & CSP Validation
+console.log('\n[TEST 6] Security Headers & Sanitization:');
+const indexPath = 'index.html';
+const indexContent = fs.readFileSync(indexPath, 'utf8');
+assert(indexContent.includes('Content-Security-Policy'), 'index.html includes Content-Security-Policy meta tag');
+assert(indexContent.includes('nosniff'), 'index.html includes X-Content-Type-Options nosniff');
+
+const utilsPath = 'js/core/utils.js';
+const utilsContent = fs.readFileSync(utilsPath, 'utf8');
+assert(!utilsContent.includes('toast.innerHTML ='), 'showToast does not use vulnerable innerHTML for message');
+
 console.log('\n--- TEST SUMMARY ---');
 console.log(`Total Passed: ${passed}, Total Failed: ${failed}`);
 if (failed > 0) {
