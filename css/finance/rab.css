@@ -101,11 +101,11 @@
 }
 
 .text-income {
-  color: var(--income-color) !important;
+  color: var(--income-color);
 }
 
 .text-expense {
-  color: var(--expense-color) !important;
+  color: var(--expense-color);
 }
 
 input.form-input.qty {
@@ -134,13 +134,13 @@ input.form-input[readonly] {
 
 /* Transisi Halus Default */
 .form-control, .form-input, input, select, textarea, button, .btn, .card, .rab-card, .nilai-card, .jadwal-card {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* State Focus pada Elemen Input */
 .form-control:focus, .form-input:focus, input:focus, select:focus, textarea:focus {
-  border-color: var(--accent-primary, #7ced50) !important;
-  box-shadow: 0 0 12px var(--accent-primary-glow, rgba(124, 237, 80, 0.25)) !important;
+  border-color: var(--accent-primary, #7ced50);
+  box-shadow: 0 0 12px var(--accent-primary-glow, rgba(124, 237, 80, 0.25));
   background-color: rgba(255, 255, 255, 0.02);
   outline: none;
 }
@@ -160,6 +160,6 @@ input.form-input[readonly] {
 /* State Hover pada Cards (Efek Mengambang & Outline Menyala) */
 .card:hover, .rab-card:hover, .nilai-card:hover, .jadwal-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2) !important;
-  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.15);
 }

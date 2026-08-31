@@ -71,9 +71,9 @@ async function checkAuth() {
                     // Inject CSS to hide all action buttons in Academic globally
                     const style = document.createElement('style');
                     style.textContent = `
-                        .action-cell, .action-buttons, .td-aksi, .th-aksi, [data-action="edit"], [data-action="delete"] { display: none !important; }
+                        .action-cell, .action-buttons, .td-aksi, .th-aksi, [data-action="edit"], [data-action="delete"] { display: none; }
                         button[onclick*="add"], button[onclick*="edit"], button[onclick*="delete"], 
-                        button[onclick*="save"], button[type="submit"], #btn-tambah { display: none !important; }
+                        button[onclick*="save"], button[type="submit"], #btn-tambah { display: none; }
                     `;
                     document.head.appendChild(style);
                 }

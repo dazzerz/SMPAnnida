@@ -626,11 +626,11 @@ async function main() {
   const entryStyles = document.createElement('style');
   entryStyles.textContent = `
     .currency-helper-text {
-      color: #10b981 !important;
-      font-size: 0.75rem !important;
-      font-weight: 500 !important;
-      margin-top: 0.25rem !important;
-      display: block !important;
+      color: #10b981;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-top: 0.25rem;
+      display: block;
     }
     .page-section {
       animation: finFadeIn 0.3s ease-in-out;
@@ -640,10 +640,10 @@ async function main() {
       to { opacity: 1; transform: translateY(0); }
     }
     .transactions-table tbody tr:nth-child(even) {
-      background: rgba(255, 255, 255, 0.02) !important;
+      background: rgba(255, 255, 255, 0.02);
     }
     .transactions-table tbody tr:hover {
-      background: rgba(255, 255, 255, 0.04) !important;
+      background: rgba(255, 255, 255, 0.04);
       transition: background 0.2s ease;
     }
   `;
@@ -712,11 +712,11 @@ async function main() {
           // Inject CSS to hide all action buttons and columns globally
           const style = document.createElement('style');
           style.textContent = `
-              .table-actions { display: none !important; }
+              .table-actions { display: none; }
               #transactions-table th:last-child, #transactions-table td:last-child, 
-              #budget-table th:last-child, #budget-table td:last-child { display: none !important; }
-              #add-transaction-btn, #add-budget-btn, #import-excel-btn, #generate-report-btn { display: none !important; }
-              #settings-form button[type="submit"] { display: none !important; }
+              #budget-table th:last-child, #budget-table td:last-child { display: none; }
+              #add-transaction-btn, #add-budget-btn, #import-excel-btn, #generate-report-btn { display: none; }
+              #settings-form button[type="submit"] { display: none; }
           `;
           document.head.appendChild(style);
       }

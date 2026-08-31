@@ -160,7 +160,7 @@
 .aca-inline-101 { display:flex;flex-wrap:wrap;gap: 5px; }
 .aca-inline-102 { display: grid; grid-template-columns: minmax(250px, 300px) 1fr; gap: 20px; align-items: start; }
 .aca-inline-103 { font-size: 16px; margin-bottom: 15px; }
-.aca-inline-104 { background: var(--glass-bg, rgba(255, 255, 255, 0.75)) !important; color: var(--text-primary, #0f172a) !important; border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.9)) !important; border-radius: 16px !important; backdrop-filter: var(--glass-blur, blur(16px)) !important; }
+.aca-inline-104 { background: var(--glass-bg, rgba(255, 255, 255, 0.75)); color: var(--text-primary, #0f172a); border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.9)); border-radius: 16px; backdrop-filter: var(--glass-blur, blur(16px)); }
 .aca-inline-105 { padding: 20px; }
 .aca-inline-106 { display: flex; align-items: center; border-bottom: 2px solid var(--glass-border, rgba(0, 0, 0, 0.15)); margin-bottom: 20px; padding-bottom: 15px; }
 .aca-inline-107 { flex: 0 0 80px; text-align: center; }
@@ -173,7 +173,7 @@
 .aca-inline-114 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; margin-bottom: 20px; font-size: 14px; }
 .aca-inline-115 { width: 120px; }
 .aca-inline-116 { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
-.aca-inline-117 { background-color: var(--table-header-bg, rgba(241, 245, 249, 0.9)) !important; }
+.aca-inline-117 { background-color: var(--table-header-bg, rgba(241, 245, 249, 0.9)); }
 .aca-inline-118 { border: 1px solid var(--table-border, rgba(226, 232, 240, 0.9)); padding: 8px; text-align: left; color: var(--text-primary, #0f172a); }
 .aca-inline-119 { border: 1px solid var(--table-border, rgba(226, 232, 240, 0.9)); padding: 8px; text-align: center; width: 60px; color: var(--text-primary, #0f172a); }
 .aca-inline-120 { border: 1px solid var(--table-border, rgba(226, 232, 240, 0.9)); padding: 8px; text-align: center; width: 80px; color: var(--text-primary, #0f172a); }
@@ -283,63 +283,63 @@
    ========================================================================= */
 @media (max-width: 1023px) {
   .dashboard-cards {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .aca-inline-1 {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .aca-inline-7 {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .aca-inline-8 {
-    grid-column: span 1 !important;
+    grid-column: span 1;
   }
   .aca-inline-69 {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .aca-inline-42 {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .tab-nav {
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    gap: 8px !important;
-    padding-bottom: 8px !important;
-    scrollbar-width: none !important;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding-bottom: 8px;
+    scrollbar-width: none;
   }
   .tab-nav::-webkit-scrollbar {
-    display: none !important;
+    display: none;
   }
   .tab-btn {
-    padding: 8px 14px !important;
-    font-size: 12px !important;
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
+    padding: 8px 14px;
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .table-responsive {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    width: 100% !important;
-    border-radius: 12px !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    border-radius: 12px;
   }
   .filter-bar {
-    flex-direction: column !important;
-    gap: 10px !important;
+    flex-direction: column;
+    gap: 10px;
   }
   .filter-bar > * {
-    width: 100% !important;
+    width: 100%;
   }
   .content-area {
-    padding: 12px !important;
+    padding: 12px;
   }
   .card.glass {
-    padding: 14px !important;
-    border-radius: 14px !important;
+    padding: 14px;
+    border-radius: 14px;
   }
 }
