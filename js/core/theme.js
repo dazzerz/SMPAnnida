@@ -15,7 +15,7 @@ export function getSystemTheme() {
 }
 
 export function getSavedTheme() {
-  return localStorage.getItem(THEME_STORAGE_KEY) || 'light';
+  return localStorage.getItem(THEME_STORAGE_KEY) || localStorage.getItem('theme') || 'light';
 }
 
 export function applyTheme(theme) {
@@ -38,6 +38,7 @@ export function applyTheme(theme) {
 
   // 3. Persist in localStorage
   localStorage.setItem(THEME_STORAGE_KEY, targetTheme);
+  localStorage.setItem('theme', targetTheme);
 
   // 4. Update Chart.js defaults if Chart is in scope
   if (typeof window.Chart !== 'undefined') {
