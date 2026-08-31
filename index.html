@@ -16,7 +16,7 @@
     })();
   </script>
   <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <title>SMP Annida - Sekolah Alam & Tahfidz Al-Qur'an Terpadu</title>
   
   <!-- Primary Meta Tags & Technical SEO -->
@@ -170,7 +170,7 @@
   <link rel="apple-touch-icon" href="/logo_1x1.png" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
 </head>
-<body class="text-white font-body-md min-h-screen flex flex-col">
+<body class="text-white font-body-md min-h-screen flex flex-col overflow-x-hidden w-full">
   
   <!-- Fixed Background Layer (Mencegah melar di mobile) -->
   <div class="fixed inset-0 z-[-1] bg-hero bg-cover bg-center"></div>
@@ -495,5 +495,32 @@
     });
   </script>
   <script type="module" src="./js/core/theme.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuBtn = document.getElementById('mobile-menu-btn');
+      const drawer = document.getElementById('mobile-nav-drawer');
+      const closeBtn = document.getElementById('mobile-drawer-close');
+      const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+      if (menuBtn && drawer && closeBtn) {
+        menuBtn.addEventListener('click', () => {
+          drawer.classList.remove('hidden');
+          drawer.classList.add('flex');
+          document.body.style.overflow = 'hidden';
+        });
+
+        const closeDrawer = () => {
+          drawer.classList.add('hidden');
+          drawer.classList.remove('flex');
+          document.body.style.overflow = '';
+        };
+
+        closeBtn.addEventListener('click', closeDrawer);
+        mobileLinks.forEach(link => link.addEventListener('click', closeDrawer));
+      }
+    });
+  </script>
+
 </body>
 </html>
