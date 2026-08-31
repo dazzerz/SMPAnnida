@@ -66,6 +66,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if(formKelasSelect) formKelasSelect.innerHTML = formOptions;
     }
 
+    function getStudentEmailAndPass(s) {
+        const cleanName = (s.nama_lengkap || '')
+            .toLowerCase()
+            .replace(/['`’\-\.\,\_]/g, '')
+            .replace(/[^a-z0-9\s]/g, '')
+            .trim()
+            .replace(/\s+/g, ' ');
+        const parts = cleanName.split(' ').filter(Boolean);
+        const baseUsername = parts.length >= 2 ? `${parts[0]}.${parts[1]}` : (parts[0] || 'siswa');
+        const email = s.email || `${baseUsername}@smpannida.sch.id`;
+        const defaultPass = `Annida${(String(s.nisn) || String(s.nis) || '1234').slice(-4)}!`;
+        return { email, defaultPass };
+    }
+
     // Render Table
     function renderTable() {
         if (!tbodySiswa) return;
@@ -80,7 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const mKelas = !sKelas || (s.kelas && s.kelas.toLowerCase().includes(sKelas));
             const mSearch = !sSearch || 
                 (s.nama_lengkap && s.nama_lengkap.toLowerCase().includes(sSearch)) || 
-                (s.nis && String(s.nis).toLowerCase().includes(sSearch));
+                (s.nis && String(s.nis).toLowerCase().includes(sSearch)) ||
+                (s.email && s.email.toLowerCase().includes(sSearch));
             
             return mStat && mKelas && mSearch;
         });
@@ -109,18 +124,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 '<span style="padding: 4px 8px; background: rgba(220,53,69,0.1); color: var(--danger); border-radius: 4px; font-size: 12px;">Nonaktif</span>';
             
             const jk = s.jenis_kelamin === 'L' ? 'L' : (s.jenis_kelamin === 'P' ? 'P' : '-');
+            const { email, defaultPass } = getStudentEmailAndPass(s);
+
+            let waBtn = '';
+            if (s.no_hp_orang_tua) {
+                const cleanPhone = s.no_hp_orang_tua.replace(/[^0-9]/g, '');
+                const waMsg = `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nAyah/Bunda dari ananda *${s.nama_lengkap}*,\n\nBerikut adalah akun resmi Portal Siswa SMP Annida ananda:\n🌐 Login: https://smpannida.sch.id/login.html\n📧 Email: ${email}\n🔑 Password Awal: ${defaultPass}\n\nMohon ananda segera login dan mengganti kata sandi pada saat masuk perdana.\n\nJazakumullah Khairan,\n*SMP Annida*`;
+                const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(waMsg)}`;
+                waBtn = `<a href="${waUrl}" target="_blank" class="btn btn-outline" style="padding: 4px 8px; font-size: 11px; color: #10b981; border-color: #10b981; text-decoration: none;" title="Kirim Kredensial via WA">💬 WA</a>`;
+            }
             
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${startIdx + index + 1}</td>
                 <td>${escapeHTML(s.nis || '-')}</td>
-                <td><strong>${escapeHTML(s.nama_lengkap || '-')}</strong></td>
+                <td>
+                    <strong>${escapeHTML(s.nama_lengkap || '-')}</strong>
+                    <div style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">${escapeHTML(email)}</div>
+                </td>
                 <td>${jk}</td>
                 <td>${escapeHTML(s.kelas || '-')}</td>
                 <td>${statusBadge}</td>
-                <td style="text-align: right; white-space: nowrap;">
-                    <button class="btn-edit-siswa btn btn-outline" data-id="${s.id}" style="padding: 4px 10px; font-size: 12px;">Edit</button>
-                    <button class="btn-del-siswa btn btn-outline" data-id="${s.id}" style="padding: 4px 10px; font-size: 12px; color: var(--danger); border-color: var(--danger);">Hapus</button>
+                <td style="text-align: right; white-space: nowrap; display: flex; gap: 4px; justify-content: flex-end;">
+                    ${waBtn}
+                    <button class="btn-edit-siswa btn btn-outline" data-id="${s.id}" style="padding: 4px 8px; font-size: 12px;">Edit</button>
+                    <button class="btn-del-siswa btn btn-outline" data-id="${s.id}" style="padding: 4px 8px; font-size: 12px; color: var(--danger); border-color: var(--danger);">Hapus</button>
                 </td>
             `;
             tbodySiswa.appendChild(tr);
@@ -297,6 +325,175 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (filterSearch) {
         filterSearch.addEventListener('input', () => { currentPage = 1; renderTable(); });
+    }
+
+    // ── Export Akun Kredensial Siswa to Excel ──────────────────────────────
+    const btnExportKredensial = document.getElementById('btn-export-kredensial-siswa');
+    if (btnExportKredensial) {
+        btnExportKredensial.addEventListener('click', async () => {
+            if (currentData.length === 0) {
+                showToast('Tidak ada data siswa untuk diekspor', 'warning');
+                return;
+            }
+            try {
+                btnExportKredensial.disabled = true;
+                btnExportKredensial.textContent = '⏳ Mengunduh...';
+
+                const XLSX = await import('xlsx');
+                
+                const exportRows = currentData.map((s, index) => {
+                    const { email, defaultPass } = getStudentEmailAndPass(s);
+                    return {
+                        'No': index + 1,
+                        'NIS': s.nis || '-',
+                        'NISN': s.nisn || '-',
+                        'Nama Lengkap': s.nama_lengkap || '-',
+                        'L/P': s.jenis_kelamin || '-',
+                        'Kelas': s.kelas || '-',
+                        'Email Login Portal': email,
+                        'Password Default': defaultPass,
+                        'Nama Orang Tua': s.nama_orang_tua || '-',
+                        'No HP Orang Tua': s.no_hp_orang_tua || '-',
+                        'Status': s.aktif !== false ? 'Aktif' : 'Nonaktif'
+                    };
+                });
+
+                const ws = XLSX.utils.json_to_sheet(exportRows);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Kredensial Siswa');
+
+                const fileName = `Rekap_Kredensial_Akun_Siswa_SMP_Annida_${new Date().toISOString().split('T')[0]}.xlsx`;
+                XLSX.writeFile(wb, fileName);
+                showToast('Rekap kredensial siswa berhasil diunduh', 'success');
+            } catch (err) {
+                console.error("Export kredensial error:", err);
+                showToast('Gagal mengekspor data: ' + err.message, 'error');
+            } finally {
+                btnExportKredensial.disabled = false;
+                btnExportKredensial.textContent = '📥 Ekspor Akun (Excel)';
+            }
+        });
+    }
+
+    // ── Cetak Kartu Akun / Slip Login Siswa PDF ────────────────────────────
+    const btnCetakKartu = document.getElementById('btn-cetak-kartu-siswa');
+    if (btnCetakKartu) {
+        btnCetakKartu.addEventListener('click', async () => {
+            if (currentData.length === 0) {
+                showToast('Tidak ada data siswa untuk dicetak', 'warning');
+                return;
+            }
+            try {
+                btnCetakKartu.disabled = true;
+                btnCetakKartu.textContent = '⏳ Membuat PDF...';
+
+                const { jsPDF } = await import('jspdf');
+                const doc = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                // Render 8 cards per page (2 columns x 4 rows)
+                const cardWidth = 85;
+                const cardHeight = 55;
+                const marginX = 15;
+                const marginY = 15;
+                const gapX = 10;
+                const gapY = 12;
+
+                let col = 0;
+                let row = 0;
+                let cardsOnPage = 0;
+
+                currentData.forEach((s) => {
+                    if (cardsOnPage === 8) {
+                        doc.addPage();
+                        col = 0;
+                        row = 0;
+                        cardsOnPage = 0;
+                    }
+
+                    const x = marginX + (col * (cardWidth + gapX));
+                    const y = marginY + (row * (cardHeight + gapY));
+
+                    // Card Background Border
+                    doc.setDrawColor(16, 185, 129);
+                    doc.setFillColor(248, 250, 252);
+                    doc.roundedRect(x, y, cardWidth, cardHeight, 3, 3, 'FD');
+
+                    // Card Header Bar
+                    doc.setFillColor(16, 185, 129);
+                    doc.roundedRect(x, y, cardWidth, 11, 3, 3, 'F');
+                    doc.rect(x, y + 6, cardWidth, 5, 'F');
+
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFontSize(8);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('SMP ANNIDA - KARTU PORTAL SISWA', x + 5, y + 7);
+
+                    const { email, defaultPass } = getStudentEmailAndPass(s);
+
+                    // Student Information
+                    doc.setTextColor(30, 41, 59);
+                    doc.setFontSize(8.5);
+                    doc.setFont('helvetica', 'bold');
+                    doc.text((s.nama_lengkap || '').substring(0, 30), x + 5, y + 18);
+
+                    doc.setFontSize(7.5);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(71, 85, 105);
+                    doc.text(`Kelas: ${s.kelas || '-'}   |   NIS: ${s.nis || '-'}`, x + 5, y + 23);
+
+                    // Divider line
+                    doc.setDrawColor(226, 232, 240);
+                    doc.line(x + 5, y + 26, x + cardWidth - 5, y + 26);
+
+                    // Login Credentials Box
+                    doc.setFillColor(241, 245, 249);
+                    doc.roundedRect(x + 5, y + 28, cardWidth - 10, 16, 2, 2, 'F');
+
+                    doc.setTextColor(100, 116, 139);
+                    doc.setFontSize(6.5);
+                    doc.text('EMAIL AKUN:', x + 7, y + 33);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(15, 23, 42);
+                    doc.setFontSize(7.5);
+                    doc.text(email, x + 7, y + 37);
+
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(100, 116, 139);
+                    doc.setFontSize(6.5);
+                    doc.text('PASSWORD AWAL:', x + 7, y + 41);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(5, 150, 105);
+                    doc.setFontSize(7.5);
+                    doc.text(defaultPass, x + 35, y + 41);
+
+                    // Footer URL
+                    doc.setFont('helvetica', 'italic');
+                    doc.setTextColor(148, 163, 184);
+                    doc.setFontSize(6);
+                    doc.text('Login di: https://smpannida.sch.id/login.html', x + 5, y + 51);
+
+                    col++;
+                    if (col >= 2) {
+                        col = 0;
+                        row++;
+                    }
+                    cardsOnPage++;
+                });
+
+                doc.save(`Kartu_Login_Siswa_SMP_Annida_${new Date().toISOString().split('T')[0]}.pdf`);
+                showToast('Kartu login siswa siap cetak berhasil dibuat (PDF)', 'success');
+            } catch (err) {
+                console.error("Print cards error:", err);
+                showToast('Gagal membuat file PDF: ' + err.message, 'error');
+            } finally {
+                btnCetakKartu.disabled = false;
+                btnCetakKartu.textContent = '🖨️ Cetak Kartu Akun (PDF)';
+            }
+        });
     }
 
     // Initial load when section is shown
