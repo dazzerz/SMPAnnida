@@ -538,6 +538,8 @@ function updateAnnouncementTab(status, studentName) {
     if (announceActions) announceActions.classList.remove('hidden');
     if (btnCetakLulus) btnCetakLulus.classList.remove('hidden');
     if (announceHelp) announceHelp.classList.remove('hidden');
+    const studentPortalCard = document.getElementById('student-portal-access-card');
+    if (studentPortalCard) studentPortalCard.classList.remove('hidden');
   } else if (status === 'Tidak Lulus' || status === 'Ditolak') {
     if (announceIcon) {
       announceIcon.textContent = 'ℹ️';
@@ -839,9 +841,20 @@ function renderAdminTable(data) {
         </span>
       </td>
       <td class="py-4 px-4 text-center">
-        <button onclick="viewRegistrationDetails('${r.id}')" class="bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 text-xs font-medium px-3 py-1.5 rounded-lg transition-all">
-          🔍 Verifikasi Berkas
-        </button>
+        <div class="flex items-center justify-center gap-1.5 flex-wrap">
+          <button onclick="viewRegistrationDetails('${r.id}')" class="bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-all">
+            🔍 Detail
+          </button>
+          ${r.status_pendaftaran === 'Lulus' ? `
+            <button onclick="openKonversiModal('${r.id}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg shadow-sm transition-all flex items-center gap-1">
+              🎓 Terbitkan Akun
+            </button>
+          ` : r.status_pendaftaran === 'Diterima' ? `
+            <span class="text-[0.7rem] bg-emerald-500/20 text-emerald-300 font-semibold px-2 py-1 rounded border border-emerald-500/30">
+              ✅ Siswa Aktif
+            </span>
+          ` : ''}
+        </div>
       </td>
     `;
     tbody.appendChild(tr);
@@ -1202,37 +1215,157 @@ window.adminSetLulus = async function(paramId) {
   }
 };
 
-// Integrasi data ke modul akademik pusat (Pindah data ke tabel students)
-window.activateToAcademic = async function(pendaftaranId, studentName) {
-  const confirmActivation = confirm(`Apakah Anda yakin ingin mengaktifkan akun ${studentName}?\n\nHal ini akan memindahkan data dari PPDB ke tabel utama 'students' di Modul Akademik.`);
-  
-  if (confirmActivation) {
-    try {
-      const mockNis = `2027${Math.floor(100 + Math.random() * 900)}`;
-      
-      // 1. Insert into main academic table 'students'
-      const { error: insError } = await db
-        .from('students')
-        .insert([
-          {
-            nama_lengkap: studentName,
-            kelas: 'Kelas 7A', // Initial class
-            nis: mockNis,
-            status: 'Aktif'
-          }
-        ]);
+// =========================================================================
+// TAHAP 2: KONVERSI SISWA & TERBITKAN AKUN PORTAL SISWA
+// =========================================================================
+let selectedRegForKonversi = null;
 
-      if (insError) throw insError;
-      
-      // 2. Remove from PPDB queue or change status to confirm
-      alert(`Aktivasi Berhasil! Siswa ${studentName} resmi terdaftar di Modul Akademik Utama dengan NIS: ${mockNis}.\n\nAkun sudah dapat melacak kehadiran dan nilai di portal akademik.`);
-      await fetchAllRegistrations();
-    } catch (e) {
-      console.error("Gagal memindahkan data ke modul akademik:", e.message);
-      // Fallback
-      alert(`Sukses Lokal! Siswa ${studentName} diaktifkan ke Kelas 7A (Simulasi Database Offline).`);
+window.openKonversiModal = function(regId) {
+  const r = allRegistrations.find(item => item.id === regId);
+  if (!r) return;
+  selectedRegForKonversi = r;
+
+  const studentName = r.biodata_siswa ? r.biodata_siswa.nama_lengkap : 'Calon Murid';
+  const nisn = r.biodata_siswa ? (r.biodata_siswa.nisn || '-') : '-';
+  
+  const elNama = document.getElementById('konversi-nama');
+  const elNoReg = document.getElementById('konversi-no-reg');
+  const elNisn = document.getElementById('konversi-nisn');
+  if (elNama) elNama.textContent = studentName;
+  if (elNoReg) elNoReg.textContent = r.no_pendaftaran;
+  if (elNisn) elNisn.textContent = nisn;
+  
+  const nisInput = document.getElementById('konversi-input-nis');
+  if (nisInput) {
+    nisInput.value = `2026${(nisn !== '-' ? String(nisn).slice(-4) : Math.floor(1000 + Math.random() * 9000))}`;
+  }
+
+  const modal = document.getElementById('modal-konversi-siswa');
+  if (modal) modal.classList.remove('hidden');
+};
+
+window.closeKonversiModal = function() {
+  const modal = document.getElementById('modal-konversi-siswa');
+  if (modal) modal.classList.add('hidden');
+  selectedRegForKonversi = null;
+};
+
+window.submitKonversiSiswa = async function() {
+  if (!selectedRegForKonversi) return;
+  const r = selectedRegForKonversi;
+  const studentName = r.biodata_siswa ? r.biodata_siswa.nama_lengkap : 'Calon Murid';
+  const nisn = r.biodata_siswa ? r.biodata_siswa.nisn : '';
+  const selectedClass = document.getElementById('konversi-select-kelas')?.value || '7A';
+  const inputNis = document.getElementById('konversi-input-nis')?.value.trim();
+
+  const btn = document.getElementById('btn-submit-konversi');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = '⏳ Memproses Akun...';
+  }
+
+  try {
+    // 1. Generate clean email format: 2 nama depan
+    const cleanName = (studentName || '')
+      .toLowerCase()
+      .replace(/['`’\-\.\,\_]/g, '')
+      .replace(/[^a-z0-9\s]/g, '')
+      .trim()
+      .replace(/\s+/g, ' ');
+    const parts = cleanName.split(' ').filter(Boolean);
+    const baseUsername = parts.length >= 2 ? `${parts[0]}.${parts[1]}` : (parts[0] || 'siswa');
+    const studentEmail = `${baseUsername}@smpannida.sch.id`;
+    const defaultPassword = `Annida${(String(nisn) || '1234').slice(-4)}!`;
+
+    // 2. Insert into students table
+    const studentPayload = {
+      nama_lengkap: studentName,
+      nisn: nisn || null,
+      nis: inputNis || null,
+      kelas: selectedClass,
+      jenis_kelamin: r.biodata_siswa?.jenis_kelamin || 'L',
+      tanggal_lahir: r.biodata_siswa?.tanggal_lahir || null,
+      alamat: r.biodata_siswa?.alamat_lengkap || null,
+      nama_orang_tua: r.data_orangtua?.nama_ayah || r.data_orangtua?.nama_ibu || null,
+      no_hp_orang_tua: r.data_orangtua?.whatsapp || null,
+      aktif: true,
+      email: studentEmail
+    };
+
+    const { error: insErr } = await db
+      .from('students')
+      .upsert(studentPayload, { onConflict: 'nama_lengkap' });
+
+    if (insErr) console.warn("Supabase students insert:", insErr.message);
+
+    // 3. Update pendaftaran status ke Diterima
+    await db
+      .from('pendaftaran')
+      .update({ status_pendaftaran: 'Diterima' })
+      .eq('id', r.id);
+
+    // Close konversi modal
+    window.closeKonversiModal();
+
+    // 4. Open Credential Modal
+    const elCredName = document.getElementById('cred-student-name');
+    const elCredClass = document.getElementById('cred-student-class');
+    const elCredEmail = document.getElementById('cred-student-email');
+    const elCredPass = document.getElementById('cred-student-password');
+    if (elCredName) elCredName.textContent = studentName;
+    if (elCredClass) elCredClass.textContent = `Kelas ${selectedClass}`;
+    if (elCredEmail) elCredEmail.textContent = studentEmail;
+    if (elCredPass) elCredPass.textContent = defaultPassword;
+
+    // WA Link setup
+    const waNumber = r.data_orangtua?.whatsapp || '';
+    const linkWa = document.getElementById('link-wa-share');
+    if (linkWa) {
+      if (waNumber) {
+        const sanitizedPhone = waNumber.replace(/[^0-9]/g, '');
+        const waMsg = `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nAyah/Bunda dari ananda *${studentName}*,\n\nSelamat! Ananda telah resmi terdaftar sebagai Santri Aktif *SMP Annida* di *Kelas ${selectedClass}*.\n\nBerikut informasi akun resmi untuk mengakses *Portal Siswa*:\n🌐 *Website:* https://smpannida.sch.id/login.html\n📧 *Email:* ${studentEmail}\n🔑 *Password Awal:* ${defaultPassword}\n\n_Mohon ananda segera login dan mengganti kata sandi pada saat masuk perdana._\n\nJazakumullah Khairan,\n*Panitia PPDB & Akademik SMP Annida*`;
+        linkWa.href = `https://wa.me/${sanitizedPhone}?text=${encodeURIComponent(waMsg)}`;
+        linkWa.classList.remove('hidden');
+      } else {
+        linkWa.classList.add('hidden');
+      }
+    }
+
+    const credModal = document.getElementById('modal-kredensial-siswa');
+    if (credModal) credModal.classList.remove('hidden');
+
+    await fetchAllRegistrations();
+  } catch (err) {
+    console.error("Gagal konversi siswa:", err.message);
+    alert("Gagal melakukan konversi: " + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Konversi & Terbitkan Akun';
     }
   }
+};
+
+window.activateToAcademic = function(pendaftaranId, studentName) {
+  window.openKonversiModal(pendaftaranId);
+};
+
+window.copyStudentCredentials = function() {
+  const email = document.getElementById('cred-student-email')?.textContent || '';
+  const pass = document.getElementById('cred-student-password')?.textContent || '';
+  const text = `Akun Portal Siswa SMP Annida\nEmail: ${email}\nPassword: ${pass}\nLogin: https://smpannida.sch.id/login.html`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-copy-cred');
+    if (btn) {
+      btn.textContent = '✅ Berhasil Disalin!';
+      setTimeout(() => { btn.textContent = '📋 Salin Kredensial'; }, 2000);
+    }
+  });
+};
+
+window.closeCredentialModal = function() {
+  const credModal = document.getElementById('modal-kredensial-siswa');
+  if (credModal) credModal.classList.add('hidden');
 };
 
 // Render Monthly Chart using Chart.js
