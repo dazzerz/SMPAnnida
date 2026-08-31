@@ -26,7 +26,8 @@ export default defineConfig({
         ppdbIndex: resolve(root, 'pages/ppdb/index.html'),
         ppdbRegister: resolve(root, 'pages/ppdb/register.html'),
         ppdbSuccess: resolve(root, 'pages/ppdb/success.html'),
-        ppdbPrivacyPolicy: resolve(root, 'pages/ppdb/privacy-policy.html')
+        ppdbPrivacyPolicy: resolve(root, 'pages/ppdb/privacy-policy.html'),
+        studentDashboard: resolve(root, 'pages/student/dashboard.html')
       },
       output: {
         manualChunks(id) {

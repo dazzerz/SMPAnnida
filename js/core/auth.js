@@ -129,7 +129,9 @@ export async function handleLogin(e) {
   let r = await resolveUserRole(data.user);
 
   setTimeout(() => { 
-    if (r === 'calon_siswa' || r === 'wali_murid') {
+    if (r === 'siswa') {
+      if(window.smoothRedirect){window.smoothRedirect('./pages/student/dashboard.html');}else{window.location.href='./pages/student/dashboard.html';}
+    } else if (r === 'calon_siswa' || r === 'wali_murid') {
       if(window.smoothRedirect){window.smoothRedirect('./pages/ppdb/dashboard-wali.html');}else{window.location.href='./pages/ppdb/dashboard-wali.html';}
     } else if (r === 'finance') {
       if(window.smoothRedirect){window.smoothRedirect('./pages/finance/dashboard.html');}else{window.location.href='./pages/finance/dashboard.html';}
@@ -233,6 +235,10 @@ export async function requireAuth() {
   }
   if (role === 'finance' && path.includes('/academic/')) {
     if(window.smoothRedirect){window.smoothRedirect('/pages/finance/dashboard.html');}else{window.location.href='/pages/finance/dashboard.html';}
+    return null;
+  }
+  if (role === 'siswa' && !path.includes('/student/')) {
+    if(window.smoothRedirect){window.smoothRedirect('/pages/student/dashboard.html');}else{window.location.href='/pages/student/dashboard.html';}
     return null;
   }
   if ((role === 'calon_siswa' || role === 'wali_murid') && (path.includes('/academic/') || path.includes('/finance/') || path.endsWith('/dashboard.html') && !path.includes('/ppdb/'))) {
