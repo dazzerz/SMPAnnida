@@ -153,6 +153,32 @@
       }
     }
     
+  
+    /* Landing Page Section Headers & Text Contrast Protection */
+    #beranda h1, #beranda p,
+    section h2, section h3, section h4,
+    .section-title, .landing-white-text {
+      color: #ffffff !important;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7) !important;
+    }
+    
+    .landing-subtitle {
+      color: #e2e8f0 !important;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6) !important;
+    }
+
+    /* Kesiswaan Section Box */
+    .kesiswaan-list-item {
+      color: #f1f5f9 !important;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8) !important;
+      font-weight: 600;
+    }
+
+    /* Navbar Dropdown Z-Index & Clean Backdrop */
+    header.sticky {
+      z-index: 100;
+    }
+
   </style>
 <script>
   window.addEventListener('pageshow', function (event) {
