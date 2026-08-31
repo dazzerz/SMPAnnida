@@ -109,6 +109,20 @@ const stdHtml = fs.readFileSync('pages/student/dashboard.html', 'utf8');
 assert(stdHtml.includes('Portal Siswa'), 'pages/student/dashboard.html contains title Portal Siswa');
 assert(stdHtml.includes('modal-forced-password'), 'pages/student/dashboard.html contains forced password modal');
 
+
+// Test 8: Tahap 2 PPDB to Student Portal Conversion Modals Validation
+console.log('\n[TEST 8] PPDB to Student Portal Conversion & Integration:');
+const adminHtml = fs.readFileSync('pages/ppdb/dashboard-admin.html', 'utf8');
+assert(adminHtml.includes('modal-konversi-siswa'), 'dashboard-admin.html includes modal-konversi-siswa');
+assert(adminHtml.includes('modal-kredensial-siswa'), 'dashboard-admin.html includes modal-kredensial-siswa');
+
+const waliHtml = fs.readFileSync('pages/ppdb/dashboard-wali.html', 'utf8');
+assert(waliHtml.includes('student-portal-access-card'), 'dashboard-wali.html includes student-portal-access-card');
+
+const dbJs = fs.readFileSync('js/ppdb/db.js', 'utf8');
+assert(dbJs.includes('openKonversiModal'), 'js/ppdb/db.js includes openKonversiModal');
+assert(dbJs.includes('submitKonversiSiswa'), 'js/ppdb/db.js includes submitKonversiSiswa');
+
 console.log('\n--- TEST SUMMARY ---');
 console.log(`Total Passed: ${passed}, Total Failed: ${failed}`);
 if (failed > 0) {
