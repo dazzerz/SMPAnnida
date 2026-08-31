@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('.page-section');
     
     function handleHashChange() {
-        let hash = window.location.hash.replace('#', '') || 'section-dashboard';
+        let hash = window.location.hash.replace('#', '') || 'dashboard';
         if (!document.getElementById(hash)) {
             hash = 'section-dashboard';
         }
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const targetSection = document.getElementById(hash);
         if (targetSection) targetSection.style.display = 'block';
 
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth < 1024) {
             document.getElementById('sidebar').classList.remove('open');
             const overlay = document.querySelector('.overlay');
             if(overlay) overlay.classList.remove('active');
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Also close sidebar when nav link is clicked on mobile
     document.querySelectorAll('.nav-item.nav-link').forEach(link => {
         link.addEventListener('click', () => {
-            if (window.innerWidth <= 768 && window._closeSidebar) {
+            if (window.innerWidth < 1024 && window._closeSidebar) {
                 window._closeSidebar();
             }
         });

@@ -231,14 +231,14 @@ export function injectSidebar(containerId) {
     }
 
     // Helper: open sidebar
-    function openSidebar() {
+    window._openSidebar = function openSidebar() {
         container.classList.add('open');
         overlay.classList.add('show');
         document.body.style.overflow = 'hidden';
     }
 
     // Helper: close sidebar
-    function closeSidebar() {
+    window._closeSidebar = function closeSidebar() {
         container.classList.remove('open');
         overlay.classList.remove('show');
         document.body.style.overflow = '';
@@ -294,10 +294,26 @@ export function injectSidebar(containerId) {
             });
         }
         
-        // Auto-open accordion if it contains an active link
+        
+    // On mobile (<1024px), keep all accordions open by default for immediate tapping
+    if (window.innerWidth < 1024) {
+      accordions.forEach(acc => acc.classList.add('active'));
+    }
+
+    // Auto-open accordion if it contains an active link
         if (acc.querySelector('.nav-item.active')) {
             acc.classList.add('active');
         }
+    });
+
+    
+    // Auto-close mobile sidebar whenever a nav item is clicked
+    container.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        if (window.innerWidth < 1024) {
+          closeSidebar();
+        }
+      });
     });
 
     // Sidebar Search Logic

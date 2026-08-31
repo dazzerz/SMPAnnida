@@ -277,3 +277,69 @@
 .aca-inline-188 { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 .aca-inline-189 { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
 .aca-inline-190 { display: flex; justify-content: flex-end; gap: 10px; }
+
+/* =========================================================================
+   ACADEMIC MOBILE RESPONSIVE POLISH (< 1024px)
+   ========================================================================= */
+@media (max-width: 1023px) {
+  .dashboard-cards {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .aca-inline-1 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .aca-inline-7 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .aca-inline-8 {
+    grid-column: span 1 !important;
+  }
+  .aca-inline-69 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .aca-inline-42 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .tab-nav {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 8px !important;
+    padding-bottom: 8px !important;
+    scrollbar-width: none !important;
+  }
+  .tab-nav::-webkit-scrollbar {
+    display: none !important;
+  }
+  .tab-btn {
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    border-radius: 12px !important;
+  }
+  .filter-bar {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .filter-bar > * {
+    width: 100% !important;
+  }
+  .content-area {
+    padding: 12px !important;
+  }
+  .card.glass {
+    padding: 14px !important;
+    border-radius: 14px !important;
+  }
+}
