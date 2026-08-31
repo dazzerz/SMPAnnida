@@ -1,5 +1,5 @@
 // Service Worker - SMP Annida Progressive Web App
-const CACHE_NAME = 'smpannida-cache-v1';
+const CACHE_NAME = 'smpannida-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -12,12 +12,12 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE).catch(() => {});
     })
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
@@ -30,9 +30,8 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
@@ -40,6 +39,20 @@ self.addEventListener('fetch', (event) => {
 
   // Bypass non-GET and Supabase API requests (always network-first)
   if (event.request.method !== 'GET' || url.hostname.includes('supabase.co')) {
+    return;
+  }
+
+  // HTML documents & Navigation: ALWAYS NETWORK-FIRST
+  if (event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html')) {
+    event.respondWith(
+      fetch(event.request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return networkResponse;
+      }).catch(() => caches.match(event.request))
+    );
     return;
   }
 
