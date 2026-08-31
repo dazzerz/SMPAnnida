@@ -873,23 +873,35 @@ input:focus, select:focus, textarea:focus, .form-control:focus {
 /* Note: .topbar, .mobile-menu-btn, .sidebar-overlay, .sidebar-close-btn → see css/mobile.css */
 
 
-/* Old accordion styles removed */
+.nav-group {
+  margin-bottom: 1.25rem;
+}
 
-/* Old accordion icon styles removed */
+.nav-group-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted, #94a3b8);
+  padding: 0.25rem 0.75rem 0.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.nav-group-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--primary, #10b981);
+  margin-right: 0.5rem;
+  opacity: 0.8;
+}
+
 .nav-group-content {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.3s ease;
-  overflow: hidden;
-}
-
-.accordion-group.active .nav-group-content {
-  grid-template-rows: 1fr;
-}
-
-.nav-group-content > * {
-  min-height: 0;
-  overflow: hidden;
+  display: block !important;
+  overflow: visible !important;
 }
 
 .nav-group-inner {
