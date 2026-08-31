@@ -6,7 +6,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
-      var t = localStorage.getItem('smpannida_theme') || 'dark';
+      var t = localStorage.getItem('smpannida_theme') || localStorage.getItem('theme') || 'light';
       document.documentElement.setAttribute('data-theme', t);
       if (t === 'dark') {
         document.documentElement.classList.add('dark');
@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
   <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/theme.css">
   <link rel="stylesheet" href="/src/style.css">
 
   <style>
@@ -69,6 +70,69 @@
         radial-gradient(at 15% 15%, rgba(16, 185, 129, 0.12) 0px, transparent 45%),
         radial-gradient(at 85% 85%, rgba(6, 78, 59, 0.2) 0px, transparent 50%),
         radial-gradient(at 50% 50%, #030712 0px, #030712 100%);
+    }
+
+    
+    /* Theme-Adaptive Auth Card */
+    .login-main-card {
+      background: rgba(255, 255, 255, 0.90);
+      border: 1px solid rgba(203, 213, 225, 0.85);
+      color: #090d16;
+    }
+    .dark .login-main-card,
+    [data-theme="dark"] .login-main-card {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      color: #ffffff;
+    }
+
+    .login-left-col {
+      background: rgba(248, 250, 252, 0.85);
+      border-color: rgba(203, 213, 225, 0.80);
+    }
+    .dark .login-left-col,
+    [data-theme="dark"] .login-left-col {
+      background: rgba(3, 7, 18, 0.75);
+      border-color: rgba(255, 255, 255, 0.10);
+    }
+
+    /* Adaptive Input */
+    .auth-input {
+      width: 100%;
+      background: rgba(241, 245, 249, 0.95);
+      border: 1px solid #cbd5e1;
+      color: #090d16;
+      padding: 0.85rem 1rem 0.85rem 2.75rem;
+      min-height: 44px;
+      border-radius: 0.75rem;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .auth-input:focus {
+      border-color: #059669;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
+    }
+    .auth-input::placeholder {
+      color: #64748b;
+    }
+
+    .dark .auth-input,
+    [data-theme="dark"] .auth-input {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+    .dark .auth-input:focus,
+    [data-theme="dark"] .auth-input:focus {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.06);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+    }
+    .dark .auth-input::placeholder,
+    [data-theme="dark"] .auth-input::placeholder {
+      color: #94a3b8;
     }
 
     /* Input Field Focus */
@@ -116,33 +180,33 @@
   <link rel="apple-touch-icon" href="/logo_1x1.png" />
   <script type="module" src="/js/core/pwa.js"></script>
 </head>
-<body class="bg-mesh-pattern min-h-screen flex flex-col justify-start lg:justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto w-full pb-16 sm:pb-8">
+<body class="min-h-screen flex flex-col justify-start lg:justify-center p-3 sm:p-6 lg:p-8 relative overflow-x-hidden overflow-y-auto w-full pb-16 sm:pb-8">
 
   <!-- Subtle Ambient Glow Orbs -->
   <div class="absolute -top-32 -left-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
   <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
   <!-- UNIFIED 2-COLUMN CARD CONTAINER -->
-  <div class="max-w-5xl w-full bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 lg:min-h-[580px] min-h-0 relative z-10">
+  <div class="max-w-5xl w-full login-main-card backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 lg:min-h-[580px] min-h-0 relative z-10">
     
     <!-- ========================================================================= -->
     <!-- SISI KIRI (lg:col-span-5): BRANDING & INFORMASI SINGKAT -->
     <!-- ========================================================================= -->
-    <div class="lg:col-span-5 bg-slate-950/70 p-5 sm:p-6 lg:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10 relative overflow-hidden">
+    <div class="lg:col-span-5 login-left-col p-5 sm:p-6 lg:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r relative overflow-hidden">
       
       <!-- Top Branding -->
       <div class="space-y-3 lg:space-y-4">
         <div class="flex items-center gap-3">
           <img src="/assets/logo/1.png" alt="Logo SMP Annida" class="w-10 h-10 lg:w-12 lg:h-12 object-contain drop-shadow" onerror="this.onerror=null; this.src='assets/logo/1.png';">
           <div>
-            <h1 class="font-serif-annida text-base lg:text-lg font-bold text-white tracking-tight uppercase">SMP Annida</h1>
+            <h1 class="font-serif-annida text-base lg:text-lg font-bold text-slate-900 dark:text-white tracking-tight uppercase">SMP Annida</h1>
             <span class="text-[0.65rem] uppercase tracking-wider font-bold text-emerald-400 block">Al-Islamy Setu Bekasi</span>
           </div>
         </div>
         
         <div class="space-y-1">
-          <h2 class="text-xs lg:text-sm font-bold text-slate-200">Sistem Informasi Akademik Terpadu</h2>
-          <p class="text-[0.75rem] lg:text-xs text-slate-400 leading-relaxed hidden sm:block">
+          <h2 class="text-xs lg:text-sm font-bold text-slate-700 dark:text-slate-200">Sistem Informasi Akademik Terpadu</h2>
+          <p class="text-[0.75rem] lg:text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 leading-relaxed hidden sm:block">
             Akses satu pintu untuk seluruh civitas akademika dan layanan pendidikan Islam.
           </p>
         </div>
@@ -150,33 +214,33 @@
 
       <!-- Center Role Access Chips (Desktop Only: lg:block, completely hidden on mobile to avoid push-down) -->
       <div class="my-6 space-y-2.5 hidden lg:block">
-        <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+        <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-100/80 dark:bg-white/[0.03] border border-slate-200/80 dark:border-white/5">
           <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
             <span class="material-symbols-outlined text-sm">school</span>
           </div>
           <div class="text-xs">
-            <span class="font-bold text-slate-200 block">Portal Siswa</span>
-            <span class="text-[0.68rem] text-slate-400">Jadwal, Presensi, Tahfidz & Materi</span>
+            <span class="font-bold text-slate-800 dark:text-slate-200 block">Portal Siswa</span>
+            <span class="text-[0.68rem] text-slate-600 dark:text-slate-400">Jadwal, Presensi, Tahfidz & Materi</span>
           </div>
         </div>
 
-        <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+        <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-100/80 dark:bg-white/[0.03] border border-slate-200/80 dark:border-white/5">
           <div class="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
             <span class="material-symbols-outlined text-sm">co_present</span>
           </div>
           <div class="text-xs">
-            <span class="font-bold text-slate-200 block">Portal Guru & Staf</span>
-            <span class="text-[0.68rem] text-slate-400">Jurnal Mengajar, Absensi & Rapor</span>
+            <span class="font-bold text-slate-800 dark:text-slate-200 block">Portal Guru & Staf</span>
+            <span class="text-[0.68rem] text-slate-600 dark:text-slate-400">Jurnal Mengajar, Absensi & Rapor</span>
           </div>
         </div>
 
-        <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+        <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-100/80 dark:bg-white/[0.03] border border-slate-200/80 dark:border-white/5">
           <div class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0">
             <span class="material-symbols-outlined text-sm">family_restroom</span>
           </div>
           <div class="text-xs">
-            <span class="font-bold text-slate-200 block">Wali Murid PPDB</span>
-            <span class="text-[0.68rem] text-slate-400">Progres Seleksi & Registrasi</span>
+            <span class="font-bold text-slate-800 dark:text-slate-200 block">Wali Murid PPDB</span>
+            <span class="text-[0.68rem] text-slate-600 dark:text-slate-400">Progres Seleksi & Registrasi</span>
           </div>
         </div>
       </div>
@@ -191,7 +255,7 @@
           <span class="text-[0.7rem] bg-emerald-500/20 px-2 py-0.5 rounded text-emerald-400">Chat</span>
         </a>
 
-        <a href="/index.html" class="inline-flex items-center gap-1.5 text-[0.75rem] font-semibold text-slate-400 hover:text-slate-200 transition-colors">
+        <a href="/index.html" class="inline-flex items-center gap-1.5 text-[0.75rem] font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-200 transition-colors">
           <span class="material-symbols-outlined text-xs">arrow_back</span>
           <span>Kembali ke Website Utama</span>
         </a>
@@ -212,12 +276,12 @@
             <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[0.65rem] font-bold uppercase tracking-wider">
               Autentikasi Akun
             </span>
-            <button id="theme-toggle-btn" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all text-xs" aria-label="Ganti Tema" title="Ganti Mode Tema">
+            <button id="theme-toggle-btn" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:text-white transition-all text-xs" aria-label="Ganti Tema" title="Ganti Mode Tema">
               <span class="material-symbols-outlined text-sm">dark_mode</span>
             </button>
           </div>
           <h3 class="text-2xl font-extrabold text-white tracking-tight font-serif-annida">Masuk ke Sistem</h3>
-          <p class="text-xs text-slate-400">Masukkan kredensial akun resmi Anda untuk melanjutkan.</p>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Masukkan kredensial akun resmi Anda untuk melanjutkan.</p>
         </div>
 
         <!-- Alert Container -->
@@ -232,7 +296,7 @@
               Email Akun / No. WhatsApp / Akun Siswa
             </label>
             <div class="relative">
-              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 dark:text-slate-400 text-base pointer-events-none">
                 alternate_email
               </span>
               <input 
@@ -265,7 +329,7 @@
               </a>
             </div>
             <div class="relative">
-              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 dark:text-slate-400 text-base pointer-events-none">
                 lock
               </span>
               <input 
@@ -280,7 +344,7 @@
               <button 
                 type="button" 
                 id="btn-toggle-password" 
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors p-1"
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 dark:text-slate-400 hover:text-slate-200 transition-colors p-1"
                 aria-label="Tampilkan / Sembunyikan Password"
               >
                 <span class="material-symbols-outlined text-base" id="icon-toggle-password">visibility</span>
@@ -304,7 +368,7 @@
 
         <!-- Bottom Links -->
         <div class="pt-3 border-t border-white/10 text-center space-y-2.5">
-          <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
+          <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600 dark:text-slate-400">
             <span>Calon siswa baru? 
               <a href="/pages/ppdb/register.html" class="text-emerald-400 hover:text-emerald-300 font-bold hover:underline">
                 Daftar PPDB ↗
