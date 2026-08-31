@@ -84,6 +84,7 @@ async function initStudentSession() {
   // Load Data Feed Secara Paralel
   await Promise.allSettled([
     loadTodaySchedules(student),
+    loadAssignments(student),
     loadWeeklySchedules(student),
     loadAttendanceHistory(student),
     loadJournalMaterials(student),
@@ -554,4 +555,317 @@ function initLogoutHandlers() {
   const btnMobileLogout = document.getElementById('btn-mobile-logout');
   if (btnLogout) btnLogout.addEventListener('click', handleLogout);
   if (btnMobileLogout) btnMobileLogout.addEventListener('click', handleLogout);
+}
+
+
+// ── 8. PUSAT TUGAS & E-LEARNING (LMS) ──────────────────────────────────
+let allStudentAssignments = [];
+let currentFilterType = 'all';
+
+async function loadAssignments(student) {
+  const feed = document.getElementById('student-assignments-feed');
+  if (!feed) return;
+
+  try {
+    const studentClass = student.classes?.nama_kelas || student.kelas || '7A';
+
+    // 1. Ambil daftar tugas untuk kelas siswa
+    const { data: assignments, error: assErr } = await db
+      .from('assignments')
+      .select('*')
+      .or(`class_name.eq.${studentClass},class_name.eq.Semua`)
+      .order('created_at', { ascending: false });
+
+    if (assErr) throw assErr;
+
+    // 2. Ambil submissions siswa
+    const { data: submissions, error: subErr } = await db
+      .from('assignment_submissions')
+      .select('*')
+      .or(`student_id.eq.${student.id},student_user_id.eq.${currentUser.id}`);
+
+    if (subErr) throw subErr;
+
+    const subMap = {};
+    if (submissions) {
+      submissions.forEach(s => {
+        subMap[s.assignment_id] = s;
+      });
+    }
+
+    // 3. Gabungkan data
+    allStudentAssignments = (assignments || []).map(a => {
+      const sub = subMap[a.id] || null;
+      let status = 'pending';
+      if (sub) {
+        status = sub.status === 'graded' ? 'graded' : 'submitted';
+      }
+      return {
+        ...a,
+        submission: sub,
+        calculatedStatus: status
+      };
+    });
+
+    renderAssignmentStats(allStudentAssignments);
+    renderAssignmentList(allStudentAssignments, currentFilterType);
+    initAssignmentFilters();
+    initSubmissionModal();
+  } catch (err) {
+    console.error('Gagal memuat tugas LMS siswa:', err);
+    if (feed) {
+      feed.innerHTML = `<div class="text-center py-8 text-rose-400 col-span-full">Gagal memuat data tugas: ${escapeHTML(err.message)}</div>`;
+    }
+  }
+}
+
+function renderAssignmentStats(list) {
+  const statTotal = document.getElementById('stat-total-tugas');
+  const statPending = document.getElementById('stat-pending-tugas');
+  const statSubmitted = document.getElementById('stat-submitted-tugas');
+  const statAvg = document.getElementById('stat-avg-tugas');
+
+  const total = list.length;
+  const pending = list.filter(a => a.calculatedStatus === 'pending').length;
+  const submitted = list.filter(a => a.calculatedStatus === 'submitted').length;
+  const gradedList = list.filter(a => a.calculatedStatus === 'graded' && a.submission?.score != null);
+
+  let avg = '-';
+  if (gradedList.length > 0) {
+    const sum = gradedList.reduce((acc, curr) => acc + Number(curr.submission.score), 0);
+    avg = (sum / gradedList.length).toFixed(1);
+  }
+
+  if (statTotal) statTotal.textContent = total;
+  if (statPending) statPending.textContent = pending;
+  if (statSubmitted) statSubmitted.textContent = submitted;
+  if (statAvg) statAvg.textContent = avg;
+}
+
+function renderAssignmentList(list, filter) {
+  const feed = document.getElementById('student-assignments-feed');
+  if (!feed) return;
+
+  let filtered = list;
+  if (filter === 'pending') filtered = list.filter(a => a.calculatedStatus === 'pending');
+  else if (filter === 'submitted') filtered = list.filter(a => a.calculatedStatus === 'submitted');
+  else if (filter === 'graded') filtered = list.filter(a => a.calculatedStatus === 'graded');
+
+  if (filtered.length === 0) {
+    feed.innerHTML = `
+      <div class="p-8 rounded-2xl bg-white/5 border border-white/10 text-center col-span-full">
+        <span class="material-symbols-outlined text-4xl text-gray-500 mb-2">task</span>
+        <div class="text-sm font-semibold text-gray-300">Tidak ada tugas pada filter ini</div>
+        <p class="text-xs text-gray-500 mt-1">Semua tugas kelas Anda sudah terselesaikan dengan baik.</p>
+      </div>
+    `;
+    return;
+  }
+
+  feed.innerHTML = filtered.map(a => {
+    const isGraded = a.calculatedStatus === 'graded';
+    const isSubmitted = a.calculatedStatus === 'submitted';
+    const isPending = a.calculatedStatus === 'pending';
+
+    let badgeStatus = '';
+    if (isGraded) {
+      badgeStatus = `<span class="px-2.5 py-1 rounded-full text-[0.7rem] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1"><span class="material-symbols-outlined text-xs">verified</span> Nilai: ${a.submission.score}</span>`;
+    } else if (isSubmitted) {
+      badgeStatus = `<span class="px-2.5 py-1 rounded-full text-[0.7rem] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 flex items-center gap-1"><span class="material-symbols-outlined text-xs">schedule</span> Menunggu Nilai</span>`;
+    } else {
+      badgeStatus = `<span class="px-2.5 py-1 rounded-full text-[0.7rem] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1"><span class="material-symbols-outlined text-xs">pending</span> Belum Dikumpul</span>`;
+    }
+
+    let deadlineText = 'Tanpa Deadline';
+    if (a.deadline) {
+      const d = new Date(a.deadline);
+      const now = new Date();
+      const diffDays = Math.ceil((d - now) / (1000 * 60 * 60 * 24));
+      if (diffDays < 0) deadlineText = `<span class="text-rose-400 font-semibold">Lewat ${Math.abs(diffDays)} Hari</span>`;
+      else if (diffDays === 0) deadlineText = `<span class="text-amber-400 font-semibold">Hari ini!</span>`;
+      else deadlineText = `Tersisa ${diffDays} Hari (${d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })})`;
+    }
+
+    return `
+      <div class="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-emerald-500/30 transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span class="px-2.5 py-0.5 rounded-lg text-[0.7rem] font-bold bg-white/10 text-gray-300">${escapeHTML(a.subject || 'Mapel')}</span>
+            ${badgeStatus}
+          </div>
+          <h4 class="text-base font-bold text-white mb-1.5">${escapeHTML(a.title)}</h4>
+          <p class="text-xs text-gray-400 line-clamp-2 mb-4 leading-relaxed">${escapeHTML(a.description || 'Tidak ada instruksi khusus.')}</p>
+        </div>
+
+        <div class="border-t border-white/10 pt-3 space-y-3">
+          <div class="flex items-center justify-between text-[0.75rem] text-gray-400">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-emerald-400">person</span> ${escapeHTML(a.teacher_name || 'Guru')}</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-amber-400">timer</span> ${deadlineText}</span>
+          </div>
+
+          ${a.attachment_url ? `
+            <a href="${a.attachment_url}" target="_blank" class="w-full py-1.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-emerald-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all">
+              <span class="material-symbols-outlined text-sm">attachment</span>
+              <span>Unduh Lampiran Soal</span>
+            </a>
+          ` : ''}
+
+          ${isPending ? `
+            <button class="btn-open-submit-tugas w-full py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer" data-id="${a.id}" data-title="${escapeHTML(a.title)}" data-subject="${escapeHTML(a.subject)}" data-desc="${escapeHTML(a.description || '')}">
+              <span class="material-symbols-outlined text-sm">upload_file</span>
+              <span>Kumpulkan Tugas</span>
+            </button>
+          ` : `
+            <div class="p-2.5 rounded-xl bg-slate-800/80 border border-white/10 text-xs space-y-1">
+              <div class="flex items-center justify-between text-gray-400 text-[0.7rem]">
+                <span>Terkumpul: ${new Date(a.submission.submitted_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+                <a href="${a.submission.file_url}" target="_blank" class="text-emerald-400 hover:underline flex items-center gap-0.5">
+                  <span class="material-symbols-outlined text-xs">download</span> File Anda
+                </a>
+              </div>
+              ${a.submission.feedback ? `
+                <div class="pt-1 text-[0.75rem] text-emerald-300 border-t border-white/5 mt-1">
+                  <span class="font-bold text-white">Catatan Guru:</span> "${escapeHTML(a.submission.feedback)}"
+                </div>
+              ` : ''}
+            </div>
+          `}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Bind click open submit modal
+  document.querySelectorAll('.btn-open-submit-tugas').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-id');
+      const title = btn.getAttribute('data-title');
+      const subject = btn.getAttribute('data-subject');
+      const desc = btn.getAttribute('data-desc');
+      openSubmissionModal(id, title, subject, desc);
+    });
+  });
+}
+
+function initAssignmentFilters() {
+  document.querySelectorAll('.tugas-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tugas-filter-btn').forEach(b => {
+        b.className = 'tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10';
+      });
+      btn.className = 'tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white';
+      currentFilterType = btn.getAttribute('data-filter') || 'all';
+      renderAssignmentList(allStudentAssignments, currentFilterType);
+    });
+  });
+}
+
+function openSubmissionModal(id, title, subject, desc) {
+  const modal = document.getElementById('modal-submit-tugas');
+  if (!modal) return;
+
+  document.getElementById('submit-assignment-id').value = id;
+  document.getElementById('modal-tugas-title').textContent = title;
+  document.getElementById('modal-tugas-subject').textContent = subject;
+  document.getElementById('modal-tugas-desc').textContent = desc || 'Tidak ada instruksi khusus.';
+  document.getElementById('tugas-file-input').value = '';
+  document.getElementById('tugas-file-label').textContent = 'Klik untuk pilih file atau seret file ke sini';
+  document.getElementById('tugas-notes').value = '';
+
+  modal.classList.remove('hidden');
+}
+
+function initSubmissionModal() {
+  const modal = document.getElementById('modal-submit-tugas');
+  const closeBtn = document.getElementById('btn-close-modal-tugas');
+  const cancelBtn = document.getElementById('btn-cancel-submit-tugas');
+  const form = document.getElementById('form-submit-tugas');
+  const dropZone = document.getElementById('drop-zone-tugas');
+  const fileInput = document.getElementById('tugas-file-input');
+  const fileLabel = document.getElementById('tugas-file-label');
+
+  if (closeBtn) closeBtn.onclick = () => modal.classList.add('hidden');
+  if (cancelBtn) cancelBtn.onclick = () => modal.classList.add('hidden');
+
+  if (dropZone && fileInput) {
+    dropZone.onclick = () => fileInput.click();
+    fileInput.onchange = () => {
+      if (fileInput.files && fileInput.files[0]) {
+        const f = fileInput.files[0];
+        if (f.size > 5 * 1024 * 1024) {
+          showToast('Ukuran file melebihi batas 5MB!', 'error');
+          fileInput.value = '';
+          fileLabel.textContent = 'Klik untuk pilih file atau seret file ke sini';
+          return;
+        }
+        fileLabel.textContent = `${f.name} (${(f.size / (1024 * 1024)).toFixed(2)} MB)`;
+      }
+    };
+  }
+
+  if (form) {
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const assignmentId = document.getElementById('submit-assignment-id').value;
+      const file = fileInput.files[0];
+      const notes = document.getElementById('tugas-notes').value.trim();
+
+      if (!file) {
+        return showToast('Silakan pilih berkas tugas yang ingin dikumpulkan!', 'warning');
+      }
+
+      const saveBtnText = document.getElementById('btn-save-tugas-text');
+      if (saveBtnText) saveBtnText.textContent = 'Mengunggah...';
+
+      try {
+        // Upload ke bucket 'student-assignments'
+        const fileExt = file.name.split('.').pop();
+        const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+        const storagePath = `${currentUser.id}/${assignmentId}_${Date.now()}.${fileExt}`;
+
+        const { data: uploadData, error: uploadErr } = await db.storage
+          .from('student-assignments')
+          .upload(storagePath, file, { upsert: true });
+
+        if (uploadErr) throw uploadErr;
+
+        const { data: publicUrlData } = db.storage
+          .from('student-assignments')
+          .getPublicUrl(storagePath);
+
+        const fileUrl = publicUrlData?.publicUrl || storagePath;
+
+        // Upsert ke assignment_submissions
+        const studentClass = currentStudent?.classes?.nama_kelas || currentStudent?.kelas || '7A';
+        const studentName = currentStudent?.nama_lengkap || currentUser.user_metadata?.full_name || 'Siswa';
+
+        const { error: upsertErr } = await db
+          .from('assignment_submissions')
+          .upsert({
+            assignment_id: assignmentId,
+            student_id: currentStudent?.id,
+            student_user_id: currentUser.id,
+            student_name: studentName,
+            class_name: studentClass,
+            file_url: fileUrl,
+            file_name: file.name,
+            file_size: file.size,
+            notes: notes || null,
+            status: 'submitted',
+            submitted_at: new Date().toISOString()
+          }, { onConflict: 'assignment_id,student_id' });
+
+        if (upsertErr) throw upsertErr;
+
+        showToast('Tugas berhasil dikumpulkan!', 'success');
+        modal.classList.add('hidden');
+        await loadAssignments(currentStudent);
+      } catch (err) {
+        console.error('Gagal submit tugas:', err);
+        showToast('Gagal mengumpulkan tugas: ' + err.message, 'error');
+      } finally {
+        if (saveBtnText) saveBtnText.textContent = 'Kirim Tugas';
+      }
+    };
+  }
 }

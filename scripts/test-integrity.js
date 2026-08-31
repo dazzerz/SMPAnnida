@@ -144,6 +144,28 @@ const securitySql = fs.readFileSync('database/migrations/student_portal_security
 assert(securitySql.includes('student-assignments'), 'migration defines student-assignments storage bucket');
 assert(securitySql.includes('5242880'), 'migration enforces 5MB storage limit');
 
+
+// Test 10: LMS (Learning Management System) & E-Assignment Integration
+console.log('\n[TEST 10] LMS & E-Assignment System Validation:');
+const lmsSql = fs.readFileSync('database/migrations/student_lms_and_assignments.sql', 'utf8');
+assert(lmsSql.includes('CREATE TABLE IF NOT EXISTS public.assignments'), 'LMS migration creates assignments table');
+assert(lmsSql.includes('CREATE TABLE IF NOT EXISTS public.assignment_submissions'), 'LMS migration creates assignment_submissions table');
+
+const studentDashHtml = fs.readFileSync('pages/student/dashboard.html', 'utf8');
+assert(studentDashHtml.includes('id="panel-tugas"'), 'Portal siswa includes panel-tugas section');
+assert(studentDashHtml.includes('id="modal-submit-tugas"'), 'Portal siswa includes modal-submit-tugas');
+
+const studentDashJs = fs.readFileSync('js/student/dashboard.js', 'utf8');
+assert(studentDashJs.includes('loadAssignments'), 'Portal siswa JS includes loadAssignments loader');
+
+const acaDashHtml = fs.readFileSync('pages/academic/dashboard.html', 'utf8');
+assert(acaDashHtml.includes('id="tugas-lms"'), 'Academic dashboard includes tugas-lms section');
+assert(acaDashHtml.includes('id="modal-assignment"'), 'Academic dashboard includes modal-assignment');
+assert(acaDashHtml.includes('id="modal-review-submissions"'), 'Academic dashboard includes modal-review-submissions');
+
+const lmsTeacherJs = fs.readFileSync('js/academic/lms.js', 'utf8');
+assert(lmsTeacherJs.includes('openReviewSubmissionsModal'), 'LMS teacher JS includes review and grading modal');
+
 console.log('\n--- TEST SUMMARY ---');
 console.log(`Total Passed: ${passed}, Total Failed: ${failed}`);
 if (failed > 0) {
