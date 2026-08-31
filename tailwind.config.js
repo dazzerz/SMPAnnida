@@ -17,6 +17,8 @@ export default {
         accent: "#34d399",
       },
       fontFamily: {
+        headline: ["Literata", "serif"],
+        body: ["Nunito Sans", "sans-serif"],
         "headline-md": ["Literata", "serif"],
         "headline-lg": ["Literata", "serif"],
         "label-md": ["Nunito Sans", "sans-serif"],
