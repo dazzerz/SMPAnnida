@@ -629,3 +629,11 @@ body::before {
   min-height: 100px;
   border-radius: 16px;
 }
+
+/* Global sticky topbar enforcement */
+.topbar {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+}
