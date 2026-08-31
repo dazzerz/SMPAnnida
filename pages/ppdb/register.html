@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <!-- Defensive Content Security Policy & Security Meta -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://vxrgezyfxzynpucuomci.supabase.co wss://vxrgezyfxzynpucuomci.supabase.co https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com;" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://vxrgezyfxzynpucuomci.supabase.co wss://vxrgezyfxzynpucuomci.supabase.co https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com;" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
@@ -42,30 +42,9 @@
   <meta name="twitter:title" content="Pendaftaran Peserta Didik Baru (PPDB) | SMP Annida" />
   <meta name="twitter:description" content="Formulir Pendaftaran Online Siswa Baru (PPDB) SMP Annida 2027/2028." />
   <meta name="twitter:image" content="https://smpannida.sch.id/gedung_sekolah.jpg" />
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&amp;display=swap" rel="stylesheet"/>
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-            "primary": "#10b981",
-            "primary-dim": "#059669",
-            "accent": "#34d399"
-          },
-          "fontFamily": {
-            "headline-md": ["Literata"],
-            "headline-lg": ["Literata"],
-            "label-md": ["Nunito Sans"],
-            "body-md": ["Nunito Sans"]
-          }
-        },
-      },
-    }
-  </script>
-  <style>
+    <style>
     /* Glassmorphism Classes */
     .glass-panel-custom {
       background: rgba(16, 26, 20, 0.4);
@@ -143,6 +122,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="apple-touch-icon" href="/logo_1x1.png" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <link rel="stylesheet" href="../../src/style.css">
 </head>
 <body class="font-body-md min-h-screen flex flex-col antialiased">
   <!-- Adaptive Overlay Layer on top of botanical nature wallpaper -->
