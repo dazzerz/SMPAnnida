@@ -772,6 +772,19 @@ async function main() {
   // Init the starting section
   initSection(startSection);
 
+  
+  // Intercept click on finance nav items for instantaneous SPA switching
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('#nav-group-finance .nav-item');
+    if (link) {
+      const target = link.getAttribute('data-target');
+      if (target && validSections.includes(target)) {
+        e.preventDefault();
+        navigateTo(target);
+      }
+    }
+  });
+
   // Hash change listener
   window.addEventListener('hashchange', () => {
     const hash = window.location.hash.replace('#', '');
