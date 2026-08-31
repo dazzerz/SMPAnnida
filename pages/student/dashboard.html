@@ -73,6 +73,10 @@
             <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">fact_check</span>
             <span>Presensi Saya</span>
           </a>
+          <a href="#tugas" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-tugas">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">assignment</span>
+            <span>Tugas & E-Learning</span>
+          </a>
           <a href="#materi" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-materi">
             <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">menu_book</span>
             <span>Jurnal & Materi</span>
@@ -142,6 +146,9 @@
           </a>
           <a href="#presensi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-presensi">
             <span class="material-symbols-outlined text-xs">fact_check</span> Presensi
+          </a>
+          <a href="#tugas" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-tugas">
+            <span class="material-symbols-outlined text-xs">assignment</span> Tugas LMS
           </a>
           <a href="#materi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-materi">
             <span class="material-symbols-outlined text-xs">menu_book</span> Materi
@@ -302,6 +309,50 @@
         </div>
       </section>
 
+      
+      <!-- PANEL: TUGAS & E-LEARNING (LMS) -->
+      <section id="panel-tugas" class="student-panel hidden space-y-6">
+        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-bold font-headline-md text-white mb-1">Pusat Tugas & E-Learning (LMS)</h2>
+              <p class="text-xs text-gray-400">Daftar tugas, lembar kerja, dan pengumpulan berkas jawaban Anda</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white" data-filter="all">Semua</button>
+              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10" data-filter="pending">Belum Dikumpul</button>
+              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10" data-filter="submitted">Sudah Dikumpul</button>
+              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10" data-filter="graded">Dinilai</button>
+            </div>
+          </div>
+
+          <!-- Ringkasan Statistik Tugas -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+              <div class="text-xs text-gray-400 mb-1">Total Tugas</div>
+              <div class="text-2xl font-bold text-white" id="stat-total-tugas">0</div>
+            </div>
+            <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30">
+              <div class="text-xs text-amber-300 mb-1">Perlu Dikerjakan</div>
+              <div class="text-2xl font-bold text-amber-400" id="stat-pending-tugas">0</div>
+            </div>
+            <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
+              <div class="text-xs text-blue-300 mb-1">Menunggu Penilaian</div>
+              <div class="text-2xl font-bold text-blue-400" id="stat-submitted-tugas">0</div>
+            </div>
+            <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+              <div class="text-xs text-emerald-300 mb-1">Rata-rata Nilai</div>
+              <div class="text-2xl font-bold text-emerald-400" id="stat-avg-tugas">-</div>
+            </div>
+          </div>
+
+          <!-- Feed Daftar Tugas -->
+          <div id="student-assignments-feed" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="text-center py-8 text-gray-400 col-span-full">Memuat daftar tugas & materi...</div>
+          </div>
+        </div>
+      </section>
+
       <!-- PANEL 4: JURNAL & MATERI -->
       <section id="panel-materi" class="student-panel hidden space-y-6">
         <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
@@ -439,5 +490,51 @@
   </div>
 
   <script type="module" src="../../js/student/dashboard.js"></script>
+
+  <!-- MODAL PENGUMPULAN TUGAS SISWA -->
+  <div id="modal-submit-tugas" class="modal hidden">
+    <div class="modal-content card glass max-w-lg w-full p-6 rounded-2xl bg-slate-900 border border-white/20 text-white space-y-4">
+      <div class="flex justify-between items-center border-b border-white/10 pb-3">
+        <div>
+          <h3 class="text-lg font-bold text-emerald-400" id="modal-tugas-title">Kumpulkan Tugas</h3>
+          <p class="text-xs text-gray-400" id="modal-tugas-subject">Mata Pelajaran</p>
+        </div>
+        <button id="btn-close-modal-tugas" class="p-1 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white">✕</button>
+      </div>
+
+      <form id="form-submit-tugas" class="space-y-4">
+        <input type="hidden" id="submit-assignment-id">
+
+        <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-gray-300 space-y-1">
+          <div class="font-semibold text-white">Petunjuk Pengerjaan:</div>
+          <p id="modal-tugas-desc" class="text-gray-400 leading-relaxed">-</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-300 mb-1">Unggah Berkas Tugas (Maks 5MB)</label>
+          <div class="border-2 border-dashed border-white/20 rounded-xl p-4 text-center hover:border-emerald-500/50 transition-all bg-white/5 cursor-pointer" id="drop-zone-tugas">
+            <input type="file" id="tugas-file-input" class="hidden" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp">
+            <span class="material-symbols-outlined text-3xl text-emerald-400 mb-1">cloud_upload</span>
+            <div class="text-xs text-gray-300 font-medium" id="tugas-file-label">Klik untuk pilih file atau seret file ke sini</div>
+            <div class="text-[0.65rem] text-gray-500 mt-1">Format: PDF, Word (DOC/DOCX), atau Foto (JPG/PNG)</div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-300 mb-1">Catatan Tambahan (Opsional)</label>
+          <textarea id="tugas-notes" class="w-full bg-slate-800 border border-white/10 rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500" rows="2" placeholder="Tuliskan catatan tambahan untuk guru..."></textarea>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" id="btn-cancel-submit-tugas" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-gray-300">Batal</button>
+          <button type="submit" id="btn-save-submit-tugas" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 text-white flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">send</span>
+            <span id="btn-save-tugas-text">Kirim Tugas</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </body>
 </html>

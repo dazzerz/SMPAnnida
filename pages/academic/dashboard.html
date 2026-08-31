@@ -809,6 +809,62 @@
                     </div>
                 </section>
 
+                
+                <!-- Tugas & E-Learning (LMS) Section -->
+                <section id="tugas-lms" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
+                        <h1>Pusat Tugas & E-Learning (LMS)</h1>
+                        <button id="btn-add-assignment" class="btn-primary flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">add_task</span>
+                            <span>+ Buat Tugas Baru</span>
+                        </button>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="card glass aca-inline-57">
+                        <div class="form-group aca-inline-58">
+                            <label>Filter Kelas</label>
+                            <select id="filter-lms-class" class="input-control">
+                                <option value="">Semua Kelas</option>
+                            </select>
+                        </div>
+                        <div class="form-group aca-inline-58">
+                            <label>Filter Mapel</label>
+                            <select id="filter-lms-subject" class="input-control">
+                                <option value="">Semua Mata Pelajaran</option>
+                            </select>
+                        </div>
+                        <div class="form-group aca-inline-60">
+                            <label>&nbsp;</label>
+                            <input type="text" id="search-lms-assignment" class="input-control" placeholder="Cari judul tugas...">
+                        </div>
+                    </div>
+
+                    <!-- Table Daftar Tugas Guru -->
+                    <div class="card glass aca-inline-20">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Judul Tugas</th>
+                                        <th>Kelas</th>
+                                        <th>Mata Pelajaran</th>
+                                        <th>Tenggat (Deadline)</th>
+                                        <th>Pengumpulan</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-lms-assignments">
+                                    <tr>
+                                        <td colspan="7" class="aca-inline-22">Memuat daftar tugas LMS...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Jurnal Guru Section -->
                 <section id="jurnal-guru" class="page-section aca-inline-11">
                     <div class="aca-inline-56">
@@ -1677,6 +1733,85 @@
     
     <div id="toast-container"></div>
   <script type="module" src="../../js/core/theme.js"></script>
+
+    <!-- Modal Buat / Edit Tugas LMS -->
+    <div id="modal-assignment" class="modal hidden aca-inline-49" style="display: none;">
+        <div class="modal-content card glass aca-inline-50">
+            <h2 id="modal-assignment-title" class="aca-inline-18">Buat Tugas Baru</h2>
+            <form id="form-assignment">
+                <input type="hidden" id="assignment-id">
+                <div class="form-group mb-3">
+                    <label>Judul Tugas / Materi</label>
+                    <input type="text" id="assignment-title" class="input-control" placeholder="Contoh: Latihan Soal Bab 2 Aljabar" required>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div class="form-group">
+                        <label>Kelas Target</label>
+                        <select id="assignment-class" class="input-control" required>
+                            <option value="">-- Pilih Kelas --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Mata Pelajaran</label>
+                        <select id="assignment-subject" class="input-control" required>
+                            <option value="">-- Pilih Mapel --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div class="form-group">
+                        <label>Tenggat Waktu (Deadline)</label>
+                        <input type="datetime-local" id="assignment-deadline" class="input-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Lampiran File / Link Soal (Opsional)</label>
+                        <input type="text" id="assignment-attachment" class="input-control" placeholder="URL file / Google Drive / Dokumen">
+                    </div>
+                </div>
+                <div class="form-group mb-4">
+                    <label>Instruksi & Rincian Tugas</label>
+                    <textarea id="assignment-description" class="input-control" rows="4" placeholder="Tuliskan petunjuk pengerjaan tugas secara rinci untuk siswa..."></textarea>
+                </div>
+                <div class="modal-actions aca-inline-28">
+                    <button type="button" id="btn-close-assignment-modal" class="btn-secondary">Batal</button>
+                    <button type="submit" id="btn-save-assignment" class="btn-primary">Simpan Tugas</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Review & Penilaian Pengumpulan Siswa -->
+    <div id="modal-review-submissions" class="modal hidden aca-inline-53" style="display: none;">
+        <div class="modal-content card glass max-w-4xl w-full p-6">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-4">
+                <div>
+                    <h2 id="review-assignment-title" class="text-xl font-bold text-white">Review Pengumpulan Siswa</h2>
+                    <p id="review-assignment-subtitle" class="text-xs text-emerald-400">Kelas & Mapel</p>
+                </div>
+                <button id="btn-close-review-modal" class="btn-secondary text-sm">✕ Tutup</button>
+            </div>
+            
+            <div class="table-container max-h-[60vh] overflow-y-auto">
+                <table class="table w-full text-left text-sm">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Siswa</th>
+                            <th>Waktu Kumpul</th>
+                            <th>Berkas Jawaban</th>
+                            <th>Nilai (0-100)</th>
+                            <th>Catatan Guru</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-review-submissions">
+                        <tr><td colspan="7" class="text-center py-6 text-gray-400">Memuat berkas siswa...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
 
