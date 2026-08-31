@@ -1,3 +1,4 @@
+import './main.js';
 import './dashboard.js';
 import './attendance.js';
 import './teacher-attendance.js';
@@ -9,4 +10,3 @@ import './kelas.js';
 import './siswa.js';
 import './migration.js';
 import './jurnal.js';
-import './main.js';
