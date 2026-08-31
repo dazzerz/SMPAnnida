@@ -127,7 +127,7 @@
     flex: 1 1 0%;
     min-width: 0;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: clip;
     display: flex;
     flex-direction: column;
   }
@@ -150,7 +150,7 @@
   /* Reset body to block stacking */
   body {
     display: block !important;
-    overflow-x: hidden;
+    overflow-x: clip;
     width: 100%;
   }
 
@@ -175,7 +175,7 @@
     transform: translateX(-100%) !important;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     overflow-y: auto !important;
-    overflow-x: hidden !important;
+    overflow: visible !important;
     /* Theme-adaptive glass background on mobile */
     background: var(--sidebar-bg, rgba(10, 20, 15, 0.96)) !important;
     backdrop-filter: blur(20px) !important;
@@ -196,7 +196,7 @@
     min-height: 100vh !important;
     margin-left: 0 !important;
     padding: 0 !important;
-    overflow-x: hidden !important;
+    overflow: visible !important;
   }
 
   /* Show X button inside sidebar */
@@ -470,4 +470,25 @@
     font-weight: 700 !important;
     border-radius: 12px !important;
   }
+}
+
+/* =========================================================================
+   STICKY TOPBAR ABSOLUTE ENFORCEMENT (Zero Overflow Trapping)
+   ========================================================================= */
+html, body {
+  overflow-x: clip !important;
+}
+
+.app-container, .app-layout, .main-content {
+  overflow: visible !important;
+}
+
+.topbar {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  width: 100% !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
 }
