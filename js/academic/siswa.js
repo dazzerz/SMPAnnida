@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Guest Mode Protection
     if (authState.isGuest && btnAddSiswa) {
-        btnAddSiswa.style.display = 'none';
+        btnAddSiswa.style.display = 'none'; this.modal?.classList.add('hidden');
     }
 
     // Load Data
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Modal Operations
     function openModal(student = null) {
         formSiswa.reset();
-        modalSiswa.style.display = 'flex';
+        modalSiswa.style.display = 'flex'; modalSiswa.classList.remove('hidden'); this.modal?.classList.remove('hidden');
         if (student) {
             modalTitle.textContent = 'Edit Siswa';
             document.getElementById('siswa-id').value = student.id;
@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnCloseModal) {
         btnCloseModal.addEventListener('click', () => {
-            modalSiswa.style.display = 'none';
+            modalSiswa.style.display = 'none'; modalSiswa.classList.add('hidden'); this.modal?.classList.add('hidden');
         });
     }
 
@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (error) throw error;
                     showToast('Siswa berhasil ditambahkan', 'success');
                 }
-                modalSiswa.style.display = 'none';
+                modalSiswa.style.display = 'none'; modalSiswa.classList.add('hidden'); this.modal?.classList.add('hidden');
                 loadData();
             } catch (err) {
                 console.error("Error saving student:", err);
