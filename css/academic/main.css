@@ -22,34 +22,7 @@ body { font-family: 'Inter', sans-serif; background-color: var(--background); co
 .page-section h1 { font-size: 24px; margin-bottom: 20px; color: var(--text-main); }
 .card { background-color: var(--surface); padding: 20px; border-radius: 12px; box-shadow: var(--shadow-sm); transition: transform 0.2s ease, box-shadow 0.2s ease; margin-bottom: 20px; }
 .card.glass { background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--glass-border); }
-@media (max-width: 1023px) {
-    .sidebar {
-        position: fixed;
-        left: calc(-1 * var(--sidebar-width));
-        top: 0;
-        bottom: 0;
-        width: var(--sidebar-width);
-        height: 100%;
-        z-index: 20;
-        background-color: var(--surface);
-        overflow-y: auto;
-        transform: none;
-        transition: left 0.3s ease;
-    }
-    .sidebar.open {
-        left: 0;
-    }
-    .menu-toggle { display: block; }
-    .overlay {
-        display: none;
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.5);
-        z-index: 15;
-    }
-    .overlay.active { display: block; }
-    .content-area { padding: 15px; }
-}
+
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 /* Forms, Buttons, Tables */
 .form-group { margin-bottom: 15px; }
