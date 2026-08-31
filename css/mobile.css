@@ -420,3 +420,54 @@
 .content-area, .page-content, .student-panel, .main-content {
   padding-bottom: 5rem !important;
 }
+
+/* =========================================================================
+   PWA & MOBILE AUDIT ENHANCEMENTS
+   ========================================================================= */
+
+/* Modals & Dialogs on Mobile */
+.modal, .modal-backdrop {
+  padding: 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 1100 !important;
+}
+.modal.hidden, .modal-backdrop.hidden {
+  display: none !important;
+}
+.modal-content, .modal-dialog, .modal-card, .modal-body {
+  width: 100% !important;
+  max-width: 95vw !important;
+  max-height: 88vh !important;
+  overflow-y: auto !important;
+  padding: 1.25rem !important;
+  border-radius: 1.25rem !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Touch-Friendly Form Controls */
+@media (max-width: 768px) {
+  .btn, button.btn-primary, button.btn-submit, input.input-control, select.input-control {
+    min-height: 44px !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Teacher Attendance Mobile Optimization */
+  #tab-tg-pribadi .card {
+    padding: 1rem !important;
+  }
+  #tg-video {
+    width: 100% !important;
+    max-height: 240px !important;
+    object-fit: cover !important;
+    border-radius: 12px !important;
+  }
+  #btn-tg-camera {
+    width: 100% !important;
+    min-height: 48px !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    border-radius: 12px !important;
+  }
+}
