@@ -45,6 +45,14 @@ function setLoading(btnId, isLoading) {
   if (!btn) return;
   btn.classList.toggle('loading', isLoading);
   btn.disabled = isLoading;
+  const btnText = document.getElementById('btn-text');
+  if (btnText) {
+    if (isLoading) {
+      btnText.innerHTML = '<span class="auth-spinner inline-block mr-2"></span> Memverifikasi...';
+    } else {
+      btnText.textContent = 'Masuk ke Portal';
+    }
+  }
 }
 
 // ── USER ROLE RESOLVER ────────────────────────────
