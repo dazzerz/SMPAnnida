@@ -8,16 +8,16 @@
 [data-theme="light"] {
   --color-scheme: light;
 
-  /* Nature Background Image & Eye-Comfort Softened Leaf Filter */
+  /* Nature Background Image & Eye-Comfort Softened Leaf Filter - Darkened & Calm */
   --bg-nature-image: url('../assets/images/bg-light.webp');
-  --leaf-filter: brightness(0.82) contrast(1.08) saturate(1.15);
-  --leaf-opacity: 0.22;
-  --bg-overlay-tint: rgba(15, 23, 42, 0.35);
+  --leaf-filter: brightness(0.72) contrast(1.08) saturate(1.1);
+  --leaf-opacity: 0.20;
+  --bg-overlay-tint: rgba(15, 23, 42, 0.45);
 
-  /* Canvas Background: Gentle Cool Sage Canvas */
-  --bg-canvas-color: #ecf3ee;
-  --bg-canvas: radial-gradient(circle at center, rgba(16, 185, 129, 0.06) 0%, rgba(236, 243, 238, 0.65) 100%),
-               #ecf3ee;
+  /* Canvas Background: Darkened Cool Sage Canvas */
+  --bg-canvas-color: #e2eae4;
+  --bg-canvas: radial-gradient(circle at center, rgba(16, 185, 129, 0.05) 0%, rgba(226, 234, 228, 0.75) 100%),
+               #e2eae4;
   --bg-canvas-attachment: fixed;
 
   /* Glass Card & Surfaces - Crisp Solid-Glass (High Contrast & Clear Boundaries) */
