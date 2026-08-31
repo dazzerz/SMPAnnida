@@ -1,13 +1,13 @@
 /* css/finance/syahriah.css */
 @media print {
   .print-table { color: #000; }
-  .print-table th, .print-table td { border: 1px solid #000 !important; padding: 0.5rem; }
+  .print-table th, .print-table td { border: 1px solid #000; padding: 0.5rem; }
   .print-container { background: #fff; color: #000; padding: 0; border: none; }
   body * { visibility: hidden; }
   #print-area, #print-area * { visibility: visible; }
   #print-area { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; border: none; }
-  .row-empty { background-color: #FFFF00 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .no-print { display: none !important; }
+  .row-empty { background-color: #FFFF00; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .no-print { display: none; }
 }
 
 .row-empty { background-color: rgba(255, 255, 0, 0.1); }

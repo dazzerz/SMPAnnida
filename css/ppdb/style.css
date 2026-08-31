@@ -915,103 +915,103 @@ footer p {
    TRUE GLASSMORPHISM OVERRIDES (NATURE / LEAVES THEME)
    ========================================================================= */
 body {
-    background-color: #0b130e !important;
-    color: #f8fafc !important;
+    background-color: #0b130e;
+    color: #f8fafc;
 }
 
 h1, h2, h3, h4 {
-    color: #ffffff !important;
+    color: #ffffff;
 }
 
 p, .section-subtitle {
-    color: #cbd5e1 !important;
+    color: #cbd5e1;
 }
 
 /* Button readability adjustments in glass theme */
 .btn-outline {
-    background-color: rgba(0, 200, 83, 0.15) !important;
-    border-color: var(--primary-color) !important;
-    color: #ffffff !important;
+    background-color: rgba(0, 200, 83, 0.15);
+    border-color: var(--primary-color);
+    color: #ffffff;
 }
 .btn-outline:hover {
-    background-color: var(--primary-color) !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 15px rgba(0, 200, 83, 0.4) !important;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 200, 83, 0.4);
 }
 
 /* Glassmorphic Navbar */
 .navbar {
-    background-color: rgba(11, 19, 14, 0.6) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background-color: rgba(11, 19, 14, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .nav-links a:not(.btn) {
-    color: #f8fafc !important;
+    color: #f8fafc;
 }
 
 .nav-links a:not(.btn):hover {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
 }
 
 .logo-text {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
 }
 
 /* Glassmorphic Section background replacements */
 .bg-light {
-    background-color: rgba(255, 255, 255, 0.02) !important;
+    background-color: rgba(255, 255, 255, 0.02);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Glassmorphic Cards */
 .card {
-    background-color: rgba(255, 255, 255, 0.03) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
-    color: #f8fafc !important;
+    background-color: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    color: #f8fafc;
 }
 
 .card h3 {
-    color: var(--primary-color) !important;
+    color: var(--primary-color);
 }
 
 .card p {
-    color: #cbd5e1 !important;
+    color: #cbd5e1;
 }
 
 .card:hover {
-    background-color: rgba(255, 255, 255, 0.07) !important;
-    border-color: rgba(0, 200, 83, 0.4) !important;
-    box-shadow: 0 12px 40px 0 rgba(0, 200, 83, 0.25) !important;
+    background-color: rgba(255, 255, 255, 0.07);
+    border-color: rgba(0, 200, 83, 0.4);
+    box-shadow: 0 12px 40px 0 rgba(0, 200, 83, 0.25);
 }
 
 /* Steps overrides */
 .step h4 {
-    color: #ffffff !important;
+    color: #ffffff;
 }
 
 .step p {
-    color: #cbd5e1 !important;
+    color: #cbd5e1;
 }
 
 .step-number {
-    background-color: var(--primary-color) !important;
-    box-shadow: 0 0 0 10px rgba(0, 200, 83, 0.15) !important;
+    background-color: var(--primary-color);
+    box-shadow: 0 0 0 10px rgba(0, 200, 83, 0.15);
 }
 
 /* Footer style update to match glass theme */
 footer {
-    background-color: rgba(11, 19, 14, 0.8) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background-color: rgba(11, 19, 14, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 footer p {
-    color: rgba(255, 255, 255, 0.6) !important;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 
