@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
   <!-- Defensive Content Security Policy & Security Meta -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://vxrgezyfxzynpucuomci.supabase.co wss://vxrgezyfxzynpucuomci.supabase.co https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com;" />
@@ -19,33 +19,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Portal Resmi - SMP Annida</title>
   
-  <!-- Primary Meta Tags & Technical SEO -->
+  <!-- Primary Meta Tags -->
   <meta name="title" content="Login Portal Resmi - SMP Annida" />
-  <meta name="description" content="Portal Login Resmi Sistem Informasi Terpadu SMP Annida untuk Siswa, Guru, Tenaga Pendidik, Staf Keuangan, dan Wali Murid." />
-  <meta name="keywords" content="Login SMP Annida, Portal Siswa, Portal Guru Annida, Dashboard Wali Murid, SIAKAD Annida, smpannida.sch.id" />
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="description" content="Portal Login Resmi Sistem Informasi Terpadu SMP Annida untuk Siswa, Guru, dan Wali Murid." />
+  <meta name="robots" content="index, follow" />
   <meta name="author" content="SMP Annida" />
   <link rel="canonical" href="https://smpannida.sch.id/login.html" />
-
-  <!-- Open Graph / Facebook / WhatsApp -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://smpannida.sch.id/login.html" />
-  <meta property="og:site_name" content="SMP Annida" />
-  <meta property="og:title" content="Login Portal Resmi - SMP Annida" />
-  <meta property="og:description" content="Portal Login Resmi Sistem Informasi Terpadu SMP Annida untuk Siswa, Guru, dan Wali Murid." />
-  <meta property="og:image" content="https://smpannida.sch.id/gedung_sekolah.jpg" />
-  <meta property="og:locale" content="id_ID" />
 
   <!-- Fonts: Nunito Sans & Literata -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..700&family=Nunito+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,600;0,7..72,700;1,7..72,600&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/mobile.css" />
-  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="/src/style.css">
 
   <style>
     * {
@@ -59,11 +47,10 @@
     }
 
     body {
-      background-color: #060d17;
+      background-color: #030712;
       color: #f1f5f9;
       min-height: 100vh;
-      overflow-x: hidden;
-      animation: pageFadeIn 0.35s ease-out forwards;
+      animation: pageFadeIn 0.3s ease-out forwards;
     }
 
     @keyframes pageFadeIn {
@@ -73,78 +60,45 @@
 
     .page-fade-out {
       opacity: 0 !important;
-      transition: opacity 0.3s ease-out !important;
+      transition: opacity 0.25s ease-out !important;
     }
 
-    /* Ambient Glow & Institutional Background */
+    /* Ambient Glow */
     .bg-mesh-pattern {
       background-image: 
-        radial-gradient(at 10% 20%, rgba(16, 185, 129, 0.15) 0px, transparent 50%),
-        radial-gradient(at 90% 80%, rgba(6, 78, 59, 0.25) 0px, transparent 50%),
-        radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.95) 0px, transparent 100%);
+        radial-gradient(at 15% 15%, rgba(16, 185, 129, 0.12) 0px, transparent 45%),
+        radial-gradient(at 85% 85%, rgba(6, 78, 59, 0.2) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, #030712 0px, #030712 100%);
     }
 
-    /* Premium Glassmorphism Card */
-    .auth-glass-panel {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+    /* Input Field Focus */
+    .auth-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(16, 185, 129, 0.1);
-    }
-
-    /* Input Field Styling */
-    .auth-input-group {
-      position: relative;
+      color: #ffffff;
+      padding: 0.75rem 1rem 0.75rem 2.75rem;
+      border-radius: 0.75rem;
+      font-size: 0.9rem;
+      outline: none;
       transition: all 0.2s ease;
     }
 
-    .auth-input-field {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      color: #ffffff;
-      padding: 0.875rem 1rem 0.875rem 2.875rem;
-      border-radius: 0.875rem;
-      font-size: 0.9375rem;
-      outline: none;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .auth-input-field:focus {
+    .auth-input:focus {
       border-color: #10b981;
       background: rgba(16, 185, 129, 0.06);
-      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.18);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
     }
 
-    .auth-input-field::placeholder {
+    .auth-input::placeholder {
       color: #64748b;
-    }
-
-    /* Submit Button */
-    .btn-auth-submit {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
-    }
-
-    .btn-auth-submit:hover:not(:disabled) {
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
-      box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.6);
-      transform: translateY(-1px);
-    }
-
-    .btn-auth-submit:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
     }
 
     /* Spinner Animation */
     .auth-spinner {
       display: inline-block;
-      width: 1.125rem;
-      height: 1.125rem;
+      width: 1.1rem;
+      height: 1.1rem;
       border: 2px solid rgba(255, 255, 255, 0.3);
       border-radius: 50%;
       border-top-color: #ffffff;
@@ -158,264 +112,234 @@
 
   <!-- PWA & Mobile Meta -->
   <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#060d17" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#030712" />
   <link rel="apple-touch-icon" href="/logo_1x1.png" />
-  <link rel="stylesheet" href="/src/style.css">
 </head>
-<body class="bg-mesh-pattern min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-white">
+<body class="bg-mesh-pattern min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden">
 
-  <!-- Top Floating Header Bar -->
-  <header class="w-full px-6 py-4 flex items-center justify-between relative z-20">
-    <a href="index.html" class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-300 hover:text-white transition-all backdrop-blur-md shadow-sm group">
-      <span class="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
-      <span>Website Utama</span>
-    </a>
+  <!-- Subtle Ambient Glow Orbs -->
+  <div class="absolute -top-32 -left-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-    <div class="flex items-center gap-3">
-      <a href="pages/ppdb/index.html" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-all backdrop-blur-md">
-        <span>Portal PPDB</span>
-        <span class="material-symbols-outlined text-sm">open_in_new</span>
-      </a>
-
-      <!-- Theme Switcher -->
-      <button id="theme-toggle-btn" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-all backdrop-blur-md" aria-label="Ganti Mode Tema" title="Ganti Mode Terang / Gelap">
-        <span class="material-symbols-outlined text-lg">dark_mode</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- Main Content Container (2-Column Split Layout on Desktop) -->
-  <main class="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 relative z-10">
-    <div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+  <!-- UNIFIED 2-COLUMN CARD CONTAINER -->
+  <div class="max-w-5xl w-full bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[580px] relative z-10">
+    
+    <!-- ========================================================================= -->
+    <!-- SISI KIRI (lg:col-span-5): BRANDING & INFORMASI SINGKAT -->
+    <!-- ========================================================================= -->
+    <div class="lg:col-span-5 bg-slate-950/70 p-6 sm:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10 relative overflow-hidden">
       
-      <!-- SISI KIRI: BRANDING & INSTITUTIONAL TRUST -->
-      <div class="lg:col-span-5 flex flex-col justify-center space-y-6 text-left">
+      <!-- Top Branding -->
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <img src="/assets/logo/1.png" alt="Logo SMP Annida" class="w-12 h-12 object-contain drop-shadow" onerror="this.onerror=null; this.src='assets/logo/1.png';">
+          <div>
+            <h1 class="font-serif-annida text-lg font-bold text-white tracking-tight uppercase">SMP Annida</h1>
+            <span class="text-[0.65rem] uppercase tracking-wider font-bold text-emerald-400 block">Al-Islamy Setu Bekasi</span>
+          </div>
+        </div>
         
-        <!-- Logo & Header Title -->
-        <div class="space-y-4">
-          <div class="inline-flex items-center gap-3.5 p-2 pr-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
-            <img src="assets/logo/1.png" alt="Logo SMP Annida" class="w-11 h-11 object-contain drop-shadow" onerror="this.onerror=null; this.src='/assets/logo/1.png';">
-            <div>
-              <span class="text-[0.65rem] uppercase tracking-wider font-bold text-emerald-400 block">Sistem Informasi Terpadu</span>
-              <h1 class="text-lg font-bold tracking-tight text-white uppercase">SMP Annida</h1>
-            </div>
-          </div>
-
-          <div class="space-y-2">
-            <h2 class="font-serif-annida text-3xl sm:text-4xl font-extrabold text-white leading-tight">
-              Pintu Gerbang <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">Layanan Digital</span> Sekolah
-            </h2>
-            <p class="text-sm text-slate-300 leading-relaxed">
-              Membangun ekosistem pendidikan Islam modern yang transparan, akuntabel, dan terhubung secara real-time.
-            </p>
-          </div>
+        <div class="space-y-1">
+          <h2 class="text-sm font-bold text-slate-200">Sistem Informasi Akademik Terpadu</h2>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Akses satu pintu untuk seluruh civitas akademika dan layanan pendidikan Islam.
+          </p>
         </div>
-
-        <!-- Role Access Feature Highlights -->
-        <div class="space-y-3 pt-2">
-          <div class="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.03] border border-white/5 hover:border-emerald-500/30 transition-colors">
-            <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-              <span class="material-symbols-outlined text-base">school</span>
-            </div>
-            <div>
-              <h3 class="text-xs font-bold text-slate-100">Portal Santri & Siswa</h3>
-              <p class="text-[0.72rem] text-slate-400 mt-0.5">Akses jadwal pelajaran, presensi harian, materi guru, dan tracker setoran tahfidz.</p>
-            </div>
-          </div>
-
-          <div class="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.03] border border-white/5 hover:border-emerald-500/30 transition-colors">
-            <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
-              <span class="material-symbols-outlined text-base">co_present</span>
-            </div>
-            <div>
-              <h3 class="text-xs font-bold text-slate-100">Portal Guru & Akademik</h3>
-              <p class="text-[0.72rem] text-slate-400 mt-0.5">Pengisian jurnal pembelajaran mengajar, absensi per jam, dan rekapitulasi nilai rapor.</p>
-            </div>
-          </div>
-
-          <div class="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.03] border border-white/5 hover:border-emerald-500/30 transition-colors">
-            <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 mt-0.5">
-              <span class="material-symbols-outlined text-base">family_restroom</span>
-            </div>
-            <div>
-              <h3 class="text-xs font-bold text-slate-100">Portal Wali Murid PPDB</h3>
-              <p class="text-[0.72rem] text-slate-400 mt-0.5">Pemantauan progres verifikasi pendaftaran, hasil seleksi, dan status komitmen.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Help Desk Banner -->
-        <div class="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-emerald-400 text-2xl">support_agent</span>
-            <div>
-              <h4 class="text-xs font-bold text-emerald-200">Layanan Bantuan Akun</h4>
-              <p class="text-[0.7rem] text-slate-300">Lupa kata sandi atau kendala masuk?</p>
-            </div>
-          </div>
-          <a href="https://wa.me/6281289575462?text=Assalamu%27alaikum%20Admin%20SMP%20Annida,%20saya%20membutuhkan%20bantuan%20terkait%20login%20akun." target="_blank" rel="noopener noreferrer" class="shrink-0 px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs transition-all shadow-sm">
-            Chat TU
-          </a>
-        </div>
-
       </div>
 
-      <!-- SISI KANAN: FORM LOGIN RESMI -->
-      <div class="lg:col-span-7 flex justify-center lg:justify-end">
-        <div class="auth-glass-panel rounded-3xl p-7 sm:p-10 w-full max-w-lg relative overflow-hidden">
-          
-          <!-- Subtle Accent Glow -->
-          <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-          <div class="space-y-6">
-            
-            <!-- Card Header -->
-            <div class="space-y-1 text-left">
-              <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[0.68rem] font-bold uppercase tracking-wider inline-block mb-1.5">
-                Autentikasi Terpadu
-              </span>
-              <h3 class="text-2xl font-bold text-white tracking-tight">Masuk ke Portal</h3>
-              <p class="text-xs text-slate-400">Gunakan akun resmi sekolah untuk mengakses layanan Anda.</p>
-            </div>
-
-            <!-- Dynamic Alert Message Container -->
-            <div id="auth-message" class="hidden"></div>
-
-            <!-- Form -->
-            <form id="form-login" class="space-y-4 text-left" novalidate>
-              
-              <!-- Identifier Field (Email / Phone / Student Username) -->
-              <div class="space-y-1.5">
-                <label for="login-email" class="block text-xs font-bold text-slate-300">
-                  Email Akun / No. WhatsApp / User Siswa
-                </label>
-                <div class="auth-input-group">
-                  <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg pointer-events-none">
-                    alternate_email
-                  </span>
-                  <input 
-                    type="text" 
-                    id="login-email" 
-                    name="username"
-                    class="auth-input-field" 
-                    placeholder="nama.depan@smpannida.sch.id / No. WA" 
-                    required 
-                    autocomplete="username"
-                    spellcheck="false"
-                  >
-                </div>
-                
-                <!-- Dynamic Helper Hints -->
-                <div class="p-2.5 rounded-xl bg-white/[0.02] border border-white/5 space-y-1 text-[0.7rem] text-slate-400 leading-normal">
-                  <p class="flex items-center gap-1.5 text-emerald-300 font-medium">
-                    <span>💡</span> <strong>Format Akun:</strong>
-                  </p>
-                  <p>• <strong>Siswa:</strong> <code>nama.depan@smpannida.sch.id</code> (contoh: <code>muhammad.fatih@smpannida.sch.id</code>)</p>
-                  <p>• <strong>Guru / Admin:</strong> Email dinas resmi terdaftar.</p>
-                  <p>• <strong>Wali Murid PPDB:</strong> Nomor WhatsApp saat mendaftar.</p>
-                </div>
-              </div>
-
-              <!-- Password Field -->
-              <div class="space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <label for="login-password" class="block text-xs font-bold text-slate-300">
-                    Kata Sandi (Password)
-                  </label>
-                  <a href="https://wa.me/6281289575462?text=Assalamu%27alaikum%20Admin%20SMP%20Annida,%20saya%20lupa%20kata%20sandi%20akun%20saya." target="_blank" rel="noopener noreferrer" class="text-[0.72rem] text-emerald-400 hover:text-emerald-300 hover:underline">
-                    Lupa Sandi?
-                  </a>
-                </div>
-                <div class="auth-input-group">
-                  <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg pointer-events-none">
-                    lock
-                  </span>
-                  <input 
-                    type="password" 
-                    id="login-password" 
-                    name="password"
-                    class="auth-input-field pr-11" 
-                    placeholder="••••••••" 
-                    required 
-                    autocomplete="current-password"
-                  >
-                  <!-- Toggle Show/Hide Password -->
-                  <button 
-                    type="button" 
-                    id="btn-toggle-password" 
-                    class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors p-1"
-                    aria-label="Tampilkan atau sembunyikan kata sandi"
-                  >
-                    <span class="material-symbols-outlined text-lg" id="icon-toggle-password">visibility</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Submit Button -->
-              <div class="pt-2">
-                <button 
-                  type="submit" 
-                  id="login-btn" 
-                  class="btn-submit btn-auth-submit w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 cursor-pointer relative"
-                >
-                  <span id="btn-text">Masuk ke Portal</span>
-                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                </button>
-              </div>
-
-            </form>
-
-            <!-- Bottom Register & Links -->
-            <div class="pt-4 border-t border-white/10 text-center space-y-3">
-              <p class="text-xs text-slate-400">
-                Calon santri baru? 
-                <a href="pages/ppdb/register.html" class="text-emerald-400 hover:text-emerald-300 font-bold hover:underline">
-                  Daftar PPDB Online ↗
-                </a>
-              </p>
-
-              <div class="flex items-center justify-center gap-4 text-[0.7rem] text-slate-500">
-                <a href="pages/ppdb/privacy-policy.html" class="hover:text-slate-300 transition-colors">Kebijakan Privasi</a>
-                <span>•</span>
-                <a href="pages/ppdb/about.html" class="hover:text-slate-300 transition-colors">Profil Sekolah</a>
-                <span>•</span>
-                <a href="index.html#kontak" class="hover:text-slate-300 transition-colors">Kontak</a>
-              </div>
-            </div>
-
+      <!-- Center Role Access Chips (Hidden on small mobile if tight, visible on sm+) -->
+      <div class="my-6 space-y-2.5">
+        <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+          <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-sm">school</span>
           </div>
-
+          <div class="text-xs">
+            <span class="font-bold text-slate-200 block">Portal Siswa</span>
+            <span class="text-[0.68rem] text-slate-400">Jadwal, Presensi, Tahfidz & Materi</span>
+          </div>
         </div>
+
+        <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+          <div class="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-sm">co_present</span>
+          </div>
+          <div class="text-xs">
+            <span class="font-bold text-slate-200 block">Portal Guru & Staf</span>
+            <span class="text-[0.68rem] text-slate-400">Jurnal Mengajar, Absensi & Rapor</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+          <div class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-sm">family_restroom</span>
+          </div>
+          <div class="text-xs">
+            <span class="font-bold text-slate-200 block">Wali Murid PPDB</span>
+            <span class="text-[0.68rem] text-slate-400">Progres Seleksi & Registrasi</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Actions & Links -->
+      <div class="pt-4 border-t border-white/10 flex flex-col gap-2.5">
+        <a href="https://wa.me/6281289575462?text=Assalamu%27alaikum%20Admin%20SMP%20Annida,%20saya%20membutuhkan%20bantuan%20login%20akun." target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-emerald-950/40 hover:bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 text-xs font-semibold transition-all">
+          <span class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm text-emerald-400">support_agent</span>
+            <span>Bantuan WhatsApp TU</span>
+          </span>
+          <span class="text-[0.7rem] bg-emerald-500/20 px-2 py-0.5 rounded text-emerald-400">Chat</span>
+        </a>
+
+        <a href="/index.html" class="inline-flex items-center gap-1.5 text-[0.75rem] font-semibold text-slate-400 hover:text-slate-200 transition-colors">
+          <span class="material-symbols-outlined text-xs">arrow_back</span>
+          <span>Kembali ke Website Utama</span>
+        </a>
       </div>
 
     </div>
-  </main>
 
-  <!-- Footer Copyright -->
-  <footer class="w-full py-4 text-center text-[0.7rem] text-slate-500 relative z-20">
-    © 2026 SMP Annida Al-Islamy. Hak Cipta Dilindungi Undang-Undang.
-  </footer>
+    <!-- ========================================================================= -->
+    <!-- SISI KANAN (lg:col-span-7): FORM AUTENTIKASI MASUK -->
+    <!-- ========================================================================= -->
+    <div class="lg:col-span-7 p-6 sm:p-8 md:p-10 flex flex-col justify-center relative">
+      
+      <div class="w-full max-w-md mx-auto space-y-5">
+        
+        <!-- Header Form -->
+        <div class="space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[0.65rem] font-bold uppercase tracking-wider">
+              Autentikasi Akun
+            </span>
+            <button id="theme-toggle-btn" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all text-xs" aria-label="Ganti Tema" title="Ganti Mode Tema">
+              <span class="material-symbols-outlined text-sm">dark_mode</span>
+            </button>
+          </div>
+          <h3 class="text-2xl font-extrabold text-white tracking-tight font-serif-annida">Masuk ke Sistem</h3>
+          <p class="text-xs text-slate-400">Masukkan kredensial akun resmi Anda untuk melanjutkan.</p>
+        </div>
 
-  <!-- Scripts -->
+        <!-- Alert Container -->
+        <div id="auth-message" class="hidden"></div>
+
+        <!-- Form Login -->
+        <form id="form-login" class="space-y-4" novalidate>
+          
+          <!-- Input Username / Email -->
+          <div class="space-y-1">
+            <label for="login-email" class="block text-xs font-bold text-slate-300">
+              Email Akun / No. WhatsApp / Akun Siswa
+            </label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+                alternate_email
+              </span>
+              <input 
+                type="text" 
+                id="login-email" 
+                name="username"
+                class="auth-input" 
+                placeholder="nama.depan@smpannida.sch.id / No. WA" 
+                required 
+                autocomplete="username"
+                spellcheck="false"
+              >
+            </div>
+            
+            <!-- Compact Helper Hint Box -->
+            <div class="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/20 text-emerald-300 text-[0.7rem] leading-relaxed">
+              <span class="font-bold">👨‍🎓 Siswa:</span> Gunakan email <code>nama.depan@smpannida.sch.id</code><br>
+              <span class="font-bold">👨‍🏫 Guru:</span> Email dinas | <span class="font-bold">👨‍👩‍👧 Wali:</span> No. WhatsApp terdaftar
+            </div>
+          </div>
+
+          <!-- Input Password -->
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <label for="login-password" class="block text-xs font-bold text-slate-300">
+                Kata Sandi (Password)
+              </label>
+              <a href="https://wa.me/6281289575462?text=Assalamu%27alaikum%20Admin,%20saya%20lupa%20kata%20sandi%20akun%20saya." target="_blank" rel="noopener noreferrer" class="text-[0.7rem] text-emerald-400 hover:text-emerald-300 hover:underline">
+                Lupa Sandi?
+              </a>
+            </div>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">
+                lock
+              </span>
+              <input 
+                type="password" 
+                id="login-password" 
+                name="password"
+                class="auth-input pr-10" 
+                placeholder="••••••••" 
+                required 
+                autocomplete="current-password"
+              >
+              <button 
+                type="button" 
+                id="btn-toggle-password" 
+                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors p-1"
+                aria-label="Tampilkan / Sembunyikan Password"
+              >
+                <span class="material-symbols-outlined text-base" id="icon-toggle-password">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-2">
+            <button 
+              type="submit" 
+              id="login-btn" 
+              class="btn-submit w-full py-3 px-6 rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg shadow-emerald-950/50 flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] disabled:opacity-50"
+            >
+              <span id="btn-text">Masuk ke Portal</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+
+        </form>
+
+        <!-- Bottom Links -->
+        <div class="pt-3 border-t border-white/10 text-center space-y-2">
+          <p class="text-xs text-slate-400">
+            Calon siswa baru? 
+            <a href="/pages/ppdb/register.html" class="text-emerald-400 hover:text-emerald-300 font-bold hover:underline">
+              Daftar PPDB Online ↗
+            </a>
+          </p>
+          <div class="flex items-center justify-center gap-3 text-[0.68rem] text-slate-500">
+            <span>© 2026 SMP Annida Al-Islamy</span>
+            <span>•</span>
+            <a href="/pages/ppdb/privacy-policy.html" class="hover:text-slate-300">Privasi</a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Scripts Module -->
   <script type="module">
-    import { handleLogin } from './js/core/auth.js?v=3';
+    import { handleLogin } from './js/core/auth.js';
     import { bindThemeSwitcher } from './js/core/theme.js';
     
     document.addEventListener('DOMContentLoaded', () => {
       bindThemeSwitcher('theme-toggle-btn');
 
-      // Password Toggle Visibility
+      // Show/Hide Password
       const toggleBtn = document.getElementById('btn-toggle-password');
       const passInput = document.getElementById('login-password');
       const toggleIcon = document.getElementById('icon-toggle-password');
 
       if (toggleBtn && passInput && toggleIcon) {
         toggleBtn.addEventListener('click', () => {
-          const isPassword = passInput.type === 'password';
-          passInput.type = isPassword ? 'text' : 'password';
-          toggleIcon.textContent = isPassword ? 'visibility_off' : 'visibility';
+          const isPass = passInput.type === 'password';
+          passInput.type = isPass ? 'text' : 'password';
+          toggleIcon.textContent = isPass ? 'visibility_off' : 'visibility';
         });
       }
 
@@ -442,7 +366,7 @@
 
     window.smoothRedirect = function(url) {
       document.body.classList.add('page-fade-out');
-      setTimeout(() => { window.location.href = url; }, 250);
+      setTimeout(() => { window.location.href = url; }, 200);
     };
 
     window.addEventListener('pageshow', function (event) {
