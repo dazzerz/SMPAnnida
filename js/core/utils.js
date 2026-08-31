@@ -86,12 +86,18 @@ export function showToast(message, type = 'info') {
   toast.style.gap = '12px';
   toast.style.opacity = '0';
   toast.style.transform = 'translateY(-20px)';
-  toast.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
-  
-  toast.innerHTML = `
-    <span class="toast-icon" style="font-size: 1.1rem; display: flex; align-items: center;">${icons[type] || 'ℹ️'}</span>
-    <span class="toast-message" style="line-height: 1.2;">${message}</span>
-  `;
+  const iconSpan = document.createElement('span');
+  iconSpan.className = 'toast-icon';
+  iconSpan.style.cssText = 'font-size: 1.1rem; display: flex; align-items: center;';
+  iconSpan.textContent = icons[type] || 'ℹ️';
+
+  const msgSpan = document.createElement('span');
+  msgSpan.className = 'toast-message';
+  msgSpan.style.cssText = 'line-height: 1.2; word-break: break-word;';
+  msgSpan.textContent = message;
+
+  toast.appendChild(iconSpan);
+  toast.appendChild(msgSpan);
   container.appendChild(toast);
   
   // Trigger transition
