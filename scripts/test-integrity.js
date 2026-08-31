@@ -123,6 +123,27 @@ const dbJs = fs.readFileSync('js/ppdb/db.js', 'utf8');
 assert(dbJs.includes('openKonversiModal'), 'js/ppdb/db.js includes openKonversiModal');
 assert(dbJs.includes('submitKonversiSiswa'), 'js/ppdb/db.js includes submitKonversiSiswa');
 
+
+// Test 9: Complete Portal Siswa Operational Readiness & Security Audits
+console.log('\n[TEST 9] Portal Siswa Readiness & Operational Audits:');
+const indexHtml = fs.readFileSync('index.html', 'utf8');
+assert(indexHtml.includes('Login Siswa'), 'index.html contains explicit Login Siswa CTA');
+
+const academicHtml = fs.readFileSync('pages/academic/dashboard.html', 'utf8');
+assert(academicHtml.includes('btn-export-kredensial-siswa'), 'academic/dashboard.html includes btn-export-kredensial-siswa');
+assert(academicHtml.includes('btn-cetak-kartu-siswa'), 'academic/dashboard.html includes btn-cetak-kartu-siswa');
+
+const siswaJs = fs.readFileSync('js/academic/siswa.js', 'utf8');
+assert(siswaJs.includes('btn-export-kredensial-siswa'), 'js/academic/siswa.js includes Excel credential export');
+assert(siswaJs.includes('btn-cetak-kartu-siswa'), 'js/academic/siswa.js includes PDF card generation');
+
+const studentJs = fs.readFileSync('js/student/dashboard.js', 'utf8');
+assert(studentJs.includes('resolveUserRole'), 'js/student/dashboard.js includes strict resolveUserRole route guard');
+
+const securitySql = fs.readFileSync('database/migrations/student_portal_security_and_storage.sql', 'utf8');
+assert(securitySql.includes('student-assignments'), 'migration defines student-assignments storage bucket');
+assert(securitySql.includes('5242880'), 'migration enforces 5MB storage limit');
+
 console.log('\n--- TEST SUMMARY ---');
 console.log(`Total Passed: ${passed}, Total Failed: ${failed}`);
 if (failed > 0) {

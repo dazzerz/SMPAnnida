@@ -5,7 +5,7 @@
 
 import supabaseClient from '../core/supabase.js';
 import { showToast, escapeHTML, formatDate } from '../core/utils.js';
-import { handleLogout } from '../core/auth.js';
+import { handleLogout, resolveUserRole } from '../core/auth.js';
 
 const db = supabaseClient;
 
@@ -24,14 +24,30 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-// ── 1. INISIALISASI SESI SISWA ──────────────────────────────────────────
+// ── 1. INISIALISASI SESI SISWA & STRICT ROUTE GUARD ───────────────────────
 async function initStudentSession() {
   const { data: { user }, error: authErr } = await db.auth.getUser();
   if (authErr || !user) {
-    window.location.href = '../../login.html';
+    if (window.smoothRedirect) window.smoothRedirect('../../login.html');
+    else window.location.href = '../../login.html';
     return;
   }
   currentUser = user;
+
+  // Strict Role Guard Check
+  const role = await resolveUserRole(user);
+  if (role && role !== 'siswa' && role !== 'admin') {
+    if (role === 'teacher') {
+      window.location.href = '../academic/dashboard.html';
+      return;
+    } else if (role === 'finance') {
+      window.location.href = '../finance/dashboard.html';
+      return;
+    } else if (role === 'calon_siswa' || role === 'wali_murid') {
+      window.location.href = '../ppdb/dashboard-wali.html';
+      return;
+    }
+  }
 
   // Cek apakah akun memiliki kewajiban ganti password perdana
   const mustChange = user.user_metadata?.must_change_password;
@@ -462,6 +478,15 @@ function initTabNavigation() {
 
 // ── 10. GANTI PASSWORD & LOGOUT HANDLERS ────────────────────────────────
 function initPasswordChangeHandlers() {
+  // Prevent Escape key modal dismiss
+  window.addEventListener('keydown', (e) => {
+    const forcedModal = document.getElementById('modal-forced-password');
+    if (forcedModal && !forcedModal.classList.contains('hidden') && e.key === 'Escape') {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
+
   // Forced Modal on first login
   const forcedForm = document.getElementById('form-forced-password');
   if (forcedForm) {
