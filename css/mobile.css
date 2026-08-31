@@ -95,7 +95,7 @@
 /* =========================================================================
    DESKTOP LAYOUT (min-width: 769px)
    ========================================================================= */
-@media (min-width: 769px) {
+@media (min-width: 1024px) {
   /* Ensure body is flex row on desktop */
   body {
     display: flex;
@@ -146,7 +146,7 @@
 /* =========================================================================
    MOBILE LAYOUT (max-width: 768px)
    ========================================================================= */
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   /* Reset body to block stacking */
   body {
     display: block !important;
@@ -327,7 +327,7 @@
 /* =========================================================================
    TABLET (768px - 1024px)
    ========================================================================= */
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (min-width: 1024px) and (max-width: 1024px) {
   .sidebar {
     width: 220px;
     min-width: 220px;
@@ -338,7 +338,7 @@
 
 
 /* Override collapsible sidebar for mobile */
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .sidebar-mini-toggle {
     display: none !important;
   }
@@ -447,7 +447,7 @@
 }
 
 /* Touch-Friendly Form Controls */
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .btn, button.btn-primary, button.btn-submit, input.input-control, select.input-control {
     min-height: 44px !important;
     font-size: 0.9rem !important;
@@ -491,4 +491,94 @@ html, body {
   width: 100% !important;
   backdrop-filter: blur(20px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+}
+
+/* =========================================================================
+   UNIVERSAL MOBILE DRAWER & FULL-WIDTH MAIN CONTENT (< 1024px)
+   ========================================================================= */
+@media (max-width: 1023px) {
+  html, body {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    display: block !important;
+  }
+
+  .app-container, .app-layout {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-height: 100vh !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Fixed Sidebar Drawer: Completely out of normal document flow */
+  .sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow-y: auto !important;
+    background: var(--sidebar-bg, rgba(15, 23, 42, 0.95)) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-right: 1px solid var(--sidebar-border, rgba(255, 255, 255, 0.15)) !important;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  /* Sidebar Open State */
+  .sidebar.open, .sidebar.active, .sidebar.show {
+    transform: translateX(0) !important;
+  }
+
+  /* Main Content: Takes 100% full width */
+  .main-content {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 100vh !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Hamburger & Close Buttons */
+  .mobile-menu-btn, .menu-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+  }
+
+  .sidebar-close-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+  }
+
+  /* Sticky Topbar */
+  .topbar {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 500 !important;
+    width: 100% !important;
+    padding: 0.75rem 1rem !important;
+    min-height: 56px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+  }
 }

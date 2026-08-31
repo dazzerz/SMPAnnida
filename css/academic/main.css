@@ -22,7 +22,7 @@ body { font-family: 'Inter', sans-serif; background-color: var(--background); co
 .page-section h1 { font-size: 24px; margin-bottom: 20px; color: var(--text-main); }
 .card { background-color: var(--surface); padding: 20px; border-radius: 12px; box-shadow: var(--shadow-sm); transition: transform 0.2s ease, box-shadow 0.2s ease; margin-bottom: 20px; }
 .card.glass { background: var(--glass-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid var(--glass-border); }
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
     .sidebar {
         position: fixed;
         left: calc(-1 * var(--sidebar-width));
