@@ -15,7 +15,7 @@
     })();
   </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Portal Siswa — SMP Annida</title>
   <link rel="icon" href="/logo_1x1.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -114,6 +114,35 @@
     <!-- Main Content Panel -->
     <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
       
+      
+      <!-- Mobile Scrollable Pill Navigation Bar -->
+      <div class="flex md:hidden overflow-x-auto whitespace-nowrap gap-2 pb-2 mb-4 scrollbar-none border-b border-white/10">
+        <a href="#beranda" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-600 text-white shadow-sm flex items-center gap-1.5 shrink-0" data-target="panel-beranda">
+          <span class="material-symbols-outlined text-sm">dashboard</span> Beranda
+        </a>
+        <a href="#jadwal" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-jadwal">
+          <span class="material-symbols-outlined text-sm">calendar_month</span> Jadwal
+        </a>
+        <a href="#presensi" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-presensi">
+          <span class="material-symbols-outlined text-sm">fact_check</span> Presensi
+        </a>
+        <a href="#materi" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-materi">
+          <span class="material-symbols-outlined text-sm">menu_book</span> Materi
+        </a>
+        <a href="#tahfidz" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-tahfidz">
+          <span class="material-symbols-outlined text-sm">auto_stories</span> Tahfidz
+        </a>
+        <a href="#nilai" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-nilai">
+          <span class="material-symbols-outlined text-sm">grade</span> Nilai
+        </a>
+        <a href="#berkas" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-berkas">
+          <span class="material-symbols-outlined text-sm">folder_shared</span> Berkas
+        </a>
+        <a href="#akun" class="nav-item-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1.5 shrink-0" data-target="panel-akun">
+          <span class="material-symbols-outlined text-sm">manage_accounts</span> Akun
+        </a>
+      </div>
+
       <!-- Top Mobile Bar -->
       <div class="flex md:hidden items-center justify-between bg-slate-900/80 backdrop-blur-md p-4 rounded-2xl border border-white/10 mb-6">
         <div class="flex items-center gap-3">
@@ -141,11 +170,11 @@
                 <span class="inline-block px-3 py-1 rounded-full text-[0.75rem] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 mb-2">
                   ✅ Santri / Siswa Aktif
                 </span>
-                <h1 class="font-headline-md text-2xl md:text-3xl font-bold text-white mb-1" id="hero-student-name">Memuat Data Siswa...</h1>
+                <h1 class="font-headline-md text-2xl md:text-3xl font-bold text-white mb-1" id="hero-student-name" class="break-words">Memuat Data Siswa...</h1>
                 <p class="text-sm text-gray-300 flex flex-wrap gap-x-4 gap-y-1">
                   <span>NISN: <b class="text-emerald-300" id="hero-student-nisn">-</b></span>
                   <span>Kelas: <b class="text-emerald-300" id="hero-student-class">-</b></span>
-                  <span>Email: <b class="text-emerald-300" id="hero-student-email">-</b></span>
+                  <span>Email: <b class="text-emerald-300" id="hero-student-email" class="break-all">-</b></span>
                 </p>
               </div>
             </div>
