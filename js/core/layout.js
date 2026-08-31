@@ -80,9 +80,13 @@ export function injectSidebar(containerId) {
               <span class="material-symbols-outlined nav-icon">fact_check</span>
               <span class="nav-text">Absensi Siswa</span>
             </a>
+            <a href="${basePath}pages/academic/dashboard.html#cbt-admin" class="nav-item nav-link" data-target="cbt-admin" data-tooltip="Ujian CBT Online">
+              <span class="material-symbols-outlined nav-icon">quiz</span>
+              <span class="nav-text">Ujian CBT</span>
+            </a>
             <a href="${basePath}pages/academic/dashboard.html#tugas-lms" class="nav-item nav-link" data-target="tugas-lms" data-tooltip="Tugas & LMS">
               <span class="material-symbols-outlined nav-icon">add_task</span>
-              <span class="nav-text">Tugas & LMS</span>
+              <span class="nav-text">Tugas & PR</span>
             </a>
             <a href="${basePath}pages/academic/dashboard.html#jurnal-guru" class="nav-item nav-link" data-target="jurnal-guru" data-tooltip="Jurnal Guru">
               <span class="material-symbols-outlined nav-icon">menu_book</span>

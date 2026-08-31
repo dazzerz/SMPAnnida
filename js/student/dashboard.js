@@ -85,6 +85,7 @@ async function initStudentSession() {
   await Promise.allSettled([
     loadTodaySchedules(student),
     loadAssignments(student),
+    loadCbtQuizzes(student),
     loadWeeklySchedules(student),
     loadAttendanceHistory(student),
     loadJournalMaterials(student),
@@ -867,5 +868,500 @@ function initSubmissionModal() {
         if (saveBtnText) saveBtnText.textContent = 'Kirim Tugas';
       }
     };
+  }
+}
+
+
+// ── 9. CBT ONLINE EXAM ENGINE (ANTI-CHEAT & INSTANT DISCUSSION) ────────
+let studentQuizzesList = [];
+let activeQuiz = null;
+let activeQuestions = [];
+let currentQuestionIndex = 0;
+let studentAnswers = {};
+let studentDoubtFlags = new Set();
+let tabSwitchCount = 0;
+let examTimerInterval = null;
+let remainingSeconds = 0;
+
+async function loadCbtQuizzes(student) {
+  const feed = document.getElementById('student-cbt-feed');
+  if (!feed) return;
+
+  try {
+    const studentClass = student.classes?.nama_kelas || student.kelas || '7A';
+
+    const [quizRes, attemptRes] = await Promise.all([
+      db.from('quizzes')
+        .select('*')
+        .or(`class_name.eq.${studentClass},class_name.eq.Semua`)
+        .eq('status', 'published')
+        .order('created_at', { ascending: false }),
+      db.from('quiz_attempts')
+        .select('*')
+        .or(`student_id.eq.${student.id},student_user_id.eq.${currentUser.id}`)
+    ]);
+
+    if (quizRes.error) throw quizRes.error;
+    const quizzes = quizRes.data || [];
+    const attempts = attemptRes.data || [];
+
+    const attemptMap = {};
+    attempts.forEach(att => {
+      attemptMap[att.quiz_id] = att;
+    });
+
+    studentQuizzesList = quizzes.map(q => ({
+      ...q,
+      attempt: attemptMap[q.id] || null
+    }));
+
+    renderCbtQuizzesList(studentQuizzesList);
+  } catch (err) {
+    console.error('Gagal memuat kuis CBT:', err);
+    if (feed) {
+      feed.innerHTML = `<div class="text-center py-8 text-rose-400 col-span-full">Gagal memuat ujian CBT: ${escapeHTML(err.message)}</div>`;
+    }
+  }
+}
+
+function renderCbtQuizzesList(list) {
+  const feed = document.getElementById('student-cbt-feed');
+  if (!feed) return;
+
+  if (list.length === 0) {
+    feed.innerHTML = `
+      <div class="p-8 rounded-2xl bg-white/5 border border-white/10 text-center col-span-full">
+        <span class="material-symbols-outlined text-4xl text-gray-500 mb-2">quiz</span>
+        <div class="text-sm font-semibold text-gray-300">Belum ada ujian CBT yang aktif</div>
+        <p class="text-xs text-gray-500 mt-1">Ujian atau kuis online yang diterbitkan guru akan muncul di sini.</p>
+      </div>
+    `;
+    return;
+  }
+
+  feed.innerHTML = list.map(q => {
+    const isCompleted = !!q.attempt;
+    const scoreText = isCompleted ? (q.attempt.total_score != null ? q.attempt.total_score : q.attempt.pg_score) : null;
+
+    return `
+      <div class="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-emerald-500/30 transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span class="px-2.5 py-0.5 rounded-lg text-[0.7rem] font-bold bg-white/10 text-gray-300">${escapeHTML(q.subject)}</span>
+            ${isCompleted ? `
+              <span class="px-2.5 py-1 rounded-full text-[0.7rem] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">verified</span> Skor: ${scoreText}
+              </span>
+            ` : `
+              <span class="px-2.5 py-1 rounded-full text-[0.7rem] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">play_circle</span> Siap Dikerjakan
+              </span>
+            `}
+          </div>
+          <h4 class="text-base font-bold text-white mb-1.5">${escapeHTML(q.title)}</h4>
+          <p class="text-xs text-gray-400 line-clamp-2 mb-4 leading-relaxed">${escapeHTML(q.description || 'Ujian CBT dengan evaluasi otomatis.')}</p>
+        </div>
+
+        <div class="border-t border-white/10 pt-3 space-y-3">
+          <div class="flex items-center justify-between text-[0.75rem] text-gray-400">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-emerald-400">person</span> ${escapeHTML(q.teacher_name)}</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-amber-400">timer</span> ${q.duration_minutes} Menit</span>
+          </div>
+
+          ${isCompleted ? `
+            <button class="btn-view-cbt-discussion w-full py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-emerald-300 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer" data-id="${q.id}">
+              <span class="material-symbols-outlined text-sm">visibility</span>
+              <span>Lihat Pembahasan & Kunci Jawaban</span>
+            </button>
+          ` : `
+            <button class="btn-start-cbt w-full py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer" data-id="${q.id}">
+              <span class="material-symbols-outlined text-sm">quiz</span>
+              <span>Mulai Kerjakan Ujian</span>
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Bind start exam click
+  feed.querySelectorAll('.btn-start-cbt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qId = btn.getAttribute('data-id');
+      const quiz = studentQuizzesList.find(item => item.id === qId);
+      if (quiz) startCbtExam(quiz);
+    });
+  });
+
+  // Bind view discussion click
+  feed.querySelectorAll('.btn-view-cbt-discussion').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qId = btn.getAttribute('data-id');
+      const quiz = studentQuizzesList.find(item => item.id === qId);
+      if (quiz && quiz.attempt) showCbtResultsAndDiscussion(quiz, quiz.attempt);
+    });
+  });
+}
+
+async function startCbtExam(quiz) {
+  if (!confirm(`Mulai ujian "${quiz.title}"?\nDurasi: ${quiz.duration_minutes} Menit.\nSistem anti-cheat aktif: dilarang berpindah tab browser!`)) return;
+
+  activeQuiz = quiz;
+  currentQuestionIndex = 0;
+  studentAnswers = {};
+  studentDoubtFlags.clear();
+  tabSwitchCount = 0;
+  remainingSeconds = (quiz.duration_minutes || 60) * 60;
+
+  try {
+    const { data: questions, error } = await db
+      .from('quiz_questions')
+      .select('*')
+      .eq('quiz_id', quiz.id)
+      .order('question_order', { ascending: true });
+
+    if (error) throw error;
+    if (!questions || questions.length === 0) {
+      return showToast('Soal ujian belum tersedia!', 'warning');
+    }
+
+    activeQuestions = questions;
+
+    // Open Runner Modal
+    const modal = document.getElementById('modal-cbt-runner');
+    document.getElementById('cbt-exam-title').textContent = quiz.title;
+    document.getElementById('cbt-exam-subject').textContent = quiz.subject;
+    document.getElementById('cbt-total-q-num').textContent = activeQuestions.length;
+    document.getElementById('cbt-tab-switch-count').textContent = '0';
+
+    modal.classList.remove('hidden');
+
+    initAntiCheatTracking();
+    startExamTimer();
+    renderCurrentQuestion();
+    renderCbtNavigator();
+    initCbtRunnerActions();
+  } catch (err) {
+    console.error('Gagal memulai CBT:', err);
+    showToast('Gagal memuat butir soal: ' + err.message, 'error');
+  }
+}
+
+function initAntiCheatTracking() {
+  const onVisibilityChange = () => {
+    if (document.hidden && activeQuiz) {
+      tabSwitchCount++;
+      document.getElementById('cbt-tab-switch-count').textContent = tabSwitchCount;
+      showToast(`⚠️ PERINGATAN INTEGRITAS: Anda terdeteksi beralih tab (${tabSwitchCount} kali)!`, 'error');
+    }
+  };
+
+  document.removeEventListener('visibilitychange', window._cbtVisibilityHandler);
+  window._cbtVisibilityHandler = onVisibilityChange;
+  document.addEventListener('visibilitychange', onVisibilityChange);
+}
+
+function startExamTimer() {
+  if (examTimerInterval) clearInterval(examTimerInterval);
+
+  const timerText = document.getElementById('cbt-timer-text');
+  const timerBadge = document.getElementById('cbt-timer-badge');
+
+  function updateTimerDisplay() {
+    const m = Math.floor(remainingSeconds / 60);
+    const s = remainingSeconds % 60;
+    timerText.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+    if (remainingSeconds <= 300) {
+      timerBadge.className = 'px-4 py-2 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40 text-sm font-black flex items-center gap-1.5 animate-pulse';
+    } else {
+      timerBadge.className = 'px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-sm font-black flex items-center gap-1.5';
+    }
+
+    if (remainingSeconds <= 0) {
+      clearInterval(examTimerInterval);
+      showToast('Waktu ujian telah habis! Mengirim lembar jawaban...', 'warning');
+      submitCbtExam();
+    }
+    remainingSeconds--;
+  }
+
+  updateTimerDisplay();
+  examTimerInterval = setInterval(updateTimerDisplay, 1000);
+}
+
+function renderCurrentQuestion() {
+  if (!activeQuestions || activeQuestions.length === 0) return;
+  const q = activeQuestions[currentQuestionIndex];
+
+  document.getElementById('cbt-current-q-num').textContent = currentQuestionIndex + 1;
+  document.getElementById('cbt-question-type-badge').textContent = q.type === 'essay' ? 'Soal Uraian (Essay)' : 'Pilihan Ganda';
+  document.getElementById('cbt-question-text').innerHTML = escapeHTML(q.question_text).replace(/\n/g, '<br>');
+
+  const optionsContainer = document.getElementById('cbt-options-container');
+  const currentAnswer = studentAnswers[q.id] || '';
+
+  if (q.type === 'essay') {
+    optionsContainer.innerHTML = `
+      <textarea id="cbt-essay-input" class="w-full bg-slate-900 border border-white/20 rounded-xl p-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500" rows="5" placeholder="Ketikkan jawaban uraian Anda di sini...">${escapeHTML(currentAnswer)}</textarea>
+    `;
+    const input = document.getElementById('cbt-essay-input');
+    input.oninput = (e) => {
+      studentAnswers[q.id] = e.target.value;
+      renderCbtNavigator();
+    };
+  } else {
+    const opts = Array.isArray(q.options) ? q.options : [];
+    optionsContainer.innerHTML = opts.map(opt => {
+      const isSelected = currentAnswer === opt.key;
+      return `
+        <button type="button" class="btn-cbt-option w-full p-3.5 rounded-xl border text-left flex items-center gap-3.5 transition-all cursor-pointer ${isSelected ? 'bg-emerald-500/20 border-emerald-500 text-white font-bold' : 'bg-white/5 border-white/10 text-gray-300 hover:bg-white/10'}" data-key="${opt.key}">
+          <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs ${isSelected ? 'bg-emerald-500 text-white' : 'bg-white/10 text-gray-300'}">${opt.key}</span>
+          <span class="text-sm flex-1 leading-relaxed">${escapeHTML(opt.text)}</span>
+        </button>
+      `;
+    }).join('');
+
+    optionsContainer.querySelectorAll('.btn-cbt-option').forEach(btn => {
+      btn.onclick = () => {
+        const key = btn.getAttribute('data-key');
+        studentAnswers[q.id] = key;
+        renderCurrentQuestion();
+        renderCbtNavigator();
+      };
+    });
+  }
+
+  // Update Doubt button visual
+  const btnDoubt = document.getElementById('btn-cbt-doubt');
+  if (studentDoubtFlags.has(q.id)) {
+    btnDoubt.className = 'px-4 py-2 rounded-xl text-xs font-semibold bg-amber-500 text-black border border-amber-500 flex items-center gap-1 font-bold';
+  } else {
+    btnDoubt.className = 'px-4 py-2 rounded-xl text-xs font-semibold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 flex items-center gap-1';
+  }
+}
+
+function renderCbtNavigator() {
+  const grid = document.getElementById('cbt-nav-grid');
+  if (!grid) return;
+
+  grid.innerHTML = activeQuestions.map((q, idx) => {
+    const isCurrent = idx === currentQuestionIndex;
+    const hasAnswered = !!studentAnswers[q.id];
+    const isDoubt = studentDoubtFlags.has(q.id);
+
+    let bgClass = 'bg-white/10 text-gray-300 border-white/10';
+    if (isDoubt) bgClass = 'bg-amber-500 text-black border-amber-400 font-bold';
+    else if (hasAnswered) bgClass = 'bg-emerald-500 text-white border-emerald-400 font-bold';
+
+    const borderFocus = isCurrent ? 'ring-2 ring-white ring-offset-2 ring-offset-slate-950' : '';
+
+    return `
+      <button type="button" class="btn-nav-q h-9 rounded-lg border text-xs font-semibold flex items-center justify-center transition-all cursor-pointer ${bgClass} ${borderFocus}" data-idx="${idx}">
+        ${idx + 1}
+      </button>
+    `;
+  }).join('');
+
+  grid.querySelectorAll('.btn-nav-q').forEach(btn => {
+    btn.onclick = () => {
+      currentQuestionIndex = parseInt(btn.getAttribute('data-idx'));
+      renderCurrentQuestion();
+      renderCbtNavigator();
+    };
+  });
+}
+
+function initCbtRunnerActions() {
+  const btnPrev = document.getElementById('btn-cbt-prev');
+  const btnNext = document.getElementById('btn-cbt-next');
+  const btnDoubt = document.getElementById('btn-cbt-doubt');
+  const btnSubmit = document.getElementById('btn-cbt-submit');
+
+  if (btnPrev) btnPrev.onclick = () => {
+    if (currentQuestionIndex > 0) {
+      currentQuestionIndex--;
+      renderCurrentQuestion();
+      renderCbtNavigator();
+    }
+  };
+
+  if (btnNext) btnNext.onclick = () => {
+    if (currentQuestionIndex < activeQuestions.length - 1) {
+      currentQuestionIndex++;
+      renderCurrentQuestion();
+      renderCbtNavigator();
+    }
+  };
+
+  if (btnDoubt) btnDoubt.onclick = () => {
+    const q = activeQuestions[currentQuestionIndex];
+    if (studentDoubtFlags.has(q.id)) studentDoubtFlags.delete(q.id);
+    else studentDoubtFlags.add(q.id);
+    renderCurrentQuestion();
+    renderCbtNavigator();
+  };
+
+  if (btnSubmit) btnSubmit.onclick = () => {
+    const answeredCount = Object.keys(studentAnswers).length;
+    const total = activeQuestions.length;
+    if (confirm(`Apakah Anda yakin ingin mengumpulkan ujian ini?\nSoal terjawab: ${answeredCount} dari ${total} soal.`)) {
+      submitCbtExam();
+    }
+  };
+}
+
+async function submitCbtExam() {
+  if (examTimerInterval) clearInterval(examTimerInterval);
+
+  // Hitung Skor Pilihan Ganda secara otomatis
+  let pgTotalPoints = 0;
+  let earnedPgPoints = 0;
+  let correctCount = 0;
+  let wrongCount = 0;
+
+  activeQuestions.forEach(q => {
+    if (q.type === 'multiple_choice') {
+      const p = Number(q.points || 10);
+      pgTotalPoints += p;
+      const givenAns = studentAnswers[q.id];
+      if (givenAns && q.correct_key && givenAns.toUpperCase() === q.correct_key.toUpperCase()) {
+        earnedPgPoints += p;
+        correctCount++;
+      } else {
+        wrongCount++;
+      }
+    }
+  });
+
+  const studentClass = currentStudent?.classes?.nama_kelas || currentStudent?.kelas || '7A';
+  const studentName = currentStudent?.nama_lengkap || currentUser?.user_metadata?.full_name || 'Siswa';
+
+  const attemptPayload = {
+    quiz_id: activeQuiz.id,
+    student_id: currentStudent?.id,
+    student_user_id: currentUser.id,
+    student_name: studentName,
+    class_name: studentClass,
+    answers: studentAnswers,
+    tab_switch_count: tabSwitchCount,
+    pg_score: earnedPgPoints,
+    total_score: earnedPgPoints,
+    status: 'submitted',
+    submitted_at: new Date().toISOString()
+  };
+
+  try {
+    const { data: savedAttempt, error } = await db
+      .from('quiz_attempts')
+      .upsert(attemptPayload, { onConflict: 'quiz_id,student_id' })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    showToast('Ujian berhasil dikumpulkan!', 'success');
+
+    // Tutup runner modal & Buka discussion modal
+    document.getElementById('modal-cbt-runner').classList.add('hidden');
+    showCbtResultsAndDiscussion(activeQuiz, savedAttempt || attemptPayload);
+
+    await loadCbtQuizzes(currentStudent);
+  } catch (err) {
+    console.error('Gagal menyimpan hasil ujian:', err);
+    showToast('Gagal submit ujian: ' + err.message, 'error');
+  }
+}
+
+async function showCbtResultsAndDiscussion(quiz, attempt) {
+  const modal = document.getElementById('modal-cbt-results');
+  const titleEl = document.getElementById('results-quiz-title');
+  const subtitleEl = document.getElementById('results-quiz-subtitle');
+  const totalScoreEl = document.getElementById('results-total-score');
+  const correctEl = document.getElementById('results-correct-count');
+  const wrongEl = document.getElementById('results-wrong-count');
+  const tabSwitchesEl = document.getElementById('results-tab-switches');
+  const discussionList = document.getElementById('results-discussion-list');
+  const closeBtn = document.getElementById('btn-close-results-modal');
+
+  if (!modal) return;
+
+  titleEl.textContent = `Hasil & Pembahasan: ${quiz.title}`;
+  subtitleEl.textContent = `Mata Pelajaran ${quiz.subject} • Disubmit pada ${new Date(attempt.submitted_at || Date.now()).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`;
+
+  totalScoreEl.textContent = attempt.total_score != null ? attempt.total_score : attempt.pg_score;
+  tabSwitchesEl.textContent = attempt.tab_switch_count || 0;
+
+  modal.classList.remove('hidden');
+  if (closeBtn) closeBtn.onclick = () => modal.classList.add('hidden');
+
+  try {
+    const { data: questions, error } = await db
+      .from('quiz_questions')
+      .select('*')
+      .eq('quiz_id', quiz.id)
+      .order('question_order', { ascending: true });
+
+    if (error) throw error;
+
+    const answers = attempt.answers || {};
+    let correctC = 0, wrongC = 0;
+
+    discussionList.innerHTML = (questions || []).map((q, idx) => {
+      const studentAns = answers[q.id] || '-';
+      const isPg = q.type === 'multiple_choice';
+      const isCorrect = isPg && studentAns && q.correct_key && studentAns.toUpperCase() === q.correct_key.toUpperCase();
+
+      if (isPg) {
+        if (isCorrect) correctC++;
+        else wrongC++;
+      }
+
+      const statusBadge = isPg ? (
+        isCorrect
+          ? '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">✓ Jawaban Benar (+10)</span>'
+          : '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">✕ Jawaban Salah (0)</span>'
+      ) : '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-500/20 text-blue-300">Soal Uraian (Menunggu Koreksi Guru)</span>';
+
+      return `
+        <div class="p-5 rounded-2xl bg-white/5 border ${isCorrect ? 'border-emerald-500/30' : 'border-white/10'} space-y-3">
+          <div class="flex items-center justify-between text-xs text-gray-400">
+            <span class="font-bold text-white">Soal No. ${idx + 1}</span>
+            ${statusBadge}
+          </div>
+
+          <div class="text-sm text-gray-100 font-medium leading-relaxed">
+            ${escapeHTML(q.question_text).replace(/\n/g, '<br>')}
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 text-xs">
+            <div class="p-3 rounded-xl bg-slate-900 border border-white/10">
+              <span class="text-gray-400">Jawaban Anda:</span>
+              <div class="font-bold ${isCorrect ? 'text-emerald-400' : 'text-rose-400'} text-sm mt-0.5">${escapeHTML(studentAns)}</div>
+            </div>
+            ${isPg ? `
+              <div class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30">
+                <span class="text-emerald-300 font-semibold">Kunci Jawaban Benar:</span>
+                <div class="font-bold text-emerald-400 text-sm mt-0.5">${q.correct_key}</div>
+              </div>
+            ` : ''}
+          </div>
+
+          ${q.explanation ? `
+            <div class="p-3 rounded-xl bg-white/5 border border-white/5 text-xs text-gray-300">
+              <div class="font-bold text-emerald-300 mb-0.5 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">lightbulb</span> Pembahasan:
+              </div>
+              <p class="text-gray-400 leading-relaxed">${escapeHTML(q.explanation)}</p>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+
+    correctEl.textContent = correctC;
+    wrongEl.textContent = wrongC;
+  } catch (err) {
+    console.error('Gagal memuat pembahasan soal:', err);
   }
 }

@@ -810,6 +810,66 @@
                 </section>
 
                 
+                
+                <!-- Modul Ujian / Kuis Online CBT Section -->
+                <section id="cbt-admin" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
+                        <h1>Bank Soal & Ujian CBT Online</h1>
+                        <div class="flex items-center gap-2">
+                            <button id="btn-open-text-parser" class="btn-secondary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">content_paste</span>
+                                <span>+ Input Soal dari Teks (Parser)</span>
+                            </button>
+                            <button id="btn-create-quiz-cbt" class="btn-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">add_circle</span>
+                                <span>+ Buat Ujian CBT Baru</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="card glass aca-inline-57">
+                        <div class="form-group aca-inline-58">
+                            <label>Filter Kelas</label>
+                            <select id="filter-cbt-class" class="input-control">
+                                <option value="">Semua Kelas</option>
+                            </select>
+                        </div>
+                        <div class="form-group aca-inline-58">
+                            <label>Filter Mapel</label>
+                            <select id="filter-cbt-subject" class="input-control">
+                                <option value="">Semua Mata Pelajaran</option>
+                            </select>
+                        </div>
+                        <div class="form-group aca-inline-60">
+                            <label>&nbsp;</label>
+                            <input type="text" id="search-cbt-quiz" class="input-control" placeholder="Cari judul ujian...">
+                        </div>
+                    </div>
+
+                    <!-- Table Daftar Ujian CBT -->
+                    <div class="card glass aca-inline-20">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Judul Ujian</th>
+                                        <th>Kelas</th>
+                                        <th>Mata Pelajaran</th>
+                                        <th>Durasi</th>
+                                        <th>Peserta Mengerjakan</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-cbt-quizzes">
+                                    <tr><td colspan="7" class="aca-inline-22">Memuat daftar ujian CBT...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Tugas & E-Learning (LMS) Section -->
                 <section id="tugas-lms" class="page-section aca-inline-11">
                     <div class="aca-inline-56">
@@ -1808,6 +1868,103 @@
                         <tr><td colspan="7" class="text-center py-6 text-gray-400">Memuat berkas siswa...</td></tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Buat Ujian CBT Baru -->
+    <div id="modal-quiz-cbt" class="modal hidden aca-inline-49" style="display: none;">
+        <div class="modal-content card glass aca-inline-50">
+            <h2 id="modal-quiz-title" class="aca-inline-18">Buat Ujian CBT Baru</h2>
+            <form id="form-quiz-cbt">
+                <input type="hidden" id="quiz-id">
+                <div class="form-group mb-3">
+                    <label>Judul Ujian / Kuis</label>
+                    <input type="text" id="quiz-title-input" class="input-control" placeholder="Contoh: Penilaian Harian Bab 1 PAI" required>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div class="form-group">
+                        <label>Kelas Target</label>
+                        <select id="quiz-class-select" class="input-control" required>
+                            <option value="">-- Pilih Kelas --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Mata Pelajaran</label>
+                        <select id="quiz-subject-select" class="input-control" required>
+                            <option value="">-- Pilih Mapel --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="form-group">
+                        <label>Durasi (Menit)</label>
+                        <input type="number" id="quiz-duration-input" class="input-control" value="60" min="5" max="300" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Anti-Cheat Pindah Tab</label>
+                        <select id="quiz-anticheat-select" class="input-control">
+                            <option value="true">Aktif (Ketat)</option>
+                            <option value="false">Nonaktif</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-actions aca-inline-28">
+                    <button type="button" id="btn-close-quiz-modal" class="btn-secondary">Batal</button>
+                    <button type="submit" id="btn-save-quiz" class="btn-primary">Simpan & Lanjut Buat Soal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Generator Soal Cepat Berbasis Teks (Smart Parser) -->
+    <div id="modal-text-parser" class="modal hidden aca-inline-53" style="display: none;">
+        <div class="modal-content card glass max-w-4xl w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <div>
+                    <h2 class="text-xl font-bold text-emerald-400">Generator Soal Cepat (Smart Text Parser)</h2>
+                    <p class="text-xs text-gray-400">Salin kumpulan soal dari Word/Teks dan sistem akan mem-parsing otomatis</p>
+                </div>
+                <button id="btn-close-parser-modal" class="btn-secondary text-sm">✕ Tutup</button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="form-group">
+                    <label>Pilih Ujian Tujuan</label>
+                    <select id="parser-target-quiz" class="input-control">
+                        <option value="">-- Pilih Ujian CBT --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Format Contoh:</label>
+                    <div class="text-[0.7rem] text-gray-400 bg-white/5 p-2 rounded">
+                        1. Soal teks...<br>A. Opsi 1<br>B. Opsi 2<br>Kunci: A<br>Pembahasan: Penjelasan...
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Tempelkan Teks Kumpulan Soal di Sini</label>
+                <textarea id="parser-raw-text" class="input-control font-mono text-xs" rows="10" placeholder="1. Berapakah hasil 2x + 5 = 15?
+A. 3
+B. 5
+C. 7
+D. 10
+Kunci: B
+Pembahasan: 2x = 10, x = 5
+
+2. Jelaskan pengertian tawadhu secara bahasa dan istilah!
+Kunci: Essay
+Pembahasan: Tawadhu artinya rendah hati..."></textarea>
+            </div>
+
+            <div class="modal-actions flex justify-end gap-2 pt-2">
+                <button type="button" id="btn-cancel-parser" class="btn-secondary">Batal</button>
+                <button type="button" id="btn-execute-parser" class="btn-primary flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm">auto_fix_high</span>
+                    <span>Proses & Simpan Butir Soal</span>
+                </button>
             </div>
         </div>
     </div>
