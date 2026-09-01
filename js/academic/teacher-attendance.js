@@ -270,13 +270,22 @@ document.addEventListener('DOMContentLoaded', () => {
         statusText.textContent = 'Menyimpan absensi...';
 
         try {
-            // Draw to canvas
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            // Scale down image to prevent payload too large (max 640px width)
+            const MAX_WIDTH = 640;
+            let width = video.videoWidth;
+            let height = video.videoHeight;
+            
+            if (width > MAX_WIDTH) {
+                height = Math.round((height * MAX_WIDTH) / width);
+                width = MAX_WIDTH;
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext('2d').drawImage(video, 0, 0, width, height);
             
             // Convert to Base64 directly
-            const base64Image = canvas.toDataURL('image/jpeg', 0.8);
+            const base64Image = canvas.toDataURL('image/jpeg', 0.6);
 
             // Construct file name
             let tName = 'Guru';
@@ -307,27 +316,27 @@ document.addEventListener('DOMContentLoaded', () => {
             statusText.textContent = 'Mengunggah ke Drive...';
             const gasUrl = 'https://script.google.com/macros/s/AKfycbwgrN_Q75I06zGRygrivLYAJm7MC1p9n1H_sZFrmEexS5xfS5tYtwjQSd2zNef_xBxR/exec';
             
-            // Note: Google Apps Script Web App standard mode doesn't strictly adhere to CORS, 
-            // `mode: 'no-cors'` might be needed if it fails, but then we can't read the response JSON.
-            // A properly configured GAS Web App returns proper JSON. Let's try standard fetch first.
-            const response = await fetch(gasUrl, {
-                method: 'POST',
-                // Content-Type text/plain is used because GAS handles it better without CORS preflight issues sometimes
-                headers: {
-                    'Content-Type': 'text/plain'
-                },
-                body: JSON.stringify({
-                    filename: fileName,
-                    image: base64Image
-                })
-            });
-            
-            const result = await response.json();
-            if (result.status !== 'success') {
-                throw new Error(result.message || 'Gagal mengunggah ke Google Drive');
+            let photoUrl = null;
+            try {
+                const response = await fetch(gasUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({
+                        filename: fileName,
+                        image: base64Image
+                    })
+                });
+                
+                const result = await response.json();
+                if (result.status === 'success') {
+                    photoUrl = result.url;
+                } else {
+                    console.warn('GAS error:', result.message);
+                }
+            } catch (uploadErr) {
+                console.error('Upload photo failed (likely CORS or timeout):', uploadErr);
+                showToast('Foto gagal diunggah, tapi absensi tetap disimpan.', 'warning');
             }
-            
-            const photoUrl = result.url;
 
             // Save to Database
             const now = new Date().toISOString();
