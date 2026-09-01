@@ -56,6 +56,10 @@ async function loadLmsDropdowns() {
                 masterSubjects.map(s => `<option value="${s.nama_mapel}">${s.nama_mapel}</option>`).join('');
         }
     } catch (err) {
+                if (submitBtn) {
+                    submitBtn.textContent = origBtnText;
+                    submitBtn.disabled = false;
+                }
         console.error('Gagal memuat dropdown LMS:', err);
     }
 }
@@ -116,7 +120,7 @@ function renderAssignmentsTable(list) {
             <tr>
                 <td>${idx + 1}</td>
                 <td>
-                    <div class="font-bold text-white">${escapeHTML(a.title)}</div>
+                    <div class="font-bold text-white flex items-center gap-1">${escapeHTML(a.title)} ${a.attachment_url ? '<span class="material-symbols-outlined text-xs text-blue-400" title="Ada File Materi/Soal">attachment</span>' : ''}</div>
                     <div class="text-xs text-gray-400 truncate max-w-xs">${escapeHTML(a.description || '-')}</div>
                 </td>
                 <td><span class="badge badge-primary">${escapeHTML(a.class_name)}</span></td>
@@ -183,6 +187,37 @@ function openAssignmentModal(item = null) {
     const titleEl = document.getElementById('modal-assignment-title');
     const form = document.getElementById('form-assignment');
     form.reset();
+    const btnUploadMode = document.getElementById('btn-mode-upload');
+    const btnLinkMode = document.getElementById('btn-mode-link');
+    const uploadContainer = document.getElementById('upload-mode-container');
+    const linkContainer = document.getElementById('link-mode-container');
+    const fileInput = document.getElementById('assignment-file');
+    const attachmentInput = document.getElementById('assignment-attachment');
+    
+    let isUploadMode = true;
+
+    function setMode(uploadMode) {
+        isUploadMode = uploadMode;
+        if (uploadMode) {
+            btnUploadMode.classList.replace('btn-outline', 'btn-primary');
+            btnLinkMode.classList.replace('btn-primary', 'btn-outline');
+            uploadContainer.style.display = 'block';
+            linkContainer.style.display = 'none';
+        } else {
+            btnLinkMode.classList.replace('btn-outline', 'btn-primary');
+            btnUploadMode.classList.replace('btn-primary', 'btn-outline');
+            uploadContainer.style.display = 'none';
+            linkContainer.style.display = 'block';
+        }
+    }
+    
+    if (btnUploadMode && btnLinkMode) {
+        btnUploadMode.onclick = () => setMode(true);
+        btnLinkMode.onclick = () => setMode(false);
+    }
+    
+    setMode(true); // Default to upload mode
+
 
     if (item) {
         titleEl.textContent = 'Edit Tugas / Materi';
@@ -225,6 +260,10 @@ function initLmsEventListeners() {
     if (btnCloseAss) btnCloseAss.onclick = () => {
         modalAssignment.style.display = 'none';
         modalAssignment.classList.add('hidden');
+                if (submitBtn) {
+                    submitBtn.textContent = origBtnText;
+                    submitBtn.disabled = false;
+                }
     };
 
     if (btnCloseReview) btnCloseReview.onclick = () => {
@@ -246,8 +285,37 @@ function initLmsEventListeners() {
             const className = document.getElementById('assignment-class').value;
             const subject = document.getElementById('assignment-subject').value;
             const deadlineVal = document.getElementById('assignment-deadline').value;
-            const attachment = document.getElementById('assignment-attachment').value.trim();
+            let attachment = document.getElementById('assignment-attachment').value.trim();
             const description = document.getElementById('assignment-description').value.trim();
+            const fileInput = document.getElementById('assignment-file');
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const origBtnText = submitBtn.innerHTML;
+            
+            try {
+                submitBtn.textContent = 'Menyimpan...';
+                submitBtn.disabled = true;
+
+                // Handle file upload if mode is upload and file is selected
+                if (fileInput && fileInput.files.length > 0 && document.getElementById('upload-mode-container').style.display !== 'none') {
+                    const file = fileInput.files[0];
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+                    submitBtn.textContent = 'Mengunggah File...';
+                    
+                    const { data: uploadData, error: uploadErr } = await db.storage
+                        .from('smpannida_storage')
+                        .upload(`lms_materials/${fileName}`, file);
+                        
+                    if (uploadErr) {
+                        console.error(uploadErr);
+                        alert('Gagal unggah file (Storage Error). Pastikan RLS bucket smpannida_storage sudah diatur. Silakan jalankan script SQL Migration terlebih dahulu.');
+                        throw uploadErr;
+                    }
+                    
+                    const { data: { publicUrl } } = db.storage.from('smpannida_storage').getPublicUrl(`lms_materials/${fileName}`);
+                    attachment = publicUrl;
+                }
 
             const { data: { user } } = await db.auth.getUser();
             const teacherName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Guru Annida';

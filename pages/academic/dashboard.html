@@ -1824,9 +1824,23 @@
                         <input type="datetime-local" id="assignment-deadline" class="input-control">
                     </div>
                     <div class="form-group">
-                        <label>Lampiran File / Link Soal (Opsional)</label>
-                        <input type="text" id="assignment-attachment" class="input-control" placeholder="URL file / Google Drive / Dokumen">
-                    </div>
+                          <label>Lampiran File Materi / Tugas (Opsional)</label>
+                          <div class="flex gap-2 mb-2">
+                              <button type="button" id="btn-mode-upload" class="btn btn-sm btn-primary flex-1">Upload File</button>
+                              <button type="button" id="btn-mode-link" class="btn btn-sm btn-outline flex-1">Link Eksternal</button>
+                          </div>
+                          <!-- Upload Mode -->
+                          <div id="upload-mode-container">
+                              <input type="file" id="assignment-file" class="input-control" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,image/*" style="padding: 0.5rem;">
+                              <p class="text-xs text-gray-400 mt-1">Format: PDF, Word, Excel, PPT, Gambar (Max 10MB)</p>
+                          </div>
+                          <!-- Link Mode -->
+                          <div id="link-mode-container" style="display: none;">
+                              <input type="url" id="assignment-attachment" class="input-control" placeholder="Paste Link Google Drive / Website">
+                          </div>
+                          <!-- Hidden Input for Final URL -->
+                          <input type="hidden" id="assignment-final-url">
+                      </div>
                 </div>
                 <div class="form-group mb-4">
                     <label>Instruksi & Rincian Tugas</label>
