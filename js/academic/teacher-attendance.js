@@ -29,7 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnTabRekap = document.getElementById('btn-tg-tab-rekap');
     const tabPribadi = document.getElementById('tab-tg-pribadi');
     const tabRekap = document.getElementById('tab-tg-rekap');
+    const filterContainer = document.getElementById('tg-rekap-filters');
+    const typeRekap = document.getElementById('tg-rekap-type');
     const dateRekap = document.getElementById('tg-rekap-date');
+    const monthRekap = document.getElementById('tg-rekap-month');
     const tbodyRekap = document.getElementById('tg-rekap-tbody');
 
     if (!elDate || !btnCamera) return;
@@ -70,10 +73,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     btnTabRekap.style.setProperty('display', 'inline-block', 'important');
                     btnTabRekap.classList.remove('hidden');
                 }
-                if (dateRekap) {
-                    dateRekap.value = today;
-                    dateRekap.addEventListener('change', loadRekap);
-                }
+                if (filterContainer) {
+    if (dateRekap) {
+        dateRekap.value = today;
+        dateRekap.addEventListener('change', loadRekap);
+    }
+    if (monthRekap) {
+        monthRekap.value = today.substring(0, 7);
+        monthRekap.addEventListener('change', loadRekap);
+    }
+    if (typeRekap) {
+        typeRekap.addEventListener('change', () => {
+            if (typeRekap.value === 'day') {
+                dateRekap.style.display = 'inline-block';
+                monthRekap.style.display = 'none';
+            } else {
+                dateRekap.style.display = 'none';
+                monthRekap.style.display = 'inline-block';
+            }
+            loadRekap();
+        });
+    }
+}
             } else {
                 // Non-admin (Guru biasa): sembunyikan seluruh UI rekap admin
                 if (btnTabRekap) {
@@ -84,10 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     tabRekap.style.setProperty('display', 'none', 'important');
                     tabRekap.classList.add('hidden');
                 }
-                if (dateRekap) {
-                    dateRekap.style.setProperty('display', 'none', 'important');
-                    dateRekap.classList.add('hidden');
-                }
+                if (filterContainer) {
+    filterContainer.style.setProperty('display', 'none', 'important');
+    filterContainer.classList.add('hidden');
+}
                 if (btnTabPribadi) {
                     btnTabPribadi.classList.add('active');
                 }
@@ -106,10 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 tabRekap.style.setProperty('display', 'none', 'important');
                 tabRekap.classList.add('hidden');
             }
-            if (dateRekap) {
-                dateRekap.style.setProperty('display', 'none', 'important');
-                dateRekap.classList.add('hidden');
-            }
+            if (filterContainer) {
+    filterContainer.style.setProperty('display', 'none', 'important');
+    filterContainer.classList.add('hidden');
+}
         }
     }
 
@@ -393,10 +414,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tabPribadi.classList.remove('hidden');
             tabRekap.style.display = 'none';
             tabRekap.classList.add('hidden');
-            if (dateRekap) {
-                dateRekap.style.display = 'none';
-                dateRekap.classList.add('hidden');
-            }
+            if (filterContainer) {
+    filterContainer.style.display = 'none';
+    filterContainer.classList.add('hidden');
+}
         });
 
         btnTabRekap.addEventListener('click', () => {
@@ -410,11 +431,11 @@ document.addEventListener('DOMContentLoaded', () => {
             tabRekap.classList.remove('hidden');
             tabPribadi.style.display = 'none';
             tabPribadi.classList.add('hidden');
-            if (dateRekap) {
-                dateRekap.style.display = 'inline-block';
-                dateRekap.classList.remove('hidden');
-                loadRekap();
-            }
+            if (filterContainer) {
+    filterContainer.style.display = 'flex';
+    filterContainer.classList.remove('hidden');
+    loadRekap();
+}
         });
     }
 
@@ -424,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const userIsAdmin = await checkIsAdmin(session.user);
         if (!userIsAdmin) return;
 
-        const d = dateRekap.value || today;
+        
         if (tbodyRekap) tbodyRekap.innerHTML = '<tr><td colspan="7" style="text-align: center;">Memuat data...</td></tr>';
         
         try {
@@ -434,10 +455,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pData) pData.forEach(p => { if (p.id) teacherMap[p.id] = p.full_name; });
 
             // 2. Fetch attendance
-            const { data, error } = await db.from('teacher_attendance')
-                .select('*')
-                .eq('attendance_date', d)
-                .order('check_in', { ascending: true });
+            const d = dateRekap ? dateRekap.value : today;
+            const m = monthRekap ? monthRekap.value : today.substring(0, 7);
+            const isMonth = typeRekap && typeRekap.value === 'month';
+            
+            let query = db.from('teacher_attendance').select('*');
+            if (isMonth) {
+                query = query.gte('attendance_date', `${m}-01`).lte('attendance_date', `${m}-31`);
+            } else {
+                query = query.eq('attendance_date', d);
+            }
+            const { data, error } = await query.order('check_in', { ascending: true });
                 
             if (error) throw error;
             
@@ -502,6 +530,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }).join('');
             
+            // Bind delete buttons
+            document.querySelectorAll('.btn-del-att').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const id = e.target.dataset.id || e.target.parentElement.dataset.id;
+                    if (!confirm('Yakin ingin menghapus absensi ini?')) return;
+                    try {
+                        e.target.textContent = '...';
+                        const { error: delErr } = await db.from('teacher_attendance').delete().eq('id', id);
+                        if (delErr) throw delErr;
+                        showToast('Absensi berhasil dihapus', 'success');
+                        loadRekap();
+                    } catch(err) {
+                        console.error(err);
+                        showToast('Gagal menghapus absensi', 'error');
+                        e.target.innerHTML = '&#x1F5D1;';
+                    }
+                });
+            });
             // Bind save buttons
             document.querySelectorAll('.btn-save-att').forEach(btn => {
                 btn.addEventListener('click', async (e) => {
@@ -562,7 +608,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 const wb = XLSX.utils.table_to_book(cloneTable, { sheet: "Rekap_Guru" });
-                const d = dateRekap ? dateRekap.value : today;
+                const isMonthExport = typeRekap && typeRekap.value === 'month';
+                const d = isMonthExport ? (monthRekap ? monthRekap.value : today.substring(0,7)) : (dateRekap ? dateRekap.value : today);
                 XLSX.writeFile(wb, `Rekap_Absensi_Guru_${d}.xlsx`);
                 showToast('Data berhasil diexport', 'success');
             } catch (err) {
