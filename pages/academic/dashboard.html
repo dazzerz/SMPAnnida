@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <!-- Defensive Content Security Policy & Security Meta -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://vxrgezyfxzynpucuomci.supabase.co wss://vxrgezyfxzynpucuomci.supabase.co https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com https://script.google.com https://script.googleusercontent.com;" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://vxrgezyfxzynpucuomci.supabase.co wss://vxrgezyfxzynpucuomci.supabase.co https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com;" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
@@ -1013,16 +1013,9 @@
                 <!-- Absensi Guru Section -->
                 <section id="absensi-guru" class="page-section aca-inline-11">
                     <div class="aca-inline-56">
-                          <h1>Absensi Guru</h1>
-                          <div class="admin-only hidden" id="tg-rekap-filters" style="display: none; align-items: center; gap: 0.5rem; justify-content: flex-end;">
-                              <select id="tg-rekap-type" class="input-control" style="width: auto; padding: 0.4rem; font-size: 0.9rem;">
-                                  <option value="day">Harian</option>
-                                  <option value="month">Bulanan</option>
-                              </select>
-                              <input type="date" id="tg-rekap-date" class="input-control aca-inline-37" style="width: auto; padding: 0.4rem;">
-                              <input type="month" id="tg-rekap-month" class="input-control aca-inline-37" style="display: none; width: auto; padding: 0.4rem;">
-                          </div>
-                      </div>
+                        <h1>Absensi Guru</h1>
+                        <input type="date" id="tg-rekap-date" class="input-control aca-inline-37 admin-only hidden" style="display: none;">
+                    </div>
                     
                     <div class="tab-nav aca-inline-14">
                         <button class="tab-btn active" data-tab="tg-pribadi" id="btn-tg-tab-pribadi">Absensi Anda</button>
@@ -1153,7 +1146,7 @@
                                     <tr>
                                         <th class="aca-inline-98">No</th>
                                         <th>NIP</th>
-                                        <th>Nama</th><th>Tanggal</th>
+                                        <th>Nama</th>
                                         <th>Mapel</th>
                                         <th>Wali Kelas</th>
                                         <th>Status</th>

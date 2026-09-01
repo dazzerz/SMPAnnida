@@ -16,7 +16,7 @@ let selectedRegForVerif = null;
 function decryptNik(encryptedText) {
   if (!encryptedText) return '-';
   try {
-    const bytes = CryptoJS.AES.decrypt(encryptedText, import.meta.env.VITE_ENCRYPTION_KEY);
+    const bytes = CryptoJS.AES.decrypt(encryptedText, import.meta.env.VITE_ENCRYPTION_KEY || 'AnnidaPDP2026Rahasia!');
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
     return decrypted || encryptedText; // Kembalikan plaintext lama jika decrypt kosong
   } catch (e) {
@@ -403,7 +403,7 @@ async function saveSiswaForm() {
     if (pError) throw pError;
 
     // 2. Upsert biodata
-    const secretKey = import.meta.env.VITE_ENCRYPTION_KEY;
+    const secretKey = import.meta.env.VITE_ENCRYPTION_KEY || 'AnnidaPDP2026Rahasia!';
     const encryptedNik = nik ? CryptoJS.AES.encrypt(nik, secretKey).toString() : null;
 
     const biodataPayload = {
