@@ -317,22 +317,21 @@ function initLmsEventListeners() {
                     attachment = publicUrl;
                 }
 
-            const { data: { user } } = await db.auth.getUser();
-            const teacherName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Guru Annida';
+                const { data: { user } } = await db.auth.getUser();
+                const teacherName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Guru Annida';
 
-            const payload = {
-                teacher_id: user?.id,
-                teacher_name: teacherName,
-                class_name: className,
-                subject: subject,
-                title: title,
-                description: description || null,
-                attachment_url: attachment || null,
-                deadline: deadlineVal ? new Date(deadlineVal).toISOString() : null,
-                updated_at: new Date().toISOString()
-            };
+                const payload = {
+                    teacher_id: user?.id,
+                    teacher_name: teacherName,
+                    class_name: className,
+                    subject: subject,
+                    title: title,
+                    description: description || null,
+                    attachment_url: attachment || null,
+                    deadline: deadlineVal ? new Date(deadlineVal).toISOString() : null,
+                    updated_at: new Date().toISOString()
+                };
 
-            try {
                 if (id) {
                     const { error } = await db.from('assignments').update(payload).eq('id', id);
                     if (error) throw error;
@@ -349,6 +348,9 @@ function initLmsEventListeners() {
             } catch (err) {
                 console.error('Gagal menyimpan tugas:', err);
                 showToast('Gagal menyimpan tugas: ' + err.message, 'error');
+            } finally {
+                submitBtn.textContent = origBtnText;
+                submitBtn.disabled = false;
             }
         };
     }
