@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.loadGlobalKelasTahunOptions();
             } catch (err) {
                 console.error("Error saving kelas:", err);
-                showToast('Gagal menyimpan data kelas', 'error');
+                showToast('Gagal: ' + (err.message || 'Kemungkinan guru ini sudah menjadi wali di kelas lain.'), 'error');
             } finally {
                 btnSave.disabled = false;
                 btnSave.textContent = originalText;

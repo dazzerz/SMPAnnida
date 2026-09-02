@@ -185,7 +185,15 @@ document.addEventListener('DOMContentLoaded', () => {
             btnSave.disabled = true;
             btnSave.textContent = 'Menyimpan...';
 
-            const selectedMapels = Array.from(document.getElementById('guru-mapel')?.selectedOptions || []).map(opt => opt.value).filter(Boolean);
+            const mapelEl = document.getElementById('guru-mapel');
+            let selectedMapels = [];
+            if (mapelEl && mapelEl.options) {
+                for (let i = 0; i < mapelEl.options.length; i++) {
+                    if (mapelEl.options[i].selected && mapelEl.options[i].value) {
+                        selectedMapels.push(mapelEl.options[i].value);
+                    }
+                }
+            }
             const mapelString = selectedMapels.join(', ');
 
             const payload = {
@@ -217,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.loadGlobalGuruOptions();
             } catch (err) {
                 console.error("Error saving teacher:", err);
-                showToast('Gagal menyimpan data guru', 'error');
+                showToast('Gagal: ' + (err.message || 'Kesalahan sistem'), 'error');
             } finally {
                 btnSave.disabled = false;
                 btnSave.textContent = originalText;
