@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Guest Mode Protection
     if (authState.isGuest && btnAddGuru) {
-        btnAddGuru.style.display = 'none'; this.modal?.classList.add('hidden');
+        btnAddGuru.style.display = 'none'; 
     }
 
     // Load Data
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Modal Operations
     function openModal(teacher = null) {
         formGuru.reset();
-        modalGuru.style.display = 'flex'; modalGuru.classList.remove('hidden'); this.modal?.classList.remove('hidden');
+        modalGuru.style.display = 'flex'; modalGuru.classList.remove('hidden'); 
         if (teacher) {
             modalTitle.textContent = 'Edit Guru';
             document.getElementById('guru-id').value = teacher.id;
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnCloseModal) {
         btnCloseModal.addEventListener('click', () => {
-            modalGuru.style.display = 'none'; modalGuru.classList.add('hidden'); this.modal?.classList.add('hidden');
+            modalGuru.style.display = 'none'; modalGuru.classList.add('hidden'); 
         });
     }
 
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (error) throw error;
                     showToast('Guru berhasil ditambahkan', 'success');
                 }
-                modalGuru.style.display = 'none'; modalGuru.classList.add('hidden'); this.modal?.classList.add('hidden');
+                modalGuru.style.display = 'none'; modalGuru.classList.add('hidden'); 
                 loadData();
                 window.loadGlobalGuruOptions();
             } catch (err) {
