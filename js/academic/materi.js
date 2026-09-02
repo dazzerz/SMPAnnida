@@ -36,13 +36,22 @@ async function loadMateriDropdowns() {
         const filterSubject = document.getElementById('filter-materi-subject');
 
         if (selClass) {
-            selClass.innerHTML = '<option value="">-- Pilih Kelas --</option><option value="Semua">Semua Kelas</option>' + 
-                masterClasses.map(c => `<option value="${c.nama_kelas}">${c.nama_kelas}</option>`).join('');
+            selClass.innerHTML = `
+                <option value="">-- Pilih Tingkat Kelas --</option>
+                <option value="Kelas 7">Kelas 7</option>
+                <option value="Kelas 8">Kelas 8</option>
+                <option value="Kelas 9">Kelas 9</option>
+                <option value="Semua">Semua Tingkat (7, 8, 9)</option>
+            `;
         }
 
         if (filterClass) {
-            filterClass.innerHTML = '<option value="">Semua Kelas</option>' + 
-                masterClasses.map(c => `<option value="${c.nama_kelas}">${c.nama_kelas}</option>`).join('');
+            filterClass.innerHTML = `
+                <option value="">Semua Tingkat</option>
+                <option value="Kelas 7">Kelas 7</option>
+                <option value="Kelas 8">Kelas 8</option>
+                <option value="Kelas 9">Kelas 9</option>
+            `;
         }
 
         if (selSubject) {
@@ -95,7 +104,15 @@ function renderMaterialsTable(list) {
     const query = document.getElementById('search-materi-query')?.value.toLowerCase().trim() || '';
 
     let filtered = list;
-    if (filterCls) filtered = filtered.filter(m => m.class_name === filterCls || m.class_name === 'Semua');
+    if (filterCls) {
+        const targetDigit = filterCls.match(/\d+/)?.[0];
+        filtered = filtered.filter(m => {
+            if (m.class_name === 'Semua' || m.class_name === 'Semua Kelas') return true;
+            if (m.class_name === filterCls) return true;
+            if (targetDigit && m.class_name && m.class_name.includes(targetDigit)) return true;
+            return false;
+        });
+    }
     if (filterSub) filtered = filtered.filter(m => m.subject === filterSub);
     if (query) filtered = filtered.filter(m => m.title.toLowerCase().includes(query) || (m.description || '').toLowerCase().includes(query));
 
