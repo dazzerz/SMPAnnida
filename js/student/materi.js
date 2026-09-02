@@ -239,6 +239,7 @@ export async function openStudentMaterialViewer(url, title, subtitle, type) {
         }
     }
 
+    modal.style.display = 'flex';
     modal.classList.remove('hidden');
 }
 
@@ -249,6 +250,7 @@ function initStudentViewerControls() {
 
     if (closeBtn && modal) {
         closeBtn.onclick = () => {
+            modal.style.display = 'none';
             modal.classList.add('hidden');
             if (iframe) iframe.src = 'about:blank';
         };
