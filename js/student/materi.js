@@ -177,8 +177,9 @@ export async function openStudentMaterialViewer(url, title, subtitle, type) {
     if (titleEl) titleEl.textContent = title || 'Materi Pembelajaran';
     if (subtitleEl) subtitleEl.textContent = subtitle || 'SMP Annida E-Learning';
 
-    const isHtml = type === 'html' || /\.(html|htm)(\?.*)?$/i.test(url);
-    const isImage = type === 'image' || /\.(jpeg|jpg|png|gif|webp)(\?.*)?$/i.test(url);
+    const isDrive = url.includes('drive.google.com');
+    const isHtml = (type === 'html' || /\.(html|htm)(\?.*)?$/i.test(url)) && !isDrive;
+    const isImage = (type === 'image' || /\.(jpeg|jpg|png|gif|webp)(\?.*)?$/i.test(url)) && !isDrive;
     const formattedUrl = formatStudentEmbedUrl(url);
 
     if (openExternal) {
@@ -233,7 +234,7 @@ export async function openStudentMaterialViewer(url, title, subtitle, type) {
         iframe.src = formattedUrl;
         if (iconEl) {
             if (formattedUrl.includes('youtube.com')) iconEl.textContent = 'play_circle';
-            else if (formattedUrl.includes('.pdf')) iconEl.textContent = 'picture_as_pdf';
+            else if (formattedUrl.includes('.pdf') || formattedUrl.includes('drive.google.com')) iconEl.textContent = 'description';
             else iconEl.textContent = 'menu_book';
         }
     }
