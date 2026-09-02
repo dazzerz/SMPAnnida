@@ -253,44 +253,58 @@ function initMateriEventListeners() {
             if (saveBtnText) saveBtnText.textContent = 'Menyimpan...';
 
             try {
-                // Handle file upload if provided
+                // Handle file upload if provided (Google Drive GAS Auto-Router with Supabase fallback)
                 if (fileUpload) {
                     const ext = fileUpload.name.split('.').pop().toLowerCase();
-                    const safeName = fileUpload.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-                    const storagePath = `materials/${Date.now()}_${safeName}`;
+                    if (ext === 'html' || ext === 'htm') materialType = 'html';
+                    else if (ext === 'pdf') materialType = 'pdf';
+                    else if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) materialType = 'image';
 
-                    let contentType = fileUpload.type || 'application/octet-stream';
-                    let uploadBody = fileUpload;
+                    try {
+                        // 1. Coba upload langsung ke Google Drive Auto-Folder Router (/Materi/[Mapel]/[Kelas])
+                        const gasRes = await uploadToGoogleDriveGAS(fileUpload, subject, className);
+                        if (gasRes && gasRes.embedUrl) {
+                            materialUrl = gasRes.embedUrl;
+                            console.log('Berkas berhasil disimpan ke Google Drive:', gasRes.folderPath);
+                        } else {
+                            throw new Error('GAS response invalid');
+                        }
+                    } catch (gasErr) {
+                        console.warn('GAS upload gagal / dialihkan ke Supabase Storage:', gasErr.message);
+                        // 2. Fallback aman ke Supabase Storage
+                        const safeName = fileUpload.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+                        const storagePath = `materials/${Date.now()}_${safeName}`;
 
-                    if (ext === 'html' || ext === 'htm') {
-                        contentType = 'text/html; charset=utf-8';
-                        uploadBody = new Blob([fileUpload], { type: contentType });
-                        materialType = 'html';
-                    } else if (ext === 'pdf') {
-                        contentType = 'application/pdf';
-                        uploadBody = new Blob([fileUpload], { type: contentType });
-                        materialType = 'pdf';
-                    } else if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) {
-                        contentType = `image/${ext === 'jpg' ? 'jpeg' : ext}`;
-                        uploadBody = new Blob([fileUpload], { type: contentType });
-                        materialType = 'image';
+                        let contentType = fileUpload.type || 'application/octet-stream';
+                        let uploadBody = fileUpload;
+
+                        if (ext === 'html' || ext === 'htm') {
+                            contentType = 'text/html; charset=utf-8';
+                            uploadBody = new Blob([fileUpload], { type: contentType });
+                        } else if (ext === 'pdf') {
+                            contentType = 'application/pdf';
+                            uploadBody = new Blob([fileUpload], { type: contentType });
+                        } else if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) {
+                            contentType = `image/${ext === 'jpg' ? 'jpeg' : ext}`;
+                            uploadBody = new Blob([fileUpload], { type: contentType });
+                        }
+
+                        const { error: uploadErr } = await db.storage
+                            .from('smpannida_storage')
+                            .upload(storagePath, uploadBody, { 
+                                contentType: contentType, 
+                                cacheControl: '3600',
+                                upsert: true 
+                            });
+
+                        if (uploadErr) throw uploadErr;
+
+                        const { data: publicUrlData } = db.storage
+                            .from('smpannida_storage')
+                            .getPublicUrl(storagePath);
+
+                        materialUrl = publicUrlData?.publicUrl || storagePath;
                     }
-
-                    const { error: uploadErr } = await db.storage
-                        .from('smpannida_storage')
-                        .upload(storagePath, uploadBody, { 
-                            contentType: contentType, 
-                            cacheControl: '3600',
-                            upsert: true 
-                        });
-
-                    if (uploadErr) throw uploadErr;
-
-                    const { data: publicUrlData } = db.storage
-                        .from('smpannida_storage')
-                        .getPublicUrl(storagePath);
-
-                    materialUrl = publicUrlData?.publicUrl || storagePath;
                 }
 
                 // Otomatis deteksi YouTube jika memasukkan URL
