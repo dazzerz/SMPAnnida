@@ -86,6 +86,17 @@ export async function loadMaterials() {
         }
 
         allMaterials = materials || [];
+
+        const filterTeacherEl = document.getElementById('filter-materi-teacher');
+        if (filterTeacherEl && allMaterials.length > 0) {
+            const uniqueTeachers = [...new Set(allMaterials.map(m => m.teacher_name).filter(Boolean))].sort();
+            const currentVal = filterTeacherEl.value;
+            let tHtml = '<option value="">Semua Guru</option>';
+            uniqueTeachers.forEach(t => tHtml += `<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`);
+            filterTeacherEl.innerHTML = tHtml;
+            if (currentVal) filterTeacherEl.value = currentVal;
+        }
+
         renderMaterialsTable(allMaterials);
     } catch (err) {
         console.error('Gagal memuat daftar materi:', err);
@@ -101,6 +112,7 @@ function renderMaterialsTable(list) {
 
     const filterCls = document.getElementById('filter-materi-class')?.value || '';
     const filterSub = document.getElementById('filter-materi-subject')?.value || '';
+    const filterTch = document.getElementById('filter-materi-teacher')?.value || '';
     const query = document.getElementById('search-materi-query')?.value.toLowerCase().trim() || '';
 
     let filtered = list;
@@ -114,6 +126,7 @@ function renderMaterialsTable(list) {
         });
     }
     if (filterSub) filtered = filtered.filter(m => m.subject === filterSub);
+    if (filterTch) filtered = filtered.filter(m => m.teacher_name === filterTch);
     if (query) filtered = filtered.filter(m => m.title.toLowerCase().includes(query) || (m.description || '').toLowerCase().includes(query));
 
     if (filtered.length === 0) {
@@ -138,6 +151,7 @@ function renderMaterialsTable(list) {
                 <td>
                     <div class="font-bold text-white">${escapeHTML(m.title)}</div>
                     <div class="text-xs text-gray-400 truncate max-w-xs">${escapeHTML(m.description || '-')}</div>
+                    <div class="text-[10px] text-gray-500 mt-1">Oleh: ${escapeHTML(m.teacher_name || 'Admin')}</div>
                 </td>
                 <td><span class="badge badge-primary">${escapeHTML(m.class_name)}</span></td>
                 <td>${escapeHTML(m.subject)}</td>
@@ -233,6 +247,7 @@ function initMateriEventListeners() {
 
     const filterCls = document.getElementById('filter-materi-class');
     const filterSub = document.getElementById('filter-materi-subject');
+    const filterTchInput = document.getElementById('filter-materi-teacher');
     const searchInput = document.getElementById('search-materi-query');
 
     if (btnCreate) btnCreate.onclick = () => {
@@ -247,6 +262,7 @@ function initMateriEventListeners() {
 
     if (filterCls) filterCls.onchange = () => renderMaterialsTable(allMaterials);
     if (filterSub) filterSub.onchange = () => renderMaterialsTable(allMaterials);
+    if (filterTchInput) filterTchInput.onchange = () => renderMaterialsTable(allMaterials);
     if (searchInput) searchInput.oninput = () => renderMaterialsTable(allMaterials);
 
     if (form) {

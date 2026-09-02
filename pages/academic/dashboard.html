@@ -882,29 +882,37 @@
                     </div>
 
                     <!-- Filter Bar -->
-                    <div class="card glass aca-inline-57">
-                        <div class="form-group aca-inline-58">
-                            <label>Filter Kelas</label>
-                            <select id="filter-materi-class" class="input-control">
-                                <option value="">Semua Kelas</option>
-                            </select>
-                        </div>
-                        <div class="form-group aca-inline-58">
-                            <label>Filter Mapel</label>
-                            <select id="filter-materi-subject" class="input-control">
-                                <option value="">Semua Mata Pelajaran</option>
-                            </select>
-                        </div>
-                        <div class="form-group aca-inline-60">
-                            <label>&nbsp;</label>
-                            <input type="text" id="search-materi-query" class="input-control" placeholder="Cari judul materi / topik...">
+                    <div class="card glass mb-6 p-4">
+                        <div class="flex flex-wrap items-end gap-4">
+                            <div class="form-group flex-1 min-w-[150px] mb-0">
+                                <label class="text-sm text-gray-300 mb-1 block">Filter Kelas</label>
+                                <select id="filter-materi-class" class="input-control w-full">
+                                    <option value="">Semua Kelas</option>
+                                </select>
+                            </div>
+                            <div class="form-group flex-1 min-w-[150px] mb-0">
+                                <label class="text-sm text-gray-300 mb-1 block">Filter Mapel</label>
+                                <select id="filter-materi-subject" class="input-control w-full">
+                                    <option value="">Semua Mapel</option>
+                                </select>
+                            </div>
+                            <div class="form-group flex-1 min-w-[150px] mb-0">
+                                <label class="text-sm text-gray-300 mb-1 block">Filter Guru</label>
+                                <select id="filter-materi-teacher" class="input-control w-full">
+                                    <option value="">Semua Guru</option>
+                                </select>
+                            </div>
+                            <div class="form-group flex-[2] min-w-[200px] mb-0">
+                                <label class="text-sm text-gray-300 mb-1 block">&nbsp;</label>
+                                <input type="text" id="search-materi-query" class="input-control w-full" placeholder="Cari judul materi / topik...">
+                            </div>
                         </div>
                     </div>
 
                     <!-- Table Daftar Materi Guru -->
                     <div class="card glass aca-inline-20">
                         <div class="table-container">
-                            <table class="table">
+                            <table class="data-table w-full text-left whitespace-nowrap">
                                 <thead>
                                     <tr>
                                         <th>No</th>
