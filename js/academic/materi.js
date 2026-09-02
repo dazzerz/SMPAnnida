@@ -458,3 +458,46 @@ if (typeof document !== 'undefined') {
         document.addEventListener('DOMContentLoaded', initMateriModule);
     }
 }
+
+
+/**
+ * Helper pengunggah berkas ke Google Drive via GAS Auto-Router
+ * Struktur: /Materi/[Mata Pelajaran]/[Kelas]
+ */
+export async function uploadToGoogleDriveGAS(fileUpload, subject, className, customGasUrl) {
+    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url');
+    if (!gasUrl) return null;
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = async () => {
+            try {
+                const base64Data = reader.result.split(',')[1];
+                const payload = {
+                    filename: fileUpload.name,
+                    mimeType: fileUpload.type || 'application/octet-stream',
+                    base64: base64Data,
+                    subject: subject || 'Umum',
+                    className: className || 'Semua'
+                };
+
+                const res = await fetch(gasUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+
+                const json = await res.json();
+                if (json.status === 'success') {
+                    resolve(json);
+                } else {
+                    reject(new Error(json.message || 'Gagal upload ke Google Drive'));
+                }
+            } catch (err) {
+                reject(err);
+            }
+        };
+        reader.onerror = () => reject(new Error('Gagal membaca berkas lokal'));
+        reader.readAsDataURL(fileUpload);
+    });
+}
