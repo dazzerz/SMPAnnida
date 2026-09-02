@@ -435,13 +435,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            const activeYearData = allTahun.find(t => t.aktif === true);
-            const activeYearText = activeYearData ? activeYearData.tahun_ajaran : '-';
-            const activeSemesterText = activeYearData ? activeYearData.semester : '-';
+            const activeYearData = allTahun.find(t => t.aktif === true || String(t.aktif).toLowerCase() === 'true' || t.aktif === 1);
+            const activeYearText = activeYearData ? activeYearData.tahun_ajaran : 'Belum Diatur';
+            const activeSemesterText = activeYearData ? activeYearData.semester : 'Belum Diatur';
             
             // Export globally for insertions
-            window.activeTahunAjaran = activeYearText !== '-' ? activeYearText : null;
-            window.activeSemester = activeSemesterText !== '-' ? activeSemesterText : null;
+            window.activeTahunAjaran = activeYearText !== 'Belum Diatur' ? activeYearText : null;
+            window.activeSemester = activeSemesterText !== 'Belum Diatur' ? activeSemesterText : null;
 
             // Populate Semester Dropdowns
             const semesterSelectIds = ['export-semester', 'rapor-semester'];
@@ -457,13 +457,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     const prevVal = el.value;
                     el.innerHTML = semesterOptions;
                     if (prevVal) el.value = prevVal;
-                    else el.value = activeSemesterText !== '-' ? activeSemesterText : '';
+                    else el.value = activeSemesterText !== 'Belum Diatur' ? activeSemesterText : '';
                 }
             });
 
             tahunSelectIds.forEach(id => {
                 const el = document.getElementById(id);
-                if (el && !el.value) el.value = activeYearText !== '-' ? activeYearText : '';
+                if (el && !el.value) el.value = activeYearText !== 'Belum Diatur' ? activeYearText : '';
             });
 
             // Update Dashboard Stats
@@ -474,8 +474,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (statKelasEl) statKelasEl.textContent = activeKelas.length;
             if (statWaliEl) {
-                const uniqueWali = [...new Set(activeKelas.map(k => k.wali_kelas_id).filter(Boolean))];
-                statWaliEl.textContent = uniqueWali.length;
+                try {
+                    // Ambil langsung jumlah guru yang mengisi kolom wali_kelas
+                    const { data: guruWali } = await db.from('teachers').select('wali_kelas').neq('wali_kelas', '').not('wali_kelas', 'is', null);
+                    const uniqueWaliCount = guruWali ? guruWali.filter(g => g.wali_kelas && g.wali_kelas.trim() !== '' && g.wali_kelas !== 'null').length : 0;
+                    statWaliEl.textContent = uniqueWaliCount;
+                } catch(e) {
+                    console.error("Gagal menghitung total wali kelas", e);
+                    statWaliEl.textContent = "0";
+                }
             }
             if (statTahunEl) statTahunEl.textContent = activeYearText;
             if (statSemesterEl) statSemesterEl.textContent = activeSemesterText;
