@@ -21,12 +21,24 @@ export async function loadStudentMaterials(student) {
     if (!feed) return;
 
     try {
-        const studentClass = student.classes?.nama_kelas || student.kelas || '7A';
+        const rawClass = student.classes?.nama_kelas || student.kelas || '7A';
+        const digitMatch = rawClass.match(/\d+/);
+        const gradeLevel = digitMatch ? `Kelas ${digitMatch[0]}` : rawClass;
+        const digitOnly = digitMatch ? digitMatch[0] : rawClass;
+
+        // Query matching: Rombel ("7A"), Tingkat ("Kelas 7"), Angka ("7"), atau "Semua"
+        const orConditions = [
+            `class_name.eq.${rawClass}`,
+            `class_name.eq.${gradeLevel}`,
+            `class_name.eq.${digitOnly}`,
+            `class_name.eq.Semua`,
+            `class_name.eq.Semua Kelas`
+        ].join(',');
 
         const { data: materials, error } = await db
             .from('materials')
             .select('*')
-            .or(`class_name.eq.${studentClass},class_name.eq.Semua`)
+            .or(orConditions)
             .order('created_at', { ascending: false });
 
         if (error) {
