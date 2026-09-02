@@ -513,6 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <tr style="background: rgba(255,255,255,0.02); transition: all 0.3s ease;">
                         <td>${i + 1}</td>
                         <td><strong>${escapeHTML(nama)}</strong></td>
+                        <td style="text-align: center;">${formatDate(r.attendance_date)}</td>
                         <td style="text-align: center;">
                             <input type="time" class="edit-checkin form-input" data-id="${r.id}" value="${jamIn !== '--:--' ? jamIn : ''}" style="width:100px; text-align:center; padding:0.2rem; font-size:0.9rem;">
                         </td>
@@ -523,8 +524,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td style="text-align: center;">${imgOut}</td>
                         <td style="text-align: center;">${loc}</td>
                         <td style="text-align: center;">${st}</td>
-                        <td style="text-align: center;">
+                        <td style="text-align: center; display: flex; gap: 0.5rem; justify-content: center;">
                             <button class="btn btn-sm btn-success btn-save-att" data-id="${r.id}" data-date="${r.attendance_date}" style="padding: 0.2rem 0.5rem; font-size: 0.8rem; background-color:#10b981; color:white; border:none; border-radius:4px; cursor:pointer;">💾 Simpan</button>
+                            <button class="btn btn-sm btn-danger btn-del-att" data-id="${r.id}" style="padding: 0.2rem 0.5rem; font-size: 0.8rem; background-color:#ef4444; color:white; border:none; border-radius:4px; cursor:pointer;">🗑️ Hapus</button>
                         </td>
                     </tr>
                 `;
