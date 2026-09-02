@@ -520,11 +520,18 @@ export async function uploadToGoogleDriveGAS(fileUpload, subject, className, cus
                     body: JSON.stringify(payload)
                 });
 
-                const json = await res.json();
-                if (json.status === 'success') {
+                const text = await res.text();
+                let json;
+                try {
+                    json = JSON.parse(text);
+                } catch (parseErr) {
+                    throw new Error('Respon GAS bukan JSON valid: ' + text.slice(0, 100));
+                }
+
+                if (json && json.status === 'success') {
                     resolve(json);
                 } else {
-                    reject(new Error(json.message || 'Gagal upload ke Google Drive'));
+                    reject(new Error(json?.message || 'Gagal upload ke Google Drive'));
                 }
             } catch (err) {
                 reject(err);
