@@ -69,9 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         filtered.forEach((g, index) => {
+            // Sinkronkan indikator Wali Kelas dari masterClasses (relasi classes.wali_kelas_id)
+            const myClasses = window.masterClasses ? window.masterClasses.filter(c => c.wali_kelas_id === g.id) : [];
+            const classNames = myClasses.map(c => c.nama_kelas).join(', ');
+            const displayWali = classNames || g.wali_kelas || '-';
+
             const isAktif = g.aktif !== false; // default true if undefined
             const statusBadge = isAktif ? 
-                '<span style="padding: 4px 8px; background: rgba(40,167,69,0.1); color: var(--success); border-radius: 4px; font-size: 12px;">Aktif</span>' : 
+                '<span style="padding: 4px 8px; background: rgba(40,167,69,0.1); color: var(--success); border-radius: 4px; font-size: 12px; font-weight: bold;">Aktif</span>' : 
                 '<span style="padding: 4px 8px; background: rgba(220,53,69,0.1); color: var(--danger); border-radius: 4px; font-size: 12px;">Nonaktif</span>';
             
             const tr = document.createElement('tr');
@@ -80,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${escapeHTML(g.nip || '-')}</td>
                 <td><strong>${escapeHTML(g.nama || '-')}</strong></td>
                 <td>${escapeHTML(g.mata_pelajaran || '-')}</td>
-                <td>${escapeHTML(g.wali_kelas || '-')}</td>
+                <td><span class="${displayWali !== '-' ? 'badge badge-primary' : 'text-gray-400'}">${escapeHTML(displayWali)}</span></td>
                 <td>${statusBadge}</td>
                 <td style="text-align: center;">
                     <button class="btn-edit-guru btn btn-outline" data-id="${g.id}" style="padding: 4px 10px; font-size: 12px;">Edit</button>
@@ -134,11 +139,24 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('guru-jk').value = teacher.jenis_kelamin || '';
             document.getElementById('guru-status').value = teacher.status_guru || 'GTY';
             document.getElementById('guru-wali').value = teacher.wali_kelas || '';
-            document.getElementById('guru-mapel').value = teacher.mata_pelajaran || '';
+            
+            // Mapel Multi-Select Handling
+            const mapelValues = (teacher.mata_pelajaran || '').split(',').map(s => s.trim()).filter(Boolean);
+            const mapelSelect = document.getElementById('guru-mapel');
+            if (mapelSelect) {
+                Array.from(mapelSelect.options).forEach(opt => {
+                    opt.selected = mapelValues.includes(opt.value);
+                });
+            }
+
             document.getElementById('guru-aktif').checked = teacher.aktif !== false;
         } else {
             modalTitle.textContent = 'Tambah Guru';
             document.getElementById('guru-id').value = '';
+            const mapelSelect = document.getElementById('guru-mapel');
+            if (mapelSelect) {
+                Array.from(mapelSelect.options).forEach(opt => opt.selected = false);
+            }
             document.getElementById('guru-aktif').checked = true;
         }
     }
@@ -167,6 +185,9 @@ document.addEventListener('DOMContentLoaded', () => {
             btnSave.disabled = true;
             btnSave.textContent = 'Menyimpan...';
 
+            const selectedMapels = Array.from(document.getElementById('guru-mapel')?.selectedOptions || []).map(opt => opt.value).filter(Boolean);
+            const mapelString = selectedMapels.join(', ');
+
             const payload = {
                 nip: document.getElementById('guru-nip').value.trim(),
                 nama: document.getElementById('guru-nama').value.trim(),
@@ -175,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 jenis_kelamin: document.getElementById('guru-jk').value,
                 status_guru: document.getElementById('guru-status').value,
                 wali_kelas: document.getElementById('guru-wali').value.trim(),
-                mata_pelajaran: document.getElementById('guru-mapel').value.trim(),
+                mata_pelajaran: mapelString,
                 aktif: document.getElementById('guru-aktif').checked
             };
 
@@ -262,4 +283,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
