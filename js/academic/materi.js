@@ -272,13 +272,13 @@ function initMateriEventListeners() {
                     }
 
                     const { error: uploadErr } = await db.storage
-                        .from('student-assignments')
+                        .from('smpannida_storage')
                         .upload(storagePath, fileUpload, { contentType: contentType, upsert: true });
 
                     if (uploadErr) throw uploadErr;
 
                     const { data: publicUrlData } = db.storage
-                        .from('student-assignments')
+                        .from('smpannida_storage')
                         .getPublicUrl(storagePath);
 
                     materialUrl = publicUrlData?.publicUrl || storagePath;
