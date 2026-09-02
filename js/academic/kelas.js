@@ -364,7 +364,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.loadGlobalKelasTahunOptions();
             } catch (err) {
                 console.error("Error saving kelas:", err);
-                showToast('Gagal: ' + (err.message || 'Kemungkinan guru ini sudah menjadi wali di kelas lain.'), 'error');
+                let errMsg = err.message || 'Terjadi kesalahan sistem';
+                if (errMsg.includes('classes_nama_kelas_key') || errMsg.includes('duplicate key value')) {
+                    errMsg = `Nama kelas "${payload.nama_kelas}" sudah terdaftar di sistem. Gunakan nama kelas lain atau edit data kelas tersebut.`;
+                } else if (errMsg.includes('wali_kelas_id')) {
+                    errMsg = 'Guru yang dipilih sudah ditugaskan sebagai wali di kelas lain.';
+                }
+                showToast('Gagal: ' + errMsg, 'error');
             } finally {
                 btnSave.disabled = false;
                 btnSave.textContent = originalText;
