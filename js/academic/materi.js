@@ -465,7 +465,7 @@ if (typeof document !== 'undefined') {
  * Struktur: /Materi/[Mata Pelajaran]/[Kelas]
  */
 export async function uploadToGoogleDriveGAS(fileUpload, subject, className, customGasUrl) {
-    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbyPZ9yio1Pw6bZIWyt3Orgn7vqosl_yoDIn2MFnU1pxIxIlt4KVK0Uyt7HWkrgYVWw/exec';
+    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbxrv-j6LtdK-9mGc56uhqC1_unPDGG7rFu3ZmLL7Dqh4A5Yx8JWWKmrJAGPo5EmXFA/exec';
     if (!gasUrl) return null;
 
     return new Promise((resolve, reject) => {
