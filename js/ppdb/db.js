@@ -1275,7 +1275,7 @@ window.submitKonversiSiswa = async function() {
     const parts = cleanName.split(' ').filter(Boolean);
     const baseUsername = parts.length >= 2 ? `${parts[0]}.${parts[1]}` : (parts[0] || 'siswa');
     const studentEmail = `${baseUsername}@smpannida.sch.id`;
-    const defaultPassword = `Annida${(String(nisn) || '1234').slice(-4)}!`;
+    const defaultPassword = 'abc123';
 
     // 2. Insert into students table
     const studentPayload = {

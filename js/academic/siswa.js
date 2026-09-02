@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const parts = cleanName.split(' ').filter(Boolean);
         const baseUsername = parts.length >= 2 ? `${parts[0]}.${parts[1]}` : (parts[0] || 'siswa');
         const email = s.email || `${baseUsername}@smpannida.sch.id`;
-        const defaultPass = `Annida${(String(s.nisn) || String(s.nis) || '1234').slice(-4)}!`;
+        const defaultPass = 'abc123';
         return { email, defaultPass };
     }
 
