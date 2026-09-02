@@ -228,3 +228,5 @@ if (btnThemeToggle) {
 }
 
 // Legacy loadAbsensiClasses removed in favor of Master Kelas (kelas.js)
+
+import './materi.js';
