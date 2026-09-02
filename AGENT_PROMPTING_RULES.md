@@ -45,9 +45,12 @@ ATURAN MUTLAK: Anda memiliki OTONOMI PENUH. Anda WAJIB langsung mengeksekusi per
 2. Tahap 2: <Instruksi UI/UX atau logika>
 3. Tahap 3: <Instruksi database/Supabase jika ada>
 
-[VERIFIKASI & COMMIT]
+[VERIFIKASI LIVE WEBSITE & TESTING (WAJIB)]
 - Pastikan tidak ada `!important` di CSS.
 - Jika sudah selesai, jalankan perintah: `git add .` dan `git commit -m "<Pesan Commit>"` lalu `git push origin main`.
+- PANTANG MELAPOR SELESAI SEBELUM CEK LIVE: Gunakan `gh run list` untuk memastikan *deploy* GitHub Actions sukses.
+- Gunakan `curl` / `node -e fetch()` / `read_url_content` untuk memindai URL *live* (`http://smpannida.sch.id/...`). Pastikan elemen HTML/fitur yang baru saja Anda buat benar-benar sudah muncul di *server publik*.
+- Lakukan pengetesan API/Database lokal dengan script singkat untuk memastikan logika fitur bebas *error*.
 - Gunakan pedoman `AI_RESPONSE_GUIDELINES.md` saat merespons User.
 
 **=== END OF PROMPT ===**
