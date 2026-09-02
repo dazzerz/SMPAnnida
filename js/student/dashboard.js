@@ -567,7 +567,7 @@ let allStudentAssignments = [];
 let currentFilterType = 'all';
 
 async function loadAssignments(student) {
-  const feed = document.getElementById('student-assignments-feed');
+  const feed = document.getElementById('smpannida_storage-feed');
   if (!feed) return;
 
   try {
@@ -647,7 +647,7 @@ function renderAssignmentStats(list) {
 }
 
 function renderAssignmentList(list, filter) {
-  const feed = document.getElementById('student-assignments-feed');
+  const feed = document.getElementById('smpannida_storage-feed');
   if (!feed) return;
 
   let filtered = list;
@@ -822,19 +822,19 @@ function initSubmissionModal() {
       if (saveBtnText) saveBtnText.textContent = 'Mengunggah...';
 
       try {
-        // Upload ke bucket 'student-assignments'
+        // Upload ke bucket 'smpannida_storage'
         const fileExt = file.name.split('.').pop();
         const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
         const storagePath = `${currentUser.id}/${assignmentId}_${Date.now()}.${fileExt}`;
 
         const { data: uploadData, error: uploadErr } = await db.storage
-          .from('student-assignments')
+          .from('smpannida_storage')
           .upload(storagePath, file, { upsert: true });
 
         if (uploadErr) throw uploadErr;
 
         const { data: publicUrlData } = db.storage
-          .from('student-assignments')
+          .from('smpannida_storage')
           .getPublicUrl(storagePath);
 
         const fileUrl = publicUrlData?.publicUrl || storagePath;

@@ -339,13 +339,13 @@ function initLmsEventListeners() {
                     else if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) contentType = `image/${ext === 'jpg' ? 'jpeg' : ext}`;
 
                     const { data: uploadData, error: uploadErr } = await db.storage
-                        .from('student-assignments')
+                        .from('smpannida_storage')
                         .upload(storagePath, fileUpload, { contentType: contentType, upsert: true });
 
                     if (uploadErr) throw uploadErr;
 
                     const { data: publicUrlData } = db.storage
-                        .from('student-assignments')
+                        .from('smpannida_storage')
                         .getPublicUrl(storagePath);
 
                     attachment = publicUrlData?.publicUrl || storagePath;
