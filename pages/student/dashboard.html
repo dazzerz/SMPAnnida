@@ -81,6 +81,10 @@
             <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">assignment</span>
             <span>Tugas & PR</span>
           </a>
+          <a href="#materi-lms" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-materi-lms">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">menu_book</span>
+            <span>Materi E-Learning</span>
+          </a>
           <a href="#materi" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-materi">
             <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">menu_book</span>
             <span>Jurnal & Materi</span>
@@ -156,6 +160,9 @@
           </a>
           <a href="#tugas" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-tugas">
             <span class="material-symbols-outlined text-xs">assignment</span> Tugas
+          </a>
+          <a href="#materi-lms" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-materi-lms">
+            <span class="material-symbols-outlined text-xs">menu_book</span> Materi
           </a>
           <a href="#materi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-materi">
             <span class="material-symbols-outlined text-xs">menu_book</span> Materi
@@ -336,6 +343,29 @@
           <!-- Feed Daftar Ujian CBT -->
           <div id="student-cbt-feed" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="text-center py-8 text-gray-400 col-span-full">Memuat daftar ujian aktif...</div>
+          </div>
+        </div>
+      </section>
+
+      
+      <!-- PANEL: MATERI E-LEARNING INTERAKTIF (DEDICATED) -->
+      <section id="panel-materi-lms" class="student-panel hidden space-y-6">
+        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-bold font-headline-md text-white mb-1">Pusat Materi Pembelajaran Digital</h2>
+              <p class="text-xs text-gray-400">Tonton video YouTube, baca dokumen PDF, dan buka simulasi interaktif tanpa keluar aplikasi</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <select id="filter-student-material-subject" class="bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                <option value="">Semua Mata Pelajaran</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Feed Daftar Materi E-Learning Siswa -->
+          <div id="student-materials-lms-feed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="text-center py-8 text-gray-400 col-span-full">Memuat materi pembelajaran...</div>
           </div>
         </div>
       </section>
@@ -733,6 +763,37 @@
         <iframe id="student-viewer-iframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         <div id="student-viewer-fallback-img" class="hidden max-h-full max-w-full p-4 flex items-center justify-center">
           <img id="student-viewer-img-el" src="" alt="Lampiran Materi" class="max-h-[75vh] max-w-full rounded-lg object-contain shadow-2xl">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL SMART VIEWER MATERI SISWA -->
+  <div id="modal-viewer-materi-student" class="modal hidden">
+    <div class="modal-content card glass max-w-6xl w-full p-4 rounded-2xl bg-slate-950 border border-white/20 text-white flex flex-col h-[90vh]">
+      <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-3">
+        <div class="flex items-center gap-3">
+          <span class="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
+            <span class="material-symbols-outlined text-xl" id="stu-viewer-icon">play_circle</span>
+          </span>
+          <div>
+            <h3 class="text-base font-bold text-white truncate max-w-xl" id="stu-viewer-title">Judul Materi</h3>
+            <p class="text-xs text-emerald-400" id="stu-viewer-subtitle">Materi Pembelajaran Siswa</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="#" target="_blank" id="stu-viewer-open-external" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs text-gray-200 flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">open_in_new</span> Buka Tab Baru
+          </a>
+          <button id="btn-close-stu-viewer" class="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-bold">✕ Tutup</button>
+        </div>
+      </div>
+
+      <div class="flex-1 rounded-xl overflow-hidden bg-slate-900 border border-white/10 relative flex items-center justify-center">
+        <iframe id="stu-viewer-iframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <div id="stu-viewer-fallback-img" class="hidden max-h-full max-w-full p-4 flex items-center justify-center">
+          <img id="stu-viewer-img-el" src="" alt="Lampiran Materi" class="max-h-[75vh] max-w-full rounded-lg object-contain shadow-2xl">
         </div>
       </div>
     </div>

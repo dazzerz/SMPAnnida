@@ -1,3 +1,4 @@
+import { initStudentMateriModule } from './materi.js';
 // =========================================================================
 // PORTAL SISWA CONTROLLER (SMP ANNIDA)
 // Integrasi: PPDB ↔ Akademik ↔ Presensi ↔ Jurnal ↔ Tahfidz
@@ -92,7 +93,8 @@ async function initStudentSession() {
     loadJournalMaterials(student),
     loadTahfidzRecords(student),
     loadGrades(student),
-    loadPpdbDocs(student)
+    loadPpdbDocs(student),
+    initStudentMateriModule(student)
   ]);
 }
 

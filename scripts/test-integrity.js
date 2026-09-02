@@ -216,6 +216,32 @@ const studentJs3 = fs.readFileSync('js/student/dashboard.js', 'utf8');
 assert(studentJs3.includes('loadStudentInteractiveMaterials'), 'Portal siswa JS includes loadStudentInteractiveMaterials loader');
 assert(studentJs3.includes('openStudentMaterialViewer'), 'Portal siswa JS includes openStudentMaterialViewer launcher');
 
+
+// Test 13: Dedicated Materials Page & Smart In-App Viewer Validation
+console.log('\n[TEST 13] Dedicated Materials Page & Smart Viewer Validation:');
+const materialsSql = fs.readFileSync('database/migrations/create_materials_table.sql', 'utf8');
+assert(materialsSql.includes('CREATE TABLE IF NOT EXISTS public.materials'), 'Migration creates materials table');
+
+const layoutJs = fs.readFileSync('js/core/layout.js', 'utf8');
+assert(layoutJs.includes('data-target="materi-lms"'), 'Layout includes dedicated Materi sidebar link');
+
+const acaHtml4 = fs.readFileSync('pages/academic/dashboard.html', 'utf8');
+assert(acaHtml4.includes('id="materi-lms"'), 'Academic dashboard includes materi-lms section');
+assert(acaHtml4.includes('id="modal-form-materi"'), 'Academic dashboard includes modal-form-materi');
+assert(acaHtml4.includes('id="modal-viewer-materi"'), 'Academic dashboard includes modal-viewer-materi');
+
+const acaMateriJs = fs.readFileSync('js/academic/materi.js', 'utf8');
+assert(acaMateriJs.includes('openTeacherViewer'), 'Academic materi.js includes openTeacherViewer');
+assert(acaMateriJs.includes('loadMaterials'), 'Academic materi.js includes loadMaterials');
+
+const studentHtml4 = fs.readFileSync('pages/student/dashboard.html', 'utf8');
+assert(studentHtml4.includes('id="panel-materi-lms"'), 'Student dashboard includes panel-materi-lms');
+assert(studentHtml4.includes('id="modal-viewer-materi-student"'), 'Student dashboard includes modal-viewer-materi-student');
+
+const stuMateriJs = fs.readFileSync('js/student/materi.js', 'utf8');
+assert(stuMateriJs.includes('loadStudentMaterials'), 'Student materi.js includes loadStudentMaterials');
+assert(stuMateriJs.includes('openStudentMaterialViewer'), 'Student materi.js includes openStudentMaterialViewer');
+
 console.log('\n--- TEST SUMMARY ---');
 console.log(`Total Passed: ${passed}, Total Failed: ${failed}`);
 if (failed > 0) {

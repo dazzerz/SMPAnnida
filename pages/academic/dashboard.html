@@ -870,6 +870,60 @@
                     </div>
                 </section>
 
+                
+                <!-- Materi Pembelajaran E-Learning Section -->
+                <section id="materi-lms" class="page-section hidden aca-inline-11">
+                    <div class="aca-inline-56">
+                        <h1>Pusat Materi Pembelajaran Digital</h1>
+                        <button id="btn-create-materi" class="btn-primary flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">library_add</span>
+                            <span>+ Buat Materi Baru</span>
+                        </button>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="card glass aca-inline-57">
+                        <div class="form-group aca-inline-58">
+                            <label>Filter Kelas</label>
+                            <select id="filter-materi-class" class="input-control">
+                                <option value="">Semua Kelas</option>
+                            </select>
+                        </div>
+                        <div class="form-group aca-inline-58">
+                            <label>Filter Mapel</label>
+                            <select id="filter-materi-subject" class="input-control">
+                                <option value="">Semua Mata Pelajaran</option>
+                            </select>
+                        </div>
+                        <div class="form-group aca-inline-60">
+                            <label>&nbsp;</label>
+                            <input type="text" id="search-materi-query" class="input-control" placeholder="Cari judul materi / topik...">
+                        </div>
+                    </div>
+
+                    <!-- Table Daftar Materi Guru -->
+                    <div class="card glass aca-inline-20">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Judul Materi</th>
+                                        <th>Kelas</th>
+                                        <th>Mata Pelajaran</th>
+                                        <th>Format</th>
+                                        <th>Dibuat</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-materials">
+                                    <tr><td colspan="7" class="aca-inline-22">Memuat daftar materi ajar...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Tugas & E-Learning (LMS) Section -->
                 <section id="tugas-lms" class="page-section aca-inline-11">
                     <div class="aca-inline-56">
@@ -2017,6 +2071,98 @@ Pembahasan: Tawadhu artinya rendah hati..."></textarea>
                     <span class="material-symbols-outlined text-sm">auto_fix_high</span>
                     <span>Proses & Simpan Butir Soal</span>
                 </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Buat / Edit Materi Ajar -->
+    <div id="modal-form-materi" class="modal hidden aca-inline-49" style="display: none;">
+        <div class="modal-content card glass max-w-xl w-full p-6">
+            <h2 id="modal-form-materi-title" class="text-xl font-bold text-emerald-400 mb-4">Tambah Materi Pembelajaran</h2>
+            <form id="form-material" class="space-y-3">
+                <input type="hidden" id="material-id">
+
+                <div class="form-group">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Judul Materi</label>
+                    <input type="text" id="material-title" class="input-control" placeholder="Contoh: Video Animasi Sistem Tata Surya Bab 4" required>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="form-group">
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Kelas Target</label>
+                        <select id="material-class" class="input-control" required>
+                            <option value="">-- Pilih Kelas --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Mata Pelajaran</label>
+                        <select id="material-subject" class="input-control" required>
+                            <option value="">-- Pilih Mapel --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Tipe Media</label>
+                    <select id="material-type-select" class="input-control">
+                        <option value="youtube">🎥 Video YouTube</option>
+                        <option value="pdf">📄 Dokumen PDF</option>
+                        <option value="html">🌐 Simulasi Web HTML Interaktif</option>
+                        <option value="image">🖼️ Infografis / Gambar</option>
+                        <option value="document">📑 File Dokumen Lainnya</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Unggah Berkas Materi (PDF, Foto, HTML)</label>
+                    <input type="file" id="material-file-upload" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,image/*,.html" class="input-control text-xs mb-2">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Atau Masukkan Tautan Video / Google Drive</label>
+                    <input type="text" id="material-url-input" class="input-control text-xs" placeholder="https://www.youtube.com/watch?v=... atau link dokumen">
+                </div>
+
+                <div class="form-group">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Deskripsi / Rangkuman Teori</label>
+                    <textarea id="material-description" class="input-control text-xs" rows="3" placeholder="Tuliskan petunjuk belajar atau rangkuman materi singkat..."></textarea>
+                </div>
+
+                <div class="modal-actions flex justify-end gap-2 pt-2 border-t border-white/10">
+                    <button type="button" id="btn-close-material-modal" class="btn-secondary">Batal</button>
+                    <button type="submit" id="btn-save-material" class="btn-primary flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">save</span>
+                        <span id="btn-save-material-text">Simpan Materi</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Smart Viewer Materi -->
+    <div id="modal-viewer-materi" class="modal hidden aca-inline-53" style="display: none;">
+        <div class="modal-content card glass max-w-6xl w-full p-4 rounded-2xl bg-slate-950 border border-white/20 text-white flex flex-col h-[90vh]">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <span class="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
+                        <span class="material-symbols-outlined text-xl" id="teacher-viewer-icon">menu_book</span>
+                    </span>
+                    <div>
+                        <h3 class="text-base font-bold text-white truncate max-w-xl" id="teacher-viewer-title">Judul Materi</h3>
+                        <p class="text-xs text-emerald-400" id="teacher-viewer-subtitle">Materi Pembelajaran</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="#" target="_blank" id="teacher-viewer-open-external" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs text-gray-200 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">open_in_new</span> Buka Tab Baru
+                    </a>
+                    <button id="btn-close-teacher-viewer" class="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-bold">✕ Tutup</button>
+                </div>
+            </div>
+
+            <div class="flex-1 rounded-xl overflow-hidden bg-slate-900 border border-white/10 relative flex items-center justify-center">
+                <iframe id="teacher-viewer-iframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <div id="teacher-viewer-fallback-img" class="hidden max-h-full max-w-full p-4 flex items-center justify-center">
+                    <img id="teacher-viewer-img-el" src="" alt="Lampiran Materi" class="max-h-[75vh] max-w-full rounded-lg object-contain shadow-2xl">
+                </div>
             </div>
         </div>
     </div>

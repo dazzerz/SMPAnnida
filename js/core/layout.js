@@ -88,6 +88,10 @@ export function injectSidebar(containerId) {
               <span class="material-symbols-outlined nav-icon">add_task</span>
               <span class="nav-text">Tugas & PR</span>
             </a>
+            <a href="${basePath}pages/academic/dashboard.html#materi-lms" class="nav-item nav-link" data-target="materi-lms" data-tooltip="Materi Pembelajaran">
+              <span class="material-symbols-outlined nav-icon">menu_book</span>
+              <span class="nav-text">Materi</span>
+            </a>
             <a href="${basePath}pages/academic/dashboard.html#jurnal-guru" class="nav-item nav-link" data-target="jurnal-guru" data-tooltip="Jurnal Guru">
               <span class="material-symbols-outlined nav-icon">menu_book</span>
               <span class="nav-text">Jurnal Guru</span>
