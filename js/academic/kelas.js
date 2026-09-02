@@ -267,8 +267,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.btn-edit-kelas').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-                const id = e.target.getAttribute('data-id');
-                const k = currentKelasData.find(x => x.id == id);
+                const id = btn.getAttribute('data-id') || e.currentTarget?.getAttribute('data-id') || e.target?.getAttribute('data-id');
+                const k = currentKelasData.find(x => String(x.id) === String(id));
                 if (k) openModalKelas(k);
             });
         });
@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.btn-del-kelas').forEach(btn => {
             btn.addEventListener('click', async (e) => {
                 if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-                const id = e.target.getAttribute('data-id');
+                const id = btn.getAttribute('data-id') || e.currentTarget?.getAttribute('data-id') || e.target?.getAttribute('data-id');
                 if (confirm('Yakin ingin menghapus kelas ini?')) {
                     try {
                         const { error } = await db.from('classes').delete().eq('id', id);
@@ -296,19 +296,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openModalKelas(k = null) {
         formKelas.reset();
-        modalKelas.style.display = 'flex'; modalKelas.classList.remove('hidden'); this.modal?.classList.remove('hidden');
-        if (k) {
-            modalTitleKelas.textContent = 'Edit Kelas';
-            document.getElementById('kelas-id').value = k.id;
+        modalKelas.style.display = 'flex'; 
+        modalKelas.classList.remove('hidden');
+
+        const idInput = document.getElementById('kelas-id');
+        const titleEl = document.getElementById('modal-kelas-title');
+        const saveBtn = document.getElementById('btn-save-kelas');
+
+        if (k && k.id) {
+            if (titleEl) titleEl.textContent = 'Edit Kelas';
+            if (saveBtn) saveBtn.textContent = 'Simpan Perubahan';
+            if (idInput) {
+                idInput.value = k.id;
+                idInput.setAttribute('value', k.id);
+            }
+            formKelas.dataset.editingId = String(k.id);
+
             document.getElementById('kelas-nama').value = k.nama_kelas || '';
             document.getElementById('kelas-tingkat').value = k.tingkat || '';
             document.getElementById('kelas-wali').value = k.wali_kelas_id || '';
             document.getElementById('kelas-ruangan').value = k.ruangan || '';
-            document.getElementById('kelas-kapasitas').value = k.kapasitas || '';
+            document.getElementById('kelas-kapasitas').value = k.kapasitas || k.kapasitas_siswa || '32';
             document.getElementById('kelas-aktif').checked = k.aktif !== false;
         } else {
-            modalTitleKelas.textContent = 'Tambah Kelas';
-            document.getElementById('kelas-id').value = '';
+            if (titleEl) titleEl.textContent = 'Tambah Kelas';
+            if (saveBtn) saveBtn.textContent = 'Tambah Kelas';
+            if (idInput) {
+                idInput.value = '';
+                idInput.removeAttribute('value');
+            }
+            delete formKelas.dataset.editingId;
+            document.getElementById('kelas-kapasitas').value = '32';
             document.getElementById('kelas-aktif').checked = true;
         }
     }
@@ -345,18 +363,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 aktif: document.getElementById('kelas-aktif').checked
             };
 
-            const id = document.getElementById('kelas-id').value;
+            const idInput = document.getElementById('kelas-id');
+            const id = (idInput && idInput.value ? idInput.value : formKelas.dataset.editingId) || '';
+
+            // Cek duplikasi nama kelas di client-side
+            const duplicate = currentKelasData.find(c => 
+                c.nama_kelas && 
+                c.nama_kelas.trim().toLowerCase() === payload.nama_kelas.toLowerCase() && 
+                String(c.id) !== String(id)
+            );
+            if (duplicate) {
+                btnSave.disabled = false;
+                btnSave.textContent = originalText;
+                return showToast(`Nama kelas "${payload.nama_kelas}" sudah terdaftar di sistem. Silakan gunakan tombol "Edit" pada tabel untuk mengubah data kelas tersebut.`, 'error');
+            }
 
             try {
                 if (id) {
                     payload.updated_at = new Date().toISOString();
                     const { error } = await db.from('classes').update(payload).eq('id', id);
                     if (error) throw error;
+                    
+                    if (payload.wali_kelas_id) {
+                        await db.from('teachers').update({ is_wali_kelas: true }).eq('id', payload.wali_kelas_id);
+                    }
                     showToast('Kelas berhasil diperbarui', 'success');
                 } else {
                     payload.created_at = new Date().toISOString();
                     const { error } = await db.from('classes').insert([payload]);
                     if (error) throw error;
+                    
+                    if (payload.wali_kelas_id) {
+                        await db.from('teachers').update({ is_wali_kelas: true }).eq('id', payload.wali_kelas_id);
+                    }
                     showToast('Kelas berhasil ditambahkan', 'success');
                 }
                 modalKelas.style.display = 'none'; modalKelas.classList.add('hidden'); this.modal?.classList.add('hidden');
