@@ -4,19 +4,38 @@
 // =========================================================================
 
 /**
+ * Fungsi Pengujian / Inisialisasi Manual dari Editor (Bisa di-klik "Jalankan")
+ * Berfungsi untuk memicu otorisasi izin Drive dan membuat folder awal secara langsung.
+ */
+function testInitFolders() {
+  var rootFolder = getOrCreateFolder(DriveApp, "Materi");
+  var subjects = ["Matematika", "IPA", "IPS", "PAI", "Bahasa Indonesia", "Bahasa Inggris", "Bahasa Arab", "PJOK", "Informatika", "Seni Budaya", "PKn", "Tahfidz"];
+  var classes = ["Kelas 7", "Kelas 8", "Kelas 9"];
+
+  subjects.forEach(function(sub) {
+    var subFolder = getOrCreateFolder(rootFolder, sub);
+    classes.forEach(function(cls) {
+      getOrCreateFolder(subFolder, cls);
+    });
+  });
+
+  Logger.log("✅ Struktur folder /Materi/[Mata Pelajaran]/[Kelas 7, 8, 9] berhasil dibuat lengkap di Google Drive!");
+}
+
+/**
  * Helper mencari subfolder atau membuatnya jika belum ada
  * @param {GoogleAppsScript.Drive.Folder|GoogleAppsScript.Drive.DriveApp} parent
  * @param {string} folderName
  * @returns {GoogleAppsScript.Drive.Folder}
  */
 function getOrCreateFolder(parent, folderName) {
-  var folders = parent.getFoldersByName(folderName);
-  return folders.hasNext() ? folders.next() : parent.createFolder(folderName);
+  var p = parent || DriveApp;
+  var folders = p.getFoldersByName(folderName);
+  return folders.hasNext() ? folders.next() : p.createFolder(folderName);
 }
 
 /**
  * Web App POST Endpoint: Menerima payload berkas materi & melakukan auto-routing
- * @param {Object} e - Event parameter dari HTTP POST
  */
 function doPost(e) {
   try {
@@ -35,11 +54,10 @@ function doPost(e) {
       throw new Error("Data base64 berkas tidak ditemukan.");
     }
 
-    // Decode file buffer
     var decoded = Utilities.base64Decode(base64);
     var blob = Utilities.newBlob(decoded, mimeType, filename);
 
-    // Format folder kelas (misal "7A" -> "Kelas 7", "8B" -> "Kelas 8", "Semua" -> "Kelas Semua")
+    // Format kelas (misal "7A" -> "Kelas 7", "8B" -> "Kelas 8")
     var digitMatch = className.match(/\d+/);
     var classFolderName = digitMatch ? ("Kelas " + digitMatch[0]) : ("Kelas " + className);
 
@@ -48,15 +66,11 @@ function doPost(e) {
     var subjectFolder = getOrCreateFolder(rootFolder, subject);
     var classFolder = getOrCreateFolder(subjectFolder, classFolderName);
 
-    // Simpan file langsung ke dalam classFolder
     var file = classFolder.createFile(blob);
     
-    // Aktifkan sharing view publik untuk akses siswa & guru
     try {
       file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-    } catch (shareErr) {
-      // Lewati jika domain Google Workspace membatasi sharing publik otomatis
-    }
+    } catch (shareErr) {}
 
     var fileId = file.getId();
     var viewUrl = file.getUrl();
@@ -78,17 +92,15 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
 
   } catch (err) {
-    var errorResponse = {
+    return ContentService.createTextOutput(JSON.stringify({
       status: "error",
       message: err.toString()
-    };
-    return ContentService.createTextOutput(JSON.stringify(errorResponse))
-      .setMimeType(ContentService.MimeType.JSON);
+    })).setMimeType(ContentService.MimeType.JSON);
   }
 }
 
 /**
- * Web App GET Endpoint: Pemeriksaan status layanan (Health Check)
+ * Web App GET Endpoint: Health check
  */
 function doGet(e) {
   return ContentService.createTextOutput(JSON.stringify({
