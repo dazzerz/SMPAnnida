@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Guest protection
     if (authState.isGuest) {
-        if (btnAddTahun) btnAddTahun.style.display = 'none'; this.modal?.classList.add('hidden');
-        if (btnAddKelas) btnAddKelas.style.display = 'none'; this.modal?.classList.add('hidden');
+        if (btnAddTahun) btnAddTahun.style.display = 'none'; 
+        if (btnAddKelas) btnAddKelas.style.display = 'none'; 
     }
 
     // ---------------------------------------------------------
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openModalTahun(t = null) {
         formTahun.reset();
-        modalTahun.style.display = 'flex'; modalTahun.classList.remove('hidden'); this.modal?.classList.remove('hidden');
+        modalTahun.style.display = 'flex'; modalTahun.classList.remove('hidden'); 
         if (t) {
             modalTitleTahun.textContent = 'Edit Tahun Ajaran';
             document.getElementById('tahun-id').value = t.id;
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnCloseModalTahun) {
         btnCloseModalTahun.addEventListener('click', () => {
-            modalTahun.style.display = 'none'; modalTahun.classList.add('hidden'); this.modal?.classList.add('hidden');
+            modalTahun.style.display = 'none'; modalTahun.classList.add('hidden'); 
         });
     }
 
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (error) throw error;
                     showToast('Tahun Ajaran berhasil ditambahkan', 'success');
                 }
-                modalTahun.style.display = 'none'; modalTahun.classList.add('hidden'); this.modal?.classList.add('hidden');
+                modalTahun.style.display = 'none'; modalTahun.classList.add('hidden'); 
                 await loadDataTahunAjaran();
                 window.loadGlobalKelasTahunOptions();
             } catch (err) {
@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnCloseModalKelas) {
         btnCloseModalKelas.addEventListener('click', () => {
-            modalKelas.style.display = 'none'; modalKelas.classList.add('hidden'); this.modal?.classList.add('hidden');
+            modalKelas.style.display = 'none'; modalKelas.classList.add('hidden'); 
         });
     }
 
@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     showToast('Kelas berhasil ditambahkan', 'success');
                 }
-                modalKelas.style.display = 'none'; modalKelas.classList.add('hidden'); this.modal?.classList.add('hidden');
+                modalKelas.style.display = 'none'; modalKelas.classList.add('hidden'); 
                 await loadDataKelas();
                 window.loadGlobalKelasTahunOptions();
             } catch (err) {

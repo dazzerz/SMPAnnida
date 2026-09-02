@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Guest Mode Protection
     if (authState.isGuest && btnAddMapel) {
-        btnAddMapel.style.display = 'none'; this.modal?.classList.add('hidden');
+        btnAddMapel.style.display = 'none'; 
     }
 
     // Load Data
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Modal Operations
     function openModal(mapel = null) {
         formMapel.reset();
-        modalMapel.style.display = 'flex'; modalMapel.classList.remove('hidden'); this.modal?.classList.remove('hidden');
+        modalMapel.style.display = 'flex'; modalMapel.classList.remove('hidden'); 
         if (mapel) {
             modalTitle.textContent = 'Edit Mata Pelajaran';
             document.getElementById('mapel-id').value = mapel.id;
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnCloseModal) {
         btnCloseModal.addEventListener('click', () => {
-            modalMapel.style.display = 'none'; modalMapel.classList.add('hidden'); this.modal?.classList.add('hidden');
+            modalMapel.style.display = 'none'; modalMapel.classList.add('hidden'); 
         });
     }
 
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (error) throw error;
                     showToast('Mapel berhasil ditambahkan', 'success');
                 }
-                modalMapel.style.display = 'none'; modalMapel.classList.add('hidden'); this.modal?.classList.add('hidden');
+                modalMapel.style.display = 'none'; modalMapel.classList.add('hidden'); 
                 loadData();
                 if (window.loadGlobalMapelOptions) window.loadGlobalMapelOptions();
             } catch (err) {
