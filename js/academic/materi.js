@@ -370,11 +370,29 @@ export async function openTeacherViewer(url, title, subtitle, type) {
 
     if (titleEl) titleEl.textContent = title || 'Materi Pembelajaran';
     if (subtitleEl) subtitleEl.textContent = subtitle || 'SMP Annida E-Learning';
-    if (openExternal) openExternal.href = url;
 
     const isHtml = type === 'html' || /\.(html|htm)(\?.*)?$/i.test(url);
     const isImage = type === 'image' || /\.(jpeg|jpg|png|gif|webp)(\?.*)?$/i.test(url);
     const formattedUrl = formatEmbedUrl(url);
+
+    if (openExternal) {
+        openExternal.onclick = async (e) => {
+            e.preventDefault();
+            if (isHtml) {
+                try {
+                    const res = await fetch(url);
+                    const htmlText = await res.text();
+                    const blob = new Blob([htmlText], { type: 'text/html; charset=utf-8' });
+                    const blobUrl = URL.createObjectURL(blob);
+                    window.open(blobUrl, '_blank');
+                } catch (err) {
+                    window.open(url, '_blank');
+                }
+            } else {
+                window.open(formattedUrl || url, '_blank');
+            }
+        };
+    }
 
     iframe.removeAttribute('srcdoc');
 
@@ -389,6 +407,8 @@ export async function openTeacherViewer(url, title, subtitle, type) {
     } else if (isHtml) {
         if (fallbackImg) fallbackImg.classList.add('hidden');
         iframe.style.display = 'block';
+        iframe.src = '';
+        iframe.removeAttribute('src');
         if (iconEl) iconEl.textContent = 'code';
         try {
             const res = await fetch(url);
@@ -396,10 +416,10 @@ export async function openTeacherViewer(url, title, subtitle, type) {
                 const htmlText = await res.text();
                 iframe.srcdoc = htmlText;
             } else {
-                iframe.src = formattedUrl;
+                iframe.srcdoc = '<div style="color:white;text-align:center;padding:40px;font-family:sans-serif;"><h3>Gagal memuat file HTML</h3></div>';
             }
         } catch (e) {
-            iframe.src = formattedUrl;
+            iframe.srcdoc = '<div style="color:white;text-align:center;padding:40px;font-family:sans-serif;"><h3>Gagal memuat file HTML: ' + (e.message || '') + '</h3></div>';
         }
     } else {
         if (fallbackImg) fallbackImg.classList.add('hidden');
