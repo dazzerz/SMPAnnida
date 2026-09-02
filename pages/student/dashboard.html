@@ -35,6 +35,20 @@
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.4));
       border: 1px solid rgba(16, 185, 129, 0.4);
     }
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal.hidden {
+      display: none !important;
+    }
   </style>
   <script type="module" src="/js/core/pwa.js"></script>
 </head>
