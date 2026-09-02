@@ -475,10 +475,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (statKelasEl) statKelasEl.textContent = activeKelas.length;
             if (statWaliEl) {
                 try {
-                    // Ambil langsung jumlah guru yang mengisi kolom wali_kelas
-                    const { data: guruWali } = await db.from('teachers').select('wali_kelas').neq('wali_kelas', '').not('wali_kelas', 'is', null);
-                    const uniqueWaliCount = guruWali ? guruWali.filter(g => g.wali_kelas && g.wali_kelas.trim() !== '' && g.wali_kelas !== 'null').length : 0;
-                    statWaliEl.textContent = uniqueWaliCount;
+                    // Cek guru dengan is_wali_kelas = true atau relasi kelas
+                    const [guruWaliRes, classesWaliRes] = await Promise.all([
+                        db.from('teachers').select('id').eq('is_wali_kelas', true),
+                        db.from('classes').select('wali_kelas_id').not('wali_kelas_id', 'is', null)
+                    ]);
+                    const countFromTeachers = guruWaliRes?.data?.length || 0;
+                    const countFromClasses = classesWaliRes?.data?.filter(c => c.wali_kelas_id)?.length || 0;
+                    statWaliEl.textContent = Math.max(countFromTeachers, countFromClasses);
                 } catch(e) {
                     console.error("Gagal menghitung total wali kelas", e);
                     statWaliEl.textContent = "0";
