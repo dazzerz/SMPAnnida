@@ -193,6 +193,29 @@ assert(acaHtml2.includes('id="modal-text-parser"'), 'Academic dashboard includes
 const lmsJs2 = fs.readFileSync('js/academic/lms.js', 'utf8');
 assert(lmsJs2.includes('parseRawQuestions'), 'LMS JS includes smart text parser');
 
+
+// Test 12: Interactive Material Viewer & Type Selection Validation
+console.log('\n[TEST 12] Interactive Material Viewer & Multi-Format Validation:');
+const addTypeSql = fs.readFileSync('database/migrations/add_type_to_assignments.sql', 'utf8');
+assert(addTypeSql.includes('ADD COLUMN IF NOT EXISTS type'), 'Migration adds type column to assignments table');
+
+const acaHtml3 = fs.readFileSync('pages/academic/dashboard.html', 'utf8');
+assert(acaHtml3.includes('id="modal-material-viewer"'), 'Academic dashboard includes modal-material-viewer');
+assert(acaHtml3.includes('id="type-materi"'), 'Academic dashboard includes type-materi selection');
+assert(acaHtml3.includes('id="material-viewer-iframe"'), 'Academic dashboard includes material-viewer-iframe');
+
+const lmsJs3 = fs.readFileSync('js/academic/lms.js', 'utf8');
+assert(lmsJs3.includes('formatEmbedUrl'), 'LMS JS includes YouTube and Drive embed formatter');
+assert(lmsJs3.includes('openMaterialViewer'), 'LMS JS includes openMaterialViewer launcher');
+
+const studentHtml3 = fs.readFileSync('pages/student/dashboard.html', 'utf8');
+assert(studentHtml3.includes('id="student-interactive-materials-grid"'), 'Portal siswa includes student-interactive-materials-grid');
+assert(studentHtml3.includes('id="modal-material-viewer"'), 'Portal siswa includes modal-material-viewer');
+
+const studentJs3 = fs.readFileSync('js/student/dashboard.js', 'utf8');
+assert(studentJs3.includes('loadStudentInteractiveMaterials'), 'Portal siswa JS includes loadStudentInteractiveMaterials loader');
+assert(studentJs3.includes('openStudentMaterialViewer'), 'Portal siswa JS includes openStudentMaterialViewer launcher');
+
 console.log('\n--- TEST SUMMARY ---');
 console.log(`Total Passed: ${passed}, Total Failed: ${failed}`);
 if (failed > 0) {

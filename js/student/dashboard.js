@@ -86,6 +86,7 @@ async function initStudentSession() {
     loadTodaySchedules(student),
     loadAssignments(student),
     loadCbtQuizzes(student),
+    loadStudentInteractiveMaterials(student),
     loadWeeklySchedules(student),
     loadAttendanceHistory(student),
     loadJournalMaterials(student),
@@ -1363,5 +1364,209 @@ async function showCbtResultsAndDiscussion(quiz, attempt) {
     wrongEl.textContent = wrongC;
   } catch (err) {
     console.error('Gagal memuat pembahasan soal:', err);
+  }
+}
+
+
+// ── 10. INTERACTIVE STUDY MATERIALS & VIEWER (YOUTUBE, PDF, HTML) ─────
+let studentMaterialsList = [];
+
+async function loadStudentInteractiveMaterials(student) {
+  const grid = document.getElementById('student-interactive-materials-grid');
+  if (!grid) return;
+
+  try {
+    const studentClass = student.classes?.nama_kelas || student.kelas || '7A';
+
+    const { data: materials, error } = await db
+      .from('assignments')
+      .select('*')
+      .or(`class_name.eq.${studentClass},class_name.eq.Semua`)
+      .in('type', ['materi', 'material'])
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    studentMaterialsList = materials || [];
+    renderStudentMaterialsGrid(studentMaterialsList);
+    initMateriTabHandlers();
+    initStudentMaterialViewer();
+  } catch (err) {
+    console.error('Gagal memuat materi interaktif:', err);
+    if (grid) {
+      grid.innerHTML = `<div class="text-center py-8 text-rose-400 col-span-full">Gagal memuat materi: ${escapeHTML(err.message)}</div>`;
+    }
+  }
+}
+
+function renderStudentMaterialsGrid(list) {
+  const grid = document.getElementById('student-interactive-materials-grid');
+  if (!grid) return;
+
+  if (list.length === 0) {
+    grid.innerHTML = `
+      <div class="p-8 rounded-2xl bg-white/5 border border-white/10 text-center col-span-full">
+        <span class="material-symbols-outlined text-4xl text-gray-500 mb-2">menu_book</span>
+        <div class="text-sm font-semibold text-gray-300">Belum ada modul materi interaktif</div>
+        <p class="text-xs text-gray-500 mt-1">Materi ajar digital (Video YouTube, Modul PDF, & Simulasi) dari guru akan tampil di sini.</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = list.map(m => {
+    let iconName = 'menu_book';
+    let typeLabel = 'Modul Bacaan';
+    let url = m.attachment_url || '';
+
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      iconName = 'play_circle';
+      typeLabel = 'Video YouTube';
+    } else if (url.endsWith('.pdf')) {
+      iconName = 'picture_as_pdf';
+      typeLabel = 'Dokumen PDF';
+    } else if (url.endsWith('.html') || url.endsWith('.htm')) {
+      iconName = 'code';
+      typeLabel = 'Simulasi HTML Interaktif';
+    } else if (/\.(jpg|jpeg|png|webp|gif)$/i.test(url)) {
+      iconName = 'image';
+      typeLabel = 'Infografis Gambar';
+    }
+
+    return `
+      <div class="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-emerald-500/30 transition-all flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <span class="px-2.5 py-0.5 rounded-lg text-[0.7rem] font-bold bg-white/10 text-gray-300">${escapeHTML(m.subject)}</span>
+            <span class="px-2.5 py-1 rounded-full text-[0.7rem] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">${iconName}</span> ${typeLabel}
+            </span>
+          </div>
+          <h4 class="text-base font-bold text-white mb-1.5">${escapeHTML(m.title)}</h4>
+          <p class="text-xs text-gray-400 line-clamp-3 mb-4 leading-relaxed">${escapeHTML(m.description || 'Pelajari materi ini secara mandiri.')}</p>
+        </div>
+
+        <div class="border-t border-white/10 pt-3 space-y-2">
+          <div class="flex items-center justify-between text-[0.75rem] text-gray-400">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-emerald-400">person</span> ${escapeHTML(m.teacher_name)}</span>
+            <span class="text-xs text-gray-500">${m.class_name}</span>
+          </div>
+
+          ${url ? `
+            <button class="btn-open-student-viewer w-full py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer" data-url="${escapeHTML(url)}" data-title="${escapeHTML(m.title)}" data-subtitle="${escapeHTML(m.subject)} • ${escapeHTML(m.teacher_name)}">
+              <span class="material-symbols-outlined text-sm">visibility</span>
+              <span>Buka & Pelajari Materi</span>
+            </button>
+          ` : `
+            <div class="text-xs text-gray-500 text-center py-1">Teks Materi Lengkap</div>
+          `}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  grid.querySelectorAll('.btn-open-student-viewer').forEach(btn => {
+    btn.onclick = () => {
+      const url = btn.getAttribute('data-url');
+      const title = btn.getAttribute('data-title');
+      const subtitle = btn.getAttribute('data-subtitle');
+      openStudentMaterialViewer(url, title, subtitle);
+    };
+  });
+}
+
+function initMateriTabHandlers() {
+  const tabBtnInteractive = document.getElementById('tab-btn-interactive-materi');
+  const tabBtnJournal = document.getElementById('tab-btn-journal-materi');
+  const viewInteractive = document.getElementById('view-interactive-materi');
+  const viewJournal = document.getElementById('view-journal-materi');
+
+  if (tabBtnInteractive && tabBtnJournal && viewInteractive && viewJournal) {
+    tabBtnInteractive.onclick = () => {
+      tabBtnInteractive.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white';
+      tabBtnJournal.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10';
+      viewInteractive.classList.remove('hidden');
+      viewJournal.classList.add('hidden');
+    };
+
+    tabBtnJournal.onclick = () => {
+      tabBtnJournal.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white';
+      tabBtnInteractive.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10';
+      viewJournal.classList.remove('hidden');
+      viewInteractive.classList.add('hidden');
+    };
+  }
+}
+
+function formatStudentEmbedUrl(rawUrl) {
+  if (!rawUrl) return '';
+  const trimmed = rawUrl.trim();
+
+  // YouTube match
+  const ytMatch = trimmed.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([^"&?\/\s]{11})/i);
+  if (ytMatch && ytMatch[1]) {
+    return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0`;
+  }
+
+  // Google Drive preview link
+  if (trimmed.includes('drive.google.com/file/d/')) {
+    return trimmed.replace(/\/view.*$/, '/preview');
+  }
+
+  return trimmed;
+}
+
+function openStudentMaterialViewer(url, title, subtitle) {
+  const modal = document.getElementById('modal-material-viewer');
+  const titleEl = document.getElementById('student-viewer-title');
+  const subtitleEl = document.getElementById('student-viewer-subtitle');
+  const iframe = document.getElementById('student-viewer-iframe');
+  const openExternal = document.getElementById('student-viewer-open-external');
+  const fallbackImg = document.getElementById('student-viewer-fallback-img');
+  const imgEl = document.getElementById('student-viewer-img-el');
+  const iconEl = document.getElementById('student-viewer-icon');
+
+  if (!modal || !iframe) return;
+
+  if (titleEl) titleEl.textContent = title || 'Materi Pembelajaran';
+  if (subtitleEl) subtitleEl.textContent = subtitle || 'SMP Annida E-Learning';
+  if (openExternal) openExternal.href = url;
+
+  const formattedUrl = formatStudentEmbedUrl(url);
+  const isImage = /\.(jpeg|jpg|png|gif|webp)(\?.*)?$/i.test(url);
+
+  if (isImage) {
+    iframe.style.display = 'none';
+    iframe.src = 'about:blank';
+    if (fallbackImg && imgEl) {
+      fallbackImg.classList.remove('hidden');
+      imgEl.src = url;
+    }
+    if (iconEl) iconEl.textContent = 'image';
+  } else {
+    if (fallbackImg) fallbackImg.classList.add('hidden');
+    iframe.style.display = 'block';
+    iframe.src = formattedUrl;
+    if (iconEl) {
+      if (formattedUrl.includes('youtube.com')) iconEl.textContent = 'play_circle';
+      else if (formattedUrl.includes('.pdf')) iconEl.textContent = 'picture_as_pdf';
+      else if (formattedUrl.includes('.html')) iconEl.textContent = 'code';
+      else iconEl.textContent = 'preview';
+    }
+  }
+
+  modal.classList.remove('hidden');
+}
+
+function initStudentMaterialViewer() {
+  const modal = document.getElementById('modal-material-viewer');
+  const closeBtn = document.getElementById('btn-close-student-viewer');
+  const iframe = document.getElementById('student-viewer-iframe');
+
+  if (closeBtn && modal) {
+    closeBtn.onclick = () => {
+      modal.classList.add('hidden');
+      if (iframe) iframe.src = 'about:blank';
+    };
   }
 }

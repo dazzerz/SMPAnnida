@@ -1,6 +1,6 @@
 // =========================================================================
 // LMS (LEARNING MANAGEMENT SYSTEM) TEACHER CONTROLLER (SMP ANNIDA)
-// Modul: Pembuatan Tugas, Pembagian Materi, & Koreksi Berkas Siswa
+// Modul: Pembuatan Tugas, Pembagian Materi Interaktif, & Koreksi Berkas Siswa
 // =========================================================================
 
 import supabaseClient from '../core/supabase.js';
@@ -19,6 +19,7 @@ export function initLmsTeacherModule() {
     loadLmsDropdowns();
     loadAssignments();
     initLmsEventListeners();
+    initMaterialViewer();
 }
 
 async function loadLmsDropdowns() {
@@ -56,10 +57,6 @@ async function loadLmsDropdowns() {
                 masterSubjects.map(s => `<option value="${s.nama_mapel}">${s.nama_mapel}</option>`).join('');
         }
     } catch (err) {
-                if (submitBtn) {
-                    submitBtn.textContent = origBtnText;
-                    submitBtn.disabled = false;
-                }
         console.error('Gagal memuat dropdown LMS:', err);
     }
 }
@@ -108,36 +105,54 @@ function renderAssignmentsTable(list) {
     }
 
     tbody.innerHTML = filtered.map((a, idx) => {
+        const isMateri = a.type === 'materi' || a.type === 'material';
         const subCount = (a.assignment_submissions || []).length;
         const gradedCount = (a.assignment_submissions || []).filter(s => s.status === 'graded').length;
 
-        let deadlineStr = '-';
-        if (a.deadline) {
+        let typeBadge = isMateri 
+            ? '<span class="px-2 py-0.5 rounded text-[0.7rem] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 flex items-center gap-1"><span class="material-symbols-outlined text-xs">menu_book</span> Materi</span>'
+            : '<span class="px-2 py-0.5 rounded text-[0.7rem] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1"><span class="material-symbols-outlined text-xs">assignment</span> Tugas</span>';
+
+        let deadlineStr = isMateri ? '<span class="text-xs text-gray-500">Materi Bacaan</span>' : '-';
+        if (!isMateri && a.deadline) {
             deadlineStr = new Date(a.deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
         }
+
+        let progressCell = isMateri 
+            ? '<span class="text-xs text-gray-400">Hanya Dibaca</span>'
+            : `<span class="text-xs font-semibold px-2 py-1 rounded bg-emerald-500/20 text-emerald-300">${subCount} Terkumpul (${gradedCount} Dinilai)</span>`;
 
         return `
             <tr>
                 <td>${idx + 1}</td>
                 <td>
-                    <div class="font-bold text-white flex items-center gap-1">${escapeHTML(a.title)} ${a.attachment_url ? '<span class="material-symbols-outlined text-xs text-blue-400" title="Ada File Materi/Soal">attachment</span>' : ''}</div>
+                    <div class="flex items-center gap-2 mb-1">
+                        ${typeBadge}
+                        <span class="font-bold text-white">${escapeHTML(a.title)}</span>
+                    </div>
                     <div class="text-xs text-gray-400 truncate max-w-xs">${escapeHTML(a.description || '-')}</div>
                 </td>
                 <td><span class="badge badge-primary">${escapeHTML(a.class_name)}</span></td>
                 <td>${escapeHTML(a.subject)}</td>
                 <td><span class="text-xs text-amber-300">${deadlineStr}</span></td>
-                <td>
-                    <span class="text-xs font-semibold px-2 py-1 rounded bg-emerald-500/20 text-emerald-300">
-                        ${subCount} Terkumpul (${gradedCount} Dinilai)
-                    </span>
-                </td>
+                <td>${progressCell}</td>
                 <td>
                     <div class="flex items-center gap-1.5">
-                        <button class="btn-review-lms btn-sm btn-primary" data-id="${a.id}" data-title="${escapeHTML(a.title)}" data-subtitle="Kelas ${a.class_name} • ${a.subject}" title="Review & Beri Nilai Siswa">
-                            Review (${subCount})
-                        </button>
-                        <button class="btn-edit-assignment btn-sm btn-secondary" data-id="${a.id}" title="Edit Tugas">✏️</button>
-                        <button class="btn-del-assignment btn-sm btn-danger" data-id="${a.id}" title="Hapus Tugas">🗑️</button>
+                        ${a.attachment_url ? `
+                            <button class="btn-view-material-lms btn-sm btn-secondary flex items-center gap-1 text-emerald-300 hover:text-emerald-200" data-url="${escapeHTML(a.attachment_url)}" data-title="${escapeHTML(a.title)}" data-subtitle="Kelas ${a.class_name} • ${a.subject}" title="Lihat Materi di Web">
+                                <span class="material-symbols-outlined text-xs">visibility</span>
+                                <span>Lihat</span>
+                            </button>
+                        ` : ''}
+
+                        ${!isMateri ? `
+                            <button class="btn-review-lms btn-sm btn-primary" data-id="${a.id}" data-title="${escapeHTML(a.title)}" data-subtitle="Kelas ${a.class_name} • ${a.subject}" title="Review & Beri Nilai Siswa">
+                                Review (${subCount})
+                            </button>
+                        ` : ''}
+                        
+                        <button class="btn-edit-assignment btn-sm btn-secondary" data-id="${a.id}" title="Edit Data">✏️</button>
+                        <button class="btn-del-assignment btn-sm btn-danger" data-id="${a.id}" title="Hapus Data">🗑️</button>
                     </div>
                 </td>
             </tr>
@@ -145,6 +160,15 @@ function renderAssignmentsTable(list) {
     }).join('');
 
     // Bind event listeners for actions
+    tbody.querySelectorAll('.btn-view-material-lms').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const url = btn.getAttribute('data-url');
+            const title = btn.getAttribute('data-title');
+            const subtitle = btn.getAttribute('data-subtitle');
+            openMaterialViewer(url, title, subtitle);
+        });
+    });
+
     tbody.querySelectorAll('.btn-review-lms').forEach(btn => {
         btn.addEventListener('click', () => {
             const id = btn.getAttribute('data-id');
@@ -166,15 +190,15 @@ function renderAssignmentsTable(list) {
         btn.addEventListener('click', async () => {
             if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             const id = btn.getAttribute('data-id');
-            if (!confirm('Apakah Anda yakin ingin menghapus tugas ini? Seluruh file jawaban siswa yang terkait juga akan dihapus.')) return;
+            if (!confirm('Apakah Anda yakin ingin menghapus data ini?')) return;
 
             try {
                 const { error } = await db.from('assignments').delete().eq('id', id);
                 if (error) throw error;
-                showToast('Tugas berhasil dihapus.', 'success');
+                showToast('Data berhasil dihapus.', 'success');
                 await loadAssignments();
             } catch (err) {
-                showToast('Gagal menghapus tugas: ' + err.message, 'error');
+                showToast('Gagal menghapus data: ' + err.message, 'error');
             }
         });
     });
@@ -186,53 +210,43 @@ function openAssignmentModal(item = null) {
 
     const titleEl = document.getElementById('modal-assignment-title');
     const form = document.getElementById('form-assignment');
+    const typeTugas = document.getElementById('type-tugas');
+    const typeMateri = document.getElementById('type-materi');
+    const deadlineContainer = document.getElementById('container-assignment-deadline');
+    const saveBtnText = document.getElementById('btn-save-assignment-text');
+    const fileInput = document.getElementById('assignment-file-upload');
+    if (fileInput) fileInput.value = '';
+
     form.reset();
-    const btnUploadMode = document.getElementById('btn-mode-upload');
-    const btnLinkMode = document.getElementById('btn-mode-link');
-    const uploadContainer = document.getElementById('upload-mode-container');
-    const linkContainer = document.getElementById('link-mode-container');
-    const fileInput = document.getElementById('assignment-file');
-    const attachmentInput = document.getElementById('assignment-attachment');
-    
-    let isUploadMode = true;
-
-    function setMode(uploadMode) {
-        isUploadMode = uploadMode;
-        if (uploadMode) {
-            btnUploadMode.classList.replace('btn-outline', 'btn-primary');
-            btnLinkMode.classList.replace('btn-primary', 'btn-outline');
-            uploadContainer.style.display = 'block';
-            linkContainer.style.display = 'none';
-        } else {
-            btnLinkMode.classList.replace('btn-outline', 'btn-primary');
-            btnUploadMode.classList.replace('btn-primary', 'btn-outline');
-            uploadContainer.style.display = 'none';
-            linkContainer.style.display = 'block';
-        }
-    }
-    
-    if (btnUploadMode && btnLinkMode) {
-        btnUploadMode.onclick = () => setMode(true);
-        btnLinkMode.onclick = () => setMode(false);
-    }
-    
-    setMode(true); // Default to upload mode
-
 
     if (item) {
-        titleEl.textContent = 'Edit Tugas / Materi';
+        const isMateri = item.type === 'materi' || item.type === 'material';
+        titleEl.textContent = isMateri ? 'Edit Materi Ajar' : 'Edit Tugas / PR';
         document.getElementById('assignment-id').value = item.id;
         document.getElementById('assignment-title').value = item.title;
         document.getElementById('assignment-class').value = item.class_name;
         document.getElementById('assignment-subject').value = item.subject;
         document.getElementById('assignment-attachment').value = item.attachment_url || '';
         document.getElementById('assignment-description').value = item.description || '';
-        if (item.deadline) {
-            document.getElementById('assignment-deadline').value = new Date(item.deadline).toISOString().slice(0, 16);
+
+        if (isMateri) {
+            typeMateri.checked = true;
+            if (deadlineContainer) deadlineContainer.style.display = 'none';
+            if (saveBtnText) saveBtnText.textContent = 'Simpan Materi Ajar';
+        } else {
+            typeTugas.checked = true;
+            if (deadlineContainer) deadlineContainer.style.display = 'block';
+            if (saveBtnText) saveBtnText.textContent = 'Simpan Tugas';
+            if (item.deadline) {
+                document.getElementById('assignment-deadline').value = new Date(item.deadline).toISOString().slice(0, 16);
+            }
         }
     } else {
-        titleEl.textContent = 'Buat Tugas Baru';
+        titleEl.textContent = 'Buat Tugas / Materi Baru';
         document.getElementById('assignment-id').value = '';
+        typeTugas.checked = true;
+        if (deadlineContainer) deadlineContainer.style.display = 'block';
+        if (saveBtnText) saveBtnText.textContent = 'Simpan Tugas';
     }
 
     modal.style.display = 'flex';
@@ -252,6 +266,26 @@ function initLmsEventListeners() {
     const filterSub = document.getElementById('filter-lms-subject');
     const searchInput = document.getElementById('search-lms-assignment');
 
+    const typeTugas = document.getElementById('type-tugas');
+    const typeMateri = document.getElementById('type-materi');
+    const deadlineContainer = document.getElementById('container-assignment-deadline');
+    const saveBtnText = document.getElementById('btn-save-assignment-text');
+
+    if (typeTugas && typeMateri && deadlineContainer) {
+        typeTugas.addEventListener('change', () => {
+            if (typeTugas.checked) {
+                deadlineContainer.style.display = 'block';
+                if (saveBtnText) saveBtnText.textContent = 'Simpan Tugas';
+            }
+        });
+        typeMateri.addEventListener('change', () => {
+            if (typeMateri.checked) {
+                deadlineContainer.style.display = 'none';
+                if (saveBtnText) saveBtnText.textContent = 'Simpan Materi Ajar';
+            }
+        });
+    }
+
     if (btnAdd) btnAdd.onclick = () => {
         if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
         openAssignmentModal();
@@ -260,10 +294,6 @@ function initLmsEventListeners() {
     if (btnCloseAss) btnCloseAss.onclick = () => {
         modalAssignment.style.display = 'none';
         modalAssignment.classList.add('hidden');
-                if (submitBtn) {
-                    submitBtn.textContent = origBtnText;
-                    submitBtn.disabled = false;
-                }
     };
 
     if (btnCloseReview) btnCloseReview.onclick = () => {
@@ -284,41 +314,42 @@ function initLmsEventListeners() {
             const title = document.getElementById('assignment-title').value.trim();
             const className = document.getElementById('assignment-class').value;
             const subject = document.getElementById('assignment-subject').value;
-            const deadlineVal = document.getElementById('assignment-deadline').value;
+            const isMateriSelected = document.getElementById('type-materi')?.checked;
+            const selectedType = isMateriSelected ? 'materi' : 'tugas';
+            const deadlineVal = isMateriSelected ? null : document.getElementById('assignment-deadline').value;
             let attachment = document.getElementById('assignment-attachment').value.trim();
             const description = document.getElementById('assignment-description').value.trim();
-            const fileInput = document.getElementById('assignment-file');
-            
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            const origBtnText = submitBtn.innerHTML;
-            
+            const fileUpload = document.getElementById('assignment-file-upload')?.files?.[0];
+
+            const { data: { user } } = await db.auth.getUser();
+            const teacherName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Guru Annida';
+
+            if (saveBtnText) saveBtnText.textContent = 'Menyimpan...';
+
             try {
-                submitBtn.textContent = 'Menyimpan...';
-                submitBtn.disabled = true;
+                // Upload file jika guru mengunggah berkas (PDF, DOCX, HTML, Video, Foto)
+                if (fileUpload) {
+                    const ext = fileUpload.name.split('.').pop().toLowerCase();
+                    const safeName = fileUpload.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+                    const storagePath = `materials/${Date.now()}_${safeName}`;
 
-                // Handle file upload if mode is upload and file is selected
-                if (fileInput && fileInput.files.length > 0 && document.getElementById('upload-mode-container').style.display !== 'none') {
-                    const file = fileInput.files[0];
-                    const fileExt = file.name.split('.').pop();
-                    const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
-                    submitBtn.textContent = 'Mengunggah File...';
-                    
+                    let contentType = 'application/octet-stream';
+                    if (ext === 'html' || ext === 'htm') contentType = 'text/html';
+                    else if (ext === 'pdf') contentType = 'application/pdf';
+                    else if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) contentType = `image/${ext === 'jpg' ? 'jpeg' : ext}`;
+
                     const { data: uploadData, error: uploadErr } = await db.storage
-                        .from('smpannida_storage')
-                        .upload(`lms_materials/${fileName}`, file);
-                        
-                    if (uploadErr) {
-                        console.error(uploadErr);
-                        alert('Gagal unggah file (Storage Error). Pastikan RLS bucket smpannida_storage sudah diatur. Silakan jalankan script SQL Migration terlebih dahulu.');
-                        throw uploadErr;
-                    }
-                    
-                    const { data: { publicUrl } } = db.storage.from('smpannida_storage').getPublicUrl(`lms_materials/${fileName}`);
-                    attachment = publicUrl;
-                }
+                        .from('student-assignments')
+                        .upload(storagePath, fileUpload, { contentType: contentType, upsert: true });
 
-                const { data: { user } } = await db.auth.getUser();
-                const teacherName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Guru Annida';
+                    if (uploadErr) throw uploadErr;
+
+                    const { data: publicUrlData } = db.storage
+                        .from('student-assignments')
+                        .getPublicUrl(storagePath);
+
+                    attachment = publicUrlData?.publicUrl || storagePath;
+                }
 
                 const payload = {
                     teacher_id: user?.id,
@@ -326,6 +357,7 @@ function initLmsEventListeners() {
                     class_name: className,
                     subject: subject,
                     title: title,
+                    type: selectedType,
                     description: description || null,
                     attachment_url: attachment || null,
                     deadline: deadlineVal ? new Date(deadlineVal).toISOString() : null,
@@ -335,139 +367,100 @@ function initLmsEventListeners() {
                 if (id) {
                     const { error } = await db.from('assignments').update(payload).eq('id', id);
                     if (error) throw error;
-                    showToast('Tugas berhasil diperbarui!', 'success');
+                    showToast(isMateriSelected ? 'Materi ajar berhasil diperbarui!' : 'Tugas berhasil diperbarui!', 'success');
                 } else {
                     const { error } = await db.from('assignments').insert(payload);
                     if (error) throw error;
-                    showToast('Tugas baru berhasil dibuat dan diterbitkan!', 'success');
+                    showToast(isMateriSelected ? 'Materi ajar baru berhasil diterbitkan!' : 'Tugas baru berhasil dibuat!', 'success');
                 }
 
                 modalAssignment.style.display = 'none';
                 modalAssignment.classList.add('hidden');
                 await loadAssignments();
             } catch (err) {
-                console.error('Gagal menyimpan tugas:', err);
-                showToast('Gagal menyimpan tugas: ' + err.message, 'error');
+                console.error('Gagal menyimpan:', err);
+                showToast('Gagal menyimpan: ' + err.message, 'error');
             } finally {
-                submitBtn.textContent = origBtnText;
-                submitBtn.disabled = false;
+                if (saveBtnText) saveBtnText.textContent = isMateriSelected ? 'Simpan Materi Ajar' : 'Simpan Tugas';
             }
         };
     }
 }
 
-async function openReviewSubmissionsModal(assignmentId, title, subtitle) {
-    const modal = document.getElementById('modal-review-submissions');
-    const titleEl = document.getElementById('review-assignment-title');
-    const subtitleEl = document.getElementById('review-assignment-subtitle');
-    const tbody = document.getElementById('tbody-review-submissions');
+// ── 3. MATERIAL VIEWER CONTROLLER (SMART IFRAME MODAL) ────────────────
+export function formatEmbedUrl(rawUrl) {
+    if (!rawUrl) return '';
+    const trimmed = rawUrl.trim();
 
-    if (!modal) return;
+    // YouTube URL detection (Standard watch, youtu.be, embed, shorts)
+    const ytMatch = trimmed.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([^"&?\/\s]{11})/i);
+    if (ytMatch && ytMatch[1]) {
+        return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0`;
+    }
 
-    activeReviewAssignmentId = assignmentId;
-    titleEl.textContent = `Review: ${title}`;
-    subtitleEl.textContent = subtitle;
-    tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-gray-400">Memuat berkas siswa...</td></tr>';
+    // Google Drive Preview link
+    if (trimmed.includes('drive.google.com/file/d/')) {
+        return trimmed.replace(/\/view.*$/, '/preview');
+    }
+
+    return trimmed;
+}
+
+export function openMaterialViewer(url, title, subtitle) {
+    const modal = document.getElementById('modal-material-viewer');
+    const titleEl = document.getElementById('viewer-title');
+    const subtitleEl = document.getElementById('viewer-subtitle');
+    const iframe = document.getElementById('material-viewer-iframe');
+    const openExternal = document.getElementById('viewer-open-external');
+    const fallbackImg = document.getElementById('viewer-fallback-img');
+    const imgEl = document.getElementById('viewer-img-el');
+    const iconEl = document.getElementById('viewer-icon');
+
+    if (!modal || !iframe) return;
+
+    titleEl.textContent = title || 'Materi Pembelajaran';
+    subtitleEl.textContent = subtitle || 'SMP Annida E-Learning';
+    if (openExternal) openExternal.href = url;
+
+    const formattedUrl = formatEmbedUrl(url);
+    const isImage = /\.(jpeg|jpg|png|gif|webp)(\?.*)?$/i.test(url);
+
+    if (isImage) {
+        iframe.style.display = 'none';
+        iframe.src = 'about:blank';
+        if (fallbackImg && imgEl) {
+            fallbackImg.classList.remove('hidden');
+            imgEl.src = url;
+        }
+        if (iconEl) iconEl.textContent = 'image';
+    } else {
+        if (fallbackImg) fallbackImg.classList.add('hidden');
+        iframe.style.display = 'block';
+        iframe.src = formattedUrl;
+        if (iconEl) {
+            if (formattedUrl.includes('youtube.com')) iconEl.textContent = 'play_circle';
+            else if (formattedUrl.includes('.pdf')) iconEl.textContent = 'picture_as_pdf';
+            else iconEl.textContent = 'preview';
+        }
+    }
 
     modal.style.display = 'flex';
     modal.classList.remove('hidden');
-
-    try {
-        const { data: submissions, error } = await db
-            .from('assignment_submissions')
-            .select('*')
-            .eq('assignment_id', assignmentId)
-            .order('submitted_at', { ascending: true });
-
-        if (error) throw error;
-
-        if (!submissions || submissions.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-gray-400">Belum ada siswa yang mengumpulkan tugas ini.</td></tr>';
-            return;
-        }
-
-        tbody.innerHTML = submissions.map((s, idx) => {
-            const timeStr = new Date(s.submitted_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-            return `
-                <tr id="sub-row-${s.id}">
-                    <td>${idx + 1}</td>
-                    <td>
-                        <div class="font-semibold text-white">${escapeHTML(s.student_name)}</div>
-                        <div class="text-xs text-gray-400">${escapeHTML(s.class_name)}</div>
-                    </td>
-                    <td><span class="text-xs text-gray-300">${timeStr}</span></td>
-                    <td>
-                        <a href="${s.file_url}" target="_blank" class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 text-xs font-semibold hover:underline inline-flex items-center gap-1">
-                            <span>📥 Unduh Berkas</span>
-                        </a>
-                    </td>
-                    <td style="width: 110px;">
-                        <input type="number" min="0" max="100" class="input-control score-input text-center font-bold" value="${s.score != null ? s.score : ''}" placeholder="0-100" id="score-${s.id}">
-                    </td>
-                    <td>
-                        <input type="text" class="input-control feedback-input text-xs" value="${escapeHTML(s.feedback || '')}" placeholder="Catatan koreksi..." id="feedback-${s.id}">
-                    </td>
-                    <td>
-                        <button class="btn-save-grade btn-sm btn-primary" data-id="${s.id}" data-studentid="${s.student_id}">
-                            Simpan
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-
-        // Bind save grade click
-        tbody.querySelectorAll('.btn-save-grade').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-                const subId = btn.getAttribute('data-id');
-                const studentId = btn.getAttribute('data-studentid');
-                const scoreVal = document.getElementById(`score-${subId}`).value;
-                const feedbackVal = document.getElementById(`feedback-${subId}`).value.trim();
-
-                if (scoreVal === '' || isNaN(scoreVal) || Number(scoreVal) < 0 || Number(scoreVal) > 100) {
-                    return showToast('Masukkan nilai valid antara 0 dan 100!', 'warning');
-                }
-
-                btn.textContent = 'Menyimpan...';
-                try {
-                    const { error } = await db
-                        .from('assignment_submissions')
-                        .update({
-                            score: Number(scoreVal),
-                            feedback: feedbackVal || null,
-                            status: 'graded',
-                            graded_at: new Date().toISOString()
-                        })
-                        .eq('id', subId);
-
-                    if (error) throw error;
-
-                    showToast('Nilai dan feedback berhasil disimpan!', 'success');
-                    btn.textContent = 'Tersimpan ✓';
-                    setTimeout(() => { btn.textContent = 'Simpan'; }, 2000);
-                    await loadAssignments();
-                } catch (err) {
-                    showToast('Gagal menyimpan nilai: ' + err.message, 'error');
-                    btn.textContent = 'Simpan';
-                }
-            });
-        });
-    } catch (err) {
-        console.error('Gagal mengambil submissions:', err);
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-rose-400">Gagal: ${escapeHTML(err.message)}</td></tr>`;
-    }
 }
 
-// Inisialisasi Lifecycle
-if (typeof document !== 'undefined') {
-    if (document.readyState !== 'loading') {
-        initLmsTeacherModule();
-    } else {
-        document.addEventListener('DOMContentLoaded', initLmsTeacherModule);
+function initMaterialViewer() {
+    const modal = document.getElementById('modal-material-viewer');
+    const closeBtn = document.getElementById('btn-close-material-viewer');
+    const iframe = document.getElementById('material-viewer-iframe');
+
+    if (closeBtn && modal) {
+        closeBtn.onclick = () => {
+            modal.style.display = 'none';
+            modal.classList.add('hidden');
+            if (iframe) iframe.src = 'about:blank';
+        };
     }
 }
-
 
 // ── 2. CBT QUIZ MANAGER & SMART TEXT PARSER ────────────────────────────
 let allCbtQuizzes = [];

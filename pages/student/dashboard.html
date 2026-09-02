@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; frame-src 'self' https://www.google.com https://maps.google.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://script.google.com https://script.googleusercontent.com;" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; frame-src 'self' https://www.google.com https://maps.google.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co;" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
@@ -383,13 +383,36 @@
         </div>
       </section>
 
-      <!-- PANEL 4: JURNAL & MATERI -->
+      <!-- PANEL 4: JURNAL & MATERI PEMBELAJARAN INTERAKTIF -->
       <section id="panel-materi" class="student-panel hidden space-y-6">
         <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
-          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Linimasa Jurnal & Materi Pembelajaran</h2>
-          <p class="text-xs text-gray-400 mb-6">Arsip materi yang diajarkan oleh guru pengampu di kelas Anda</p>
-          <div id="student-journal-feed" class="space-y-4">
-            <div class="text-center py-8 text-gray-400">Memuat catatan materi jurnal...</div>
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-bold font-headline-md text-white mb-1">Pusat Materi Interaktif & E-Learning</h2>
+              <p class="text-xs text-gray-400">Tonton video pembelajaran, baca modul PDF, dan buka simulasi interaktif</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white" id="tab-btn-interactive-materi" data-target="view-interactive-materi">
+                📚 Modul Interaktif
+              </button>
+              <button class="materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10" id="tab-btn-journal-materi" data-target="view-journal-materi">
+                📝 Catatan Jurnal Guru
+              </button>
+            </div>
+          </div>
+
+          <!-- Sub-view 1: Modul Interaktif (Grid Materi Video / PDF / HTML) -->
+          <div id="view-interactive-materi" class="space-y-4">
+            <div id="student-interactive-materials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="text-center py-8 text-gray-400 col-span-full">Memuat modul materi interaktif...</div>
+            </div>
+          </div>
+
+          <!-- Sub-view 2: Linimasa Jurnal Guru -->
+          <div id="view-journal-materi" class="space-y-4 hidden">
+            <div id="student-journal-feed" class="space-y-4">
+              <div class="text-center py-8 text-gray-400">Memuat catatan jurnal guru...</div>
+            </div>
           </div>
         </div>
       </section>
@@ -680,6 +703,37 @@
       <!-- Discussion Questions Breakdown -->
       <div class="space-y-4" id="results-discussion-list">
         <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL MATERIAL VIEWER (SMART IFRAME VIEWER FOR YOUTUBE, PDF, HTML) -->
+  <div id="modal-material-viewer" class="modal hidden">
+    <div class="modal-content card glass max-w-6xl w-full p-4 rounded-2xl bg-slate-950 border border-white/20 text-white flex flex-col h-[90vh]">
+      <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-3">
+        <div class="flex items-center gap-3">
+          <span class="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
+            <span class="material-symbols-outlined text-xl" id="student-viewer-icon">play_circle</span>
+          </span>
+          <div>
+            <h3 class="text-base font-bold text-white truncate max-w-xl" id="student-viewer-title">Judul Materi</h3>
+            <p class="text-xs text-emerald-400" id="student-viewer-subtitle">Materi Pembelajaran Siswa</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="#" target="_blank" id="student-viewer-open-external" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs text-gray-200 flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">open_in_new</span> Buka Tab Baru
+          </a>
+          <button id="btn-close-student-viewer" class="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-bold">✕ Tutup</button>
+        </div>
+      </div>
+
+      <div class="flex-1 rounded-xl overflow-hidden bg-slate-900 border border-white/10 relative flex items-center justify-center">
+        <iframe id="student-viewer-iframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <div id="student-viewer-fallback-img" class="hidden max-h-full max-w-full p-4 flex items-center justify-center">
+          <img id="student-viewer-img-el" src="" alt="Lampiran Materi" class="max-h-[75vh] max-w-full rounded-lg object-contain shadow-2xl">
+        </div>
       </div>
     </div>
   </div>
