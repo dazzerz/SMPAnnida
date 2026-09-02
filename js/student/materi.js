@@ -150,7 +150,7 @@ function formatStudentEmbedUrl(rawUrl) {
     return trimmed;
 }
 
-export function openStudentMaterialViewer(url, title, subtitle, type) {
+export async function openStudentMaterialViewer(url, title, subtitle, type) {
     const modal = document.getElementById('modal-viewer-materi-student');
     const titleEl = document.getElementById('stu-viewer-title');
     const subtitleEl = document.getElementById('stu-viewer-subtitle');
@@ -166,8 +166,11 @@ export function openStudentMaterialViewer(url, title, subtitle, type) {
     if (subtitleEl) subtitleEl.textContent = subtitle || 'SMP Annida E-Learning';
     if (openExternal) openExternal.href = url;
 
-    const formattedUrl = formatStudentEmbedUrl(url);
+    const isHtml = type === 'html' || /\.(html|htm)(\?.*)?$/i.test(url);
     const isImage = type === 'image' || /\.(jpeg|jpg|png|gif|webp)(\?.*)?$/i.test(url);
+    const formattedUrl = formatStudentEmbedUrl(url);
+
+    iframe.removeAttribute('srcdoc');
 
     if (isImage) {
         iframe.style.display = 'none';
@@ -177,6 +180,21 @@ export function openStudentMaterialViewer(url, title, subtitle, type) {
             imgEl.src = url;
         }
         if (iconEl) iconEl.textContent = 'image';
+    } else if (isHtml) {
+        if (fallbackImg) fallbackImg.classList.add('hidden');
+        iframe.style.display = 'block';
+        if (iconEl) iconEl.textContent = 'code';
+        try {
+            const res = await fetch(url);
+            if (res.ok) {
+                const htmlText = await res.text();
+                iframe.srcdoc = htmlText;
+            } else {
+                iframe.src = formattedUrl;
+            }
+        } catch (e) {
+            iframe.src = formattedUrl;
+        }
     } else {
         if (fallbackImg) fallbackImg.classList.add('hidden');
         iframe.style.display = 'block';
@@ -184,7 +202,6 @@ export function openStudentMaterialViewer(url, title, subtitle, type) {
         if (iconEl) {
             if (formattedUrl.includes('youtube.com')) iconEl.textContent = 'play_circle';
             else if (formattedUrl.includes('.pdf')) iconEl.textContent = 'picture_as_pdf';
-            else if (formattedUrl.includes('.html')) iconEl.textContent = 'code';
             else iconEl.textContent = 'menu_book';
         }
     }

@@ -333,14 +333,27 @@ function initLmsEventListeners() {
                     const safeName = fileUpload.name.replace(/[^a-zA-Z0-9.-]/g, '_');
                     const storagePath = `materials/${Date.now()}_${safeName}`;
 
-                    let contentType = 'application/octet-stream';
-                    if (ext === 'html' || ext === 'htm') contentType = 'text/html';
-                    else if (ext === 'pdf') contentType = 'application/pdf';
-                    else if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) contentType = `image/${ext === 'jpg' ? 'jpeg' : ext}`;
+                    let contentType = fileUpload.type || 'application/octet-stream';
+                    let uploadBody = fileUpload;
+
+                    if (ext === 'html' || ext === 'htm') {
+                        contentType = 'text/html; charset=utf-8';
+                        uploadBody = new Blob([fileUpload], { type: contentType });
+                    } else if (ext === 'pdf') {
+                        contentType = 'application/pdf';
+                        uploadBody = new Blob([fileUpload], { type: contentType });
+                    } else if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) {
+                        contentType = `image/${ext === 'jpg' ? 'jpeg' : ext}`;
+                        uploadBody = new Blob([fileUpload], { type: contentType });
+                    }
 
                     const { data: uploadData, error: uploadErr } = await db.storage
                         .from('smpannida_storage')
-                        .upload(storagePath, fileUpload, { contentType: contentType, upsert: true });
+                        .upload(storagePath, uploadBody, { 
+                            contentType: contentType, 
+                            cacheControl: '3600',
+                            upsert: true 
+                        });
 
                     if (uploadErr) throw uploadErr;
 

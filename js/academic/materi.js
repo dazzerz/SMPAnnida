@@ -259,21 +259,30 @@ function initMateriEventListeners() {
                     const safeName = fileUpload.name.replace(/[^a-zA-Z0-9.-]/g, '_');
                     const storagePath = `materials/${Date.now()}_${safeName}`;
 
-                    let contentType = 'application/octet-stream';
+                    let contentType = fileUpload.type || 'application/octet-stream';
+                    let uploadBody = fileUpload;
+
                     if (ext === 'html' || ext === 'htm') {
-                        contentType = 'text/html';
+                        contentType = 'text/html; charset=utf-8';
+                        uploadBody = new Blob([fileUpload], { type: contentType });
                         materialType = 'html';
                     } else if (ext === 'pdf') {
                         contentType = 'application/pdf';
+                        uploadBody = new Blob([fileUpload], { type: contentType });
                         materialType = 'pdf';
                     } else if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) {
                         contentType = `image/${ext === 'jpg' ? 'jpeg' : ext}`;
+                        uploadBody = new Blob([fileUpload], { type: contentType });
                         materialType = 'image';
                     }
 
                     const { error: uploadErr } = await db.storage
                         .from('smpannida_storage')
-                        .upload(storagePath, fileUpload, { contentType: contentType, upsert: true });
+                        .upload(storagePath, uploadBody, { 
+                            contentType: contentType, 
+                            cacheControl: '3600',
+                            upsert: true 
+                        });
 
                     if (uploadErr) throw uploadErr;
 
@@ -347,7 +356,7 @@ function formatEmbedUrl(rawUrl) {
     return trimmed;
 }
 
-export function openTeacherViewer(url, title, subtitle, type) {
+export async function openTeacherViewer(url, title, subtitle, type) {
     const modal = document.getElementById('modal-viewer-materi');
     const titleEl = document.getElementById('teacher-viewer-title');
     const subtitleEl = document.getElementById('teacher-viewer-subtitle');
@@ -363,8 +372,11 @@ export function openTeacherViewer(url, title, subtitle, type) {
     if (subtitleEl) subtitleEl.textContent = subtitle || 'SMP Annida E-Learning';
     if (openExternal) openExternal.href = url;
 
-    const formattedUrl = formatEmbedUrl(url);
+    const isHtml = type === 'html' || /\.(html|htm)(\?.*)?$/i.test(url);
     const isImage = type === 'image' || /\.(jpeg|jpg|png|gif|webp)(\?.*)?$/i.test(url);
+    const formattedUrl = formatEmbedUrl(url);
+
+    iframe.removeAttribute('srcdoc');
 
     if (isImage) {
         iframe.style.display = 'none';
@@ -374,6 +386,21 @@ export function openTeacherViewer(url, title, subtitle, type) {
             imgEl.src = url;
         }
         if (iconEl) iconEl.textContent = 'image';
+    } else if (isHtml) {
+        if (fallbackImg) fallbackImg.classList.add('hidden');
+        iframe.style.display = 'block';
+        if (iconEl) iconEl.textContent = 'code';
+        try {
+            const res = await fetch(url);
+            if (res.ok) {
+                const htmlText = await res.text();
+                iframe.srcdoc = htmlText;
+            } else {
+                iframe.src = formattedUrl;
+            }
+        } catch (e) {
+            iframe.src = formattedUrl;
+        }
     } else {
         if (fallbackImg) fallbackImg.classList.add('hidden');
         iframe.style.display = 'block';
@@ -381,7 +408,6 @@ export function openTeacherViewer(url, title, subtitle, type) {
         if (iconEl) {
             if (formattedUrl.includes('youtube.com')) iconEl.textContent = 'play_circle';
             else if (formattedUrl.includes('.pdf')) iconEl.textContent = 'picture_as_pdf';
-            else if (formattedUrl.includes('.html')) iconEl.textContent = 'code';
             else iconEl.textContent = 'menu_book';
         }
     }
