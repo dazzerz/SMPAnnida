@@ -64,6 +64,18 @@ export function injectSidebar(containerId) {
               <span class="material-symbols-outlined nav-icon">group</span>
               <span class="nav-text">Data Siswa</span>
             </a>
+            <a href="${basePath}pages/academic/dashboard.html#guru" class="nav-item nav-link" data-target="guru" data-tooltip="Data Guru">
+              <span class="material-symbols-outlined nav-icon">badge</span>
+              <span class="nav-text">Data Guru</span>
+            </a>
+            <a href="${basePath}pages/academic/dashboard.html#kelas" class="nav-item nav-link" data-target="kelas" data-tooltip="Data Kelas">
+              <span class="material-symbols-outlined nav-icon">meeting_room</span>
+              <span class="nav-text">Data Kelas</span>
+            </a>
+            <a href="${basePath}pages/academic/dashboard.html#mata-pelajaran" class="nav-item nav-link" data-target="mata-pelajaran" data-tooltip="Mata Pelajaran">
+              <span class="material-symbols-outlined nav-icon">menu_book</span>
+              <span class="nav-text">Mata Pelajaran</span>
+            </a>
             <a href="${basePath}pages/academic/dashboard.html#jadwal" class="nav-item nav-link" data-target="jadwal" data-tooltip="Jadwal Pelajaran">
               <span class="material-symbols-outlined nav-icon">calendar_month</span>
               <span class="nav-text">Jadwal</span>
