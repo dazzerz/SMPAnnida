@@ -497,6 +497,8 @@ export async function uploadToGoogleDriveGAS(fileUpload, subject, className, cus
 
                 const res = await fetch(gasUrl, {
                     method: 'POST',
+                    mode: 'cors',
+                    redirect: 'follow',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(payload)
                 });
