@@ -327,7 +327,7 @@ function initMateriEventListeners() {
             if (saveBtnText) saveBtnText.textContent = 'Menyimpan...';
 
             try {
-                // Handle file upload if provided (Google Drive GAS Auto-Router with Supabase fallback)
+                // Handle file upload if provided (Strict Google Drive Only - Supabase Storage upload is forbidden)
                 if (fileUpload) {
                     const ext = fileUpload.name.split('.').pop().toLowerCase();
                     if (ext === 'html' || ext === 'htm') materialType = 'html';
@@ -335,49 +335,16 @@ function initMateriEventListeners() {
                     else if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) materialType = 'image';
 
                     try {
-                        // 1. Coba upload langsung ke Google Drive Auto-Folder Router (/Materi/[Mapel]/[Kelas])
                         const gasRes = await uploadToGoogleDriveGAS(fileUpload, subject, className);
                         if (gasRes && gasRes.embedUrl) {
                             materialUrl = gasRes.embedUrl;
                             console.log('Berkas berhasil disimpan ke Google Drive:', gasRes.folderPath);
                         } else {
-                            throw new Error('GAS response invalid');
+                            throw new Error('Respon Google Drive tidak valid.');
                         }
                     } catch (gasErr) {
-                        console.warn('GAS upload gagal / dialihkan ke Supabase Storage:', gasErr.message);
-                        // 2. Fallback aman ke Supabase Storage
-                        const safeName = fileUpload.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-                        const storagePath = `materials/${Date.now()}_${safeName}`;
-
-                        let contentType = fileUpload.type || 'application/octet-stream';
-                        let uploadBody = fileUpload;
-
-                        if (ext === 'html' || ext === 'htm') {
-                            contentType = 'text/html; charset=utf-8';
-                            uploadBody = new Blob([fileUpload], { type: contentType });
-                        } else if (ext === 'pdf') {
-                            contentType = 'application/pdf';
-                            uploadBody = new Blob([fileUpload], { type: contentType });
-                        } else if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) {
-                            contentType = `image/${ext === 'jpg' ? 'jpeg' : ext}`;
-                            uploadBody = new Blob([fileUpload], { type: contentType });
-                        }
-
-                        const { error: uploadErr } = await db.storage
-                            .from('smpannida_storage')
-                            .upload(storagePath, uploadBody, { 
-                                contentType: contentType, 
-                                cacheControl: '3600',
-                                upsert: true 
-                            });
-
-                        if (uploadErr) throw uploadErr;
-
-                        const { data: publicUrlData } = db.storage
-                            .from('smpannida_storage')
-                            .getPublicUrl(storagePath);
-
-                        materialUrl = publicUrlData?.publicUrl || storagePath;
+                        console.error('Gagal upload ke Google Drive:', gasErr);
+                        throw new Error('Gagal mengunggah berkas ke Google Drive: ' + (gasErr.message || 'Koneksi terputus') + '. Seluruh berkas materi wajib disimpan di Google Drive.');
                     }
                 }
 
@@ -463,7 +430,7 @@ export async function openTeacherViewer(url, title, subtitle, type) {
     const isHtml = type === 'html' || /\.(html|htm)(\?.*)?$/i.test(url);
     const isImage = (type === 'image' || /\.(jpeg|jpg|png|gif|webp)(\?.*)?$/i.test(url)) && !isDrive;
     const formattedUrl = formatEmbedUrl(url);
-    const gasUrl = window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbxrv-j6LtdK-9mGc56uhqC1_unPDGG7rFu3ZmLL7Dqh4A5Yx8JWWKmrJAGPo5EmXFA/exec';
+    const gasUrl = window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbyjjWlbe1CdCVRfTMm40cMe79K_5KLChsveQ5y7PJuEZ6FNX9o4bztZ33rP68rMAT4/exec';
 
     if (openExternal) {
         openExternal.onclick = async (e) => {
@@ -594,7 +561,7 @@ if (typeof document !== 'undefined') {
  * Struktur: /Materi/[Mata Pelajaran]/[Kelas]
  */
 export async function uploadToGoogleDriveGAS(fileUpload, subject, className, customGasUrl) {
-    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbxrv-j6LtdK-9mGc56uhqC1_unPDGG7rFu3ZmLL7Dqh4A5Yx8JWWKmrJAGPo5EmXFA/exec';
+    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbyjjWlbe1CdCVRfTMm40cMe79K_5KLChsveQ5y7PJuEZ6FNX9o4bztZ33rP68rMAT4/exec';
     if (!gasUrl) return null;
 
     return new Promise((resolve, reject) => {
@@ -644,7 +611,7 @@ export async function uploadToGoogleDriveGAS(fileUpload, subject, className, cus
  * Helper menghapus berkas fisik di Google Drive via GAS Endpoint
  */
 export async function deleteFromGoogleDriveGAS(fileUrlOrId, customGasUrl) {
-    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbxrv-j6LtdK-9mGc56uhqC1_unPDGG7rFu3ZmLL7Dqh4A5Yx8JWWKmrJAGPo5EmXFA/exec';
+    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbyjjWlbe1CdCVRfTMm40cMe79K_5KLChsveQ5y7PJuEZ6FNX9o4bztZ33rP68rMAT4/exec';
     if (!gasUrl || !fileUrlOrId) return null;
 
     const payload = {
