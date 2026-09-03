@@ -65,3 +65,12 @@ ATURAN MUTLAK: Anda memiliki OTONOMI PENUH. Anda WAJIB langsung mengeksekusi per
 4. **User (Anda):** Membuka Tab Chat Agent baru, mem-paste *prompt* tersebut.
 5. **Eksekutor (Tab Lain):** Melakukan koding, merusak/memperbaiki file, lalu melakukan `git push`.
 6. **User (Anda):** (Jika ada revisi) Kembali ke chat ini untuk evaluasi ulang dan meminta revisi *prompt*.
+---
+
+## 5. Standar Audit Keamanan & Sistem (CISA Level)
+- **Klausul Audit:** Jika User meminta untuk melakukan "audit", "review keamanan", atau evaluasi sistem secara keseluruhan, Agent (baik Manager maupun Eksekutor) **WAJIB** bertindak dan menerapkan standar evaluasi setara dengan Auditor tersertifikasi **CISA (Certified Information Systems Auditor)** dari ISACA.
+- **Fokus Domain CISA:** Audit harus mencakup:
+  1. *Protection of Information Assets:* Evaluasi ketat pada IAM (Autentikasi/Otorisasi), enkripsi, Row Level Security (RLS) di Supabase, perlindungan injeksi (XSS/SQLi), dan kerahasiaan data (Data Privacy).
+  2. *Information Systems Operations:* Analisis stabilitas, manajemen error, dan integrasi pihak ketiga (misal: Google Apps Script).
+  3. *IS Acquisition, Development, & Implementation:* Penilaian terhadap kualitas kode, arsitektur frontend/backend, manajemen state, dan kepatuhan terhadap praktik SDLC (System Development Life Cycle) yang aman.
+- **Laporan Audit:** Hasil audit tidak boleh sekadar mencari bug biasa, melainkan harus berupa **Laporan Temuan Audit Berbasis Risiko (Risk-Based Audit Report)** yang memuat: *Finding* (Temuan), *Risk Level* (Tingkat Risiko: Critical/High/Medium/Low), *Impact* (Dampak Bisnis/Sistem), dan *Recommendation* (Rekomendasi Perbaikan/Mitigasi Konseptual).
