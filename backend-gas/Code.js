@@ -35,7 +35,7 @@ function getOrCreateFolder(parent, folderName) {
 }
 
 /**
- * Web App POST Endpoint: Menerima payload berkas materi & melakukan auto-routing
+ * Web App POST Endpoint: Menerima payload berkas materi & melakukan auto-routing atau penghapusan
  */
 function doPost(e) {
   try {
@@ -44,6 +44,43 @@ function doPost(e) {
     }
 
     var data = JSON.parse(e.postData.contents);
+
+    // =========================================================================
+    // 1. DELETE ACTION: Hapus Berkas dari Google Drive
+    // =========================================================================
+    if (data.action === "delete") {
+      var targetId = data.fileId;
+      if (!targetId && data.fileUrl) {
+        var match = data.fileUrl.match(/[-\w]{25,}/);
+        if (match) targetId = match[0];
+      }
+
+      if (!targetId) {
+        throw new Error("ID atau URL berkas Google Drive tidak valid untuk dihapus.");
+      }
+
+      try {
+        var fileToTrash = DriveApp.getFileById(targetId);
+        fileToTrash.setTrashed(true);
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "success",
+          action: "delete",
+          fileId: targetId,
+          message: "Berkas berhasil dipindahkan ke Sampah Google Drive."
+        })).setMimeType(ContentService.MimeType.JSON);
+      } catch (delErr) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "warning",
+          action: "delete",
+          fileId: targetId,
+          message: "Berkas tidak ditemukan atau sudah dihapus: " + delErr.message
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+
+    // =========================================================================
+    // 2. UPLOAD ACTION: Unggah Berkas & Auto-Folder Routing
+    // =========================================================================
     var filename = data.filename || ("Materi_" + new Date().getTime());
     var mimeType = data.mimeType || "application/octet-stream";
     var base64 = data.base64;

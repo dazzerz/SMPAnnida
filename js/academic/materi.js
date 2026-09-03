@@ -193,12 +193,26 @@ function renderMaterialsTable(list) {
         btn.onclick = async () => {
             if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             const id = btn.getAttribute('data-id');
-            if (!confirm('Apakah Anda yakin ingin menghapus materi ini?')) return;
+            const item = allMaterials.find(m => String(m.id) === String(id));
+            const itemTitle = item?.title || 'ini';
+
+            if (!confirm(`Apakah Anda yakin ingin menghapus materi "${itemTitle}"?`)) return;
 
             try {
+                // 1. Jika berkas disimpan di Google Drive, hapus file fisik via GAS
+                if (item?.material_url && (item.material_url.includes('drive.google.com') || item.material_url.includes('googleusercontent.com'))) {
+                    try {
+                        const gasDelRes = await deleteFromGoogleDriveGAS(item.material_url);
+                        console.log('GAS delete result:', gasDelRes);
+                    } catch (driveErr) {
+                        console.warn('Gagal menghapus file dari Google Drive:', driveErr.message);
+                    }
+                }
+
+                // 2. Hapus data materi dari Supabase Database
                 const { error } = await db.from('materials').delete().eq('id', id);
                 if (error) throw error;
-                showToast('Materi berhasil dihapus.', 'success');
+                showToast('Materi dan berkas Google Drive berhasil dihapus.', 'success');
                 await loadMaterials();
             } catch (err) {
                 showToast('Gagal menghapus materi: ' + err.message, 'error');
@@ -584,4 +598,33 @@ export async function uploadToGoogleDriveGAS(fileUpload, subject, className, cus
         reader.onerror = () => reject(new Error('Gagal membaca berkas lokal'));
         reader.readAsDataURL(fileUpload);
     });
+}
+
+/**
+ * Helper menghapus berkas fisik di Google Drive via GAS Endpoint
+ */
+export async function deleteFromGoogleDriveGAS(fileUrlOrId, customGasUrl) {
+    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbxrv-j6LtdK-9mGc56uhqC1_unPDGG7rFu3ZmLL7Dqh4A5Yx8JWWKmrJAGPo5EmXFA/exec';
+    if (!gasUrl || !fileUrlOrId) return null;
+
+    const payload = {
+        action: 'delete',
+        fileUrl: fileUrlOrId,
+        fileId: fileUrlOrId
+    };
+
+    const res = await fetch(gasUrl, {
+        method: 'POST',
+        mode: 'cors',
+        redirect: 'follow',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+    });
+
+    const text = await res.text();
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        return { status: 'unknown', raw: text };
+    }
 }
