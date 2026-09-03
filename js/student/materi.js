@@ -177,24 +177,39 @@ export async function openStudentMaterialViewer(url, title, subtitle, type) {
     if (titleEl) titleEl.textContent = title || 'Materi Pembelajaran';
     if (subtitleEl) subtitleEl.textContent = subtitle || 'SMP Annida E-Learning';
 
-    const isDrive = url.includes('drive.google.com');
-    const isHtml = (type === 'html' || /\.(html|htm)(\?.*)?$/i.test(url)) && !isDrive;
+    const isDrive = url.includes('drive.google.com') || url.includes('googleusercontent.com');
+    const isHtml = type === 'html' || /\.(html|htm)(\?.*)?$/i.test(url);
     const isImage = (type === 'image' || /\.(jpeg|jpg|png|gif|webp)(\?.*)?$/i.test(url)) && !isDrive;
     const formattedUrl = formatStudentEmbedUrl(url);
+    const gasUrl = window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbxrv-j6LtdK-9mGc56uhqC1_unPDGG7rFu3ZmLL7Dqh4A5Yx8JWWKmrJAGPo5EmXFA/exec';
 
     if (openExternal) {
         openExternal.onclick = async (e) => {
             e.preventDefault();
             if (isHtml) {
                 try {
-                    const res = await fetch(url);
-                    const htmlText = await res.text();
-                    const blob = new Blob([htmlText], { type: 'text/html; charset=utf-8' });
-                    const blobUrl = URL.createObjectURL(blob);
-                    window.open(blobUrl, '_blank');
+                    let htmlText = '';
+                    if (isDrive) {
+                        const match = url.match(/[-\w]{25,}/);
+                        const fileId = match ? match[0] : '';
+                        const res = await fetch(`${gasUrl}?action=getHtml&fileId=${fileId}`);
+                        const text = await res.text();
+                        const json = JSON.parse(text);
+                        htmlText = json.html || '';
+                    } else {
+                        const res = await fetch(url);
+                        htmlText = await res.text();
+                    }
+                    if (htmlText) {
+                        const blob = new Blob([htmlText], { type: 'text/html; charset=utf-8' });
+                        const blobUrl = URL.createObjectURL(blob);
+                        window.open(blobUrl, '_blank');
+                        return;
+                    }
                 } catch (err) {
-                    window.open(url, '_blank');
+                    console.warn('Open student external tab error:', err);
                 }
+                window.open(formattedUrl || url, '_blank');
             } else {
                 window.open(formattedUrl || url, '_blank');
             }
@@ -214,19 +229,44 @@ export async function openStudentMaterialViewer(url, title, subtitle, type) {
     } else if (isHtml) {
         if (fallbackImg) fallbackImg.classList.add('hidden');
         iframe.style.display = 'block';
-        iframe.src = '';
-        iframe.removeAttribute('src');
+        iframe.src = 'about:blank';
         if (iconEl) iconEl.textContent = 'code';
-        try {
-            const res = await fetch(url);
-            if (res.ok) {
-                const htmlText = await res.text();
-                iframe.srcdoc = htmlText;
-            } else {
-                iframe.srcdoc = '<div style="color:white;text-align:center;padding:40px;font-family:sans-serif;"><h3>Gagal memuat file HTML</h3></div>';
+
+        if (isDrive) {
+            iframe.srcdoc = '<div style="color:#e2e8f0;background:#090d16;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:system-ui,sans-serif;text-align:center;padding:2rem;"><div style="font-size:2.5rem;margin-bottom:1rem;animation:pulse 1.5s infinite;">🌐</div><h3 style="margin:0 0 0.5rem;font-size:1.15rem;font-weight:700;color:#34d399;">Memuat Modul Interaktif...</h3><p style="margin:0;font-size:0.85rem;color:#94a3b8;">Sedang mengambil simulasi HTML dari Google Drive</p></div>';
+            
+            const match = url.match(/[-\w]{25,}/);
+            const fileId = match ? match[0] : '';
+            try {
+                const res = await fetch(`${gasUrl}?action=getHtml&fileId=${fileId}`);
+                const text = await res.text();
+                let json;
+                try { json = JSON.parse(text); } catch (_) {}
+
+                if (json && json.status === 'success' && json.html) {
+                    iframe.srcdoc = json.html;
+                } else {
+                    console.warn('Proxy getHtml fallback:', json?.message || text);
+                    iframe.removeAttribute('srcdoc');
+                    iframe.src = formattedUrl;
+                }
+            } catch (err) {
+                console.error('Gagal mengambil HTML dari GAS proxy:', err);
+                iframe.removeAttribute('srcdoc');
+                iframe.src = formattedUrl;
             }
-        } catch (e) {
-            iframe.srcdoc = '<div style="color:white;text-align:center;padding:40px;font-family:sans-serif;"><h3>Gagal memuat file HTML: ' + (e.message || '') + '</h3></div>';
+        } else {
+            try {
+                const res = await fetch(url);
+                if (res.ok) {
+                    const htmlText = await res.text();
+                    iframe.srcdoc = htmlText;
+                } else {
+                    iframe.srcdoc = '<div style="color:white;text-align:center;padding:40px;font-family:sans-serif;"><h3>Gagal memuat file HTML</h3></div>';
+                }
+            } catch (e) {
+                iframe.srcdoc = '<div style="color:white;text-align:center;padding:40px;font-family:sans-serif;"><h3>Gagal memuat file HTML: ' + (e.message || '') + '</h3></div>';
+            }
         }
     } else {
         if (fallbackImg) fallbackImg.classList.add('hidden');

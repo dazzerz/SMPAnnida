@@ -46,6 +46,38 @@ function doPost(e) {
     var data = JSON.parse(e.postData.contents);
 
     // =========================================================================
+    // 0. GET HTML ACTION: Baca isi teks berkas HTML untuk Smart Viewer
+    // =========================================================================
+    if (data.action === "getHtml") {
+      var targetId = data.fileId;
+      if (!targetId && data.fileUrl) {
+        var match = data.fileUrl.match(/[-\w]{25,}/);
+        if (match) targetId = match[0];
+      }
+
+      if (!targetId) {
+        throw new Error("ID atau URL berkas Google Drive tidak ditemukan.");
+      }
+
+      try {
+        var htmlFile = DriveApp.getFileById(targetId);
+        var htmlContent = htmlFile.getBlob().getDataAsString("UTF-8");
+
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "success",
+          fileId: targetId,
+          fileName: htmlFile.getName(),
+          html: htmlContent
+        })).setMimeType(ContentService.MimeType.JSON);
+      } catch (getErr) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          message: "Gagal membaca berkas HTML dari Google Drive: " + getErr.message
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+
+    // =========================================================================
     // 1. DELETE ACTION: Hapus Berkas dari Google Drive
     // =========================================================================
     if (data.action === "delete") {
@@ -137,13 +169,47 @@ function doPost(e) {
 }
 
 /**
- * Web App GET Endpoint: Health check
+ * Web App GET Endpoint: Health check & HTML Proxy for Direct Execution
  */
 function doGet(e) {
-  return ContentService.createTextOutput(JSON.stringify({
-    status: "active",
-    service: "SMP Annida Google Drive Material Auto-Router",
-    version: "1.0.0",
-    hierarchy: "/Materi/[Mata Pelajaran]/[Kelas]"
-  })).setMimeType(ContentService.MimeType.JSON);
+  try {
+    var action = e && e.parameter && e.parameter.action;
+    var fileId = e && e.parameter && e.parameter.fileId;
+    var fileUrl = e && e.parameter && e.parameter.fileUrl;
+
+    if (action === "getHtml") {
+      var targetId = fileId;
+      if (!targetId && fileUrl) {
+        var match = fileUrl.match(/[-\w]{25,}/);
+        if (match) targetId = match[0];
+      }
+
+      if (!targetId) {
+        throw new Error("Parameter fileId atau fileUrl tidak ditemukan.");
+      }
+
+      var file = DriveApp.getFileById(targetId);
+      var htmlContent = file.getBlob().getDataAsString("UTF-8");
+
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        fileId: targetId,
+        fileName: file.getName(),
+        html: htmlContent
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "active",
+      service: "SMP Annida Google Drive Material Auto-Router",
+      version: "1.1.0",
+      hierarchy: "/Materi/[Mata Pelajaran]/[Kelas]"
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "error",
+      message: err.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
 }
