@@ -219,6 +219,33 @@ function openMaterialFormModal(item = null) {
 
     form.reset();
 
+    // --- Restrict Mapel Dropdown for Current Teacher ---
+    const selSubject = document.getElementById('material-subject');
+    if (selSubject) {
+        if (authState.currentTeacher && !authState.isAdmin) {
+            // Guru biasa: Hanya tampilkan mapel miliknya
+            const teacherMapels = (authState.currentTeacher.mata_pelajaran || '')
+                .split(',')
+                .map(m => m.trim())
+                .filter(Boolean);
+            
+            let optionsHtml = '<option value="">-- Pilih Mapel --</option>';
+            if (teacherMapels.length > 0) {
+                teacherMapels.forEach(mapel => {
+                    optionsHtml += `<option value="${escapeHTML(mapel)}">${escapeHTML(mapel)}</option>`;
+                });
+            } else {
+                optionsHtml += '<option value="" disabled>-- Anda belum memiliki Mapel di Profil --</option>';
+            }
+            selSubject.innerHTML = optionsHtml;
+        } else if (typeof masterSubjects !== 'undefined') {
+            // Admin (atau fallback): Tampilkan semua mapel dari master
+            selSubject.innerHTML = '<option value="">-- Pilih Mapel --</option>' + 
+                masterSubjects.map(s => `<option value="${escapeHTML(s.nama_mapel)}">${escapeHTML(s.nama_mapel)}</option>`).join('');
+        }
+    }
+    // ---------------------------------------------------
+
     if (item) {
         titleEl.textContent = 'Edit Materi Pembelajaran';
         document.getElementById('material-id').value = item.id;
