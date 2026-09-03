@@ -35,6 +35,18 @@ function getOrCreateFolder(parent, folderName) {
 }
 
 /**
+ * Helper mengekstrak ID Google Drive dari raw ID maupun link URL
+ * @param {string} input
+ * @returns {string|null}
+ */
+function extractDriveId(input) {
+  if (!input) return null;
+  var str = String(input).trim();
+  var match = str.match(/[-\w]{25,}/);
+  return match ? match[0] : str;
+}
+
+/**
  * Web App POST Endpoint: Menerima payload berkas materi & melakukan auto-routing atau penghapusan
  */
 function doPost(e) {
@@ -49,11 +61,7 @@ function doPost(e) {
     // 0. GET HTML ACTION: Baca isi teks berkas HTML untuk Smart Viewer
     // =========================================================================
     if (data.action === "getHtml") {
-      var targetId = data.fileId;
-      if (!targetId && data.fileUrl) {
-        var match = data.fileUrl.match(/[-\w]{25,}/);
-        if (match) targetId = match[0];
-      }
+      var targetId = extractDriveId(data.fileId || data.fileUrl);
 
       if (!targetId) {
         throw new Error("ID atau URL berkas Google Drive tidak ditemukan.");
@@ -81,11 +89,7 @@ function doPost(e) {
     // 1. DELETE ACTION: Hapus Berkas dari Google Drive
     // =========================================================================
     if (data.action === "delete") {
-      var targetId = data.fileId;
-      if (!targetId && data.fileUrl) {
-        var match = data.fileUrl.match(/[-\w]{25,}/);
-        if (match) targetId = match[0];
-      }
+      var targetId = extractDriveId(data.fileId || data.fileUrl);
 
       if (!targetId) {
         throw new Error("ID atau URL berkas Google Drive tidak valid untuk dihapus.");
@@ -178,11 +182,7 @@ function doGet(e) {
     var fileUrl = e && e.parameter && e.parameter.fileUrl;
 
     if (action === "getHtml") {
-      var targetId = fileId;
-      if (!targetId && fileUrl) {
-        var match = fileUrl.match(/[-\w]{25,}/);
-        if (match) targetId = match[0];
-      }
+      var targetId = extractDriveId(fileId || fileUrl);
 
       if (!targetId) {
         throw new Error("Parameter fileId atau fileUrl tidak ditemukan.");
