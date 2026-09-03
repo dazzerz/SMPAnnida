@@ -40,10 +40,10 @@ ATURAN MUTLAK: Anda memiliki OTONOMI PENUH. Anda WAJIB langsung mengeksekusi per
 [TARGET FILE]
 - <Daftar file absolut yang harus diedit/dibuat>
 
-[INSTRUKSI TEKNIS LENGKAP]
-1. Tahap 1: <Instruksi koding spesifik, nama fungsi, baris yang diubah>
-2. Tahap 2: <Instruksi UI/UX atau logika>
-3. Tahap 3: <Instruksi database/Supabase jika ada>
+[INSTRUKSI KONSEPTUAL & INTENSI USER (TANPA KODE)]
+1. Penjelasan Intensi: <Jelaskan secara mendalam APA kemauan User dan MENGAPA ini dibutuhkan>
+2. Konteks Arsitektur: <Jelaskan konteks file, struktur, atau batasan sistem saat ini agar model eksekutor paham situasinya>
+3. Ekspektasi Hasil Akhir: <Jelaskan perilaku akhir yang diinginkan tanpa memberikan sintaks koding. Biarkan Agent Eksekutor yang memikirkan dan menulis sintaks (HTML/JS/CSS/SQL) untuk mencapainya>
 
 [VERIFIKASI LIVE WEBSITE & TESTING (WAJIB)]
 - Pastikan tidak ada `!important` di CSS.
