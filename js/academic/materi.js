@@ -430,7 +430,7 @@ export async function openTeacherViewer(url, title, subtitle, type) {
     const isHtml = type === 'html' || /\.(html|htm)(\?.*)?$/i.test(url);
     const isImage = (type === 'image' || /\.(jpeg|jpg|png|gif|webp)(\?.*)?$/i.test(url)) && !isDrive;
     const formattedUrl = formatEmbedUrl(url);
-    const gasUrl = window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbyjjWlbe1CdCVRfTMm40cMe79K_5KLChsveQ5y7PJuEZ6FNX9o4bztZ33rP68rMAT4/exec';
+    const gasUrl = window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbzILt0rHtGxkEcAPW98NcXPN89YAwsVJhNW9yiUjl8-N7vdLF3SbgIMCdT9qjf3Vzs/exec';
 
     if (openExternal) {
         openExternal.onclick = async (e) => {
@@ -561,7 +561,7 @@ if (typeof document !== 'undefined') {
  * Struktur: /Materi/[Mata Pelajaran]/[Kelas]
  */
 export async function uploadToGoogleDriveGAS(fileUpload, subject, className, customGasUrl) {
-    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbyjjWlbe1CdCVRfTMm40cMe79K_5KLChsveQ5y7PJuEZ6FNX9o4bztZ33rP68rMAT4/exec';
+    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbzILt0rHtGxkEcAPW98NcXPN89YAwsVJhNW9yiUjl8-N7vdLF3SbgIMCdT9qjf3Vzs/exec';
     if (!gasUrl) return null;
 
     return new Promise((resolve, reject) => {
@@ -611,13 +611,16 @@ export async function uploadToGoogleDriveGAS(fileUpload, subject, className, cus
  * Helper menghapus berkas fisik di Google Drive via GAS Endpoint
  */
 export async function deleteFromGoogleDriveGAS(fileUrlOrId, customGasUrl) {
-    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbyjjWlbe1CdCVRfTMm40cMe79K_5KLChsveQ5y7PJuEZ6FNX9o4bztZ33rP68rMAT4/exec';
+    const gasUrl = customGasUrl || window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbzILt0rHtGxkEcAPW98NcXPN89YAwsVJhNW9yiUjl8-N7vdLF3SbgIMCdT9qjf3Vzs/exec';
     if (!gasUrl || !fileUrlOrId) return null;
+
+    const match = String(fileUrlOrId).match(/[-\w]{25,}/);
+    const cleanId = match ? match[0] : fileUrlOrId;
 
     const payload = {
         action: 'delete',
         fileUrl: fileUrlOrId,
-        fileId: fileUrlOrId
+        fileId: cleanId
     };
 
     const res = await fetch(gasUrl, {

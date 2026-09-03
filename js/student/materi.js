@@ -181,7 +181,7 @@ export async function openStudentMaterialViewer(url, title, subtitle, type) {
     const isHtml = type === 'html' || /\.(html|htm)(\?.*)?$/i.test(url);
     const isImage = (type === 'image' || /\.(jpeg|jpg|png|gif|webp)(\?.*)?$/i.test(url)) && !isDrive;
     const formattedUrl = formatStudentEmbedUrl(url);
-    const gasUrl = window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbyjjWlbe1CdCVRfTMm40cMe79K_5KLChsveQ5y7PJuEZ6FNX9o4bztZ33rP68rMAT4/exec';
+    const gasUrl = window.SMPANNIDA_GAS_URL || localStorage.getItem('smpannida_gas_url') || 'https://script.google.com/macros/s/AKfycbzILt0rHtGxkEcAPW98NcXPN89YAwsVJhNW9yiUjl8-N7vdLF3SbgIMCdT9qjf3Vzs/exec';
 
     if (openExternal) {
         openExternal.onclick = async (e) => {
