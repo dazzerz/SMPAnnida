@@ -11,6 +11,9 @@ export default defineConfig({
       '@css': resolve(root, './css')
     }
   },
+  esbuild: {
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : []
+  },
   build: {
     chunkSizeWarningLimit: 500,
     rollupOptions: {

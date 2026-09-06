@@ -946,7 +946,7 @@
     const btnLoadMap = document.getElementById('btn-load-ppdb-map');
     if (btnLoadMap && mapContainer) {
       btnLoadMap.addEventListener('click', () => {
-        mapContainer.innerHTML = '<iframe src="https://www.google.com/maps?q=Pondok+Pesantren+Annida+Al+Islamy+2+Setu+Bekasi&output=embed" title="Lokasi Kampus SMP Annida" width="100%" height="100%" style="border:0;width:100%;height:100%;min-height:350px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+        mapContainer.innerHTML = '<iframe src="https://www.google.com/maps?q=Pondok+Pesantren+Annida+Al+Islamy+2+Setu+Bekasi&output=embed" title="Lokasi Kampus SMP Annida" width="100%" height="100%" style="border:0;width:100%;height:100%;min-height:350px;" sandbox="allow-scripts allow-same-origin allow-popups" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';
       });
     }
   });
