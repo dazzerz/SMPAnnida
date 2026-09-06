@@ -6,13 +6,9 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
-      var t = localStorage.getItem('smpannida_theme') || 'light';
-      document.documentElement.setAttribute('data-theme', t);
-      if (t === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.add('dark');
+      try { localStorage.setItem('smpannida_theme', 'dark'); } catch(_) {}
     })();
   </script>
   <meta charset="utf-8"/>
@@ -272,16 +268,6 @@
         </a>
         <a href="../../index.html" class="text-xs md:text-sm font-semibold border border-slate-300 dark:border-white/30 text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-white/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-colors whitespace-nowrap">Portal Utama</a>
         <a class="text-xs md:text-sm font-semibold bg-primary text-white px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:bg-primary-dim transition-colors shadow-[0_0_10px_rgba(16,185,129,0.4)] whitespace-nowrap" href="register.html">Daftar Sekarang</a>
-        <!-- Theme Toggle Switcher -->
-        <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Ganti Mode Tema" title="Ganti Mode Terang / Gelap">
-          <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"></circle>
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
-          </svg>
-          <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-          </svg>
-        </button>
         <!-- Mobile Menu Toggle Button -->
         <button id="mobile-menu-toggle" class="lg:hidden text-slate-700 dark:text-white p-1.5 rounded-full hover:bg-slate-200 dark:hover:bg-white/10 transition-colors focus:outline-none" aria-label="Buka Menu Navigasi">
           <span class="material-symbols-outlined text-2xl align-middle">menu</span>

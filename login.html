@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
   <!-- Defensive Content Security Policy & Security Meta -->
@@ -6,13 +6,9 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
-      var t = localStorage.getItem('smpannida_theme') || localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', t);
-      if (t === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.add('dark');
+      try { localStorage.setItem('smpannida_theme', 'dark'); } catch(_) {}
     })();
   </script>
   <meta charset="UTF-8">
@@ -276,9 +272,6 @@
             <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[0.65rem] font-bold uppercase tracking-wider">
               Autentikasi Akun
             </span>
-            <button id="theme-toggle-btn" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:text-white transition-all text-xs" aria-label="Ganti Tema" title="Ganti Mode Tema">
-              <span class="material-symbols-outlined text-sm">dark_mode</span>
-            </button>
           </div>
           <h3 class="text-2xl font-extrabold text-white tracking-tight font-serif-annida">Masuk ke Sistem</h3>
           <p class="text-xs text-slate-600 dark:text-slate-400">Masukkan kredensial akun resmi Anda untuk melanjutkan.</p>
