@@ -19,7 +19,7 @@ export function injectSidebar(containerId) {
     <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
       <a href="${basePath}dashboard.html" style="display:flex; align-items:center; gap:0.75rem; text-decoration:none; color:inherit;">
         <div class="sidebar-logo-icon">
-          <img src="${basePath}assets/logo/1.png" alt="Logo SMP Annida" onerror="this.onerror=null; this.src='/assets/logo/1.png';">
+          <img src="${basePath}assets/logo/1.webp" alt="Logo SMP Annida" onerror="this.onerror=null; this.src='/logo_1x1.png';">
         </div>
         <div class="sidebar-brand">SMPAnnida</div>
       </a>
