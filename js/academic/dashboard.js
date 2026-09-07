@@ -65,6 +65,48 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('stat-siswa-izin').innerText = izin;
             document.getElementById('stat-siswa-alpha').innerText = alpha;
 
+            // Render attendance distribution bar with zero-segment suppression
+            const totalPresensi = hadir + sakit + izin + alpha;
+            const barHadir = document.getElementById('bar-hadir');
+            const barSakit = document.getElementById('bar-sakit');
+            const barIzin = document.getElementById('bar-izin');
+            const barAlpha = document.getElementById('bar-alpha');
+
+            if (barHadir && barSakit && barIzin && barAlpha) {
+                if (totalPresensi > 0) {
+                    const pctHadir = ((hadir / totalPresensi) * 100);
+                    const pctSakit = ((sakit / totalPresensi) * 100);
+                    const pctIzin = ((izin / totalPresensi) * 100);
+                    const pctAlpha = ((alpha / totalPresensi) * 100);
+
+                    // Zero-value segments are set to width 0% and display none to prevent colored slivers
+                    barHadir.style.width = hadir > 0 ? `${pctHadir.toFixed(1)}%` : '0%';
+                    barHadir.style.display = hadir > 0 ? 'block' : 'none';
+                    barHadir.title = `Hadir: ${hadir} (${pctHadir.toFixed(1)}%)`;
+
+                    barSakit.style.width = sakit > 0 ? `${pctSakit.toFixed(1)}%` : '0%';
+                    barSakit.style.display = sakit > 0 ? 'block' : 'none';
+                    barSakit.title = `Sakit: ${sakit} (${pctSakit.toFixed(1)}%)`;
+
+                    barIzin.style.width = izin > 0 ? `${pctIzin.toFixed(1)}%` : '0%';
+                    barIzin.style.display = izin > 0 ? 'block' : 'none';
+                    barIzin.title = `Izin: ${izin} (${pctIzin.toFixed(1)}%)`;
+
+                    barAlpha.style.width = alpha > 0 ? `${pctAlpha.toFixed(1)}%` : '0%';
+                    barAlpha.style.display = alpha > 0 ? 'block' : 'none';
+                    barAlpha.title = `Alpha: ${alpha} (${pctAlpha.toFixed(1)}%)`;
+                } else {
+                    barHadir.style.width = '0%';
+                    barHadir.style.display = 'none';
+                    barSakit.style.width = '0%';
+                    barSakit.style.display = 'none';
+                    barIzin.style.width = '0%';
+                    barIzin.style.display = 'none';
+                    barAlpha.style.width = '0%';
+                    barAlpha.style.display = 'none';
+                }
+            }
+
             // 3. Fetch Teachers Total (fallback to distinct teachers in schedules if teachers table fails)
             let totalGuru = 0;
             const { count: countGuru, error: errGuru } = await db.from('teachers').select('*', { count: 'exact', head: true });

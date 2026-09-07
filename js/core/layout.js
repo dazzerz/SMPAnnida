@@ -59,14 +59,9 @@ export function injectSidebar(containerId) {
       <!-- Header -->
       <div class="split-rail-panel-header">
         <span class="split-rail-panel-title" id="panel-category-title">Akademik</span>
-        <div style="display:flex; align-items:center; gap:0.25rem;">
-          <button class="split-rail-panel-close" id="panel-close-btn" title="Tutup Panel Submenu" aria-label="Tutup Panel">
-            <span class="material-symbols-outlined text-sm">chevron_left</span>
-          </button>
-          <button class="split-rail-panel-close md:hidden" id="sidebar-close-btn" title="Tutup Drawer" aria-label="Tutup Drawer">
-            <span class="material-symbols-outlined text-sm">close</span>
-          </button>
-        </div>
+        <button class="split-rail-panel-close sidebar-close-btn" id="sidebar-close-btn" title="Tutup Panel Submenu" aria-label="Tutup Panel">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
       </div>
 
       <!-- Search -->
@@ -267,7 +262,14 @@ export function injectSidebar(containerId) {
         });
     });
 
-    // Panel Toggle and Close Button Handlers
+    // Close & Toggle Functions
+    function closeSubmenuPanel() {
+        togglePanel(true);
+        if (window.innerWidth < 768 && window._closeSidebar) {
+            window._closeSidebar();
+        }
+    }
+
     const panelToggleBtn = container.querySelector('#sidebar-panel-toggle');
     if (panelToggleBtn) {
         panelToggleBtn.addEventListener('click', (e) => {
@@ -276,13 +278,14 @@ export function injectSidebar(containerId) {
         });
     }
 
-    const panelCloseBtn = container.querySelector('#panel-close-btn');
-    if (panelCloseBtn) {
-        panelCloseBtn.addEventListener('click', (e) => {
+    const closeBtns = container.querySelectorAll('#sidebar-close-btn, #panel-close-btn, .sidebar-close-btn, .split-rail-panel-close');
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
             e.preventDefault();
-            togglePanel(true);
+            e.stopPropagation();
+            closeSubmenuPanel();
         });
-    }
+    });
 
     // Detect Initial Category from URL / Hash
     if (path.includes('/finance/')) {
@@ -366,23 +369,42 @@ export function injectSidebar(containerId) {
     };
 
     const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
-    if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', window._closeSidebar);
-    overlay.addEventListener('click', window._closeSidebar);
+    if (sidebarCloseBtn) {
+        sidebarCloseBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeSubmenuPanel();
+        });
+    }
+    overlay.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeSubmenuPanel();
+    });
 
     // Auto-close drawer on link tap (mobile)
     container.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', () => {
             if (window.innerWidth < 768) {
-                window._closeSidebar();
+                closeSubmenuPanel();
             }
         });
     });
 
-    // Close on click outside for mobile overlay
+    // Close on click outside or click close button
     document.addEventListener('click', (e) => {
-        if (window.innerWidth < 768) {
-            if (container.classList.contains('open') && !container.contains(e.target) && !e.target.closest('#mobile-menu-btn, .mobile-menu-btn')) {
-                window._closeSidebar();
+        const clickedClose = e.target.closest('#sidebar-close-btn, #panel-close-btn, .sidebar-close-btn, .split-rail-panel-close');
+        if (clickedClose) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeSubmenuPanel();
+            return;
+        }
+
+        if (!container.contains(e.target) && !e.target.closest('#mobile-menu-btn, .mobile-menu-btn')) {
+            if (window.innerWidth < 768) {
+                if (container.classList.contains('open')) closeSubmenuPanel();
+            } else {
+                if (!container.classList.contains('panel-collapsed')) togglePanel(true);
             }
         }
     });
