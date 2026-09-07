@@ -6,19 +6,15 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
-      var t = localStorage.getItem('smpannida_theme') || 'light';
-      document.documentElement.setAttribute('data-theme', t);
-      if (t === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.add('dark');
+      try { localStorage.setItem('smpannida_theme', 'dark'); } catch(_) {}
     })();
   </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <title>Sistem Informasi Akademik</title>
-    <link rel="icon" href="../../assets/logo/1.png" type="image/png">
+    <link rel="icon" href="../../assets/logo/1.webp" type="image/webp">
     <link rel="stylesheet" href="../../css/academic/main.css?v=3">
     <link rel="stylesheet" href="../../css/academic/dashboard.css?v=3">
     <link rel="stylesheet" href="../../css/academic/absensi.css?v=3">
@@ -85,20 +81,32 @@
                     <!-- SECTION 0: Academic Info -->
                     <h2 class="aca-inline-59">Informasi Akademik</h2>
                     <div class="dashboard-cards aca-inline-1">
-                        <div class="card glass">
-                            <h3 class="aca-inline-60">🏫 Total Kelas</h3>
+                        <div class="card glass flex flex-col justify-between">
+                            <h3 class="aca-inline-60 flex items-center gap-1.5 font-semibold text-slate-300">
+                                <span class="material-symbols-outlined text-base text-emerald-400">meeting_room</span>
+                                <span>Total Kelas</span>
+                            </h3>
                             <p class="number" id="stat-kelas-total" class="aca-inline-61">0</p>
                         </div>
-                        <div class="card glass">
-                            <h3 class="aca-inline-60">👨‍🏫 Total Wali Kelas</h3>
+                        <div class="card glass flex flex-col justify-between">
+                            <h3 class="aca-inline-60 flex items-center gap-1.5 font-semibold text-slate-300">
+                                <span class="material-symbols-outlined text-base text-emerald-400">supervisor_account</span>
+                                <span>Total Wali Kelas</span>
+                            </h3>
                             <p class="number" id="stat-walikelas-total" class="aca-inline-61">0</p>
                         </div>
-                        <div class="card glass aca-inline-2">
-                            <h3 class="aca-inline-60">📅 Tahun Ajaran Aktif</h3>
+                        <div class="card glass aca-inline-2 flex flex-col justify-between">
+                            <h3 class="aca-inline-60 flex items-center gap-1.5 font-semibold text-slate-300">
+                                <span class="material-symbols-outlined text-base text-emerald-400">calendar_today</span>
+                                <span>Tahun Ajaran Aktif</span>
+                            </h3>
                             <p class="number" id="stat-tahun-aktif" class="aca-inline-62">-</p>
                         </div>
-                        <div class="card glass aca-inline-3">
-                            <h3 class="aca-inline-60">🗓️ Semester Aktif</h3>
+                        <div class="card glass aca-inline-3 flex flex-col justify-between">
+                            <h3 class="aca-inline-60 flex items-center gap-1.5 font-semibold text-slate-300">
+                                <span class="material-symbols-outlined text-base text-emerald-400">date_range</span>
+                                <span>Semester Aktif</span>
+                            </h3>
                             <p class="number" id="stat-semester-aktif" class="aca-inline-62">-</p>
                         </div>
                     </div>
@@ -106,24 +114,39 @@
                     <!-- SECTION 1: Ringkasan Siswa Hari Ini -->
                     <h2 class="aca-inline-59">Ringkasan Siswa Hari Ini</h2>
                     <div class="dashboard-cards aca-inline-4">
-                        <div class="card glass">
-                            <h3>👨‍🎓 Total Siswa</h3>
+                        <div class="card glass flex flex-col justify-between">
+                            <h3 class="flex items-center gap-1.5 font-semibold text-slate-300">
+                                <span class="material-symbols-outlined text-base text-emerald-400">groups</span>
+                                <span>Total Siswa</span>
+                            </h3>
                             <p class="number" id="stat-siswa-total">0</p>
                         </div>
-                        <div class="card glass aca-inline-3">
-                            <h3>📋 Hadir Hari Ini</h3>
+                        <div class="card glass aca-inline-3 flex flex-col justify-between">
+                            <h3 class="flex items-center gap-1.5 font-semibold text-slate-300">
+                                <span class="material-symbols-outlined text-base text-emerald-400">how_to_reg</span>
+                                <span>Hadir Hari Ini</span>
+                            </h3>
                             <p class="number" id="stat-siswa-hadir" class="aca-inline-63">0</p>
                         </div>
-                        <div class="card glass aca-inline-5">
-                            <h3>🤒 Sakit</h3>
+                        <div class="card glass aca-inline-5 flex flex-col justify-between">
+                            <h3 class="flex items-center gap-1.5 font-semibold text-amber-300">
+                                <span class="material-symbols-outlined text-base text-amber-400">medication</span>
+                                <span>Sakit</span>
+                            </h3>
                             <p class="number" id="stat-siswa-sakit">0</p>
                         </div>
-                        <div class="card glass aca-inline-2">
-                            <h3>📝 Izin</h3>
+                        <div class="card glass aca-inline-2 flex flex-col justify-between">
+                            <h3 class="flex items-center gap-1.5 font-semibold text-blue-300">
+                                <span class="material-symbols-outlined text-base text-blue-400">assignment_turned_in</span>
+                                <span>Izin</span>
+                            </h3>
                             <p class="number" id="stat-siswa-izin">0</p>
                         </div>
-                        <div class="card glass aca-inline-6">
-                            <h3>❌ Alpha</h3>
+                        <div class="card glass aca-inline-6 flex flex-col justify-between">
+                            <h3 class="flex items-center gap-1.5 font-semibold text-rose-300">
+                                <span class="material-symbols-outlined text-base text-rose-400">cancel</span>
+                                <span>Alpha</span>
+                            </h3>
                             <p class="number" id="stat-siswa-alpha" class="aca-inline-64">0</p>
                         </div>
                     </div>
@@ -244,7 +267,10 @@
                         <h3 class="aca-inline-80">Import Data Siswa (CSV)</h3>
                         <p class="aca-inline-81">
                             Unggah file .csv yang berisi kolom nama_lengkap, nisn, kelas, dan status_aktif.<br>
-                            <a href="../../docs/Format_Import_Siswa.csv" download="Format_Import_Siswa.csv" class="aca-inline-82">⬇️ Unduh Format CSV</a>
+                            <a href="../../docs/Format_Import_Siswa.csv" download="Format_Import_Siswa.csv" class="aca-inline-82 flex items-center gap-1 mt-1">
+                                <span class="material-symbols-outlined text-sm">download</span>
+                                <span>Unduh Format CSV</span>
+                            </a>
                         </p>
                         <div class="aca-inline-83">
                             <input type="file" id="file-import-siswa" accept=".csv" class="input-control aca-inline-10">
@@ -260,7 +286,10 @@
                     <!-- Header -->
                     <div class="section-header aca-inline-12">
                         <div>
-                            <h2 class="aca-inline-57">📋 Absensi Siswa</h2>
+                            <h2 class="aca-inline-57 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-emerald-400">checklist</span>
+                                <span>Absensi Siswa</span>
+                            </h2>
                             <p class="aca-inline-85">Input absensi per jam pelajaran</p>
                         </div>
                         <input type="date" id="attend-date" class="input-control aca-inline-13">
@@ -268,10 +297,10 @@
 
                     <!-- Tab Navigation -->
                     <div class="tab-nav aca-inline-14">
-                        <button class="tab-btn active" data-tab="input-absensi">📝 Input Absensi</button>
-                        <button class="tab-btn" data-tab="rekap-siswa">📊 Rekap Per Siswa</button>
-                        <button class="tab-btn" data-tab="pivot-absensi">📆 Rekap Harian</button>
-                        <button class="tab-btn" data-tab="export-absensi">📤 Export Excel</button>
+                        <button class="tab-btn active" data-tab="input-absensi">Input Absensi</button>
+                        <button class="tab-btn" data-tab="rekap-siswa">Rekap Per Siswa</button>
+                        <button class="tab-btn" data-tab="pivot-absensi">Rekap Harian</button>
+                        <button class="tab-btn" data-tab="export-absensi">Export Excel</button>
                     </div>
 
                     <!-- TAB 1: Input Absensi -->
@@ -284,7 +313,10 @@
                             <div class="aca-inline-86">
                                 <button id="btn-attend-back" class="btn btn-outline btn-sm">← Kembali</button>
                                 <h3 id="attend-panel-title" class="aca-inline-87"></h3>
-                                <button id="btn-hadir-semua" class="btn btn-outline btn-sm">🟢 Hadir Semua</button>
+                                <button id="btn-hadir-semua" class="btn btn-outline btn-sm flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm text-emerald-400">done_all</span>
+                                    <span>Hadir Semua</span>
+                                </button>
                             </div>
                             <div class="card glass">
                                 <table class="data-table">
@@ -299,7 +331,10 @@
                                     <tbody id="attend-tbody"></tbody>
                                 </table>
                                 <div class="aca-inline-90">
-                                    <button id="btn-attend-save" class="btn btn-primary" disabled>💾 Simpan Absensi</button>
+                                    <button id="btn-attend-save" class="btn btn-primary flex items-center gap-1" disabled>
+                                        <span class="material-symbols-outlined text-sm">save</span>
+                                        <span>Simpan Absensi</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -409,8 +444,9 @@
                                         <option value="">Semua Mapel (Harian)</option>
                                     </select>
                                 </div>
-                                <button id="btn-export-excel" class="btn btn-outline aca-inline-20">
-                                    📥 Export Excel
+                                <button id="btn-export-excel" class="btn btn-outline aca-inline-20 flex items-center gap-1.5 justify-center">
+                                    <span class="material-symbols-outlined text-sm">download</span>
+                                    <span>Export Excel</span>
                                 </button>
                             </div>
                         </div>
@@ -586,11 +622,13 @@
                     <div class="aca-inline-56">
                         <h1>Master Data Siswa</h1>
                         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                            <button id="btn-export-kredensial-siswa" class="btn btn-outline" style="border-color: #10b981; color: #10b981;" title="Download Data Akun Email & Password Default">
-                                📥 Ekspor Akun (Excel)
+                            <button id="btn-export-kredensial-siswa" class="btn btn-outline flex items-center gap-1.5" style="border-color: #10b981; color: #10b981;" title="Download Data Akun Email & Password Default">
+                                <span class="material-symbols-outlined text-sm">download</span>
+                                <span>Ekspor Akun (Excel)</span>
                             </button>
-                            <button id="btn-cetak-kartu-siswa" class="btn btn-outline" style="border-color: #3b82f6; color: #60a5fa;" title="Cetak Kartu Login / Slip Akun Siap Potong">
-                                🖨️ Cetak Kartu Akun (PDF)
+                            <button id="btn-cetak-kartu-siswa" class="btn btn-outline flex items-center gap-1.5" style="border-color: #3b82f6; color: #60a5fa;" title="Cetak Kartu Login / Slip Akun Siap Potong">
+                                <span class="material-symbols-outlined text-sm">print</span>
+                                <span>Cetak Kartu Akun (PDF)</span>
                             </button>
                             <button id="btn-add-siswa" class="btn-primary">Tambah Siswa</button>
                         </div>
@@ -803,7 +841,10 @@
                             </div>
                             
                             <div class="aca-inline-139">
-                                <button id="btn-cetak-rapor" class="btn-primary aca-inline-28" disabled>🖨️ Cetak PDF</button>
+                                <button id="btn-cetak-rapor" class="btn-primary aca-inline-28 flex items-center gap-1.5 justify-center" disabled>
+                                    <span class="material-symbols-outlined text-sm">print</span>
+                                    <span>Cetak PDF</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1035,8 +1076,9 @@
                               <h2 class="aca-inline-143">Riwayat Jurnal (Bulan Ini)</h2>
                               <div class="aca-inline-144">
                                   <select id="jurnal-filter-teacher" class="input-control aca-inline-31"><option value="">Semua Guru</option></select><input type="month" id="jurnal-filter-month" class="input-control aca-inline-32">
-                                  <button id="btn-jurnal-export" class="btn-primary aca-inline-33">
-                                      📊 Export Excel
+                                  <button id="btn-jurnal-export" class="btn-primary aca-inline-33 flex items-center gap-1.5">
+                                      <span class="material-symbols-outlined text-sm">download</span>
+                                      <span>Export Excel</span>
                                   </button>
                               </div>
                           </div>
@@ -1139,8 +1181,9 @@
                         <div class="card glass">
                             <div class="aca-inline-142">
                                 <h2 class="aca-inline-143">Rekap Absensi Guru (Harian)</h2>
-                                <button id="btn-tg-export-excel" class="btn btn-outline aca-inline-24">
-                                    <span class="aca-inline-164">📊</span> Export Excel
+                                <button id="btn-tg-export-excel" class="btn btn-outline aca-inline-24 flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm">download</span>
+                                    <span>Export Excel</span>
                                 </button>
                             </div>
                             <div class="table-responsive">
@@ -1384,7 +1427,10 @@
                     
                     <!-- Readiness Banner -->
                     <div id="db-readiness-banner" class="card glass aca-inline-40">
-                        <h1 class="aca-inline-168" id="db-readiness-status">🔴 DATABASE STATUS: NOT READY</h1>
+                        <h1 class="aca-inline-168 flex items-center gap-2" id="db-readiness-status">
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block animate-pulse"></span>
+                            <span>DATABASE STATUS: NOT READY</span>
+                        </h1>
                         <p class="aca-inline-169" id="db-readiness-desc">
                             Sistem belum siap untuk production. Selesaikan seluruh tahapan import di bawah ini.
                         </p>
@@ -1869,11 +1915,13 @@
                     <div class="grid grid-cols-2 gap-2">
                         <label class="flex items-center gap-2 p-2.5 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:border-emerald-500/50 transition-all text-xs font-medium text-gray-200">
                             <input type="radio" name="assignment-type" value="tugas" id="type-tugas" checked class="text-emerald-500">
-                            <span>📝 Tugas / PR (Ada Deadline)</span>
+                            <span class="material-symbols-outlined text-sm text-emerald-400">assignment</span>
+                            <span>Tugas / PR (Ada Deadline)</span>
                         </label>
                         <label class="flex items-center gap-2 p-2.5 rounded-xl border border-white/10 bg-white/5 cursor-pointer hover:border-emerald-500/50 transition-all text-xs font-medium text-gray-200">
                             <input type="radio" name="assignment-type" value="materi" id="type-materi" class="text-emerald-500">
-                            <span>📚 Materi Ajar (Hanya Dibaca)</span>
+                            <span class="material-symbols-outlined text-sm text-blue-400">menu_book</span>
+                            <span>Materi Ajar (Hanya Dibaca)</span>
                         </label>
                     </div>
                 </div>
@@ -1942,12 +1990,15 @@
                     <a href="#" target="_blank" id="viewer-open-external" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs text-gray-200 flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">open_in_new</span> Buka Tab Baru
                     </a>
-                    <button id="btn-close-material-viewer" class="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-bold">✕ Tutup</button>
+                    <button id="btn-close-material-viewer" class="px-3 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-xs font-bold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">close</span>
+                        <span>Tutup</span>
+                    </button>
                 </div>
             </div>
 
             <div class="flex-1 rounded-xl overflow-hidden bg-slate-900 border border-white/10 relative flex items-center justify-center" id="viewer-frame-container">
-                <iframe id="material-viewer-iframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe id="material-viewer-iframe" class="w-full h-full border-0" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 <div id="viewer-fallback-img" class="hidden max-h-full max-w-full p-4 flex items-center justify-center">
                     <img id="viewer-img-el" src="" alt="Lampiran Materi" class="max-h-[75vh] max-w-full rounded-lg object-contain shadow-2xl">
                 </div>
@@ -1963,7 +2014,10 @@
                     <h2 id="review-assignment-title" class="text-xl font-bold text-white">Review Pengumpulan Siswa</h2>
                     <p id="review-assignment-subtitle" class="text-xs text-emerald-400">Kelas & Mapel</p>
                 </div>
-                <button id="btn-close-review-modal" class="btn-secondary text-sm">✕ Tutup</button>
+                <button id="btn-close-review-modal" class="btn-secondary text-sm flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                    <span>Tutup</span>
+                </button>
             </div>
             
             <div class="table-container max-h-[60vh] overflow-y-auto">
@@ -2041,7 +2095,10 @@
                     <h2 class="text-xl font-bold text-emerald-400">Generator Soal Cepat (Smart Text Parser)</h2>
                     <p class="text-xs text-gray-400">Salin kumpulan soal dari Word/Teks dan sistem akan mem-parsing otomatis</p>
                 </div>
-                <button id="btn-close-parser-modal" class="btn-secondary text-sm">✕ Tutup</button>
+                <button id="btn-close-parser-modal" class="btn-secondary text-sm flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                    <span>Tutup</span>
+                </button>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
@@ -2115,11 +2172,11 @@ Pembahasan: Tawadhu artinya rendah hati..."></textarea>
                 <div class="form-group">
                     <label class="block text-xs font-semibold text-gray-300 mb-1">Tipe Media</label>
                     <select id="material-type-select" class="input-control">
-                        <option value="youtube">🎥 Video YouTube</option>
-                        <option value="pdf">📄 Dokumen PDF</option>
-                        <option value="html">🌐 Simulasi Web HTML Interaktif</option>
-                        <option value="image">🖼️ Infografis / Gambar</option>
-                        <option value="document">📑 File Dokumen Lainnya</option>
+                        <option value="youtube">Video YouTube</option>
+                        <option value="pdf">Dokumen PDF</option>
+                        <option value="html">Simulasi Web HTML Interaktif</option>
+                        <option value="image">Infografis / Gambar</option>
+                        <option value="document">File Dokumen Lainnya</option>
                     </select>
                 </div>
 
@@ -2164,12 +2221,15 @@ Pembahasan: Tawadhu artinya rendah hati..."></textarea>
                         <span class="material-symbols-outlined text-sm">open_in_new</span>
                         <span class="hidden sm:inline">Buka Tab Baru</span>
                     </button>
-                    <button id="btn-close-teacher-viewer" class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-[11px] md:text-xs font-bold cursor-pointer">✕ <span class="hidden sm:inline">Tutup</span></button>
+                    <button id="btn-close-teacher-viewer" class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-[11px] md:text-xs font-bold cursor-pointer flex items-center gap-1">
+                        <span class="material-symbols-outlined text-xs">close</span>
+                        <span class="hidden sm:inline">Tutup</span>
+                    </button>
                 </div>
             </div>
 
             <div class="flex-1 w-full h-full rounded-none md:rounded-xl overflow-hidden bg-slate-900 border-0 md:border md:border-white/10 relative flex items-center justify-center min-h-0">
-                <iframe id="teacher-viewer-iframe" class="w-full h-full border-0 block" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe id="teacher-viewer-iframe" class="w-full h-full border-0 block" style="width: 100%; height: 100%; border: none;" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 <div id="teacher-viewer-fallback-img" class="hidden max-h-full max-w-full p-2 md:p-4 flex items-center justify-center">
                     <img id="teacher-viewer-img-el" src="" alt="Lampiran Materi" class="max-h-full max-w-full rounded-lg object-contain shadow-2xl">
                 </div>

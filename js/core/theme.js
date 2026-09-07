@@ -1,25 +1,25 @@
-﻿/**
- * theme.js – Robust Standalone Dual-Theme Manager for SMP Annida
+/**
+ * theme.js – Dedicated Midnight Emerald Dark Theme Manager for SMP Annida
  * Features:
- * - Syncs data-theme="light" | "dark" on both <html> and <body>
- * - Syncs class="dark" for Tailwind CSS darkMode: "class"
- * - Global event delegation for #theme-toggle-btn and .theme-toggle-btn
- * - window.toggleTheme global exposure
- * - Zero-FOUC & localStorage persistence
+ * - Locks data-theme="dark" permanently on both <html> and <body>
+ * - Ensures class="dark" is active for Tailwind CSS
+ * - Eliminates light-mode style collisions & glare
+ * - Keeps API methods safe & backward-compatible
  */
 
 const THEME_STORAGE_KEY = 'smpannida_theme';
 
 export function getSystemTheme() {
-  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return 'dark';
 }
 
 export function getSavedTheme() {
-  return localStorage.getItem(THEME_STORAGE_KEY) || localStorage.getItem('theme') || 'light';
+  return 'dark';
 }
 
-export function applyTheme(theme) {
-  const targetTheme = (theme === 'dark') ? 'dark' : 'light';
+export function applyTheme(theme = 'dark') {
+  // Always lock to dark theme
+  const targetTheme = 'dark';
   
   // 1. Set data-theme on <html> and <body>
   document.documentElement.setAttribute('data-theme', targetTheme);
@@ -27,69 +27,56 @@ export function applyTheme(theme) {
     document.body.setAttribute('data-theme', targetTheme);
   }
 
-  // 2. Set/remove "dark" class for Tailwind CSS compatibility
-  if (targetTheme === 'dark') {
-    document.documentElement.classList.add('dark');
-    if (document.body) document.body.classList.add('dark');
-  } else {
-    document.documentElement.classList.remove('dark');
-    if (document.body) document.body.classList.remove('dark');
+  // 2. Ensure "dark" class is active for Tailwind CSS
+  document.documentElement.classList.add('dark');
+  document.documentElement.classList.remove('light');
+  if (document.body) {
+    document.body.classList.add('dark');
+    document.body.classList.remove('light');
   }
 
-  // 3. Persist in localStorage
-  localStorage.setItem(THEME_STORAGE_KEY, targetTheme);
-  localStorage.setItem('theme', targetTheme);
+  // 3. Persist permanent dark theme
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, targetTheme);
+    localStorage.setItem('theme', targetTheme);
+  } catch (_) {
+    // Ignore storage errors in restricted contexts
+  }
 
   // 4. Update Chart.js defaults if Chart is in scope
-  if (typeof window.Chart !== 'undefined') {
-    const isDark = targetTheme === 'dark';
-    window.Chart.defaults.color = isDark ? '#94a3b8' : '#334155';
-    window.Chart.defaults.borderColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(203,213,225,0.4)';
+  if (typeof window !== 'undefined' && typeof window.Chart !== 'undefined') {
+    window.Chart.defaults.color = '#94a3b8';
+    window.Chart.defaults.borderColor = 'rgba(255,255,255,0.08)';
   }
 
-  // 5. Update aria-labels on all toggle buttons
+  // 5. Hide or deactivate any remaining toggle buttons
   const toggleBtns = document.querySelectorAll('#theme-toggle-btn, .theme-toggle-btn');
   toggleBtns.forEach(btn => {
-    btn.setAttribute('aria-label', targetTheme === 'dark' ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap');
-    btn.setAttribute('title', targetTheme === 'dark' ? 'Beralih ke Mode Terang' : 'Beralih ke Mode Gelap');
+    btn.style.display = 'none';
   });
 
   // 6. Dispatch custom event for reactive modules
-  window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: targetTheme } }));
+  window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: 'dark' } }));
 }
 
 export function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme') || getSavedTheme();
-  const next = (current === 'dark') ? 'light' : 'dark';
-  applyTheme(next);
-  return next;
+  // Permanent dark mode: always ensure dark mode remains active
+  applyTheme('dark');
+  return 'dark';
 }
 
 export function initTheme() {
-  const theme = getSavedTheme();
-  applyTheme(theme);
-
-  // Listen to system preference changes if user hasn't explicitly set preference
-  if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (!localStorage.getItem(THEME_STORAGE_KEY)) {
-        applyTheme(e.matches ? 'dark' : 'light');
-      }
-    });
-  }
+  applyTheme('dark');
 }
 
 export function bindThemeSwitcher(btnElementOrId = 'theme-toggle-btn') {
   const btn = typeof btnElementOrId === 'string' ? document.getElementById(btnElementOrId) : btnElementOrId;
   if (!btn) return;
-  btn.onclick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleTheme();
-  };
+  // Hide toggle button gracefully
+  btn.style.display = 'none';
 }
 
-// Attach to window for global access (inline onclick or legacy scripts)
+// Attach to window for global access
 if (typeof window !== 'undefined') {
   window.toggleTheme = toggleTheme;
   window.applyTheme = applyTheme;
@@ -97,17 +84,6 @@ if (typeof window !== 'undefined') {
   window.bindThemeSwitcher = bindThemeSwitcher;
 }
 
-// Global click event delegation (supports dynamic topbar, inline buttons, icon SVGs)
-if (typeof document !== 'undefined') {
-  document.addEventListener('click', (e) => {
-    const toggleTarget = e.target.closest('#theme-toggle-btn, .theme-toggle-btn');
-    if (toggleTarget) {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleTheme();
-    }
-  }, true); // Capture phase to intercept clicks reliably
-}
-
-// Immediate initial execution
+// Immediate execution
 initTheme();
+

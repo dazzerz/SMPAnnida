@@ -1,4 +1,4 @@
-﻿/**
+/**
  * js/core/pwa.js
  * High-Performance Standalone PWA Module & Mobile Install Prompt
  * SMP Annida Integrated System
@@ -100,7 +100,7 @@ function createInstallPromptDOM() {
   wrapper.innerHTML = `
     <div class="p-4 rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-white/60 dark:border-white/15 text-slate-800 dark:text-white shadow-[0_10px_35px_rgba(0,0,0,0.25)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.6)] flex flex-col gap-3">
       <div class="flex items-start gap-3">
-        <img src="/logo_1x1.png" alt="Logo SMP Annida" class="w-11 h-11 rounded-xl object-contain bg-emerald-500/10 dark:bg-emerald-500/20 p-1 border border-emerald-500/30 shrink-0" onerror="this.src='/assets/logo/1.png'">
+        <img src="/logo_1x1.png" alt="Logo SMP Annida" class="w-11 h-11 rounded-xl object-contain bg-emerald-500/10 dark:bg-emerald-500/20 p-1 border border-emerald-500/30 shrink-0">
         <div class="flex-1 min-w-0 pr-2">
           <h4 class="font-bold text-sm text-slate-900 dark:text-white tracking-tight leading-tight">Install SMP Annida App</h4>
           <p class="text-[0.72rem] text-slate-600 dark:text-slate-300 mt-1 leading-snug">

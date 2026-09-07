@@ -1,93 +1,9 @@
-﻿/* =========================================================================
-   SMP Annida - Clean Emerald Dual-Theme (Light & Dark Glassmorphism)
-   True Frosted White Glass vs Emerald Midnight Dark Glass
+/* =========================================================================
+   SMP Annida - Unified Midnight Emerald Dark Theme (Anti-Glare & High Contrast)
+   Single High-Contrast Dark Architecture — Eliminates Light Mode Collisions
    ========================================================================= */
 
-/* ── 1. LIGHT THEME (Harmonious Solid-Glass & Anti-Glare) ── */
 :root,
-[data-theme="light"] {
-  --color-scheme: light;
-
-  /* Nature Background Image & Eye-Comfort Softened Leaf Filter - Darkened & Calm */
-  --bg-nature-image: url('../assets/images/bg-light.webp');
-  --leaf-filter: brightness(0.72) contrast(1.08) saturate(1.1);
-  --leaf-opacity: 0.20;
-  --bg-overlay-tint: rgba(15, 23, 42, 0.45);
-
-  /* Canvas Background: Darkened Cool Sage Canvas */
-  --bg-canvas-color: #e2eae4;
-  --bg-canvas: radial-gradient(circle at center, rgba(16, 185, 129, 0.05) 0%, rgba(226, 234, 228, 0.75) 100%),
-               #e2eae4;
-  --bg-canvas-attachment: fixed;
-
-  /* Glass Card & Surfaces - Crisp Solid-Glass (High Contrast & Clear Boundaries) */
-  --glass-bg: rgba(255, 255, 255, 0.88);
-  --glass-bg-hover: rgba(255, 255, 255, 0.96);
-  --glass-bg-elevated: rgba(255, 255, 255, 0.94);
-  --glass-border: rgba(203, 213, 225, 0.85);
-  --glass-border-subtle: rgba(16, 185, 129, 0.3);
-  --glass-blur: blur(16px) saturate(180%);
-  --glass-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
-  --glass-shadow-lg: 0 20px 35px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
-
-  /* Typography & High Contrast (WCAG AAA Compliance) */
-  --text-primary: #090d16;    /* Ultra Crisp Slate 950 */
-  --text-secondary: #334155;  /* Slate 700 */
-  --text-muted: #475569;      /* Slate 600 */
-  --text-inverse: #ffffff;
-
-  /* Emerald Brand Accents */
-  --primary: #059669;         /* Emerald 600 */
-  --primary-hover: #047857;   /* Emerald 700 */
-  --primary-light: rgba(5, 150, 105, 0.16);
-  --accent: #10b981;          /* Emerald 500 */
-
-  /* UI Status Badges (Pastel Semi-Transparan) */
-  --badge-success-bg: rgba(16, 185, 129, 0.18);
-  --badge-success-text: #047857;
-  --badge-success-border: rgba(16, 185, 129, 0.35);
-
-  --badge-warning-bg: rgba(245, 158, 11, 0.18);
-  --badge-warning-text: #9a3412;
-  --badge-warning-border: rgba(245, 158, 11, 0.35);
-
-  --badge-danger-bg: rgba(239, 68, 68, 0.18);
-  --badge-danger-text: #991b1b;
-  --badge-danger-border: rgba(239, 68, 68, 0.35);
-
-  --badge-info-bg: rgba(14, 165, 233, 0.18);
-  --badge-info-text: #075985;
-  --badge-info-border: rgba(14, 165, 233, 0.35);
-
-  /* Form Inputs & Controls */
-  --input-bg: rgba(255, 255, 255, 0.96);
-  --input-border: #cbd5e1;
-  --input-border-focus: #059669;
-  --input-text: #090d16;
-  --input-placeholder: #64748b;
-  --input-focus-shadow: 0 0 0 3px rgba(5, 150, 105, 0.25);
-
-  /* Tables */
-  --table-header-bg: rgba(241, 245, 249, 0.98);
-  --table-row-hover: rgba(236, 253, 245, 0.9);
-  --table-border: #cbd5e1;
-  --table-text-head: #090d16;
-  --table-text-body: #1e293b;
-
-  /* Sidebar & Topbar */
-  --sidebar-bg: rgba(255, 255, 255, 0.92);
-  --sidebar-border: #cbd5e1;
-  --sidebar-item-hover: rgba(5, 150, 105, 0.12);
-  --sidebar-item-active: rgba(5, 150, 105, 0.18);
-  --sidebar-text: #1e293b;
-  --sidebar-text-active: #047857;
-
-  /* Chart Colors */
-  --chart-grid: rgba(203, 213, 225, 0.6);
-  --chart-text: #334155;
-}
-
-/* ── 2. DARK THEME (Emerald Midnight Glassmorphism) ── */
 [data-theme="dark"] {
   --color-scheme: dark;
 
@@ -103,17 +19,17 @@
                #060d17;
   --bg-canvas-attachment: fixed;
 
-  /* Glass Card & Surfaces */
-  --glass-bg: rgba(15, 23, 42, 0.65);
-  --glass-bg-hover: rgba(30, 41, 59, 0.80);
-  --glass-bg-elevated: rgba(15, 23, 42, 0.80);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-border-subtle: rgba(52, 211, 153, 0.2);
+  /* Glass Card & Surfaces - High Depth & Anti-Glare */
+  --glass-bg: rgba(15, 23, 42, 0.75);
+  --glass-bg-hover: rgba(30, 41, 59, 0.85);
+  --glass-bg-elevated: rgba(15, 23, 42, 0.90);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-subtle: rgba(52, 211, 153, 0.25);
   --glass-blur: blur(16px) saturate(180%);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  --glass-shadow-lg: 0 16px 36px 0 rgba(0, 0, 0, 0.45);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+  --glass-shadow-lg: 0 16px 36px 0 rgba(0, 0, 0, 0.55);
 
-  /* Typography & High Contrast */
+  /* Typography & High Contrast (WCAG AAA Compliance) */
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
@@ -143,7 +59,7 @@
   --badge-info-border: rgba(14, 165, 233, 0.4);
 
   /* Form Inputs & Controls */
-  --input-bg: rgba(15, 23, 42, 0.75);
+  --input-bg: rgba(15, 23, 42, 0.85);
   --input-border: rgba(255, 255, 255, 0.18);
   --input-border-focus: #10b981;
   --input-text: #f8fafc;
@@ -151,36 +67,36 @@
   --input-focus-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
 
   /* Tables */
-  --table-header-bg: rgba(30, 41, 59, 0.7);
+  --table-header-bg: rgba(30, 41, 59, 0.85);
   --table-row-hover: rgba(16, 185, 129, 0.12);
-  --table-border: rgba(255, 255, 255, 0.1);
+  --table-border: rgba(255, 255, 255, 0.12);
   --table-text-head: #f1f5f9;
   --table-text-body: #e2e8f0;
 
   /* Sidebar & Topbar */
-  --sidebar-bg: rgba(11, 19, 25, 0.88);
+  --sidebar-bg: rgba(11, 19, 25, 0.92);
   --sidebar-border: rgba(255, 255, 255, 0.12);
-  --sidebar-item-hover: rgba(255, 255, 255, 0.06);
-  --sidebar-item-active: rgba(16, 185, 129, 0.2);
-  --sidebar-text: #94a3b8;
-  --sidebar-text-active: #10b981;
+  --sidebar-item-hover: rgba(255, 255, 255, 0.08);
+  --sidebar-item-active: rgba(16, 185, 129, 0.22);
+  --sidebar-text: #cbd5e1;
+  --sidebar-text-active: #34d399;
 
   /* Chart Colors */
   --chart-grid: rgba(255, 255, 255, 0.08);
   --chart-text: #94a3b8;
 }
 
-/* ── 3. BASE & BOTANICAL BACKGROUND ── */
+/* ── BASE & BOTANICAL BACKGROUND ── */
 html {
-  background-color: var(--bg-canvas-color, #0b1713);
+  background-color: var(--bg-canvas-color, #060d17);
+  color-scheme: dark;
 }
 
 body {
   background: var(--bg-canvas);
   background-attachment: var(--bg-canvas-attachment);
-  background-color: var(--bg-canvas-color, #0b1713);
+  background-color: var(--bg-canvas-color, #060d17);
   color: var(--text-primary);
-  transition: background 0.3s ease, color 0.3s ease;
   min-height: 100vh;
 }
 
@@ -197,361 +113,185 @@ body::before {
   z-index: -2;
   filter: var(--leaf-filter);
   opacity: var(--leaf-opacity);
-  transition: background-image 0.5s ease, filter 0.4s ease, opacity 0.4s ease;
 }
 
-/* ── 4. LIGHT THEME COMPREHENSIVE OVERRIDES (Clean Frosted Glass) ── */
-
-/* Cards, Surfaces & Containers */
-[data-theme="light"] .card,
-[data-theme="light"] .auth-card,
-[data-theme="light"] .metric-card,
-[data-theme="light"] .dashboard-card,
-[data-theme="light"] .glass-panel,
-[data-theme="light"] .glass-panel-custom,
-[data-theme="light"] .glass-card,
-[data-theme="light"] .glass-login,
-[data-theme="light"] .table-container,
-[data-theme="light"] .modal-content,
-[data-theme="light"] .rab-card,
-[data-theme="light"] .nilai-card,
-[data-theme="light"] .jadwal-card,
-[data-theme="light"] .transactions-table-wrapper,
-[data-theme="light"] .budget-card,
-[data-theme="light"] .budget-summary {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(203, 213, 225, 0.85);
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
-  border-radius: 16px;
-  color: #090d16;
-}
-
-/* Sidebar & Topbar in Light Mode */
-[data-theme="light"] .sidebar {
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-right: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 4px 0 20px rgba(16, 185, 129, 0.04);
-}
-
-[data-theme="light"] .topbar {
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.04);
-}
-
-[data-theme="light"] .sidebar .sidebar-brand {
-  color: #0f172a;
-  font-weight: 800;
-}
-
-[data-theme="light"] .sidebar .nav-group-title {
-  color: #64748b;
-  font-weight: 700;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-[data-theme="light"] .sidebar .nav-item,
-[data-theme="light"] .sidebar a.nav-link {
-  color: #334155;
-  border-radius: 10px;
-  transition: all 0.2s ease;
-}
-
-[data-theme="light"] .sidebar .nav-item:hover,
-[data-theme="light"] .sidebar a.nav-link:hover {
-  background: rgba(16, 185, 129, 0.12);
-  color: #047857;
-}
-
-[data-theme="light"] .sidebar .nav-item.active,
-[data-theme="light"] .sidebar a.nav-link.active {
-  background: rgba(16, 185, 129, 0.18);
-  color: #047857;
-  font-weight: 700;
-  border-left: 3px solid #059669;
-}
-
-[data-theme="light"] .sidebar .sidebar-search-input {
-  background: rgba(255, 255, 255, 0.9);
-  color: #0f172a;
-  border: 1px solid #cbd5e1;
-}
-
-[data-theme="light"] .sidebar .user-info {
-  background: rgba(241, 245, 249, 0.85);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  color: #0f172a;
-}
-
-/* Statistics & Metrics Glowing Emerald */
-[data-theme="light"] .metric-title,
-[data-theme="light"] .stat-label,
-[data-theme="light"] .card-label {
-  color: #64748b;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-[data-theme="light"] .metric-value,
-[data-theme="light"] .stat-value,
-[data-theme="light"] .text-stat-number,
-[data-theme="light"] .metric-number {
-  color: #059669;
-  font-weight: 800;
-  font-size: 2rem;
-  line-height: 1.2;
-  text-shadow: 0 2px 10px rgba(5, 150, 105, 0.15);
-}
-
-/* Budget & RAB Adaptation for Light Mode */
-[data-theme="light"] .budget-summary {
-  background: linear-gradient(135deg, rgba(236, 253, 245, 0.95), rgba(240, 253, 244, 0.85));
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.1);
-}
-[data-theme="light"] .budget-summary-title {
-  color: #475569;
-  font-weight: 700;
-}
-[data-theme="light"] .budget-summary-value {
-  color: #059669;
-  font-weight: 800;
-  text-shadow: 0 2px 10px rgba(5, 150, 105, 0.15);
-}
-[data-theme="light"] .budget-summary-sub {
-  color: #64748b;
-}
-
-[data-theme="light"] .budget-card,
-[data-theme="light"] .budget-full-card {
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+/* ── CARDS, SURFACES & CONTAINERS ── */
+.card,
+.auth-card,
+.metric-card,
+.dashboard-card,
+.glass-panel,
+.glass-panel-custom,
+.glass-card,
+.glass-login,
+.table-container,
+.modal-content,
+.rab-card,
+.nilai-card,
+.jadwal-card,
+.transactions-table-wrapper,
+.budget-card,
+.budget-summary,
+.schedule-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-}
-[data-theme="light"] .budget-category-name,
-[data-theme="light"] .budget-name {
-  color: #0f172a;
-  font-weight: 700;
-}
-[data-theme="light"] .budget-spent {
-  color: #059669;
-  font-weight: 800;
-}
-[data-theme="light"] .budget-total,
-[data-theme="light"] .budget-of,
-[data-theme="light"] .budget-status {
-  color: #475569;
+  border-radius: 16px;
+  color: var(--text-primary);
 }
 
-[data-theme="light"] .rab-card {
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-}
-[data-theme="light"] .rab-card-header {
-  color: #0f172a;
-  font-weight: 700;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
-}
-[data-theme="light"] .rab-card-body {
-  color: #334155;
-}
-
-/* Headings & Text */
-[data-theme="light"] h1, 
-[data-theme="light"] h2, 
-[data-theme="light"] h3, 
-[data-theme="light"] h4, 
-[data-theme="light"] h5, 
-[data-theme="light"] h6 {
-  color: #0f172a;
-}
-
-[data-theme="light"] p, 
-[data-theme="light"] span:not(.badge):not(.material-symbols-outlined):not(.metric-value):not(.budget-summary-value):not(.budget-spent):not(.text-stat-number), 
-[data-theme="light"] label,
-[data-theme="light"] .text-gray-200, 
-[data-theme="light"] .text-gray-300, 
-[data-theme="light"] .text-slate-300, 
-[data-theme="light"] .text-slate-400 {
-  color: #334155;
-}
-
-[data-theme="light"] .text-white:not(.btn):not(.badge):not(.bg-primary):not([class*="bg-emerald"]):not([class*="bg-blue"]):not([class*="bg-red"]):not(.neon-glow-btn) {
-  color: #0f172a;
-}
-
-/* Tables in Light Mode */
-[data-theme="light"] table {
-  color: #1e293b;
-}
-
-[data-theme="light"] th {
-  background: rgba(241, 245, 249, 0.9);
-  color: #0f172a;
-  font-weight: 700;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
-}
-
-[data-theme="light"] td {
-  background: transparent;
-  color: #1e293b;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
-}
-
-[data-theme="light"] tbody tr:hover td,
-[data-theme="light"] tbody tr:hover {
-  background: rgba(236, 253, 245, 0.65);
-}
-
-/* Form Controls in Light Mode */
-[data-theme="light"] input,
-[data-theme="light"] select,
-[data-theme="light"] textarea,
-[data-theme="light"] .filter-select {
-  background: rgba(255, 255, 255, 0.92);
-  color: #0f172a;
-  border: 1px solid #cbd5e1;
-}
-
-[data-theme="light"] input:focus,
-[data-theme="light"] select:focus,
-[data-theme="light"] textarea:focus {
-  border-color: #059669;
-  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2);
-}
-
-[data-theme="light"] option {
-  background: #ffffff;
-  color: #0f172a;
-}
-
-/* ── 5. DARK THEME COMPREHENSIVE OVERRIDES ── */
-[data-theme="dark"] .budget-summary {
-  background: linear-gradient(135deg, rgba(6, 78, 59, 0.6), rgba(15, 23, 42, 0.8));
-  border: 1px solid rgba(52, 211, 153, 0.25);
+/* Budget & Financial Cards */
+.budget-summary {
+  background: linear-gradient(135deg, rgba(6, 78, 59, 0.6), rgba(15, 23, 42, 0.85));
+  border: 1px solid rgba(52, 211, 153, 0.3);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
 }
-[data-theme="dark"] .budget-summary-title {
-  color: rgba(255, 255, 255, 0.75);
+.budget-summary-title {
+  color: rgba(255, 255, 255, 0.8);
 }
-[data-theme="dark"] .budget-summary-value {
+.budget-summary-value {
   color: #34d399;
   font-weight: 800;
 }
-[data-theme="dark"] .budget-summary-sub {
-  color: rgba(255, 255, 255, 0.6);
+.budget-summary-sub {
+  color: rgba(255, 255, 255, 0.65);
 }
 
-[data-theme="dark"] .budget-card,
-[data-theme="dark"] .budget-full-card {
-  background: rgba(15, 23, 42, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-[data-theme="dark"] .budget-category-name,
-[data-theme="dark"] .budget-name {
+.budget-category-name,
+.budget-name {
   color: #f8fafc;
   font-weight: 700;
 }
-[data-theme="dark"] .budget-spent {
+.budget-spent {
   color: #34d399;
   font-weight: 800;
 }
-[data-theme="dark"] .budget-total,
-[data-theme="dark"] .budget-of,
-[data-theme="dark"] .budget-status {
+.budget-total,
+.budget-of,
+.budget-status {
   color: #94a3b8;
 }
 
-[data-theme="dark"] .rab-card {
-  background: rgba(15, 23, 42, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-[data-theme="dark"] .rab-card-header {
+.rab-card-header {
   color: #f8fafc;
   font-weight: 700;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-[data-theme="dark"] .rab-card-body {
+.rab-card-body {
   color: #cbd5e1;
 }
 
-[data-theme="dark"] .aca-inline-104 {
-  background: rgba(15, 23, 42, 0.85);
-  color: #f8fafc;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-[data-theme="dark"] .aca-inline-117,
-[data-theme="dark"] #rapor-table th {
-  background-color: rgba(30, 41, 59, 0.8);
-  color: #f1f5f9;
-  border-color: rgba(255, 255, 255, 0.15);
-}
-[data-theme="dark"] #rapor-table td,
-[data-theme="dark"] .aca-inline-118,
-[data-theme="dark"] .aca-inline-119,
-[data-theme="dark"] .aca-inline-120,
-[data-theme="dark"] .aca-inline-121,
-[data-theme="dark"] .aca-inline-125,
-[data-theme="dark"] .aca-inline-126,
-[data-theme="dark"] .aca-inline-127,
-[data-theme="dark"] .aca-inline-128,
-[data-theme="dark"] .aca-inline-130,
-[data-theme="dark"] .aca-inline-131,
-[data-theme="dark"] .aca-inline-132 {
-  color: #e2e8f0;
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-/* ── 6. TOGGLE BUTTON & RESPONSIVE UX ── */
-.table-responsive, .table-container {
+/* Tables Styling */
+table {
   width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  border-radius: 12px;
+  border-collapse: collapse;
 }
 
-.theme-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 40px;
-  min-height: 40px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid var(--glass-border);
-  background: var(--glass-bg);
-  color: var(--text-primary);
-  cursor: pointer;
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  transition: all 0.2s ease;
-  padding: 0;
-  flex-shrink: 0;
-  touch-action: manipulation;
-  z-index: 40;
+table thead th,
+.table-header-bg,
+#rapor-table th {
+  background-color: var(--table-header-bg);
+  color: var(--table-text-head);
+  border-bottom: 1px solid var(--table-border);
+  font-weight: 700;
+  padding: 0.75rem 1rem;
 }
 
-.theme-toggle-btn:hover {
-  background: var(--glass-bg-hover);
-  transform: scale(1.05);
+table tbody tr td,
+#rapor-table td {
+  color: var(--table-text-body);
+  border-bottom: 1px solid var(--table-border);
+  padding: 0.75rem 1rem;
+}
+
+table tbody tr:hover td {
+  background-color: var(--table-row-hover);
+}
+
+/* Form Controls */
+input,
+select,
+textarea,
+.input-control,
+.filter-select,
+.auth-input {
+  background: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--input-border);
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.input-control:focus,
+.auth-input:focus {
+  outline: none;
+  border-color: var(--input-border-focus);
+  box-shadow: var(--input-focus-shadow);
+}
+
+option {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+/* Sidebar & Topbar */
+.sidebar {
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.topbar {
+  background: var(--sidebar-bg);
+  border-bottom: 1px solid var(--sidebar-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.sidebar .nav-item {
+  color: var(--sidebar-text);
+}
+.sidebar .nav-item:hover {
+  background: var(--sidebar-item-hover);
+  color: #ffffff;
+}
+.sidebar .nav-item.active {
+  background: var(--sidebar-item-active);
+  color: var(--sidebar-text-active);
+  font-weight: 700;
+}
+
+/* Schedule Card */
+.schedule-card {
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.schedule-card:hover {
   border-color: var(--primary);
+  transform: translateY(-2px);
 }
-
-[data-theme="dark"] .theme-toggle-btn .sun-icon { display: block; }
-[data-theme="dark"] .theme-toggle-btn .moon-icon { display: none; }
-[data-theme="light"] .theme-toggle-btn .sun-icon { display: none; }
-[data-theme="light"] .theme-toggle-btn .moon-icon { display: block; }
+.schedule-mapel {
+  color: #f8fafc;
+  font-weight: 800;
+}
+.schedule-meta {
+  color: #94a3b8;
+  font-weight: 600;
+}
+.time-badge {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
 
 /* Status Badges */
 .badge-success, .status-hadir, .status-diterima, .status-lunas {
@@ -578,39 +318,12 @@ body::before {
   border: 1px solid var(--badge-info-border);
 }
 
-/* Mobile & Tablet Adaptations */
-@media (max-width: 768px) {
-  body::before {
-    background-size: cover;
-    background-position: center top;
-  }
-
-  .card, .glass-panel, .modal-content {
-    padding: 1.25rem 1rem;
-    border-radius: 14px;
-  }
-
-  .topbar {
-    padding: 0.5rem 1rem;
-    min-height: 56px;
-  }
-
-  .topbar-right {
-    gap: 0.5rem;
-  }
-}
-
-/* ── 8. SKELETON SHIMMER LOADING STATES ── */
+/* Skeletons */
 .skeleton {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.15) 37%, rgba(255, 255, 255, 0.05) 63%);
   background-size: 400% 100%;
   animation: skeleton-shimmer 1.4s ease infinite;
   border-radius: 8px;
-}
-
-[data-theme="light"] .skeleton {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.04) 25%, rgba(0, 0, 0, 0.09) 37%, rgba(0, 0, 0, 0.04) 63%);
-  background-size: 400% 100%;
 }
 
 @keyframes skeleton-shimmer {
@@ -630,169 +343,16 @@ body::before {
   border-radius: 16px;
 }
 
-/* Global sticky topbar enforcement */
-.topbar {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+/* Table Responsive */
+.table-responsive, .table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
 }
 
-/* ── Schedule Card in Light Mode ── */
-[data-theme="light"] .schedule-card {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(203, 213, 225, 0.85);
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08);
-  color: #090d16;
-}
-
-[data-theme="light"] .schedule-card:hover {
-  background: rgba(255, 255, 255, 0.98);
-  border-color: #059669;
-  box-shadow: 0 14px 35px -5px rgba(16, 185, 129, 0.15);
-}
-
-[data-theme="light"] .schedule-mapel {
-  color: #090d16;
-  font-weight: 800;
-}
-
-[data-theme="light"] .schedule-meta {
-  color: #475569;
-  font-weight: 600;
-}
-
-[data-theme="light"] .time-badge {
-  background: rgba(16, 185, 129, 0.15);
-  color: #047857;
-  border: 1px solid rgba(16, 185, 129, 0.35);
-}
-
-[data-theme="light"] .btn-quick-jurnal {
-  background: rgba(241, 245, 249, 0.95);
-  color: #1e293b;
-  border: 1px solid #cbd5e1;
-}
-
-[data-theme="light"] .btn-quick-jurnal:hover {
-  background: #e2e8f0;
-  color: #0f172a;
-}
-
-[data-theme="light"] .badge-empty {
-  background: rgba(245, 158, 11, 0.18);
-  color: #9a3412;
-  border: 1px solid rgba(245, 158, 11, 0.4);
-}
-
-[data-theme="light"] .badge-filled {
-  background: rgba(16, 185, 129, 0.18);
-  color: #047857;
-  border: 1px solid rgba(16, 185, 129, 0.4);
-}
-
-/* =========================================================================
-   UNIVERSAL THEME & DUAL-MODE COMPREHENSIVE OVERRIDES
-   ========================================================================= */
-
-/* All Cards in Light Mode */
-[data-theme="light"] .card,
-[data-theme="light"] .glass-panel,
-[data-theme="light"] .glass-panel-custom,
-[data-theme="light"] .schedule-card,
-[data-theme="light"] .table-container,
-[data-theme="light"] .modal-content,
-[data-theme="light"] .rab-card,
-[data-theme="light"] .nilai-card,
-[data-theme="light"] .jadwal-card,
-[data-theme="light"] .budget-card,
-[data-theme="light"] .metric-card,
-[data-theme="light"] .dashboard-card,
-[data-theme="light"] .login-main-card {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(203, 213, 225, 0.85);
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
-  color: #090d16;
-}
-
-[data-theme="light"] h1,
-[data-theme="light"] h2,
-[data-theme="light"] h3,
-[data-theme="light"] h4,
-[data-theme="light"] strong,
-[data-theme="light"] .number,
-[data-theme="light"] .stat-number,
-[data-theme="light"] .card-title {
-  color: #090d16;
-}
-
-[data-theme="light"] .schedule-mapel {
-  color: #090d16;
-  font-weight: 800;
-}
-
-[data-theme="light"] .schedule-meta {
-  color: #334155;
-  font-weight: 600;
-}
-
-[data-theme="light"] p,
-[data-theme="light"] .text-muted,
-[data-theme="light"] .stat-label,
-[data-theme="light"] .card-label {
-  color: #334155;
-}
-
-/* Tables in Light Mode */
-[data-theme="light"] table thead th {
-  background: rgba(241, 245, 249, 0.98);
-  color: #090d16;
-  border-bottom: 2px solid #cbd5e1;
-  font-weight: 700;
-}
-
-[data-theme="light"] table tbody tr {
-  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
-}
-
-[data-theme="light"] table tbody tr:hover {
-  background: rgba(236, 253, 245, 0.85);
-}
-
-/* Sidebar & Topbar in Light Mode */
-[data-theme="light"] .sidebar {
-  background: rgba(255, 255, 255, 0.95);
-  border-right: 1px solid #cbd5e1;
-}
-
-[data-theme="light"] .topbar {
-  background: rgba(255, 255, 255, 0.95);
-  border-bottom: 1px solid #cbd5e1;
-}
-
-[data-theme="light"] .sidebar .nav-item {
-  color: #334155;
-}
-
-[data-theme="light"] .sidebar .nav-item:hover {
-  background: rgba(16, 185, 129, 0.12);
-  color: #047857;
-}
-
-[data-theme="light"] .sidebar .nav-item.active {
-  background: rgba(16, 185, 129, 0.18);
-  color: #047857;
-  font-weight: 700;
-}
-
-/* Form Inputs in Light Mode */
-[data-theme="light"] input.input-control,
-[data-theme="light"] select.input-control,
-[data-theme="light"] textarea.input-control,
-[data-theme="light"] .auth-input {
-  background: rgba(248, 250, 252, 0.95);
-  border: 1px solid #cbd5e1;
-  color: #090d16;
+/* Hide theme toggles universally */
+.theme-toggle-btn,
+#theme-toggle-btn {
+  display: none !important;
 }
