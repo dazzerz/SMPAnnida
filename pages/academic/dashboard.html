@@ -78,118 +78,143 @@
                         </div>
                     </div>
 
-                    <!-- SECTION 0: Academic Info -->
-                    <h2 class="aca-inline-59">Informasi Akademik</h2>
-                    <div class="dashboard-cards aca-inline-1">
-                        <div class="card glass flex flex-col justify-between">
-                            <h3 class="aca-inline-60 flex items-center gap-1.5 font-semibold text-slate-300">
-                                <span class="material-symbols-outlined text-base text-emerald-400">meeting_room</span>
-                                <span>Total Kelas</span>
-                            </h3>
-                            <p class="number" id="stat-kelas-total" class="aca-inline-61">0</p>
+                    <!-- BENTO GRID: Ringkasan Utama & Statistik Akademik -->
+                    <div class="bento-grid mt-4">
+                        <!-- 1x1: Total Kelas -->
+                        <div class="bento-card bento-1x1">
+                            <div>
+                                <div class="bento-title">
+                                    <span class="material-symbols-outlined text-emerald-400">meeting_room</span>
+                                    <span>Total Kelas</span>
+                                </div>
+                                <div class="bento-stat-num" id="stat-kelas-total">0</div>
+                            </div>
+                            <div class="bento-subtitle flex items-center justify-between pt-2 border-t border-white/5">
+                                <span>Wali Kelas:</span>
+                                <span class="font-bold text-emerald-400" id="stat-walikelas-total">0</span>
+                            </div>
                         </div>
-                        <div class="card glass flex flex-col justify-between">
-                            <h3 class="aca-inline-60 flex items-center gap-1.5 font-semibold text-slate-300">
-                                <span class="material-symbols-outlined text-base text-emerald-400">supervisor_account</span>
-                                <span>Total Wali Kelas</span>
-                            </h3>
-                            <p class="number" id="stat-walikelas-total" class="aca-inline-61">0</p>
-                        </div>
-                        <div class="card glass aca-inline-2 flex flex-col justify-between">
-                            <h3 class="aca-inline-60 flex items-center gap-1.5 font-semibold text-slate-300">
-                                <span class="material-symbols-outlined text-base text-emerald-400">calendar_today</span>
-                                <span>Tahun Ajaran Aktif</span>
-                            </h3>
-                            <p class="number" id="stat-tahun-aktif" class="aca-inline-62">-</p>
-                        </div>
-                        <div class="card glass aca-inline-3 flex flex-col justify-between">
-                            <h3 class="aca-inline-60 flex items-center gap-1.5 font-semibold text-slate-300">
-                                <span class="material-symbols-outlined text-base text-emerald-400">date_range</span>
-                                <span>Semester Aktif</span>
-                            </h3>
-                            <p class="number" id="stat-semester-aktif" class="aca-inline-62">-</p>
-                        </div>
-                    </div>
-                    
-                    <!-- SECTION 1: Ringkasan Siswa Hari Ini -->
-                    <h2 class="aca-inline-59">Ringkasan Siswa Hari Ini</h2>
-                    <div class="dashboard-cards aca-inline-4">
-                        <div class="card glass flex flex-col justify-between">
-                            <h3 class="flex items-center gap-1.5 font-semibold text-slate-300">
-                                <span class="material-symbols-outlined text-base text-emerald-400">groups</span>
-                                <span>Total Siswa</span>
-                            </h3>
-                            <p class="number" id="stat-siswa-total">0</p>
-                        </div>
-                        <div class="card glass aca-inline-3 flex flex-col justify-between">
-                            <h3 class="flex items-center gap-1.5 font-semibold text-slate-300">
-                                <span class="material-symbols-outlined text-base text-emerald-400">how_to_reg</span>
-                                <span>Hadir Hari Ini</span>
-                            </h3>
-                            <p class="number" id="stat-siswa-hadir" class="aca-inline-63">0</p>
-                        </div>
-                        <div class="card glass aca-inline-5 flex flex-col justify-between">
-                            <h3 class="flex items-center gap-1.5 font-semibold text-amber-300">
-                                <span class="material-symbols-outlined text-base text-amber-400">medication</span>
-                                <span>Sakit</span>
-                            </h3>
-                            <p class="number" id="stat-siswa-sakit">0</p>
-                        </div>
-                        <div class="card glass aca-inline-2 flex flex-col justify-between">
-                            <h3 class="flex items-center gap-1.5 font-semibold text-blue-300">
-                                <span class="material-symbols-outlined text-base text-blue-400">assignment_turned_in</span>
-                                <span>Izin</span>
-                            </h3>
-                            <p class="number" id="stat-siswa-izin">0</p>
-                        </div>
-                        <div class="card glass aca-inline-6 flex flex-col justify-between">
-                            <h3 class="flex items-center gap-1.5 font-semibold text-rose-300">
-                                <span class="material-symbols-outlined text-base text-rose-400">cancel</span>
-                                <span>Alpha</span>
-                            </h3>
-                            <p class="number" id="stat-siswa-alpha" class="aca-inline-64">0</p>
-                        </div>
-                    </div>
 
-                    <!-- SECTION 2 & 3: Guru & Jurnal -->
-                    <div class="aca-inline-65">
-                        <div>
-                            <h2 class="aca-inline-59">Kehadiran Guru Hari Ini</h2>
-                            <div class="dashboard-cards aca-inline-7">
-                                <div class="card glass">
-                                    <h3 class="aca-inline-60">Jumlah Guru</h3>
-                                    <p class="number" id="stat-guru-total" class="aca-inline-61">0</p>
+                        <!-- 1x1: Total Siswa -->
+                        <div class="bento-card bento-1x1">
+                            <div>
+                                <div class="bento-title">
+                                    <span class="material-symbols-outlined text-emerald-400">groups</span>
+                                    <span>Total Siswa</span>
                                 </div>
-                                <div class="card glass">
-                                    <h3 class="aca-inline-60">Belum Check In</h3>
-                                    <p class="number" id="stat-guru-belum" class="aca-inline-61">0</p>
+                                <div class="bento-stat-num" id="stat-siswa-total">0</div>
+                            </div>
+                            <div class="bento-subtitle pt-2 border-t border-white/5">
+                                Terdaftar aktif di sistem
+                            </div>
+                        </div>
+
+                        <!-- 1x1: Tahun Ajaran Aktif -->
+                        <div class="bento-card bento-1x1">
+                            <div>
+                                <div class="bento-title">
+                                    <span class="material-symbols-outlined text-emerald-400">calendar_today</span>
+                                    <span>Tahun Ajaran</span>
                                 </div>
-                                <div class="card glass aca-inline-3">
-                                    <h3 class="aca-inline-60">Sudah Check In</h3>
-                                    <p class="number" id="stat-guru-in" class="aca-inline-66">0</p>
+                                <div class="bento-stat-num !text-xl md:!text-2xl" id="stat-tahun-aktif">-</div>
+                            </div>
+                            <div class="bento-subtitle pt-2 border-t border-white/5">
+                                Periode berjalan
+                            </div>
+                        </div>
+
+                        <!-- 1x1: Semester Aktif -->
+                        <div class="bento-card bento-1x1">
+                            <div>
+                                <div class="bento-title">
+                                    <span class="material-symbols-outlined text-emerald-400">date_range</span>
+                                    <span>Semester</span>
                                 </div>
-                                <div class="card glass aca-inline-2">
-                                    <h3 class="aca-inline-60">Sudah Check Out</h3>
-                                    <p class="number" id="stat-guru-out" class="aca-inline-67">0</p>
+                                <div class="bento-stat-num !text-xl md:!text-2xl" id="stat-semester-aktif">-</div>
+                            </div>
+                            <div class="bento-subtitle pt-2 border-t border-white/5">
+                                Kalender akademik
+                            </div>
+                        </div>
+
+                        <!-- 2x1: Ringkasan Kehadiran Siswa (with visual bar) -->
+                        <div class="bento-card bento-2x1">
+                            <div>
+                                <div class="bento-title justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-emerald-400">how_to_reg</span>
+                                        <span class="font-semibold text-white">Ringkasan Kehadiran Siswa Hari Ini</span>
+                                    </div>
+                                    <span class="text-[11px] text-emerald-400 font-medium px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">Real-time</span>
+                                </div>
+
+                                <div class="grid grid-cols-4 gap-2 my-3">
+                                    <div class="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-center">
+                                        <div class="text-xs text-emerald-300 font-medium">Hadir</div>
+                                        <div class="text-lg font-bold text-emerald-400 mt-0.5" id="stat-siswa-hadir">0</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-center">
+                                        <div class="text-xs text-amber-300 font-medium">Sakit</div>
+                                        <div class="text-lg font-bold text-amber-400 mt-0.5" id="stat-siswa-sakit">0</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20 text-center">
+                                        <div class="text-xs text-blue-300 font-medium">Izin</div>
+                                        <div class="text-lg font-bold text-blue-400 mt-0.5" id="stat-siswa-izin">0</div>
+                                    </div>
+                                    <div class="p-2 rounded-lg bg-rose-500/10 border border-rose-500/20 text-center">
+                                        <div class="text-xs text-rose-300 font-medium">Alpha</div>
+                                        <div class="text-lg font-bold text-rose-400 mt-0.5" id="stat-siswa-alpha">0</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Visual Bar Distribution -->
+                            <div>
+                                <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden flex">
+                                    <div class="bg-emerald-500 h-full" style="width: 80%;" title="Hadir"></div>
+                                    <div class="bg-amber-400 h-full" style="width: 10%;" title="Sakit"></div>
+                                    <div class="bg-blue-400 h-full" style="width: 5%;" title="Izin"></div>
+                                    <div class="bg-rose-500 h-full" style="width: 5%;" title="Alpha"></div>
+                                </div>
+                                <div class="bento-subtitle flex justify-between mt-1 text-[11px]">
+                                    <span>Distribusi status presensi hari ini</span>
+                                    <span class="text-gray-400">Presensi Kelas</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div>
-                            <h2 class="aca-inline-59">Jurnal Guru Hari Ini</h2>
-                            <div class="dashboard-cards aca-inline-7">
-                                <div class="card glass aca-inline-8">
-                                    <h3 class="aca-inline-60">Total Jurnal Terisi Hari Ini</h3>
-                                    <p class="number" id="stat-jurnal-total" class="aca-inline-68">0</p>
+                        <!-- 2x1: Jurnal Guru Hari Ini -->
+                        <div class="bento-card bento-2x1">
+                            <div>
+                                <div class="bento-title justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-emerald-400">menu_book</span>
+                                        <span class="font-semibold text-white">Jurnal Guru Hari Ini</span>
+                                    </div>
+                                    <span class="text-[11px] text-emerald-400 font-medium px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">Monitoring</span>
                                 </div>
-                                <div class="card glass aca-inline-3">
-                                    <h3 class="aca-inline-60">Guru Sudah Mengisi</h3>
-                                    <p class="number" id="stat-jurnal-guru-sudah" class="aca-inline-61">0</p>
+
+                                <div class="grid grid-cols-3 gap-2.5 my-3">
+                                    <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-700/60 text-center">
+                                        <div class="text-xs text-gray-300 font-medium">Total Jurnal</div>
+                                        <div class="text-lg font-bold text-emerald-400 mt-0.5" id="stat-jurnal-total">0</div>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-center">
+                                        <div class="text-xs text-emerald-300 font-medium">Sudah Mengisi</div>
+                                        <div class="text-lg font-bold text-emerald-400 mt-0.5" id="stat-jurnal-guru-sudah">0</div>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-center">
+                                        <div class="text-xs text-rose-300 font-medium">Belum Mengisi</div>
+                                        <div class="text-lg font-bold text-rose-400 mt-0.5" id="stat-jurnal-guru-belum">0</div>
+                                    </div>
                                 </div>
-                                <div class="card glass aca-inline-5">
-                                    <h3 class="aca-inline-60">Guru Belum Mengisi</h3>
-                                    <p class="number" id="stat-jurnal-guru-belum" class="aca-inline-61">0</p>
-                                </div>
+                            </div>
+
+                            <div class="bento-subtitle flex items-center justify-between pt-1 border-t border-white/5 text-[11px]">
+                                <span>Guru Check-in:</span>
+                                <span class="font-semibold text-gray-200">
+                                    <span id="stat-guru-in" class="text-emerald-400 font-bold">0</span> / <span id="stat-guru-total">0</span> Guru (Out: <span id="stat-guru-out">0</span>, Belum: <span id="stat-guru-belum">0</span>)
+                                </span>
                             </div>
                         </div>
                     </div>
