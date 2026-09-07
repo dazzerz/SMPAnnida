@@ -86,7 +86,7 @@
   --chart-text: #94a3b8;
 }
 
-/* ── BASE BACKGROUND: Subtle Institutional Botanical Micro-Texture (4.5% Opacity) ── */
+/* ── BASE BACKGROUND: Repeating Tropical Botanical Silhouette Pattern (8-12% Opacity) ── */
 html {
   background-color: #0b1320;
   color-scheme: dark;
@@ -95,9 +95,9 @@ html {
 body {
   background-color: #0b1320;
   background-image:
-    radial-gradient(circle at 10% 15%, rgba(16, 185, 129, 0.04) 0%, transparent 45%),
-    radial-gradient(circle at 90% 80%, rgba(5, 150, 105, 0.035) 0%, transparent 50%),
-    url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2310b981' stroke-width='0.7' stroke-opacity='0.045'%3E%3Cpath d='M32 8 C28 20 20 28 8 32 C20 36 28 44 32 56 C36 44 44 36 56 32 C44 28 36 20 32 8 Z'/%3E%3Ccircle cx='32' cy='32' r='2.5'/%3E%3Ccircle cx='0' cy='0' r='1.5'/%3E%3Ccircle cx='64' cy='0' r='1.5'/%3E%3Ccircle cx='0' cy='64' r='1.5'/%3E%3Ccircle cx='64' cy='64' r='1.5'/%3E%3Cpath d='M0 32 Q16 26 32 32 Q48 38 64 32' stroke-dasharray='2 3' stroke-opacity='0.03'/%3E%3Cpath d='M32 0 Q26 16 32 32 Q38 48 32 64' stroke-dasharray='2 3' stroke-opacity='0.03'/%3E%3C/g%3E%3C/svg%3E");
+    radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(5, 150, 105, 0.045) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='96' height='96' viewBox='0 0 96 96' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2310b981' fill-opacity='0.095' stroke='%23059669' stroke-opacity='0.115' stroke-width='0.75'%3E%3Cpath d='M48 10 C36 22 24 34 24 52 C24 72 40 86 48 90 C56 86 72 72 72 52 C72 34 60 22 48 10 Z M48 20 C48 38 48 58 48 82' fill='none' stroke-linecap='round'/%3E%3Cpath d='M48 34 C41 31 33 34 29 39' fill='none' stroke-linecap='round'/%3E%3Cpath d='M48 46 C38 43 30 47 26 54' fill='none' stroke-linecap='round'/%3E%3Cpath d='M48 58 C41 57 34 62 30 69' fill='none' stroke-linecap='round'/%3E%3Cpath d='M48 34 C55 31 63 34 67 39' fill='none' stroke-linecap='round'/%3E%3Cpath d='M48 46 C58 43 66 47 70 54' fill='none' stroke-linecap='round'/%3E%3Cpath d='M48 58 C55 57 62 62 66 69' fill='none' stroke-linecap='round'/%3E%3Cpath d='M10 6 C4 12 0 20 0 30 C0 40 7 47 12 50 C7 47 2 40 2 30 C2 22 6 15 10 6 Z'/%3E%3Cpath d='M86 90 C92 84 96 76 96 66 C96 56 89 49 84 46 C89 49 94 56 94 66 C94 74 90 81 86 90 Z'/%3E%3C/g%3E%3C/svg%3E");
   background-attachment: fixed;
   background-repeat: repeat;
   color: var(--text-primary);
@@ -282,11 +282,21 @@ option {
 
 .topbar {
   background: #081a16 !important;
+  background-color: rgba(8, 26, 22, 0.96) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
   border-bottom: 1px solid rgba(16, 185, 129, 0.15) !important;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+  height: 60px !important;
+  min-height: 60px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .sidebar .nav-item {
@@ -301,6 +311,368 @@ option {
   background: rgba(16, 185, 129, 0.22);
   color: #34d399;
   font-weight: 700;
+}
+
+/* =========================================================================
+   SPLIT RAIL NAVIGATION SYSTEM
+   Lapisan 1: 52px Icon Rail Bar (Leftmost Column)
+   Lapisan 2: 200px Context Submenu Panel (Collapsible)
+   ========================================================================= */
+
+/* Split Rail Container (replaces/augments .sidebar) */
+.sidebar.split-rail-container {
+  display: flex !important;
+  flex-direction: row !important;
+  padding: 0 !important;
+  width: 252px !important;
+  min-width: 252px !important;
+  max-width: 252px !important;
+  height: 100vh !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1001 !important;
+  overflow: hidden !important;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s ease !important;
+  background: transparent !important;
+  border-right: none !important;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.sidebar.split-rail-container::after {
+  display: none !important;
+}
+
+/* Collapsed State: only 52px rail is visible, main content expands */
+.sidebar.split-rail-container.panel-collapsed {
+  width: 52px !important;
+  min-width: 52px !important;
+  max-width: 52px !important;
+}
+
+/* LAPISAN 1: Rail Bar (52px) */
+.split-rail-bar {
+  width: 52px !important;
+  min-width: 52px !important;
+  max-width: 52px !important;
+  height: 100vh !important;
+  background: #061514 !important;
+  border-right: 1px solid rgba(16, 185, 129, 0.18) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 0.75rem 0 !important;
+  z-index: 2 !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.split-rail-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  transition: transform 0.2s ease;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  flex-shrink: 0;
+}
+.split-rail-logo:hover {
+  transform: scale(1.08);
+}
+
+.split-rail-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+}
+
+.rail-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  padding: 0;
+}
+.rail-btn:hover {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+.rail-btn.active {
+  background: rgba(16, 185, 129, 0.24);
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.45);
+}
+.rail-btn.active::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.split-rail-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  flex-shrink: 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* LAPISAN 2: Context Submenu Panel (200px) */
+.split-rail-panel {
+  width: 200px !important;
+  min-width: 200px !important;
+  max-width: 200px !important;
+  height: 100vh !important;
+  background: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%) !important;
+  border-right: 1px solid rgba(16, 185, 129, 0.2) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  transition: opacity 0.2s ease, transform 0.25s ease !important;
+  position: relative !important;
+  z-index: 1 !important;
+  box-sizing: border-box !important;
+}
+
+.split-rail-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 130px;
+  height: 130px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M95 95 C80 55 40 40 5 45 C25 75 60 88 95 95 Z' fill='%2310b981'/%3E%3Cpath d='M95 95 C85 70 65 60 40 64' stroke='%2334d399' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M75 76 C68 66 55 64 45 68' stroke='%2334d399' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M88 86 C78 74 60 72 52 78' stroke='%2334d399' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M95 95 C65 88 32 60 22 25 C52 30 82 60 95 95 Z' fill='%23059669' fill-opacity='0.65'/%3E%3Cpath d='M95 95 C75 80 55 50 48 30' stroke='%236ee7b7' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.split-rail-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.sidebar.split-rail-container.panel-collapsed .split-rail-panel {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-15px);
+}
+
+.split-rail-panel-header {
+  padding: 0.9rem 0.85rem 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+.split-rail-panel-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #f8fafc;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.split-rail-panel-close {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+.split-rail-panel-close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.split-rail-panel-search {
+  padding: 0.5rem 0.75rem;
+  flex-shrink: 0;
+}
+
+.split-rail-panel-menu {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.4rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(16, 185, 129, 0.25) transparent;
+}
+
+.split-rail-panel-menu .nav-item {
+  font-size: 0.8rem !important;
+  padding: 0.45rem 0.6rem !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+  color: #cbd5e1 !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+  border-left: 3px solid transparent !important;
+  white-space: nowrap !important;
+}
+.split-rail-panel-menu .nav-item:hover {
+  background: rgba(16, 185, 129, 0.14) !important;
+  color: #ffffff !important;
+}
+.split-rail-panel-menu .nav-item.active {
+  background: rgba(16, 185, 129, 0.22) !important;
+  color: #34d399 !important;
+  border-left: 3px solid #10b981 !important;
+  font-weight: 600 !important;
+}
+
+.category-panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  width: 100%;
+}
+
+.split-rail-panel-footer {
+  padding: 0.65rem 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+/* Mobile Split Rail Drawer (< 768px) */
+@media (max-width: 768px) {
+  .sidebar.split-rail-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    transform: translateX(-100%) !important;
+    width: 252px !important;
+    min-width: 252px !important;
+    max-width: 252px !important;
+    z-index: 1200 !important;
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.8) !important;
+  }
+  .sidebar.split-rail-container.open {
+    transform: translateX(0) !important;
+  }
+  .sidebar.split-rail-container.panel-collapsed {
+    width: 252px !important;
+    min-width: 252px !important;
+  }
+  .sidebar.split-rail-container.panel-collapsed .split-rail-panel {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+}
+
+/* =========================================================================
+   BENTO GRID LAYOUT ARCHITECTURE
+   ========================================================================= */
+.bento-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1.25rem !important;
+  margin-bottom: 2rem !important;
+}
+.bento-card {
+  background: #111a28 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 14px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+  padding: 1.25rem 1.4rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: transform 0.2s ease, border-color 0.2s ease !important;
+}
+.bento-card:hover {
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  transform: translateY(-2px) !important;
+}
+.bento-1x1 {
+  grid-column: span 1 !important;
+}
+.bento-2x1 {
+  grid-column: span 2 !important;
+}
+.bento-stat-num {
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  color: #10b981 !important;
+  line-height: 1.1 !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.25rem !important;
+}
+.bento-title {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: #cbd5e1 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+.bento-subtitle {
+  font-size: 0.75rem !important;
+  color: #94a3b8 !important;
+}
+
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .bento-2x1 {
+    grid-column: span 2 !important;
+  }
+}
+@media (max-width: 768px) {
+  .bento-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .bento-1x1,
+  .bento-2x1 {
+    grid-column: span 1 !important;
+  }
 }
 
 /* Schedule Card */
