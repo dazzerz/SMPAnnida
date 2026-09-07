@@ -6,13 +6,9 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
-      var t = localStorage.getItem('smpannida_theme') || 'light';
-      document.documentElement.setAttribute('data-theme', t);
-      if (t === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.add('dark');
+      try { localStorage.setItem('smpannida_theme', 'dark'); } catch(_) {}
     })();
   </script>
   <meta charset="utf-8"/>
@@ -86,7 +82,7 @@
     <div class="w-full max-w-xl glass-panel-custom rounded-2xl p-8 text-center space-y-6">
       
       <!-- Sparkle Animation -->
-      <div class="confetti-animation">🎉</div>
+      <div class="confetti-animation flex items-center justify-center"><span class="material-symbols-outlined text-6xl text-emerald-400">verified</span></div>
       
       <h2 class="font-headline-lg text-3xl font-bold text-emerald-400">Pendaftaran Berhasil!</h2>
       

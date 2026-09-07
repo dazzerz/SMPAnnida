@@ -19,7 +19,7 @@ export function injectSidebar(containerId) {
     <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
       <a href="${basePath}dashboard.html" style="display:flex; align-items:center; gap:0.75rem; text-decoration:none; color:inherit;">
         <div class="sidebar-logo-icon">
-          <img src="${basePath}assets/logo/1.png" alt="Logo SMP Annida" onerror="this.onerror=null; this.src='/assets/logo/1.png';">
+          <img src="${basePath}assets/logo/1.webp" alt="Logo SMP Annida" onerror="this.onerror=null; this.src='/logo_1x1.png';">
         </div>
         <div class="sidebar-brand">SMPAnnida</div>
       </a>
@@ -325,18 +325,6 @@ export function injectTopbar(containerId, options = {}) {
     const title = options.title || '';
     const rightHtml = options.rightHtml || '';
 
-    const themeToggleHtml = `
-      <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Ganti Mode Tema" title="Ganti Mode Terang / Gelap">
-        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
-        </svg>
-        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-        </svg>
-      </button>
-    `;
-
     container.innerHTML = `
         <div style="display:flex; align-items:center; gap:1rem;">
           <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Buka menu">
@@ -348,12 +336,9 @@ export function injectTopbar(containerId, options = {}) {
           </div>
         </div>
         <div class="topbar-right" style="display:flex; align-items:center; gap:0.75rem;">
-          ${themeToggleHtml}
           ${rightHtml}
         </div>
     `;
-
-    bindThemeSwitcher('theme-toggle-btn');
 }
 
 // Global click handler for mobile hamburger menu
