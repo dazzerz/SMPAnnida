@@ -50,15 +50,11 @@
 </head>
 <body class="text-white font-body-md min-h-screen flex flex-col bg-slate-950">
 
-  <!-- Background Layer -->
-  <div class="fixed inset-0 z-[-1] bg-cover bg-center" style="background-image: url('../../assets/images/bg-dark.webp');"></div>
-  <div class="fixed inset-0 bg-black/60 z-0 pointer-events-none"></div>
-
   <!-- App Wrapper -->
   <div class="relative z-10 flex min-h-screen">
     
     <!-- Sidebar Navigation -->
-    <aside class="w-64 bg-slate-900/80 backdrop-blur-xl border-r border-white/10 p-6 flex flex-col justify-between hidden md:flex" id="student-sidebar">
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 p-6 flex flex-col justify-between hidden md:flex" id="student-sidebar">
       <div>
         <!-- Brand / Logo -->
         <a href="../../index.html" class="flex items-center gap-3 mb-8">
@@ -139,7 +135,7 @@
       
       
       <!-- Sticky Mobile Top Bar & Pill Navigation -->
-      <div class="md:hidden sticky top-0 z-40 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl p-3 mb-6 shadow-xl space-y-3">
+      <div class="md:hidden sticky top-0 z-40 bg-slate-900 border border-slate-800 rounded-xl p-3 mb-6 shadow-xl space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <img src="/logo_1x1.png" alt="Logo" class="w-8 h-8 rounded-full">
@@ -195,10 +191,10 @@
       <!-- PANEL 1: BERANDA -->
       <section id="panel-beranda" class="student-panel space-y-6">
         <!-- Digital Student Card -->
-        <div class="p-6 md:p-8 rounded-3xl bg-gradient-to-r from-emerald-900/60 via-slate-900/80 to-slate-900/80 border border-emerald-500/30 backdrop-blur-xl shadow-2xl relative overflow-hidden">
+        <div class="p-6 md:p-8 rounded-xl bg-slate-900 border border-emerald-500/40 shadow-xl relative overflow-hidden">
           <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
             <div class="flex items-center gap-4 md:gap-6">
-              <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center font-headline-md text-2xl md:text-3xl font-bold text-emerald-300 shadow-inner" id="hero-avatar">
+              <div class="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center font-headline-md text-2xl md:text-3xl font-bold text-emerald-300 shadow-inner" id="hero-avatar">
                 <span class="material-symbols-outlined text-3xl md:text-4xl text-emerald-400">school</span>
               </div>
               <div>
@@ -226,7 +222,7 @@
 
         <!-- Quick Metric Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="p-5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl">
               <span class="material-symbols-outlined text-2xl">analytics</span>
             </div>
@@ -236,7 +232,7 @@
             </div>
           </div>
 
-          <div class="p-5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl">
               <span class="material-symbols-outlined text-2xl">auto_stories</span>
             </div>
@@ -246,7 +242,7 @@
             </div>
           </div>
 
-          <div class="p-5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl">
               <span class="material-symbols-outlined text-2xl">calendar_month</span>
             </div>
@@ -256,7 +252,7 @@
             </div>
           </div>
 
-          <div class="p-5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 flex items-center gap-4">
+          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-4">
             <div class="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl">
               <span class="material-symbols-outlined text-2xl">folder_shared</span>
             </div>
@@ -269,7 +265,7 @@
 
         <!-- Today Schedules Preview & Announcements -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="lg:col-span-2 p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+          <div class="lg:col-span-2 p-6 rounded-xl bg-slate-900 border border-slate-800">
             <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
               <span class="material-symbols-outlined text-emerald-400">calendar_today</span>
               <span>Jadwal Pelajaran Hari Ini</span>
@@ -279,7 +275,7 @@
             </div>
           </div>
 
-          <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+          <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
             <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
               <span class="material-symbols-outlined text-emerald-400">campaign</span>
               <span>Pengumuman Sekolah</span>
@@ -300,7 +296,7 @@
 
       <!-- PANEL 2: JADWAL PELAJARAN -->
       <section id="panel-jadwal" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
           <div class="flex justify-between items-center mb-6">
             <div>
               <h2 class="text-xl font-bold font-headline-md text-white">Jadwal Pelajaran Mingguan</h2>
@@ -315,12 +311,12 @@
 
       <!-- PANEL 3: PRESENSI SAYA -->
       <section id="panel-presensi" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
           <h2 class="text-xl font-bold font-headline-md text-white mb-2">Riwayat Presensi & Kehadiran</h2>
           <p class="text-xs text-gray-400 mb-6">Pencatatan presensi real-time oleh guru mata pelajaran</p>
           
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
+            <table class="data-table w-full text-left text-sm">
               <thead class="text-xs uppercase bg-white/5 border-b border-white/10 text-gray-400">
                 <tr>
                   <th class="py-3 px-4">Tanggal</th>
@@ -342,7 +338,7 @@
       
       <!-- PANEL: UJIAN & KUIS CBT ONLINE (ANTI-CHEAT) -->
       <section id="panel-cbt" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
               <h2 class="text-xl font-bold font-headline-md text-white mb-1">Ujian & Kuis Online (CBT Anti-Cheat)</h2>
@@ -365,7 +361,7 @@
       
       <!-- PANEL: MATERI E-LEARNING INTERAKTIF (DEDICATED) -->
       <section id="panel-materi-lms" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
               <h2 class="text-xl font-bold font-headline-md text-white mb-1">Pusat Materi Pembelajaran Digital</h2>
@@ -387,7 +383,7 @@
 
       <!-- PANEL: TUGAS & E-LEARNING (LMS) -->
       <section id="panel-tugas" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
               <h2 class="text-xl font-bold font-headline-md text-white mb-1">Pusat Tugas & E-Learning (LMS)</h2>
@@ -430,7 +426,7 @@
 
       <!-- PANEL 4: JURNAL & MATERI PEMBELAJARAN INTERAKTIF -->
       <section id="panel-materi" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
               <h2 class="text-xl font-bold font-headline-md text-white mb-1">Pusat Materi Interaktif & E-Learning</h2>
@@ -466,11 +462,11 @@
 
       <!-- PANEL 5: TRACKER TAHFIDZ -->
       <section id="panel-tahfidz" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
           <h2 class="text-xl font-bold font-headline-md text-white mb-2">Tracker Setoran Tahfidz Al-Qur'an</h2>
           <p class="text-xs text-gray-400 mb-6">Pencatatan hafalan Ziyadah & Muraja'ah bersama Musyrif</p>
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
+            <table class="data-table w-full text-left text-sm">
               <thead class="text-xs uppercase bg-white/5 border-b border-white/10 text-gray-400">
                 <tr>
                   <th class="py-3 px-4">Tanggal</th>
@@ -491,11 +487,11 @@
 
       <!-- PANEL 6: NILAI & RAPOR -->
       <section id="panel-nilai" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
           <h2 class="text-xl font-bold font-headline-md text-white mb-2">Transkrip Nilai & Capaian Akademik</h2>
           <p class="text-xs text-gray-400 mb-6">Rekapitulasi penilaian tugas, UTS, dan UAS</p>
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
+            <table class="data-table w-full text-left text-sm">
               <thead class="text-xs uppercase bg-white/5 border-b border-white/10 text-gray-400">
                 <tr>
                   <th class="py-3 px-4">Mata Pelajaran</th>
@@ -515,7 +511,7 @@
 
       <!-- PANEL 7: BERKAS PPDB -->
       <section id="panel-berkas" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10">
+        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
           <h2 class="text-xl font-bold font-headline-md text-white mb-2">Berkas Digital Pendaftaran PPDB</h2>
           <p class="text-xs text-gray-400 mb-6">Arsip dokumen persyaratan yang diunggah saat pendaftaran masuk</p>
           <div id="student-ppdb-docs-list" class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -558,7 +554,7 @@
 
       <!-- PANEL 8: PENGATURAN AKUN -->
       <section id="panel-akun" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 max-w-xl">
+        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800 max-w-xl">
           <h2 class="text-xl font-bold font-headline-md text-white mb-2">Keamanan Akun & Ganti Password</h2>
           <p class="text-xs text-gray-400 mb-6">Perbarui kata sandi akun portal Anda secara berkala</p>
           
@@ -582,8 +578,8 @@
   </div>
 
   <!-- MODAL: FORCED PASSWORD UPDATE ON FIRST LOGIN -->
-  <div id="modal-forced-password" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-emerald-500/40 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl">
+  <div id="modal-forced-password" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-900 border border-emerald-500/40 rounded-xl p-6 md:p-8 max-w-md w-full shadow-2xl">
       <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl mb-4 border border-emerald-500/40">
         <span class="material-symbols-outlined text-2xl">lock_reset</span>
       </div>
@@ -611,7 +607,7 @@
 
   <!-- MODAL PENGUMPULAN TUGAS SISWA -->
   <div id="modal-submit-tugas" class="modal hidden">
-    <div class="modal-content card glass max-w-lg w-full p-6 rounded-2xl bg-slate-900 border border-white/20 text-white space-y-4">
+    <div class="modal-content card glass max-w-lg w-full p-6 rounded-xl bg-slate-900 border border-slate-800 text-white space-y-4">
       <div class="flex justify-between items-center border-b border-white/10 pb-3">
         <div>
           <h3 class="text-lg font-bold text-emerald-400" id="modal-tugas-title">Kumpulkan Tugas</h3>

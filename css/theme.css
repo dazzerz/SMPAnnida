@@ -1,33 +1,32 @@
 /* =========================================================================
    SMP Annida - Unified Midnight Emerald Dark Theme (Anti-Glare & High Contrast)
-   Single High-Contrast Dark Architecture — Eliminates Light Mode Collisions
+   Single High-Contrast Dark Architecture — Institutional Clean Design
    ========================================================================= */
 
 :root,
 [data-theme="dark"] {
   --color-scheme: dark;
 
-  /* Nature Background Image & Deep Midnight Filter */
-  --bg-nature-image: url('../assets/images/bg-dark.webp');
-  --leaf-filter: brightness(0.85) contrast(1.1) saturate(1.1);
-  --leaf-opacity: 0.35;
-  --bg-overlay-tint: rgba(3, 7, 18, 0.70);
+  /* Solid Canvas Background (No distracting leaf or nature background images) */
+  --bg-nature-image: none;
+  --leaf-filter: none;
+  --leaf-opacity: 0;
+  --bg-overlay-tint: transparent;
 
-  /* Canvas Background: Deep Emerald & Midnight Canvas */
-  --bg-canvas-color: #060d17;
-  --bg-canvas: radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, rgba(6, 13, 23, 0.8) 100%),
-               #060d17;
-  --bg-canvas-attachment: fixed;
+  /* Canvas Background: Solid High-Contrast Midnight Canvas */
+  --bg-canvas-color: #0b1320;
+  --bg-canvas: #0b1320;
+  --bg-canvas-attachment: scroll;
 
-  /* Glass Card & Surfaces - High Depth & Anti-Glare */
-  --glass-bg: rgba(15, 23, 42, 0.75);
-  --glass-bg-hover: rgba(30, 41, 59, 0.85);
-  --glass-bg-elevated: rgba(15, 23, 42, 0.90);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-subtle: rgba(52, 211, 153, 0.25);
-  --glass-blur: blur(16px) saturate(180%);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
-  --glass-shadow-lg: 0 16px 36px 0 rgba(0, 0, 0, 0.55);
+  /* Solid Surfaces & Cards — High Contrast, Zero Glassmorphic Blur */
+  --glass-bg: #111a28;
+  --glass-bg-hover: #162235;
+  --glass-bg-elevated: #162235;
+  --glass-border: #1e293b;
+  --glass-border-subtle: #1e293b;
+  --glass-blur: none;
+  --glass-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
+  --glass-shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 
   /* Typography & High Contrast (WCAG AAA Compliance) */
   --text-primary: #f8fafc;
@@ -38,46 +37,46 @@
   /* Emerald Brand Accents */
   --primary: #10b981;         /* Emerald 500 */
   --primary-hover: #34d399;   /* Emerald 400 */
-  --primary-light: rgba(16, 185, 129, 0.2);
+  --primary-light: rgba(16, 185, 129, 0.15);
   --accent: #34d399;
 
   /* UI Status Badges */
-  --badge-success-bg: rgba(16, 185, 129, 0.22);
+  --badge-success-bg: rgba(16, 185, 129, 0.18);
   --badge-success-text: #6ee7b7;
-  --badge-success-border: rgba(16, 185, 129, 0.4);
+  --badge-success-border: rgba(16, 185, 129, 0.35);
 
-  --badge-warning-bg: rgba(245, 158, 11, 0.22);
+  --badge-warning-bg: rgba(245, 158, 11, 0.18);
   --badge-warning-text: #fcd34d;
-  --badge-warning-border: rgba(245, 158, 11, 0.4);
+  --badge-warning-border: rgba(245, 158, 11, 0.35);
 
-  --badge-danger-bg: rgba(239, 68, 68, 0.22);
+  --badge-danger-bg: rgba(239, 68, 68, 0.18);
   --badge-danger-text: #fca5a5;
-  --badge-danger-border: rgba(239, 68, 68, 0.4);
+  --badge-danger-border: rgba(239, 68, 68, 0.35);
 
-  --badge-info-bg: rgba(14, 165, 233, 0.22);
+  --badge-info-bg: rgba(14, 165, 233, 0.18);
   --badge-info-text: #7dd3fc;
-  --badge-info-border: rgba(14, 165, 233, 0.4);
+  --badge-info-border: rgba(14, 165, 233, 0.35);
 
   /* Form Inputs & Controls */
-  --input-bg: rgba(15, 23, 42, 0.85);
-  --input-border: rgba(255, 255, 255, 0.18);
+  --input-bg: #0d1522;
+  --input-border: #243247;
   --input-border-focus: #10b981;
   --input-text: #f8fafc;
   --input-placeholder: #64748b;
-  --input-focus-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+  --input-focus-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
 
   /* Tables */
-  --table-header-bg: rgba(30, 41, 59, 0.85);
-  --table-row-hover: rgba(16, 185, 129, 0.12);
-  --table-border: rgba(255, 255, 255, 0.12);
-  --table-text-head: #f1f5f9;
-  --table-text-body: #e2e8f0;
+  --table-header-bg: #162030;
+  --table-row-hover: #182436;
+  --table-border: #223147;
+  --table-text-head: #e2e8f0;
+  --table-text-body: #f8fafc;
 
   /* Sidebar & Topbar */
-  --sidebar-bg: rgba(11, 19, 25, 0.92);
-  --sidebar-border: rgba(255, 255, 255, 0.12);
-  --sidebar-item-hover: rgba(255, 255, 255, 0.08);
-  --sidebar-item-active: rgba(16, 185, 129, 0.22);
+  --sidebar-bg: #0d1522;
+  --sidebar-border: #1e293b;
+  --sidebar-item-hover: rgba(255, 255, 255, 0.05);
+  --sidebar-item-active: rgba(16, 185, 129, 0.18);
   --sidebar-text: #cbd5e1;
   --sidebar-text-active: #34d399;
 
@@ -86,33 +85,22 @@
   --chart-text: #94a3b8;
 }
 
-/* ── BASE & BOTANICAL BACKGROUND ── */
+/* ── BASE BACKGROUND ── */
 html {
-  background-color: var(--bg-canvas-color, #060d17);
+  background-color: var(--bg-canvas-color, #0b1320);
   color-scheme: dark;
 }
 
 body {
   background: var(--bg-canvas);
-  background-attachment: var(--bg-canvas-attachment);
-  background-color: var(--bg-canvas-color, #060d17);
+  background-color: var(--bg-canvas-color, #0b1320);
   color: var(--text-primary);
   min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: var(--bg-nature-image);
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  pointer-events: none;
-  z-index: -2;
-  filter: var(--leaf-filter);
-  opacity: var(--leaf-opacity);
+  display: none !important;
 }
 
 /* ── CARDS, SURFACES & CONTAINERS ── */
@@ -134,19 +122,17 @@ body::before {
 .budget-summary,
 .schedule-card {
   background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  border-radius: 16px;
+  border-radius: 12px;
   color: var(--text-primary);
 }
 
 /* Budget & Financial Cards */
 .budget-summary {
-  background: linear-gradient(135deg, rgba(6, 78, 59, 0.6), rgba(15, 23, 42, 0.85));
-  border: 1px solid rgba(52, 211, 153, 0.3);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  background: #111a28;
+  border: 1px solid #1e293b;
+  box-shadow: var(--glass-shadow);
 }
 .budget-summary-title {
   color: rgba(255, 255, 255, 0.8);
@@ -187,26 +173,40 @@ body::before {
 table {
   width: 100%;
   border-collapse: collapse;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 table thead th,
 .table-header-bg,
-#rapor-table th {
+#rapor-table th,
+.data-table th,
+.transactions-table th {
   background-color: var(--table-header-bg);
   color: var(--table-text-head);
-  border-bottom: 1px solid var(--table-border);
-  font-weight: 700;
-  padding: 0.75rem 1rem;
+  border-bottom: 2px solid var(--table-border);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 13px 16px;
+  text-align: left;
 }
 
 table tbody tr td,
-#rapor-table td {
+#rapor-table td,
+.data-table td,
+.transactions-table td {
   color: var(--table-text-body);
   border-bottom: 1px solid var(--table-border);
-  padding: 0.75rem 1rem;
+  padding: 13px 16px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  vertical-align: middle;
 }
 
-table tbody tr:hover td {
+table tbody tr:hover td,
+.data-table tbody tr:hover td,
+.transactions-table tbody tr:hover td {
   background-color: var(--table-row-hover);
 }
 
@@ -220,8 +220,10 @@ textarea,
   background: var(--input-bg);
   color: var(--input-text);
   border: 1px solid var(--input-border);
-  border-radius: 10px;
-  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  padding: 0.65rem 0.95rem;
+  font-family: inherit;
+  font-size: 13.5px;
 }
 
 input:focus,
@@ -243,15 +245,11 @@ option {
 .sidebar {
   background: var(--sidebar-bg);
   border-right: 1px solid var(--sidebar-border);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
 }
 
 .topbar {
   background: var(--sidebar-bg);
   border-bottom: 1px solid var(--sidebar-border);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -274,6 +272,7 @@ option {
 /* Schedule Card */
 .schedule-card {
   transition: transform 0.2s ease, border-color 0.2s ease;
+  border-radius: 12px;
 }
 .schedule-card:hover {
   border-color: var(--primary);
@@ -281,16 +280,17 @@ option {
 }
 .schedule-mapel {
   color: #f8fafc;
-  font-weight: 800;
+  font-weight: 700;
 }
 .schedule-meta {
   color: #94a3b8;
-  font-weight: 600;
+  font-weight: 500;
 }
 .time-badge {
-  background: rgba(16, 185, 129, 0.2);
+  background: rgba(16, 185, 129, 0.18);
   color: #6ee7b7;
-  border: 1px solid rgba(16, 185, 129, 0.4);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 6px;
 }
 
 /* Status Badges */
@@ -298,32 +298,48 @@ option {
   background: var(--badge-success-bg);
   color: var(--badge-success-text);
   border: 1px solid var(--badge-success-border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .badge-warning, .status-sakit, .status-izin, .status-pending {
   background: var(--badge-warning-bg);
   color: var(--badge-warning-text);
   border: 1px solid var(--badge-warning-border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .badge-danger, .status-alpa, .status-ditolak, .status-belum-lunas {
   background: var(--badge-danger-bg);
   color: var(--badge-danger-text);
   border: 1px solid var(--badge-danger-border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .badge-info, .status-proses {
   background: var(--badge-info-bg);
   color: var(--badge-info-text);
   border: 1px solid var(--badge-info-border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 /* Skeletons */
 .skeleton {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.15) 37%, rgba(255, 255, 255, 0.05) 63%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.12) 37%, rgba(255, 255, 255, 0.05) 63%);
   background-size: 400% 100%;
   animation: skeleton-shimmer 1.4s ease infinite;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 @keyframes skeleton-shimmer {
@@ -340,14 +356,12 @@ option {
 
 .skeleton-card {
   min-height: 100px;
-  border-radius: 16px;
+  border-radius: 12px;
 }
 
-/* Table Responsive */
+/* Table Responsive Container */
 .table-responsive, .table-container {
   width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
   border-radius: 12px;
 }
 
@@ -355,4 +369,161 @@ option {
 .theme-toggle-btn,
 #theme-toggle-btn {
   display: none !important;
+}
+
+/* =========================================================================
+   RESPONSIVE DATA TABLE TO CARD VIEW (< 768px MOBILE & TABLET)
+   Semua baris tabel berubah menjadi kartu vertikal tanpa horizontal scroll
+   ========================================================================= */
+@media (max-width: 768px) {
+  .table-responsive,
+  .table-container,
+  .overflow-x-auto,
+  .transactions-table-wrapper {
+    overflow-x: visible !important;
+  }
+
+  .data-table,
+  .transactions-table,
+  .responsive-table,
+  table.table,
+  table#table-rekap-siswa,
+  section#materi-lms table,
+  #panel-presensi table,
+  #panel-tugas table,
+  #sec-transactions table {
+    display: block !important;
+    width: 100% !important;
+    border: none !important;
+  }
+
+  .data-table thead,
+  .transactions-table thead,
+  .responsive-table thead,
+  table.table thead,
+  table#table-rekap-siswa thead,
+  section#materi-lms table thead,
+  #panel-presensi table thead,
+  #panel-tugas table thead,
+  #sec-transactions table thead {
+    display: none !important;
+  }
+
+  .data-table tbody,
+  .transactions-table tbody,
+  .responsive-table tbody,
+  table.table tbody,
+  table#table-rekap-siswa tbody,
+  section#materi-lms table tbody,
+  #panel-presensi table tbody,
+  #panel-tugas table tbody,
+  #sec-transactions table tbody {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  .data-table tbody tr,
+  .transactions-table tbody tr,
+  .responsive-table tbody tr,
+  table.table tbody tr,
+  table#table-rekap-siswa tbody tr,
+  section#materi-lms table tbody tr,
+  #panel-presensi table tbody tr,
+  #panel-tugas table tbody tr,
+  #sec-transactions table tbody tr {
+    display: block !important;
+    width: 100% !important;
+    background: #111a28 !important;
+    border: 1px solid #1e293b !important;
+    border-radius: 12px !important;
+    padding: 12px 14px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+    box-sizing: border-box !important;
+    margin-bottom: 0 !important;
+  }
+
+  .data-table tbody tr td,
+  .transactions-table tbody tr td,
+  .responsive-table tbody tr td,
+  table.table tbody tr td,
+  table#table-rekap-siswa tbody tr td,
+  section#materi-lms table tbody tr td,
+  #panel-presensi table tbody tr td,
+  #panel-tugas table tbody tr td,
+  #sec-transactions table tbody tr td {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 8px 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+    text-align: right !important;
+    font-size: 13px !important;
+    min-height: 36px !important;
+    white-space: normal !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Empty state or full width single row */
+  .data-table tbody tr td[colspan],
+  .transactions-table tbody tr td[colspan],
+  table.table tbody tr td[colspan] {
+    display: block !important;
+    text-align: center !important;
+    border-bottom: none !important;
+    padding: 16px 0 !important;
+  }
+
+  .data-table tbody tr td:last-child,
+  .transactions-table tbody tr td:last-child,
+  .responsive-table tbody tr td:last-child,
+  table.table tbody tr td:last-child,
+  section#materi-lms table tbody tr td:last-child {
+    border-bottom: none !important;
+    padding-top: 10px !important;
+    padding-bottom: 2px !important;
+    justify-content: stretch !important;
+  }
+
+  .data-table tbody tr td[data-label]::before,
+  .transactions-table tbody tr td[data-label]::before,
+  .responsive-table tbody tr td[data-label]::before,
+  table.table tbody tr td[data-label]::before,
+  section#materi-lms table tbody tr td[data-label]::before,
+  #panel-presensi table tbody tr td[data-label]::before,
+  #panel-tugas table tbody tr td[data-label]::before,
+  #sec-transactions table tbody tr td[data-label]::before {
+    content: attr(data-label);
+    font-weight: 600;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #94a3b8;
+    text-align: left;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Action buttons full-width touch friendly */
+  .data-table tbody tr td:last-child > div,
+  .transactions-table tbody tr td:last-child > div,
+  table.table tbody tr td:last-child > div,
+  section#materi-lms table tbody tr td:last-child > div {
+    width: 100% !important;
+    display: flex !important;
+    gap: 8px !important;
+    justify-content: stretch !important;
+  }
+
+  .data-table tbody tr td:last-child button,
+  .transactions-table tbody tr td:last-child button,
+  .data-table tbody tr td:last-child a,
+  table.table tbody tr td:last-child button,
+  section#materi-lms table tbody tr td:last-child button {
+    flex: 1 !important;
+    justify-content: center !important;
+    min-height: 40px !important;
+  }
 }

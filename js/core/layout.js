@@ -357,3 +357,60 @@ if (typeof document !== 'undefined' && !window.__mobile_toggle_bound) {
     }
   });
 }
+
+/**
+ * Automatically populates data-label attributes on table cells from thead th,
+ * enabling full-width card-view rendering on mobile without horizontal scroll.
+ */
+export function enhanceTablesForMobile(root = document) {
+  if (!root || !root.querySelectorAll) return;
+  const tables = root.querySelectorAll('table');
+  tables.forEach(table => {
+    const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
+    if (!headers.length) return;
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(tr => {
+      const cells = tr.querySelectorAll('td');
+      if (cells.length === 1 && cells[0].hasAttribute('colspan')) return;
+      cells.forEach((td, idx) => {
+        if (!td.hasAttribute('data-label') && headers[idx]) {
+          td.setAttribute('data-label', headers[idx]);
+        }
+      });
+    });
+  });
+}
+
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  window.enhanceTablesForMobile = enhanceTablesForMobile;
+
+  const setupTableObserver = () => {
+    if (!document.body) return;
+    enhanceTablesForMobile();
+    const observer = new MutationObserver((mutations) => {
+      let shouldRun = false;
+      for (const m of mutations) {
+        if (m.type === 'childList' && m.addedNodes.length > 0) {
+          for (const node of m.addedNodes) {
+            if (node.nodeType === 1 && (node.tagName === 'TR' || node.tagName === 'TBODY' || node.querySelector?.('table, tbody, tr'))) {
+              shouldRun = true;
+              break;
+            }
+          }
+        }
+        if (shouldRun) break;
+      }
+      if (shouldRun) {
+        enhanceTablesForMobile();
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupTableObserver);
+  } else {
+    setupTableObserver();
+  }
+}
+
