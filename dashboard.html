@@ -6,9 +6,13 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      document.documentElement.classList.add('dark');
-      try { localStorage.setItem('smpannida_theme', 'dark'); } catch(_) {}
+      var t = localStorage.getItem('smpannida_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      if (t === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
     })();
   </script>
   <meta charset="UTF-8">

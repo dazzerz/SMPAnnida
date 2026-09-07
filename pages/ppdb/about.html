@@ -6,9 +6,13 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      document.documentElement.classList.add('dark');
-      try { localStorage.setItem('smpannida_theme', 'dark'); } catch(_) {}
+      var t = localStorage.getItem('smpannida_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      if (t === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
     })();
   </script>
     <meta charset="UTF-8">
@@ -234,7 +238,7 @@
         <div class="container">
             <div class="logo">
                 <a href="index.html" class="logo-link">
-                    <img src="../../assets/logo/1.webp" alt="Logo Annida2PPDB" class="logo-icon">
+                    <img src="../../assets/logo/1.png" alt="Logo Annida2PPDB" class="logo-icon">
                     <span class="logo-text">Annida2PPDB</span>
                 </a>
             </div>

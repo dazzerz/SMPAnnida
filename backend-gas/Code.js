@@ -57,15 +57,6 @@ function doPost(e) {
 
     var data = JSON.parse(e.postData.contents);
 
-    // [Security Check] Opsi validasi shared token via Script Properties (jika dikonfigurasi)
-    var expectedToken = PropertiesService.getScriptProperties().getProperty("AUTH_TOKEN");
-    if (expectedToken && data.authToken !== expectedToken) {
-      return ContentService.createTextOutput(JSON.stringify({
-        status: "error",
-        message: "Akses ditolak: Token autentikasi tidak valid."
-      })).setMimeType(ContentService.MimeType.JSON);
-    }
-
     // =========================================================================
     // 0. GET HTML ACTION: Baca isi teks berkas HTML untuk Smart Viewer
     // =========================================================================
