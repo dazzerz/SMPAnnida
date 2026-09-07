@@ -73,10 +73,11 @@
   --table-text-body: #f8fafc;
 
   /* Sidebar & Topbar */
-  --sidebar-bg: #0d1522;
-  --sidebar-border: #1e293b;
-  --sidebar-item-hover: rgba(255, 255, 255, 0.05);
-  --sidebar-item-active: rgba(16, 185, 129, 0.18);
+  --sidebar-bg: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%);
+  --bg-sidebar: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%);
+  --sidebar-border: rgba(16, 185, 129, 0.18);
+  --sidebar-item-hover: rgba(16, 185, 129, 0.12);
+  --sidebar-item-active: rgba(16, 185, 129, 0.22);
   --sidebar-text: #cbd5e1;
   --sidebar-text-active: #34d399;
 
@@ -85,15 +86,20 @@
   --chart-text: #94a3b8;
 }
 
-/* ── BASE BACKGROUND ── */
+/* ── BASE BACKGROUND: Subtle Institutional Botanical Micro-Texture (4.5% Opacity) ── */
 html {
-  background-color: var(--bg-canvas-color, #0b1320);
+  background-color: #0b1320;
   color-scheme: dark;
 }
 
 body {
-  background: var(--bg-canvas);
-  background-color: var(--bg-canvas-color, #0b1320);
+  background-color: #0b1320;
+  background-image:
+    radial-gradient(circle at 10% 15%, rgba(16, 185, 129, 0.04) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(5, 150, 105, 0.035) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2310b981' stroke-width='0.7' stroke-opacity='0.045'%3E%3Cpath d='M32 8 C28 20 20 28 8 32 C20 36 28 44 32 56 C36 44 44 36 56 32 C44 28 36 20 32 8 Z'/%3E%3Ccircle cx='32' cy='32' r='2.5'/%3E%3Ccircle cx='0' cy='0' r='1.5'/%3E%3Ccircle cx='64' cy='0' r='1.5'/%3E%3Ccircle cx='0' cy='64' r='1.5'/%3E%3Ccircle cx='64' cy='64' r='1.5'/%3E%3Cpath d='M0 32 Q16 26 32 32 Q48 38 64 32' stroke-dasharray='2 3' stroke-opacity='0.03'/%3E%3Cpath d='M32 0 Q26 16 32 32 Q38 48 32 64' stroke-dasharray='2 3' stroke-opacity='0.03'/%3E%3C/g%3E%3C/svg%3E");
+  background-attachment: fixed;
+  background-repeat: repeat;
   color: var(--text-primary);
   min-height: 100vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -242,14 +248,41 @@ option {
 }
 
 /* Sidebar & Topbar */
-.sidebar {
-  background: var(--sidebar-bg);
-  border-right: 1px solid var(--sidebar-border);
+.sidebar,
+#student-sidebar {
+  background: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%) !important;
+  border-right: 1px solid rgba(16, 185, 129, 0.2) !important;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Subtle botanical signature watermark in bottom right of sidebar (18-20% opacity) */
+.sidebar::after,
+#student-sidebar::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 140px;
+  height: 140px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.20;
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: contain;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M95 95 C80 55 40 40 5 45 C25 75 60 88 95 95 Z' fill='%2310b981'/%3E%3Cpath d='M95 95 C85 70 65 60 40 64' stroke='%2334d399' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M75 76 C68 66 55 64 45 68' stroke='%2334d399' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M88 86 C78 74 60 72 52 78' stroke='%2334d399' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M95 95 C65 88 32 60 22 25 C52 30 82 60 95 95 Z' fill='%23059669' fill-opacity='0.65'/%3E%3Cpath d='M95 95 C75 80 55 50 48 30' stroke='%236ee7b7' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.sidebar > *,
+#student-sidebar > * {
+  position: relative;
+  z-index: 1;
 }
 
 .topbar {
-  background: var(--sidebar-bg);
-  border-bottom: 1px solid var(--sidebar-border);
+  background: #081a16 !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.15) !important;
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -257,15 +290,16 @@ option {
 }
 
 .sidebar .nav-item {
-  color: var(--sidebar-text);
+  color: #cbd5e1;
+  transition: all 0.2s ease;
 }
 .sidebar .nav-item:hover {
-  background: var(--sidebar-item-hover);
+  background: rgba(16, 185, 129, 0.12);
   color: #ffffff;
 }
 .sidebar .nav-item.active {
-  background: var(--sidebar-item-active);
-  color: var(--sidebar-text-active);
+  background: rgba(16, 185, 129, 0.22);
+  color: #34d399;
   font-weight: 700;
 }
 
