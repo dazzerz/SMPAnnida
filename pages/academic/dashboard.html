@@ -953,7 +953,7 @@
                     <!-- Table Daftar Materi Guru -->
                     <div class="card glass aca-inline-20">
                         <div class="table-container">
-                            <table class="data-table w-full text-left whitespace-nowrap">
+                            <table class="data-table w-full text-left">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -2181,14 +2181,40 @@ Pembahasan: Tawadhu artinya rendah hati..."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Unggah Berkas Materi (PDF, Foto, HTML)</label>
-                    <input type="file" id="material-file-upload" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,image/*,.html" class="input-control text-xs mb-2">
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Atau Masukkan Tautan Video / Google Drive</label>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">Sumber Materi</label>
+                    <div class="grid grid-cols-2 gap-2 p-1 bg-slate-900/80 border border-slate-700/60 rounded-lg">
+                        <label class="flex items-center justify-center gap-2 p-2 rounded-md cursor-pointer text-xs font-medium text-gray-300 hover:text-white transition-colors has-[:checked]:bg-emerald-600 has-[:checked]:text-white has-[:checked]:font-semibold">
+                            <input type="radio" name="material-source-type" id="source-type-upload" value="upload" checked class="hidden">
+                            <span class="material-symbols-outlined text-base">upload_file</span>
+                            <span>Unggah Berkas</span>
+                        </label>
+                        <label class="flex items-center justify-center gap-2 p-2 rounded-md cursor-pointer text-xs font-medium text-gray-300 hover:text-white transition-colors has-[:checked]:bg-emerald-600 has-[:checked]:text-white has-[:checked]:font-semibold">
+                            <input type="radio" name="material-source-type" id="source-type-url" value="url" class="hidden">
+                            <span class="material-symbols-outlined text-base">link</span>
+                            <span>Masukkan Tautan</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Container Unggah Berkas -->
+                <div id="container-material-upload" class="form-group">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Pilih Berkas Materi</label>
+                    <input type="file" id="material-file-upload" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,image/*,.html" class="input-control text-xs">
+                    <p class="text-[11px] text-gray-400 mt-1.5 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm text-emerald-400">info</span>
+                        <span>Maksimal ukuran berkas: 10 MB (PDF, Foto, atau Dokumen)</span>
+                    </p>
+                </div>
+
+                <!-- Container Masukkan Tautan -->
+                <div id="container-material-url" class="form-group hidden">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Tautan Video / Dokumen Online</label>
                     <input type="text" id="material-url-input" class="input-control text-xs" placeholder="https://www.youtube.com/watch?v=... atau link dokumen">
+                    <p class="text-[11px] text-gray-400 mt-1.5">Mendukung tautan YouTube, Google Drive publik, atau URL dokumen eksternal.</p>
                 </div>
 
                 <div class="form-group">
-                    <label class="block text-xs font-semibold text-gray-300 mb-1">Deskripsi / Rangkuman Teori</label>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Catatan untuk Siswa (opsional)</label>
                     <textarea id="material-description" class="input-control text-xs" rows="3" placeholder="Tuliskan petunjuk belajar atau rangkuman materi singkat..."></textarea>
                 </div>
 

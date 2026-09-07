@@ -147,17 +147,17 @@ function renderMaterialsTable(list) {
 
         return `
             <tr>
-                <td>${idx + 1}</td>
-                <td>
+                <td data-label="No">${idx + 1}</td>
+                <td data-label="Materi">
                     <div class="font-bold text-white">${escapeHTML(m.title)}</div>
                     <div class="text-xs text-gray-400 truncate max-w-xs">${escapeHTML(m.description || '-')}</div>
                     <div class="text-[10px] text-gray-500 mt-1">Oleh: ${escapeHTML(m.teacher_name || 'Admin')}</div>
                 </td>
-                <td><span class="badge badge-primary">${escapeHTML(m.class_name)}</span></td>
-                <td>${escapeHTML(m.subject)}</td>
-                <td>${typeBadge}</td>
-                <td><span class="text-xs text-gray-400">${createdDate}</span></td>
-                <td>
+                <td data-label="Kelas"><span class="badge badge-primary">${escapeHTML(m.class_name)}</span></td>
+                <td data-label="Mata Pelajaran">${escapeHTML(m.subject)}</td>
+                <td data-label="Format">${typeBadge}</td>
+                <td data-label="Dibuat"><span class="text-xs text-gray-400">${createdDate}</span></td>
+                <td data-label="Aksi">
                     <div class="flex items-center gap-1.5">
                         <button class="btn-preview-materi btn-sm btn-primary flex items-center gap-1" data-url="${escapeHTML(m.material_url)}" data-title="${escapeHTML(m.title)}" data-subtitle="${m.subject} • Kelas ${m.class_name}" data-type="${mType}" title="Buka Materi di Web">
                             <span class="material-symbols-outlined text-xs">visibility</span>
@@ -221,6 +221,23 @@ function renderMaterialsTable(list) {
     });
 }
 
+function setMaterialSourceType(type) {
+    const uploadRadio = document.getElementById('source-type-upload');
+    const urlRadio = document.getElementById('source-type-url');
+    const uploadContainer = document.getElementById('container-material-upload');
+    const urlContainer = document.getElementById('container-material-url');
+
+    if (type === 'url') {
+        if (urlRadio) urlRadio.checked = true;
+        if (uploadContainer) uploadContainer.classList.add('hidden');
+        if (urlContainer) urlContainer.classList.remove('hidden');
+    } else {
+        if (uploadRadio) uploadRadio.checked = true;
+        if (uploadContainer) uploadContainer.classList.remove('hidden');
+        if (urlContainer) urlContainer.classList.add('hidden');
+    }
+}
+
 function openMaterialFormModal(item = null) {
     const modal = document.getElementById('modal-form-materi');
     if (!modal) return;
@@ -270,10 +287,12 @@ function openMaterialFormModal(item = null) {
         document.getElementById('material-url-input').value = item.material_url || '';
         document.getElementById('material-description').value = item.description || '';
         if (saveBtnText) saveBtnText.textContent = 'Simpan Perubahan';
+        setMaterialSourceType('url');
     } else {
         titleEl.textContent = 'Tambah Materi Pembelajaran';
         document.getElementById('material-id').value = '';
         if (saveBtnText) saveBtnText.textContent = 'Simpan Materi';
+        setMaterialSourceType('upload');
     }
 
     modal.style.display = 'flex';
@@ -290,6 +309,31 @@ function initMateriEventListeners() {
     const filterSub = document.getElementById('filter-materi-subject');
     const filterTchInput = document.getElementById('filter-materi-teacher');
     const searchInput = document.getElementById('search-materi-query');
+
+    const sourceUploadRadio = document.getElementById('source-type-upload');
+    const sourceUrlRadio = document.getElementById('source-type-url');
+    const fileUploadEl = document.getElementById('material-file-upload');
+
+    if (sourceUploadRadio) {
+        sourceUploadRadio.addEventListener('change', () => setMaterialSourceType('upload'));
+    }
+    if (sourceUrlRadio) {
+        sourceUrlRadio.addEventListener('change', () => setMaterialSourceType('url'));
+    }
+
+    // Client-side file size validation (Problem 4: 10MB limit)
+    if (fileUploadEl) {
+        fileUploadEl.addEventListener('change', () => {
+            const file = fileUploadEl.files?.[0];
+            if (file) {
+                const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
+                if (file.size > MAX_SIZE) {
+                    showToast('Ukuran berkas melebihi batas maksimal 10 MB. Silakan kompres atau pilih berkas lain.', 'error');
+                    fileUploadEl.value = '';
+                }
+            }
+        });
+    }
 
     if (btnCreate) btnCreate.onclick = () => {
         if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
@@ -320,6 +364,23 @@ function initMateriEventListeners() {
             const description = document.getElementById('material-description').value.trim();
             const fileUpload = document.getElementById('material-file-upload')?.files?.[0];
             const saveBtnText = document.getElementById('btn-save-material-text');
+            const sourceType = document.querySelector('input[name="material-source-type"]:checked')?.value || 'upload';
+
+            // Validate source selection
+            if (sourceType === 'upload') {
+                if (fileUpload) {
+                    const MAX_SIZE = 10 * 1024 * 1024;
+                    if (fileUpload.size > MAX_SIZE) {
+                        return showToast('Ukuran berkas melebihi batas maksimal 10 MB. Silakan kompres atau pilih berkas lain.', 'error');
+                    }
+                } else if (!id && !materialUrl) {
+                    return showToast('Silakan pilih berkas materi yang ingin diunggah.', 'warning');
+                }
+            } else {
+                if (!materialUrl) {
+                    return showToast('Silakan masukkan tautan materi pembelajaran.', 'warning');
+                }
+            }
 
             const { data: { user } } = await db.auth.getUser();
             const teacherName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Guru Annida';
@@ -328,7 +389,7 @@ function initMateriEventListeners() {
 
             try {
                 // Handle file upload if provided (Strict Google Drive Only - Supabase Storage upload is forbidden)
-                if (fileUpload) {
+                if (sourceType === 'upload' && fileUpload) {
                     const ext = fileUpload.name.split('.').pop().toLowerCase();
                     if (ext === 'html' || ext === 'htm') materialType = 'html';
                     else if (ext === 'pdf') materialType = 'pdf';

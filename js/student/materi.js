@@ -70,7 +70,7 @@ function renderStudentMaterials(list) {
 
     if (filtered.length === 0) {
         feed.innerHTML = `
-            <div class="p-8 rounded-2xl bg-white/5 border border-white/10 text-center col-span-full">
+            <div class="p-8 rounded-xl bg-slate-900 border border-slate-800 text-center col-span-full">
                 <span class="material-symbols-outlined text-4xl text-gray-500 mb-2">menu_book</span>
                 <div class="text-sm font-semibold text-gray-300">Belum ada materi pembelajaran</div>
                 <p class="text-xs text-gray-500 mt-1">Materi digital (Video YouTube, PDF, dan Simulasi) dari guru akan tampil di sini.</p>
@@ -99,7 +99,7 @@ function renderStudentMaterials(list) {
         }
 
         return `
-            <div class="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-emerald-500/30 transition-all flex flex-col justify-between">
+            <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/40 transition-all flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between gap-2 mb-3">
                         <span class="px-2.5 py-0.5 rounded-lg text-[0.7rem] font-bold bg-white/10 text-gray-300">${escapeHTML(m.subject)}</span>
