@@ -87,11 +87,23 @@
     }
     
     .glass-panel-custom {
-      background: var(--glass-bg, rgba(16, 26, 20, 0.35));
+      background: var(--glass-bg, rgba(15, 23, 42, 0.75));
       backdrop-filter: var(--glass-blur, blur(12px));
       -webkit-backdrop-filter: var(--glass-blur, blur(12px));
       border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
-      box-shadow: var(--glass-shadow, 0 8px 32px rgba(0, 0, 0, 0.3));
+      box-shadow: var(--glass-shadow, 0 8px 32px rgba(0, 0, 0, 0.35));
+    }
+    .surface-card {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .surface-card:hover {
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+    .bg-islamic-pattern {
+      background-image: radial-gradient(rgba(16, 185, 129, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
     }
     
     .faq-answer {
@@ -311,22 +323,31 @@
           Pendidikan yang mengembangkan kemampuan akademik, karakter, kemandirian, dan potensi setiap peserta didik melalui pembiasaan akhlak islami, Sekolah Alam terpadu, dan bimbingan Tahfidz Al-Qur'an.
         </p>
         
-        <!-- CTA & Neon Glow -->
+        <!-- CTA & Primary Actions -->
         <div class="flex flex-wrap justify-center gap-4 mb-10">
-          <a class="neon-glow-btn bg-primary text-white font-bold px-8 py-4 rounded-lg flex items-center gap-2 hover:bg-primary-dim" href="register.html">
-            🟢 Daftar Sekarang
-            <span class="material-symbols-outlined">arrow_forward</span>
+          <a class="bg-primary hover:bg-primary-dim text-white font-bold px-8 py-3.5 rounded-xl shadow-[0_4px_20px_rgba(16,185,129,0.35)] flex items-center gap-2 transition-all transform hover:-translate-y-0.5 text-base" href="register.html">
+            <span>Daftar Santri Baru Sekarang</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
-          <a class="border border-white/30 text-white font-bold px-8 py-4 rounded-lg hover:bg-white/10 transition-all flex items-center gap-2" href="#program">
-            Lihat Program
+          <a class="border border-white/20 bg-white/10 hover:bg-white/15 text-white font-semibold px-8 py-3.5 rounded-xl transition-all flex items-center gap-2 text-base" href="#program">
+            <span>Pilihan Program Pendidikan</span>
           </a>
         </div>
         
-        <!-- Checklist Horizontal -->
-        <div class="flex flex-wrap justify-center gap-6 md:gap-10 text-gray-200 text-sm md:text-base font-semibold">
-          <span class="flex items-center gap-1">✓ Pendaftaran Online</span>
-          <span class="flex items-center gap-1">✓ Proses Mudah</span>
-          <span class="flex items-center gap-1">✓ Informasi Transparan</span>
+        <!-- Key Value Points -->
+        <div class="flex flex-wrap justify-center gap-6 md:gap-10 text-slate-300 text-sm md:text-base font-semibold">
+          <span class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-emerald-400 text-sm">check_circle</span>
+            <span>Registrasi Online Mandiri</span>
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-emerald-400 text-sm">check_circle</span>
+            <span>Tahfidz Bersanad Intensif</span>
+          </span>
+          <span class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-emerald-400 text-sm">check_circle</span>
+            <span>Transparansi Biaya Pendidikan</span>
+          </span>
         </div>
       </div>
     </section>
@@ -375,51 +396,71 @@
     </section>
 
     <!-- ═══════════════════════════════════════════ -->
-    <!-- 2. QUICK INFO & TRUST (Floating bar + Trust Grid) -->
+    <!-- 2. QUICK INFO & RESMI INSTITUSI (Institutional Credentials) -->
     <!-- ═══════════════════════════════════════════ -->
-    <section class="px-6 lg:px-0 -mt-10 mb-24 relative z-20">
+    <section class="px-6 lg:px-0 -mt-10 mb-20 relative z-20">
       <div class="max-w-7xl mx-auto">
         <!-- Floating Info Bar -->
-        <div class="glass-panel-custom rounded-2xl grid grid-cols-2 md:grid-cols-4 gap-6 p-6 mb-12 text-center border border-white/10">
+        <div class="surface-card rounded-2xl grid grid-cols-2 md:grid-cols-4 gap-6 p-6 mb-8 text-center border border-white/10">
           <div class="flex flex-col items-center justify-center p-2">
             <span class="material-symbols-outlined text-emerald-400 text-3xl mb-1">calendar_month</span>
-            <span class="text-xs text-gray-400 font-semibold uppercase">PPDB AJARAN</span>
+            <span class="text-xs text-slate-400 font-semibold uppercase">Tahun Ajaran</span>
             <span class="text-base md:text-lg font-bold text-white mt-1">2027 / 2028</span>
           </div>
           <div class="flex flex-col items-center justify-center p-2 border-l border-white/10">
             <span class="material-symbols-outlined text-emerald-400 text-3xl mb-1">school</span>
-            <span class="text-xs text-gray-400 font-semibold uppercase">JENJANG</span>
+            <span class="text-xs text-slate-400 font-semibold uppercase">Jenjang Resmi</span>
             <span class="text-base md:text-lg font-bold text-white mt-1">SMP (Sekolah Menengah)</span>
           </div>
           <div class="flex flex-col items-center justify-center p-2 border-l border-white/10">
             <span class="material-symbols-outlined text-emerald-400 text-3xl mb-1">payments</span>
-            <span class="text-xs text-gray-400 font-semibold uppercase">BIAYA MASUK</span>
+            <span class="text-xs text-slate-400 font-semibold uppercase">Biaya Masuk</span>
             <span class="text-base md:text-lg font-bold text-white mt-1">Mulai Rp 3,25 Juta</span>
           </div>
           <div class="flex flex-col items-center justify-center p-2 border-l border-white/10">
             <span class="material-symbols-outlined text-emerald-400 text-3xl mb-1">location_on</span>
-            <span class="text-xs text-gray-400 font-semibold uppercase">LOKASI</span>
-            <span class="text-base md:text-lg font-bold text-white mt-1">Bekasi, Indonesia</span>
+            <span class="text-xs text-slate-400 font-semibold uppercase">Wilayah Kampus</span>
+            <span class="text-base md:text-lg font-bold text-white mt-1">Setu, Bekasi</span>
           </div>
         </div>
 
-        <!-- Trust Grid -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-          <div class="glass-panel-custom rounded-2xl p-6 border border-white/5">
-            <div class="text-4xl font-extrabold text-emerald-400">91+</div>
-            <div class="text-sm text-gray-300 font-medium mt-1">Siswa Aktif</div>
+        <!-- Official Institutional Credentials (Replacing generic stats) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="surface-card rounded-xl p-5 border border-white/10 flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+              <span class="material-symbols-outlined text-xl">verified</span>
+            </div>
+            <div>
+              <span class="text-xs text-slate-400 block">Status Kurikulum</span>
+              <strong class="text-white text-sm">Kurikulum Merdeka</strong>
+            </div>
           </div>
-          <div class="glass-panel-custom rounded-2xl p-6 border border-white/5">
-            <div class="text-4xl font-extrabold text-emerald-400">15+</div>
-            <div class="text-sm text-gray-300 font-medium mt-1">Tenaga Pendidik</div>
+          <div class="surface-card rounded-xl p-5 border border-white/10 flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+              <span class="material-symbols-outlined text-xl">auto_stories</span>
+            </div>
+            <div>
+              <span class="text-xs text-slate-400 block">Target Hafalan</span>
+              <strong class="text-white text-sm">3 - 5 Juz Mutqin</strong>
+            </div>
           </div>
-          <div class="glass-panel-custom rounded-2xl p-6 border border-white/5">
-            <div class="text-4xl font-extrabold text-emerald-400">8+</div>
-            <div class="text-sm text-gray-300 font-medium mt-1">Program Unggulan</div>
+          <div class="surface-card rounded-xl p-5 border border-white/10 flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+              <span class="material-symbols-outlined text-xl">groups</span>
+            </div>
+            <div>
+              <span class="text-xs text-slate-400 block">Rasio Kelas Ideal</span>
+              <strong class="text-white text-sm">1 Guru : 12 Santri</strong>
+            </div>
           </div>
-          <div class="glass-panel-custom rounded-2xl p-6 border border-white/5">
-            <div class="text-4xl font-extrabold text-emerald-400">5+</div>
-            <div class="text-sm text-gray-300 font-medium mt-1">Tahun Pengalaman</div>
+          <div class="surface-card rounded-xl p-5 border border-white/10 flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+              <span class="material-symbols-outlined text-xl">apartment</span>
+            </div>
+            <div>
+              <span class="text-xs text-slate-400 block">Lingkungan Belajar</span>
+              <strong class="text-white text-sm">Sekolah Alam Asri</strong>
+            </div>
           </div>
         </div>
       </div>
@@ -437,62 +478,62 @@
 
         <!-- 6 Keunggulan Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
-          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+          <div class="surface-card rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
             <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">menu_book</span>
             <h3 class="text-lg font-bold text-white mb-2">Pendidikan Akademik</h3>
-            <p class="text-sm text-gray-300">Mengintegrasikan kurikulum nasional dengan materi sains, sosial, dan nalar berpikir logis yang mendalam.</p>
+            <p class="text-sm text-slate-300">Mengintegrasikan kurikulum nasional dengan materi sains, sosial, dan nalar berpikir logis yang mendalam.</p>
           </div>
-          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+          <div class="surface-card rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
             <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">favorite</span>
             <h3 class="text-lg font-bold text-white mb-2">Pendidikan Karakter</h3>
-            <p class="text-sm text-gray-300">Penanaman adab islami harian, integritas kejujuran, dan pembiasaan shalat berjamaah serta dhuha.</p>
+            <p class="text-sm text-slate-300">Penanaman adab islami harian, integritas kejujuran, dan pembiasaan shalat berjamaah serta dhuha.</p>
           </div>
-          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+          <div class="surface-card rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
             <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">groups</span>
             <h3 class="text-lg font-bold text-white mb-2">Pendampingan Guru</h3>
-            <p class="text-sm text-gray-300">Bimbingan penuh perhatian dari asatidzah berdedikasi tinggi yang bertindak sebagai mentor dan sahabat siswa.</p>
+            <p class="text-sm text-slate-300">Bimbingan penuh perhatian dari asatidzah berdedikasi tinggi yang bertindak sebagai mentor dan sahabat siswa.</p>
           </div>
-          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+          <div class="surface-card rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
             <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">computer</span>
             <h3 class="text-lg font-bold text-white mb-2">Literasi Digital</h3>
-            <p class="text-sm text-gray-300">Penguasaan perangkat teknologi secara bijak untuk riset ilmiah, kolaborasi online, dan produktivitas kreatif.</p>
+            <p class="text-sm text-slate-300">Penguasaan perangkat teknologi secara bijak untuk riset ilmiah, kolaborasi online, dan produktivitas kreatif.</p>
           </div>
-          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+          <div class="surface-card rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
             <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">military_tech</span>
             <h3 class="text-lg font-bold text-white mb-2">Pengembangan Potensi</h3>
-            <p class="text-sm text-gray-300">Eksplorasi bakat siswa melalui beragam ekstrakurikuler kepemimpinan, kewirausahaan, dan olahraga.</p>
+            <p class="text-sm text-slate-300">Eksplorasi bakat siswa melalui beragam ekstrakurikuler kepemimpinan, kewirausahaan, dan olahraga.</p>
           </div>
-          <div class="glass-panel-custom rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
+          <div class="surface-card rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300">
             <span class="material-symbols-outlined text-4xl text-emerald-400 mb-4 block">nature_people</span>
             <h3 class="text-lg font-bold text-white mb-2">Lingkungan Positif</h3>
-            <p class="text-sm text-gray-300">Suasana belajar yang asri dan aman berbasis konsep Sekolah Alam, jauh dari kebisingan kota dan polusi.</p>
+            <p class="text-sm text-slate-300">Suasana belajar yang asri dan aman berbasis konsep Sekolah Alam, jauh dari kebisingan kota dan polusi.</p>
           </div>
         </div>
 
         <!-- Program Cards -->
         <div class="text-center mb-10" id="program">
           <h2 class="font-headline-lg text-3xl text-primary mb-3">Pilihan Program Pendidikan</h2>
-          <p class="text-gray-200">Sesuaikan metode belajar yang paling tepat untuk pertumbuhan optimal putra-putri Anda.</p>
+          <p class="text-slate-300">Sesuaikan metode belajar yang paling tepat untuk pertumbuhan optimal putra-putri Anda.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          <div class="glass-panel-custom rounded-2xl p-8 border border-white/10 hover:shadow-2xl transition-all">
+          <div class="surface-card rounded-2xl p-8 border border-white/10 hover:shadow-2xl transition-all">
             <span class="material-symbols-outlined text-5xl text-emerald-400 mb-4">school</span>
             <h3 class="text-xl font-bold text-white mb-3">Program Reguler (Non-Pondok)</h3>
-            <p class="text-gray-300 text-sm leading-relaxed mb-6">
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
               Program sekolah formal reguler harian yang memadukan kelas inklusif akademik dengan eksplorasi alam terbuka, mentoring agama, dan kepemimpinan. Sangat cocok untuk siswa yang berdomisili di sekitar Bekasi dan pulang setiap sore.
             </p>
-            <a href="register.html" class="inline-block bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold py-2.5 px-6 rounded-lg text-sm transition-all">Pilih Reguler</a>
+            <a href="register.html" class="inline-block bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold py-2.5 px-6 rounded-xl text-sm transition-all">Pilih Program Reguler</a>
           </div>
 
-          <div class="glass-panel-custom rounded-2xl p-8 border border-white/10 hover:shadow-2xl transition-all relative overflow-hidden">
+          <div class="surface-card rounded-2xl p-8 border border-emerald-500/40 hover:shadow-2xl transition-all relative overflow-hidden">
             <div class="absolute top-0 right-0 bg-primary text-white text-xs font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">Favorit</div>
             <span class="material-symbols-outlined text-5xl text-emerald-400 mb-4">home_work</span>
             <h3 class="text-xl font-bold text-white mb-3">Program Pondok (Boarding School)</h3>
-            <p class="text-gray-300 text-sm leading-relaxed mb-6">
-              Sistem asrama terpadu yang memadukan kurikulum pendidikan umum dengan program hafalan Al-Qur'an (Tahfidz) intensif, pembinaan akhlak mulia 24 jam, penguasaan bahasa Arab & Inggris harian, serta ibadah berjamaah mandiri.
+            <p class="text-slate-300 text-sm leading-relaxed mb-6">
+              Sistem asrama terpadu yang memadukan kurikulum pendidikan umum dengan program hafalan Al-Qur'an (Tahfidz) intensif, pembinaan akhlak mulia 24 jam, penguasaan bahasa Arab &amp; Inggris harian, serta ibadah berjamaah mandiri.
             </p>
-            <a href="register.html" class="inline-block bg-primary hover:bg-primary-dim text-white font-bold py-2.5 px-6 rounded-lg text-sm transition-all">Pilih Pondok</a>
+            <a href="register.html" class="inline-block bg-primary hover:bg-primary-dim text-white font-bold py-2.5 px-6 rounded-xl text-sm transition-all shadow-sm">Pilih Program Pondok</a>
           </div>
         </div>
       </div>
@@ -805,12 +846,14 @@
               </div>
             </div>
             
-            <div class="border-t border-slate-200 dark:border-white/10 pt-6 mt-8 flex gap-4">
-              <a href="https://wa.me/6281289575462" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-lg text-sm flex items-center gap-1.5 transition-all shadow-md">
-                💬 Chat WhatsApp
+            <div class="border-t border-slate-200 dark:border-white/10 pt-6 mt-8 flex flex-wrap gap-3">
+              <a href="https://wa.me/6281289575462" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-5 rounded-xl text-sm flex items-center gap-2 transition-all shadow-md">
+                <span class="material-symbols-outlined text-base">chat</span>
+                <span>Chat WhatsApp</span>
               </a>
-              <a href="tel:+6281289575462" class="bg-white/50 dark:bg-white/10 hover:bg-white/80 dark:hover:bg-white/20 border border-slate-300 dark:border-white/20 text-slate-800 dark:text-white font-bold py-2.5 px-6 rounded-lg text-sm transition-all">
-                Hubungi Panitia
+              <a href="tel:+6281289575462" class="bg-white/50 dark:bg-white/10 hover:bg-white/80 dark:hover:bg-white/20 border border-slate-300 dark:border-white/20 text-slate-800 dark:text-white font-bold py-2.5 px-5 rounded-xl text-sm transition-all flex items-center gap-2">
+                <span class="material-symbols-outlined text-base">phone</span>
+                <span>Hubungi Panitia</span>
               </a>
             </div>
           </div>
@@ -818,17 +861,19 @@
           <!-- Maps Facade Container (Zero Blocked Resources, Fast LCP) -->
           <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 h-[400px] lg:h-auto min-h-[350px] relative bg-slate-900 flex flex-col items-center justify-center text-center p-6" id="ppdb-map-container">
             <div class="z-10 flex flex-col items-center max-w-sm">
-              <div class="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary text-2xl mb-4 border border-primary/40 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-                📍
+              <div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center text-primary mb-3 border border-primary/40 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                <span class="material-symbols-outlined text-2xl">pin_drop</span>
               </div>
               <h4 class="text-xl font-bold text-white mb-2">Kampus SMP Annida</h4>
               <p class="text-gray-300 text-xs mb-5 leading-relaxed">Gg. Al-Ikhlas No.47, Cibening, Setu, Bekasi, Jawa Barat 17320</p>
               <div class="flex flex-wrap gap-2 justify-center">
-                <button id="btn-load-ppdb-map" type="button" class="bg-primary hover:bg-primary-dim text-white font-bold py-2 px-5 rounded-lg text-xs transition-all shadow-md flex items-center gap-1.5 cursor-pointer">
-                  🗺️ Tampilkan Peta Interaktif
+                <button id="btn-load-ppdb-map" type="button" class="bg-primary hover:bg-primary-dim text-white font-bold py-2 px-4 rounded-xl text-xs transition-all shadow-md flex items-center gap-1.5 cursor-pointer">
+                  <span class="material-symbols-outlined text-sm">map</span>
+                  <span>Tampilkan Peta Interaktif</span>
                 </button>
-                <a href="https://maps.google.com/maps?q=Pondok%20Pesantren%20Annida%20Al%20Islamy%202%20Setu%20Bekasi" target="_blank" rel="noopener noreferrer" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold py-2 px-4 rounded-lg text-xs transition-all flex items-center gap-1">
-                  Buka di Google Maps ↗
+                <a href="https://maps.google.com/maps?q=Pondok%20Pesantren%20Annida%20Al%20Islamy%202%20Setu%20Bekasi" target="_blank" rel="noopener noreferrer" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all flex items-center gap-1">
+                  <span>Buka di Google Maps</span>
+                  <span class="material-symbols-outlined text-xs">open_in_new</span>
                 </a>
               </div>
             </div>
