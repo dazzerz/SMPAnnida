@@ -113,7 +113,7 @@
               <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Pendaftar</p>
               <h3 class="text-2xl font-bold text-white mt-1" id="kpi-total">0</h3>
             </div>
-            <span class="text-xl">👥</span>
+            <span class="material-symbols-outlined text-emerald-400 text-2xl">groups</span>
           </div>
         </div>
 
@@ -124,7 +124,7 @@
               <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Menunggu</p>
               <h3 class="text-2xl font-bold text-white mt-1" id="kpi-verif">0</h3>
             </div>
-            <span class="text-xl">⏳</span>
+            <span class="material-symbols-outlined text-amber-400 text-2xl">hourglass_top</span>
           </div>
         </div>
 
@@ -135,7 +135,7 @@
               <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pemetaan Tahfidz</p>
               <h3 class="text-2xl font-bold text-white mt-1" id="kpi-seleksi">0</h3>
             </div>
-            <span class="text-xl">📝</span>
+            <span class="material-symbols-outlined text-purple-400 text-2xl">assignment</span>
           </div>
         </div>
 
@@ -146,7 +146,7 @@
               <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Lulus</p>
               <h3 class="text-2xl font-bold text-white mt-1" id="kpi-lulus">0</h3>
             </div>
-            <span class="text-xl">🎓</span>
+            <span class="material-symbols-outlined text-blue-400 text-2xl">school</span>
           </div>
         </div>
 
@@ -158,7 +158,7 @@
               <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Perlu Revisi</p>
               <h3 class="text-2xl font-bold text-white mt-1" id="kpi-revisi">0</h3>
             </div>
-            <span class="text-xl">⚠️</span>
+            <span class="material-symbols-outlined text-rose-400 text-2xl">warning</span>
           </div>
         </div>
 
@@ -311,11 +311,11 @@
               <div class="glass-card rounded-xl p-4 border border-white/10 space-y-3">
                 <div class="flex justify-between items-center">
                   <span class="text-xs font-bold text-slate-300">1. Kartu Keluarga (KK)</span>
-                  <a href="#" target="_blank" id="doc-kk-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">🔗 Pratinjau KK</a>
+                  <a href="#" target="_blank" id="doc-kk-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">Pratinjau KK</a>
                 </div>
                 <div class="flex gap-2">
-                  <button type="button" onclick="setDocStatus('kartu_keluarga', 'approved')" id="btn-kartu_keluarga-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">✓ Setujui</button>
-                  <button type="button" onclick="setDocStatus('kartu_keluarga', 'rejected')" id="btn-kartu_keluarga-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">✗ Tolak/Revisi</button>
+                  <button type="button" onclick="setDocStatus('kartu_keluarga', 'approved')" id="btn-kartu_keluarga-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">Setujui</button>
+                  <button type="button" onclick="setDocStatus('kartu_keluarga', 'rejected')" id="btn-kartu_keluarga-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">Tolak / Revisi</button>
                 </div>
                 <input type="text" id="note-kartu_keluarga" placeholder="Catatan revisi Kartu Keluarga..." class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-300 hidden">
               </div>
@@ -324,11 +324,11 @@
               <div class="glass-card rounded-xl p-4 border border-white/10 space-y-3">
                 <div class="flex justify-between items-center">
                   <span class="text-xs font-bold text-slate-300">2. Akta Kelahiran</span>
-                  <a href="#" target="_blank" id="doc-akta-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">🔗 Pratinjau Akta</a>
+                  <a href="#" target="_blank" id="doc-akta-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">Pratinjau Akta</a>
                 </div>
                 <div class="flex gap-2">
-                  <button type="button" onclick="setDocStatus('akta_kelahiran', 'approved')" id="btn-akta_kelahiran-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">✓ Setujui</button>
-                  <button type="button" onclick="setDocStatus('akta_kelahiran', 'rejected')" id="btn-akta_kelahiran-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">✗ Tolak/Revisi</button>
+                  <button type="button" onclick="setDocStatus('akta_kelahiran', 'approved')" id="btn-akta_kelahiran-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">Setujui</button>
+                  <button type="button" onclick="setDocStatus('akta_kelahiran', 'rejected')" id="btn-akta_kelahiran-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">Tolak / Revisi</button>
                 </div>
                 <input type="text" id="note-akta_kelahiran" placeholder="Catatan revisi Akta Kelahiran..." class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-300 hidden">
               </div>
@@ -337,11 +337,11 @@
               <div class="glass-card rounded-xl p-4 border border-white/10 space-y-3">
                 <div class="flex justify-between items-center">
                   <span class="text-xs font-bold text-slate-300">3. Ijazah / SKL</span>
-                  <a href="#" target="_blank" id="doc-ijazah-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">🔗 Pratinjau SKL</a>
+                  <a href="#" target="_blank" id="doc-ijazah-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">Pratinjau SKL</a>
                 </div>
                 <div class="flex gap-2">
-                  <button type="button" onclick="setDocStatus('ijazah', 'approved')" id="btn-ijazah-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">✓ Setujui</button>
-                  <button type="button" onclick="setDocStatus('ijazah', 'rejected')" id="btn-ijazah-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">✗ Tolak/Revisi</button>
+                  <button type="button" onclick="setDocStatus('ijazah', 'approved')" id="btn-ijazah-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">Setujui</button>
+                  <button type="button" onclick="setDocStatus('ijazah', 'rejected')" id="btn-ijazah-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">Tolak / Revisi</button>
                 </div>
                 <input type="text" id="note-ijazah" placeholder="Catatan revisi SKL..." class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-300 hidden">
               </div>
@@ -353,13 +353,13 @@
                 <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Aksi Keputusan Status Pendaftaran</label>
                 <div class="grid grid-cols-1 gap-2">
                   <button type="button" onclick="saveAdminVerification('Verifikasi')" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
-                    🔵 Validasi DP (Lanjut ke Verifikasi Berkas)
+                    Validasi DP (Lanjut ke Verifikasi Berkas)
                   </button>
                   <button type="button" onclick="saveAdminVerification('Seleksi')" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
-                    🟣 Berkas Valid -> Lanjut Tes Tahfidz
+                    Berkas Valid -> Lanjut Tes Tahfidz
                   </button>
                   <button type="button" onclick="saveAdminVerification('Revisi')" class="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
-                    🟡 Kembalikan untuk Revisi
+                    Kembalikan untuk Revisi
                   </button>
                 </div>
               </div>
@@ -398,12 +398,12 @@
               </div>
               
               <button onclick="adminSaveHafalan()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs shadow-lg transition-all mt-3">
-                💾 Simpan Pemetaan Hafalan
+                Simpan Pemetaan Hafalan
               </button>
               
               <div class="border-t border-white/10 my-4 pt-4">
                 <button onclick="adminSetLulus()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-xl text-xs shadow-lg transition-all">
-                  🎓 Nyatakan Lulus Seleksi
+                  Nyatakan Lulus Seleksi
                 </button>
               </div>
             </div>
@@ -444,15 +444,13 @@
       <div class="glass-card bg-[#0b1320]/95 border border-emerald-500/40 rounded-3xl p-6 lg:p-8 max-w-lg w-full shadow-2xl space-y-6">
         <div class="flex justify-between items-center border-b border-white/10 pb-4">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-xl">
-              🎓
-            </div>
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center"><span class="material-symbols-outlined text-2xl">school</span></div>
             <div>
               <h3 class="font-bold text-white text-base">Konversi ke Siswa Aktif</h3>
               <p class="text-xs text-slate-400">Terbitkan Akun Portal & Tempatkan Kelas</p>
             </div>
           </div>
-          <button onclick="closeKonversiModal()" class="text-slate-400 hover:text-white text-lg">✕</button>
+          <button onclick="closeKonversiModal()" class="text-slate-400 hover:text-white flex items-center justify-center"><span class="material-symbols-outlined text-base">close</span></button>
         </div>
 
         <div class="space-y-4">
@@ -479,7 +477,7 @@
           </div>
 
           <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[0.75rem] text-emerald-300">
-            ℹ️ Sistem akan otomatis mengenerate email resmi <b>nama.depan@smpannida.sch.id</b> dan password awal untuk login di Portal Siswa.
+            Sistem akan otomatis mengenerate email resmi <b>nama.depan@smpannida.sch.id</b> dan password awal untuk login di Portal Siswa.
           </div>
 
           <div class="flex gap-3 pt-2">
@@ -493,9 +491,7 @@
     <!-- MODAL HASIL KREDENSIAL AKUN SISWA -->
     <div id="modal-kredensial-siswa" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
       <div class="glass-card bg-[#0b1320]/95 border border-emerald-500/40 rounded-3xl p-6 lg:p-8 max-w-md w-full shadow-2xl space-y-6 text-center">
-        <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-3xl mx-auto">
-          🎉
-        </div>
+        <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto"><span class="material-symbols-outlined text-3xl">check_circle</span></div>
         <div>
           <h3 class="font-bold text-white text-lg">Akun Siswa Berhasil Diterbitkan!</h3>
           <p class="text-xs text-slate-400 mt-1">Siswa telah terdaftar di data akademik dan dapat mengakses Portal Siswa.</p>
@@ -516,10 +512,10 @@
 
         <div class="space-y-2">
           <button onclick="copyStudentCredentials()" id="btn-copy-cred" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-all">
-            📋 Salin Kredensial
+            Salin Kredensial
           </button>
           <a href="#" id="link-wa-share" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-all">
-            💬 Kirim via WhatsApp ke Wali Murid
+            Kirim via WhatsApp ke Wali Murid
           </a>
           <button onclick="closeCredentialModal()" class="w-full text-xs text-slate-400 hover:text-white py-2">Tutup</button>
         </div>

@@ -410,7 +410,7 @@
           </button>
           
           <button type="submit" id="btn-submit" class="btn bg-primary text-white hover:bg-primary-dim px-8 py-3 rounded-lg text-sm font-bold transition-all neon-glow-btn hidden">
-            Kirim Pendaftaran 🟢
+            Kirim Pendaftaran
           </button>
         </div>
 
@@ -520,7 +520,7 @@
         ind.className = 'step-indicator w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-slate-800 text-gray-400 transition-all';
         if (i + 1 < currentStep) {
           ind.classList.add('completed');
-          ind.textContent = '✓';
+          ind.textContent = 'OK';
         } else if (i + 1 === currentStep) {
           ind.classList.add('active');
           ind.textContent = i + 1;
@@ -756,7 +756,7 @@
         console.error("Registrasi Error:", err);
         showToast(err.message || 'Gagal menyimpan pendaftaran. Silakan coba lagi.', 'error');
         btnSubmit.disabled = false;
-        btnSubmit.textContent = 'Kirim Pendaftaran 🟢';
+        btnSubmit.textContent = 'Kirim Pendaftaran';
       }
     });
 
