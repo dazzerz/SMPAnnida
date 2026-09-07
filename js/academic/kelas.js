@@ -380,12 +380,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 if (id) {
+                    // Ambil wali_kelas_id lama untuk sinkronisasi jika berubah
+                    const oldClass = currentKelasData.find(c => String(c.id) === String(id));
+                    const oldWaliId = oldClass ? oldClass.wali_kelas_id : null;
+
                     payload.updated_at = new Date().toISOString();
                     const { error } = await db.from('classes').update(payload).eq('id', id);
                     if (error) throw error;
                     
+                    // Jika wali kelas berubah, reset status guru sebelumnya
+                    if (oldWaliId && oldWaliId !== payload.wali_kelas_id) {
+                        await db.from('teachers').update({ is_wali_kelas: false, wali_kelas: null }).eq('id', oldWaliId);
+                    }
+
                     if (payload.wali_kelas_id) {
-                        await db.from('teachers').update({ is_wali_kelas: true }).eq('id', payload.wali_kelas_id);
+                        await db.from('teachers').update({ is_wali_kelas: true, wali_kelas: payload.nama_kelas }).eq('id', payload.wali_kelas_id);
                     }
                     showToast('Kelas berhasil diperbarui', 'success');
                 } else {
@@ -394,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (error) throw error;
                     
                     if (payload.wali_kelas_id) {
-                        await db.from('teachers').update({ is_wali_kelas: true }).eq('id', payload.wali_kelas_id);
+                        await db.from('teachers').update({ is_wali_kelas: true, wali_kelas: payload.nama_kelas }).eq('id', payload.wali_kelas_id);
                     }
                     showToast('Kelas berhasil ditambahkan', 'success');
                 }
