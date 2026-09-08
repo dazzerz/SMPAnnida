@@ -6,9 +6,10 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      document.documentElement.classList.add('dark');
-      try { localStorage.setItem('smpannida_theme', 'dark'); } catch(_) {}
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+      try { localStorage.setItem('smpannida_theme', 'light'); } catch(_) {}
     })();
   </script>
   <meta charset="UTF-8">
@@ -69,33 +70,22 @@
     }
 
     
-    /* Theme-Adaptive Auth Card */
+    /* Light Theme Auth Card */
     .login-main-card {
-      background: rgba(255, 255, 255, 0.90);
+      background: rgba(255, 255, 255, 0.95);
       border: 1px solid rgba(203, 213, 225, 0.85);
       color: #090d16;
     }
-    .dark .login-main-card,
-    [data-theme="dark"] .login-main-card {
-      background: rgba(15, 23, 42, 0.92);
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      color: #ffffff;
-    }
 
     .login-left-col {
-      background: rgba(248, 250, 252, 0.85);
+      background: rgba(248, 250, 252, 0.90);
       border-color: rgba(203, 213, 225, 0.80);
-    }
-    .dark .login-left-col,
-    [data-theme="dark"] .login-left-col {
-      background: rgba(3, 7, 18, 0.75);
-      border-color: rgba(255, 255, 255, 0.10);
     }
 
     /* Adaptive Input */
     .auth-input {
       width: 100%;
-      background: rgba(241, 245, 249, 0.95);
+      background: #ffffff;
       border: 1px solid #cbd5e1;
       color: #090d16;
       padding: 0.85rem 1rem;
@@ -112,23 +102,6 @@
     }
     .auth-input::placeholder {
       color: #64748b;
-    }
-
-    .dark .auth-input,
-    [data-theme="dark"] .auth-input {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #ffffff;
-    }
-    .dark .auth-input:focus,
-    [data-theme="dark"] .auth-input:focus {
-      border-color: #10b981;
-      background: rgba(16, 185, 129, 0.06);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
-    }
-    .dark .auth-input::placeholder,
-    [data-theme="dark"] .auth-input::placeholder {
-      color: #94a3b8;
     }
 
     /* Spinner Animation */
