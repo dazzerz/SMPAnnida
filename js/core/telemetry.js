@@ -15,21 +15,6 @@ if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
   });
 }
 
-// 2. Global Diagnostic Error Handling
-if (typeof window !== 'undefined') {
-  window.addEventListener('error', (event) => {
-    // Prevent unhandled errors from breaking the page quietly
-    if (event && event.message) {
-      // Diagnostic tracking without spamming console
-    }
-  });
-
-  window.addEventListener('unhandledrejection', (event) => {
-    if (event && event.reason) {
-      // Diagnostic promise rejection tracking
-    }
-  });
-}
 
 export function trackEvent(category, action, label) {
   // Simple event tracker hook for analytics / logs

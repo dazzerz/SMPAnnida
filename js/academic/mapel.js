@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!tbodyMapel) return;
         tbodyMapel.innerHTML = '<tr><td colspan="9" style="text-align: center;">Memuat data mata pelajaran...</td></tr>';
         try {
-            const { data, error } = await db.from('subjects').select('*, teachers(nama)').order('urutan', { ascending: true });
+            const { data, error } = await db.from('subjects').select('*, teachers!fk_subjects_teacher(nama)').order('urutan', { ascending: true });
             if (error) throw error;
             currentData = data || [];
             

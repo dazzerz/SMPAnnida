@@ -678,10 +678,14 @@ async function main() {
 
   applySavedTheme();
 
-  const user = await getOptionalUser();
-  if (!user) {
+  let user = await getOptionalUser();
+  const isGuest = localStorage.getItem('isGuest') === 'true';
+  if (!user && !isGuest) {
     if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
     return;
+  }
+  if (!user && isGuest) {
+    user = { id: 'guest', email: 'guest@smpannida.sch.id', user_metadata: { full_name: 'Guest (View Only)' } };
   }
 
   userId = user.id;
@@ -696,8 +700,8 @@ async function main() {
   const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Pengguna';
   
   // Role check for topbar & sidebar role text
-  let roleLabel = 'Guru / Karyawan';
-  const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
+  let roleLabel = isGuest ? 'Guest (View Only)' : 'Guru / Karyawan';
+  const { data: roleData } = (user.id && user.id !== 'guest') ? await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle() : { data: null };
   if (roleData) {
       if (roleData.role === 'admin') roleLabel = 'Admin Keuangan';
       else if (roleData.role === 'pembina') {
