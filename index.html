@@ -164,23 +164,21 @@
     }
     
   
-    /* Landing Page Section Headers & Text Contrast Protection */
-    #beranda h1, #beranda p,
+    /* Landing Page Section Headers & Text Contrast Protection (Light Mode per DESIGN.md) */
+    #beranda h1,
     section h2, section h3, section h4,
-    .section-title, .landing-white-text {
-      color: #ffffff;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    .section-title {
+      color: #0f172a;
     }
     
+    #beranda p,
     .landing-subtitle {
-      color: #e2e8f0;
-      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+      color: #475569;
     }
 
     /* Kesiswaan Section Box */
     .kesiswaan-list-item {
-      color: #f1f5f9;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+      color: #0f172a;
       font-weight: 600;
     }
 
@@ -188,6 +186,7 @@
     header.sticky {
       z-index: 100;
     }
+
 
   </style>
 <script>
@@ -207,37 +206,37 @@
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <script type="module" src="/js/core/pwa.js"></script>
 </head>
-<body class="text-white font-body-md min-h-screen flex flex-col overflow-x-hidden w-full">
+<body class="text-slate-900 font-body-md min-h-screen flex flex-col overflow-x-hidden w-full bg-slate-50">
   
-  <!-- Fixed Background Layer (Mencegah melar di mobile) -->
+  <!-- Fixed Background Layer -->
   <div class="fixed inset-0 z-[-1] bg-hero bg-cover bg-center"></div>
 
-  <!-- Lapisan Gelap (Overlay) -->
-  <div class="fixed inset-0 bg-black/60 z-0 pointer-events-none"></div>
+  <!-- Lapisan Terang (Overlay per DESIGN.md) -->
+  <div class="fixed inset-0 bg-slate-50/85 z-0 pointer-events-none"></div>
 
   <!-- Navbar (Floating Glassmorphism Header) -->
   <header class="sticky top-6 z-50 flex justify-center px-4 w-full">
-    <div class="flex justify-between items-center px-6 md:px-8 py-3 w-full max-w-6xl bg-slate-900/80 backdrop-blur-md border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.35)] rounded-2xl">
+    <div class="flex justify-between items-center px-6 md:px-8 py-3 w-full max-w-6xl bg-white/90 backdrop-blur-md border border-slate-200 shadow-lg rounded-2xl">
       <!-- Logo -->
-      <a class="flex items-center gap-3 font-headline-md text-xl md:text-2xl font-bold text-white hover:opacity-90 transition-opacity" href="#">
+      <a class="flex items-center gap-3 font-headline-md text-xl md:text-2xl font-bold text-slate-900 hover:opacity-90 transition-opacity" href="#">
         <img src="./assets/logo/1.webp" alt="Logo SMP Annida" class="h-8 md:h-10 w-auto object-contain">
-        <span class="tracking-wide uppercase text-[1.05rem] md:text-xl">SMP ANNIDA</span>
+        <span class="tracking-wide uppercase text-[1.05rem] md:text-xl text-slate-900">SMP ANNIDA</span>
       </a>
       
       <!-- Navigation Links -->
-      <nav class="hidden lg:flex gap-6 xl:gap-8 items-center text-[0.92rem] font-semibold text-slate-200">
-        <a class="scroll-link nav-neon-active pb-1" href="#beranda">Beranda</a>
-        <a class="scroll-link hover:text-white transition-colors pb-1" href="#profil">Tentang Kami</a>
-        <a class="scroll-link hover:text-white transition-colors pb-1" href="#akademik">Akademik</a>
-        <a class="scroll-link hover:text-white transition-colors pb-1" href="#kesiswaan">Kesiswaan</a>
-        <a class="hover:text-white transition-colors pb-1" href="./pages/ppdb/index.html">Portal PPDB</a>
-        <a class="scroll-link hover:text-white transition-colors pb-1" href="#berita">Berita</a>
-        <a class="scroll-link hover:text-white transition-colors pb-1" href="#kontak">Kontak</a>
+      <nav class="hidden lg:flex gap-6 xl:gap-8 items-center text-[0.92rem] font-semibold text-slate-700">
+        <a class="scroll-link nav-neon-active pb-1 text-emerald-700" href="#beranda">Beranda</a>
+        <a class="scroll-link hover:text-emerald-700 transition-colors pb-1" href="#profil">Tentang Kami</a>
+        <a class="scroll-link hover:text-emerald-700 transition-colors pb-1" href="#akademik">Akademik</a>
+        <a class="scroll-link hover:text-emerald-700 transition-colors pb-1" href="#kesiswaan">Kesiswaan</a>
+        <a class="hover:text-emerald-700 transition-colors pb-1" href="./pages/ppdb/index.html">Portal PPDB</a>
+        <a class="scroll-link hover:text-emerald-700 transition-colors pb-1" href="#berita">Berita</a>
+        <a class="scroll-link hover:text-emerald-700 transition-colors pb-1" href="#kontak">Kontak</a>
       </nav>
 
       <!-- Portal Access CTA in Navbar -->
       <div class="flex items-center gap-3">
-        <a href="./login.html" class="inline-flex items-center gap-1.5 text-xs md:text-sm font-semibold bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 hover:bg-emerald-500/25 px-4 py-2 rounded-xl transition-all shadow-sm">
+        <a href="./login.html" class="inline-flex items-center gap-1.5 text-xs md:text-sm font-semibold bg-emerald-50 border border-emerald-300 text-emerald-800 hover:bg-emerald-100 px-4 py-2 rounded-xl transition-all shadow-sm">
           <span class="material-symbols-outlined text-[16px]">lock</span>
           <span>Login Portal</span>
         </a>
@@ -247,54 +246,54 @@
 
   <!-- Hero Content -->
   <main id="beranda" class="flex-grow flex items-center justify-center relative z-10 px-4 py-24 min-h-[82vh]">
-    <div class="relative glass-panel-custom p-8 md:p-14 rounded-2xl text-center max-w-4xl overflow-hidden border border-white/15 shadow-2xl">
+    <div class="relative glass-panel-custom p-8 md:p-14 rounded-2xl text-center max-w-4xl overflow-hidden border border-slate-200 shadow-xl bg-white">
       <!-- Ambient emerald glow behind headline -->
       <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
       
       <div class="relative z-10">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs font-semibold mb-6 shadow-sm">
-          <span class="material-symbols-outlined text-xs">eco</span>
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-6 shadow-sm">
+          <span class="material-symbols-outlined text-xs text-emerald-700">eco</span>
           <span>Sekolah Alam &amp; Tahfidz Al-Qur'an Terpadu</span>
         </div>
-        <h1 class="font-headline-md text-4xl md:text-6xl font-bold mb-4 leading-tight text-white">
-          Website Resmi <br><span class="text-primary">SMP Annida</span>
+        <h1 class="font-headline-md text-4xl md:text-6xl font-bold mb-4 leading-tight text-slate-900">
+          Website Resmi <br><span class="text-emerald-700">SMP Annida</span>
         </h1>
-        <p class="text-lg md:text-xl text-slate-200 mb-8 max-w-2xl mx-auto leading-relaxed">
-          Membangun Generasi Cerdas, Berkarakter, dan Unggul Berlandaskan Nilai Islam.
+        <p class="text-lg md:text-xl text-slate-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <!-- TODO: Gelombang 2 copywriting -->
+          Pendidikan menengah berbasis Sekolah Alam terpadu dan pembinaan Tahfidz Al-Qur'an bersanad di Setu, Bekasi. Memadukan kurikulum nasional dan pembentukan adab Islami.
         </p>
         
         <!-- Focused CTA Buttons: Primary Action + Secondary Exploration -->
         <div class="flex flex-col sm:flex-row justify-center items-center gap-4 flex-wrap">
-          <a href="./pages/ppdb/index.html" class="w-full sm:w-auto bg-primary hover:bg-primary-dim text-white font-bold py-3.5 px-8 rounded-xl shadow-[0_4px_20px_rgba(16,185,129,0.35)] transition-all transform hover:-translate-y-0.5 text-base flex items-center justify-center gap-2">
+          <a href="./pages/ppdb/index.html" class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3.5 px-8 rounded-xl shadow-[0_4px_16px_rgba(21,128,61,0.25)] transition-all transform hover:-translate-y-0.5 text-base flex items-center justify-center gap-2">
             <span>Daftar PPDB 2027/2028</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
-          <a href="#profil" class="w-full sm:w-auto scroll-link bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold py-3.5 px-6 rounded-xl transition-all text-base flex items-center justify-center gap-2">
+          <a href="#profil" class="w-full sm:w-auto scroll-link bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 font-semibold py-3.5 px-6 rounded-xl transition-all text-base flex items-center justify-center gap-2">
             <span>Pelajari Program Sekolah</span>
           </a>
         </div>
 
-        <!-- Quick Access Portals Bar -->
-        <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-300">
-          <span class="font-semibold text-slate-400">Pintu Masuk Terpadu:</span>
-          <a href="./login.html" class="hover:text-emerald-400 underline transition-colors">Login Siswa (Portal Siswa)</a>
-          <span class="text-slate-600">•</span>
-          <a href="./login.html" class="hover:text-emerald-400 underline transition-colors">Login Guru</a>
-          <span class="text-slate-600">•</span>
-          <a href="./login.html" class="hover:text-emerald-400 underline transition-colors">Login Orang Tua</a>
+        <!-- Quick Access Portals Bar (WCAG AA Compliant) -->
+        <div class="mt-8 pt-6 border-t border-slate-200 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-600">
+          <span class="font-bold text-slate-800">Pintu Masuk Terpadu:</span>
+          <a href="./login.html" class="text-emerald-700 hover:text-emerald-900 font-semibold underline transition-colors">Login Siswa (Portal Siswa)</a>
+          <span class="text-slate-400">•</span>
+          <a href="./login.html" class="text-emerald-700 hover:text-emerald-900 font-semibold underline transition-colors">Login Guru</a>
+          <span class="text-slate-400">•</span>
+          <a href="./login.html" class="text-emerald-700 hover:text-emerald-900 font-semibold underline transition-colors">Login Orang Tua</a>
         </div>
       </div>
     </div>
   </main>
 
+
   <!-- GALERI FASILITAS & KEGIATAN -->
   <section class="py-12 px-6 lg:px-0 relative z-30 overflow-hidden mt-10">
     <div class="max-w-7xl mx-auto mb-6 text-center">
-      <h2 class="font-headline-md text-3xl md:text-4xl text-white mb-2"><span class="text-primary">Gallery</span> Sekolah</h2>
+      <h2 class="font-headline-md text-3xl md:text-4xl text-slate-900 mb-2"><span class="text-emerald-700">Gallery</span> Sekolah</h2>
     </div>
-    <div class="relative w-full max-w-7xl mx-auto glass-panel-custom rounded-2xl p-4 overflow-hidden border border-white/10 shadow-2xl">
-      <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#0b1320] to-transparent z-30 pointer-events-none"></div>
-      <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#0b1320] to-transparent z-30 pointer-events-none"></div>
+    <div class="relative w-full max-w-7xl mx-auto glass-panel-custom rounded-2xl p-4 overflow-hidden border border-slate-200 shadow-xl bg-white">
       <div class="slider-container overflow-hidden w-full">
         <div class="slider-track flex gap-6">
           <img src="./assets/images/aktivitas-1.webp" alt="Kegiatan Belajar Outdoor Siswa SMP Annida" width="250" height="150" loading="lazy" decoding="async" class="w-[250px] h-[150px] object-cover rounded-xl cursor-pointer hover:scale-105 transition-transform duration-300">
@@ -319,103 +318,104 @@
   </section>
 
   <!-- Profil Section -->
-  <section id="profil" class="relative z-10 py-20 px-6 bg-slate-950/80 border-t border-white/10 bg-islamic-pattern">
+  <section id="profil" class="relative z-10 py-20 px-6 bg-transparent border-t border-slate-200">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-12">
-        <span class="text-xs uppercase font-bold tracking-widest text-emerald-400 block mb-2">Identitas &amp; Visi Pendidikan</span>
-        <h2 class="font-headline-md text-3xl md:text-4xl font-bold text-white"><span class="text-primary">Profil</span> Sekolah</h2>
+        <span class="text-xs uppercase font-bold tracking-widest text-emerald-700 block mb-2">Identitas &amp; Visi Pendidikan</span>
+        <h2 class="font-headline-md text-3xl md:text-4xl font-bold text-slate-900"><span class="text-emerald-700">Profil</span> Sekolah</h2>
       </div>
       <div class="grid md:grid-cols-2 gap-8 items-stretch">
-        <div class="surface-card p-8 rounded-2xl flex flex-col justify-between">
+        <div class="surface-card bg-white border border-slate-200 shadow-md p-8 rounded-2xl flex flex-col justify-between">
           <div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-4">
-              <span class="material-symbols-outlined text-sm">flag</span>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-4">
+              <span class="material-symbols-outlined text-sm text-emerald-700">flag</span>
               <span>Arah Pendidikan</span>
             </div>
-            <h3 class="text-2xl font-bold mb-4 text-white">Visi &amp; Misi</h3>
-            <p class="text-slate-300 mb-4 leading-relaxed"><strong class="text-white">Visi:</strong> Terwujudnya generasi Qur'ani yang cerdas, terampil, dan berakhlakul karimah dalam menghadapi tantangan global.</p>
-            <p class="text-slate-300 leading-relaxed"><strong class="text-white">Misi:</strong> Menyelenggarakan pendidikan yang memadukan kurikulum nasional dan nilai-nilai Islam, serta membina karakter siswa melalui pembiasaan ibadah harian dan keteladanan akhlak.</p>
+            <h3 class="text-2xl font-bold mb-4 text-slate-900">Visi &amp; Misi</h3>
+            <p class="text-slate-600 mb-4 leading-relaxed"><strong class="text-slate-900">Visi:</strong> Terwujudnya generasi Qur'ani yang cerdas, terampil, dan berakhlakul karimah dalam menghadapi tantangan global.</p>
+            <p class="text-slate-600 leading-relaxed"><strong class="text-slate-900">Misi:</strong> Menyelenggarakan pendidikan yang memadukan kurikulum nasional dan nilai-nilai Islam, serta membina karakter siswa melalui pembiasaan ibadah harian dan keteladanan akhlak.</p>
           </div>
         </div>
-        <div class="surface-card p-8 rounded-2xl flex flex-col justify-between">
+        <div class="surface-card bg-white border border-slate-200 shadow-md p-8 rounded-2xl flex flex-col justify-between">
           <div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-4">
-              <span class="material-symbols-outlined text-sm">history_edu</span>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-4">
+              <span class="material-symbols-outlined text-sm text-emerald-700">history_edu</span>
               <span>Latar Belakang</span>
             </div>
-            <h3 class="text-2xl font-bold mb-4 text-white">Sejarah Singkat</h3>
-            <p class="text-slate-300 leading-relaxed">SMP Annida didirikan dengan ikhtiar luhur memberikan alternatif pendidikan tingkat menengah yang memadukan keunggulan akademik, kemandirian karakter berbasis alam, dan pembentukan pondasi keislaman yang kokoh. Komitmen kami adalah mencetak generasi yang berdaya saing dan berakhlak mulia.</p>
+            <h3 class="text-2xl font-bold mb-4 text-slate-900">Sejarah Singkat</h3>
+            <p class="text-slate-600 leading-relaxed">SMP Annida didirikan dengan ikhtiar luhur memberikan alternatif pendidikan tingkat menengah yang memadukan keunggulan akademik, kemandirian karakter berbasis alam, dan pembentukan pondasi keislaman yang kokoh. Komitmen kami adalah mencetak generasi yang berdaya saing dan berakhlak mulia.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
+
   <!-- Akademik Section -->
-  <section id="akademik" class="relative z-10 py-20 px-6 border-t border-white/10">
+  <section id="akademik" class="relative z-10 py-20 px-6 border-t border-slate-200">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-14">
-        <span class="text-xs uppercase font-bold tracking-widest text-emerald-400 block mb-2">Standar Pembelajaran</span>
-        <h2 class="font-headline-md text-3xl md:text-4xl font-bold mb-3 text-white"><span class="text-primary">Akademik</span> &amp; Kurikulum</h2>
-        <p class="text-slate-300 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">Kombinasi kurikulum nasional terintegrasi dengan penguatan adab Islam dan kecakapan abad ke-21.</p>
+        <span class="text-xs uppercase font-bold tracking-widest text-emerald-700 block mb-2">Standar Pembelajaran</span>
+        <h2 class="font-headline-md text-3xl md:text-4xl font-bold mb-3 text-slate-900"><span class="text-emerald-700">Akademik</span> &amp; Kurikulum</h2>
+        <p class="text-slate-600 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">Kombinasi kurikulum nasional terintegrasi dengan penguatan adab Islam dan kecakapan abad ke-21.</p>
       </div>
 
       <!-- Asymmetrical Dynamic Grid: Flagship Program + Supporting Pillars -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Flagship Tahfidz Card (Span 2 cols on Desktop) -->
-        <div class="lg:col-span-2 surface-card p-8 md:p-10 rounded-2xl border-l-4 border-l-emerald-500 flex flex-col justify-between">
+        <div class="lg:col-span-2 surface-card p-8 md:p-10 rounded-2xl border border-slate-200 border-l-4 border-l-emerald-600 flex flex-col justify-between shadow-sm bg-white">
           <div>
             <div class="flex items-center justify-between gap-4 mb-4">
-              <span class="material-symbols-outlined text-3xl text-emerald-400">auto_stories</span>
-              <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-md border border-emerald-500/20">Program Utama</span>
+              <span class="material-symbols-outlined text-3xl text-emerald-700">auto_stories</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200">Program Utama</span>
             </div>
-            <h4 class="text-2xl font-bold text-white mb-3">Islamic Studies &amp; Tahfidz Al-Qur'an</h4>
-            <p class="text-slate-300 text-sm md:text-base leading-relaxed mb-6">
+            <h4 class="text-2xl font-bold text-slate-900 mb-3">Islamic Studies &amp; Tahfidz Al-Qur'an</h4>
+            <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
               Pembinaan tahfidz dengan metode talaqqi terstruktur, perbaikan makharijul huruf dan tajwid bersanad, serta pemahaman fiqih praktis ibadah harian santri. Santri dibimbing intensif setiap pagi dan petang untuk mencapai target hafalan mutqin.
             </p>
           </div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-6 border-t border-white/10 text-xs text-slate-300">
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-6 border-t border-slate-200 text-xs text-slate-600">
             <div>
-              <span class="text-slate-400 block mb-1">Metode Hafalan</span>
-              <strong class="text-white text-sm">Talaqqi &amp; Tikrar</strong>
+              <span class="text-slate-500 block mb-1">Metode Hafalan</span>
+              <strong class="text-slate-900 text-sm">Talaqqi &amp; Tikrar</strong>
             </div>
             <div>
-              <span class="text-slate-400 block mb-1">Target Santri</span>
-              <strong class="text-white text-sm">3 - 5 Juz Mutqin</strong>
+              <span class="text-slate-500 block mb-1">Target Santri</span>
+              <strong class="text-slate-900 text-sm">3 - 5 Juz Mutqin</strong>
             </div>
             <div>
-              <span class="text-slate-400 block mb-1">Bahasa Pengantar</span>
-              <strong class="text-white text-sm">Arab &amp; Indonesia</strong>
+              <span class="text-slate-500 block mb-1">Bahasa Pengantar</span>
+              <strong class="text-slate-900 text-sm">Arab &amp; Indonesia</strong>
             </div>
           </div>
         </div>
 
         <!-- Pillar 2: Kurikulum Merdeka -->
-        <div class="surface-card p-8 rounded-2xl flex flex-col justify-between">
+        <div class="surface-card p-8 rounded-2xl flex flex-col justify-between shadow-sm border border-slate-200 bg-white">
           <div>
-            <span class="material-symbols-outlined text-3xl text-emerald-400 mb-4 block">science</span>
-            <h4 class="text-xl font-bold text-white mb-3">Kurikulum Merdeka</h4>
-            <p class="text-slate-300 text-sm leading-relaxed">
+            <span class="material-symbols-outlined text-3xl text-emerald-700 mb-4 block">science</span>
+            <h4 class="text-xl font-bold text-slate-900 mb-3">Kurikulum Merdeka</h4>
+            <p class="text-slate-600 text-sm leading-relaxed">
               Menerapkan pembelajaran berbasis proyek (P5) dan eksplorasi saintifik terbuka yang memacu nalar kritis, riset lingkungan, dan kemandirian berfikir.
             </p>
           </div>
-          <div class="pt-6 border-t border-white/10 text-xs text-slate-400">
+          <div class="pt-6 border-t border-slate-200 text-xs text-slate-600 font-medium">
             Fokus: Literasi, Numerasi, &amp; Karakter
           </div>
         </div>
 
         <!-- Pillar 3: Tenaga Pendidik (Full Width Row on Desktop) -->
-        <div class="lg:col-span-3 surface-card p-6 md:p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 border-t border-white/10">
+        <div class="lg:col-span-3 surface-card p-6 md:p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 border border-slate-200 shadow-sm bg-white">
           <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0">
               <span class="material-symbols-outlined text-2xl">school</span>
             </div>
             <div>
-              <h4 class="text-lg font-bold text-white">Tenaga Pendidik Berdedikasi</h4>
-              <p class="text-slate-300 text-sm mt-0.5">Guru dan ustadz lulusan perguruan tinggi terakreditasi dengan rasio pendampingan proporsional untuk memantau adab serta progres belajar santri.</p>
+              <h4 class="text-lg font-bold text-slate-900">Tenaga Pendidik Berdedikasi</h4>
+              <p class="text-slate-600 text-sm mt-0.5">Guru dan ustadz lulusan perguruan tinggi terakreditasi dengan rasio pendampingan proporsional untuk memantau adab serta progres belajar santri.</p>
             </div>
           </div>
-          <a href="./pages/ppdb/about.html" class="shrink-0 text-xs font-bold text-emerald-400 hover:text-emerald-300 underline flex items-center gap-1">
+          <a href="./pages/ppdb/about.html" class="shrink-0 text-xs font-bold text-emerald-700 hover:text-emerald-800 underline flex items-center gap-1">
             <span>Profil Guru &amp; Pengasuh</span>
             <span class="material-symbols-outlined text-sm">chevron_right</span>
           </a>
@@ -425,29 +425,29 @@
   </section>
 
   <!-- Kesiswaan & Fasilitas Section -->
-  <section id="kesiswaan" class="relative z-10 py-20 px-6 bg-slate-950/80 border-t border-white/10 bg-islamic-pattern">
+  <section id="kesiswaan" class="relative z-10 py-20 px-6 bg-slate-50/50 border-t border-slate-200">
     <div class="max-w-6xl mx-auto">
       <div class="grid md:grid-cols-2 gap-12 lg:gap-16 items-start">
         <!-- Kesiswaan -->
-        <div class="surface-card p-8 rounded-2xl">
-          <span class="text-xs uppercase font-bold tracking-widest text-emerald-400 block mb-2">Kegiatan Santri</span>
-          <h2 class="font-headline-md text-3xl font-bold mb-4 text-white"><span class="text-primary">Kesiswaan</span> &amp; Ekstrakurikuler</h2>
-          <p class="text-slate-300 mb-6 text-sm leading-relaxed">Wadah penyaluran bakat kepemimpinan, fisik, dan keagamaan untuk melatih kemandirian serta jiwa sosial santri.</p>
-          <ul class="space-y-3.5 text-sm text-slate-200">
+        <div class="surface-card p-8 rounded-2xl shadow-sm border border-slate-200 bg-white">
+          <span class="text-xs uppercase font-bold tracking-widest text-emerald-700 block mb-2">Kegiatan Santri</span>
+          <h2 class="font-headline-md text-3xl font-bold mb-4 text-slate-900"><span class="text-emerald-700">Kesiswaan</span> &amp; Ekstrakurikuler</h2>
+          <p class="text-slate-600 mb-6 text-sm leading-relaxed">Wadah penyaluran bakat kepemimpinan, fisik, dan keagamaan untuk melatih kemandirian serta jiwa sosial santri.</p>
+          <ul class="space-y-3.5 text-sm text-slate-700">
             <li class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-emerald-400 text-lg">check_circle</span>
+              <span class="material-symbols-outlined text-emerald-700 text-lg">check_circle</span>
               <span>Organisasi Siswa Intra Sekolah (OSIS)</span>
             </li>
             <li class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-emerald-400 text-lg">check_circle</span>
+              <span class="material-symbols-outlined text-emerald-700 text-lg">check_circle</span>
               <span>Pramuka &amp; Kepanduan Karakter</span>
             </li>
             <li class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-emerald-400 text-lg">check_circle</span>
+              <span class="material-symbols-outlined text-emerald-700 text-lg">check_circle</span>
               <span>Rohani Islam (Rohis) &amp; Seni Hadroh</span>
             </li>
             <li class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-emerald-400 text-lg">check_circle</span>
+              <span class="material-symbols-outlined text-emerald-700 text-lg">check_circle</span>
               <span>Panahan Sunnah &amp; Futsal Prestasi</span>
             </li>
           </ul>
@@ -456,29 +456,29 @@
         <!-- Fasilitas -->
         <div id="fasilitas" class="space-y-4">
           <div>
-            <span class="text-xs uppercase font-bold tracking-widest text-emerald-400 block mb-1">Sarana Pendukung</span>
-            <h2 class="font-headline-md text-3xl font-bold mb-4 text-white"><span class="text-primary">Fasilitas</span> Kampus</h2>
+            <span class="text-xs uppercase font-bold tracking-widest text-emerald-700 block mb-1">Sarana Pendukung</span>
+            <h2 class="font-headline-md text-3xl font-bold mb-4 text-slate-900"><span class="text-emerald-700">Fasilitas</span> Kampus</h2>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="surface-card p-5 rounded-xl border border-white/10 hover:border-emerald-500/40 transition-all">
-              <span class="material-symbols-outlined text-emerald-400 text-2xl mb-2 block">computer</span>
-              <div class="font-bold text-sm text-white mb-1">Lab Komputer &amp; CBT</div>
-              <div class="text-xs text-slate-400">Dukungan ujian digital mandiri dan literasi informatika.</div>
+            <div class="surface-card p-5 rounded-xl border border-slate-200 shadow-sm bg-white hover:border-emerald-500 transition-all">
+              <span class="material-symbols-outlined text-emerald-700 text-2xl mb-2 block">computer</span>
+              <div class="font-bold text-sm text-slate-900 mb-1">Lab Komputer &amp; CBT</div>
+              <div class="text-xs text-slate-600">Dukungan ujian digital mandiri dan literasi informatika.</div>
             </div>
-            <div class="surface-card p-5 rounded-xl border border-white/10 hover:border-emerald-500/40 transition-all">
-              <span class="material-symbols-outlined text-emerald-400 text-2xl mb-2 block">mosque</span>
-              <div class="font-bold text-sm text-white mb-1">Masjid &amp; Sentra Tahfidz</div>
-              <div class="text-xs text-slate-400">Pusat halaqah hafalan Qur'an dan shalat berjamaah harian.</div>
+            <div class="surface-card p-5 rounded-xl border border-slate-200 shadow-sm bg-white hover:border-emerald-500 transition-all">
+              <span class="material-symbols-outlined text-emerald-700 text-2xl mb-2 block">mosque</span>
+              <div class="font-bold text-sm text-slate-900 mb-1">Masjid &amp; Sentra Tahfidz</div>
+              <div class="text-xs text-slate-600">Pusat halaqah hafalan Qur'an dan shalat berjamaah harian.</div>
             </div>
-            <div class="surface-card p-5 rounded-xl border border-white/10 hover:border-emerald-500/40 transition-all">
-              <span class="material-symbols-outlined text-emerald-400 text-2xl mb-2 block">menu_book</span>
-              <div class="font-bold text-sm text-white mb-1">Ruang Baca &amp; Literasi</div>
-              <div class="text-xs text-slate-400">Koleksi referensi kitab kuning, ensiklopedia, dan sains.</div>
+            <div class="surface-card p-5 rounded-xl border border-slate-200 shadow-sm bg-white hover:border-emerald-500 transition-all">
+              <span class="material-symbols-outlined text-emerald-700 text-2xl mb-2 block">menu_book</span>
+              <div class="font-bold text-sm text-slate-900 mb-1">Ruang Baca &amp; Literasi</div>
+              <div class="text-xs text-slate-600">Koleksi referensi kitab kuning, ensiklopedia, dan sains.</div>
             </div>
-            <div class="surface-card p-5 rounded-xl border border-white/10 hover:border-emerald-500/40 transition-all">
-              <span class="material-symbols-outlined text-emerald-400 text-2xl mb-2 block">sports_soccer</span>
-              <div class="font-bold text-sm text-white mb-1">Area Olahraga Alam</div>
-              <div class="text-xs text-slate-400">Lapangan futsal, area panahan terbuka, dan outbound alam.</div>
+            <div class="surface-card p-5 rounded-xl border border-slate-200 shadow-sm bg-white hover:border-emerald-500 transition-all">
+              <span class="material-symbols-outlined text-emerald-700 text-2xl mb-2 block">sports_soccer</span>
+              <div class="font-bold text-sm text-slate-900 mb-1">Area Olahraga Alam</div>
+              <div class="text-xs text-slate-600">Lapangan futsal, area panahan terbuka, dan outbound alam.</div>
             </div>
           </div>
         </div>
@@ -487,24 +487,24 @@
   </section>
 
   <!-- Berita Section -->
-  <section id="berita" class="relative z-10 py-20 px-6 border-t border-white/10">
+  <section id="berita" class="relative z-10 py-20 px-6 border-t border-slate-200">
     <div class="max-w-4xl mx-auto">
       <div class="text-center mb-10">
-        <span class="text-xs uppercase font-bold tracking-widest text-emerald-400 block mb-2">Pembaruan Resmi</span>
-        <h2 class="font-headline-md text-3xl md:text-4xl font-bold text-white"><span class="text-primary">Warta</span> &amp; Informasi Sekolah</h2>
+        <span class="text-xs uppercase font-bold tracking-widest text-emerald-700 block mb-2">Pembaruan Resmi</span>
+        <h2 class="font-headline-md text-3xl md:text-4xl font-bold text-slate-900"><span class="text-emerald-700">Warta</span> &amp; Informasi Sekolah</h2>
       </div>
-      <div class="surface-card p-6 md:p-8 rounded-2xl border-l-4 border-l-emerald-500 flex flex-col md:flex-row gap-6 items-center justify-between">
+      <div class="surface-card p-6 md:p-8 rounded-2xl border border-slate-200 border-l-4 border-l-emerald-600 flex flex-col md:flex-row gap-6 items-center justify-between shadow-sm bg-white">
         <div class="flex items-start gap-4">
-          <div class="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0">
             <span class="material-symbols-outlined text-2xl">campaign</span>
           </div>
           <div>
-            <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Penerimaan Siswa Baru</span>
-            <h4 class="text-xl font-bold text-white mt-1 mb-2">Pendaftaran Santri Baru TP 2027/2028 Resmi Dibuka</h4>
-            <p class="text-slate-300 text-xs md:text-sm leading-relaxed max-w-xl">Pendaftaran gelombang utama telah dibuka untuk Program Reguler dan Pondok Tahfidz. Kuota santri dibatasi untuk menjaga efektivitas pembinaan.</p>
+            <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Penerimaan Siswa Baru</span>
+            <h4 class="text-xl font-bold text-slate-900 mt-1 mb-2">Pendaftaran Santri Baru TP 2027/2028 Resmi Dibuka</h4>
+            <p class="text-slate-600 text-xs md:text-sm leading-relaxed max-w-xl">Pendaftaran gelombang utama telah dibuka untuk Program Reguler dan Pondok Tahfidz. Kuota santri dibatasi untuk menjaga efektivitas pembinaan.</p>
           </div>
         </div>
-        <a href="./pages/ppdb/index.html" class="shrink-0 bg-primary hover:bg-primary-dim text-white font-bold py-2.5 px-6 rounded-xl text-sm transition-all shadow-sm whitespace-nowrap">
+        <a href="./pages/ppdb/index.html" class="shrink-0 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-6 rounded-xl text-sm transition-all shadow-sm whitespace-nowrap">
           Daftar Sekarang
         </a>
       </div>
@@ -512,50 +512,50 @@
   </section>
 
   <!-- Kontak & Lokasi Section -->
-  <section id="kontak" class="relative z-10 py-20 px-6 bg-slate-950/80 border-t border-white/10 bg-islamic-pattern">
+  <section id="kontak" class="relative z-10 py-20 px-6 bg-slate-50/50 border-t border-slate-200">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-12">
-        <span class="text-xs uppercase font-bold tracking-widest text-emerald-400 block mb-2">Akses Komunikasi</span>
-        <h2 class="font-headline-md text-3xl md:text-4xl font-bold text-white"><span class="text-primary">Kontak</span> &amp; Lokasi Kampus</h2>
+        <span class="text-xs uppercase font-bold tracking-widest text-emerald-700 block mb-2">Akses Komunikasi</span>
+        <h2 class="font-headline-md text-3xl md:text-4xl font-bold text-slate-900"><span class="text-emerald-700">Kontak</span> &amp; Lokasi Kampus</h2>
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
         <!-- Contact details -->
-        <div class="surface-card rounded-2xl p-8 flex flex-col justify-between">
+        <div class="surface-card rounded-2xl p-8 flex flex-col justify-between border border-slate-200 shadow-sm bg-white">
           <div>
-            <h3 class="text-2xl font-bold text-white mb-4">Sekretariat Sekolah</h3>
-            <p class="text-slate-300 text-sm leading-relaxed mb-8">
+            <h3 class="text-2xl font-bold text-slate-900 mb-4">Sekretariat Sekolah</h3>
+            <p class="text-slate-600 text-sm leading-relaxed mb-8">
               Layanan informasi dan konsultasi pendaftaran terbuka setiap hari kerja (Senin - Sabtu, 08.00 - 15.30 WIB).
             </p>
             
             <div class="space-y-4 text-sm">
               <div class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-emerald-400 mt-0.5">location_on</span>
+                <span class="material-symbols-outlined text-emerald-700 mt-0.5">location_on</span>
                 <div>
-                  <span class="font-bold text-white block">Alamat Kampus</span>
-                  <span class="text-slate-300">Gg. Al-Ikhlas No.47, RT.002/RW.05, Kp. Rawa Atug, Desa Cibening, Kec. Setu, Kabupaten Bekasi, Jawa Barat 17320</span>
+                  <span class="font-bold text-slate-900 block">Alamat Kampus</span>
+                  <span class="text-slate-600">Gg. Al-Ikhlas No.47, RT.002/RW.05, Kp. Rawa Atug, Desa Cibening, Kec. Setu, Kabupaten Bekasi, Jawa Barat 17320</span>
                 </div>
               </div>
 
               <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-emerald-400">call</span>
+                <span class="material-symbols-outlined text-emerald-700">call</span>
                 <div>
-                  <span class="font-bold text-white block">Saluran Resmi</span>
-                  <span class="text-slate-300">+62 812-8957-5462 (Telepon &amp; WhatsApp Layanan)</span>
+                  <span class="font-bold text-slate-900 block">Saluran Resmi</span>
+                  <span class="text-slate-600">+62 812-8957-5462 (Telepon &amp; WhatsApp Layanan)</span>
                 </div>
               </div>
             </div>
           </div>
           
-          <div class="border-t border-white/10 pt-6 mt-8 flex flex-wrap gap-3 items-center">
-            <a href="https://wa.me/6281289575462" target="_blank" rel="noopener noreferrer" class="bg-primary hover:bg-primary-dim text-white font-bold py-2.5 px-5 rounded-xl text-sm flex items-center gap-2 transition-all shadow-sm">
+          <div class="border-t border-slate-200 pt-6 mt-8 flex flex-wrap gap-3 items-center">
+            <a href="https://wa.me/6281289575462" target="_blank" rel="noopener noreferrer" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-5 rounded-xl text-sm flex items-center gap-2 transition-all shadow-sm">
               <span class="material-symbols-outlined text-base">chat</span>
               <span>Hubungi WhatsApp</span>
             </a>
-            <a href="tel:+6281289575462" class="bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold py-2.5 px-5 rounded-xl text-sm transition-all flex items-center gap-2">
+            <a href="tel:+6281289575462" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 font-semibold py-2.5 px-5 rounded-xl text-sm transition-all flex items-center gap-2">
               <span class="material-symbols-outlined text-base">phone</span>
               <span>Panggilan Suara</span>
             </a>
-            <a href="https://g.page/r/CZyYooMda2rDECE/review" target="_blank" rel="noopener noreferrer" class="bg-amber-600/80 hover:bg-amber-600 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition-all flex items-center gap-1.5 shadow-sm">
+            <a href="https://g.page/r/CZyYooMda2rDECE/review" target="_blank" rel="noopener noreferrer" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2.5 px-4 rounded-xl text-sm transition-all flex items-center gap-1.5 shadow-sm">
               <span class="material-symbols-outlined text-base">star</span>
               <span>Ulasan Google</span>
             </a>
@@ -563,19 +563,19 @@
         </div>
 
         <!-- Maps Facade Container (Zero Blocked Resources, Fast LCP) -->
-        <div class="surface-card rounded-2xl overflow-hidden border border-white/10 h-[380px] lg:h-auto min-h-[350px] relative flex flex-col items-center justify-center text-center p-6" id="map-container">
+        <div class="surface-card rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-white h-[380px] lg:h-auto min-h-[350px] relative flex flex-col items-center justify-center text-center p-6" id="map-container">
           <div class="z-10 flex flex-col items-center max-w-sm">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-3 border border-emerald-500/40">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-700 mb-3 border border-emerald-200">
               <span class="material-symbols-outlined text-2xl">pin_drop</span>
             </div>
-            <h4 class="text-lg font-bold text-white mb-1">Lokasi Kampus SMP Annida</h4>
-            <p class="text-slate-300 text-xs mb-5 leading-relaxed">Gg. Al-Ikhlas No.47, Cibening, Setu, Bekasi, Jawa Barat</p>
+            <h4 class="text-lg font-bold text-slate-900 mb-1">Lokasi Kampus SMP Annida</h4>
+            <p class="text-slate-600 text-xs mb-5 leading-relaxed">Gg. Al-Ikhlas No.47, Cibening, Setu, Bekasi, Jawa Barat</p>
             <div class="flex flex-wrap gap-2 justify-center">
-              <button id="btn-load-map" type="button" class="bg-primary hover:bg-primary-dim text-white font-bold py-2 px-4 rounded-xl text-xs transition-all shadow-md flex items-center gap-1.5 cursor-pointer">
+              <button id="btn-load-map" type="button" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 px-4 rounded-xl text-xs transition-all shadow-md flex items-center gap-1.5 cursor-pointer">
                 <span class="material-symbols-outlined text-sm">map</span>
                 <span>Buka Peta Interaktif</span>
               </button>
-              <a href="https://maps.google.com/maps?q=Pondok%20Pesantren%20Annida%20Al%20Islamy%202%20Setu%20Bekasi" target="_blank" rel="noopener noreferrer" class="bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold py-2 px-4 rounded-xl text-xs transition-all flex items-center gap-1">
+              <a href="https://maps.google.com/maps?q=Pondok%20Pesantren%20Annida%20Al%20Islamy%202%20Setu%20Bekasi" target="_blank" rel="noopener noreferrer" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-800 font-semibold py-2 px-4 rounded-xl text-xs transition-all flex items-center gap-1">
                 <span>Buka di Google Maps</span>
                 <span class="material-symbols-outlined text-xs">open_in_new</span>
               </a>
@@ -587,9 +587,9 @@
     </div>
   </section>
 
-  <footer class="relative z-10 py-8 text-center text-sm text-gray-400 bg-black/80 border-t border-white/10">
+  <footer class="relative z-10 py-8 text-center text-sm text-slate-600 bg-white border-t border-slate-200">
     &copy; 2026 SMP Annida. Hak Cipta Dilindungi.<br>
-    <span class="text-xs mt-2 inline-block opacity-50">Website Resmi Sistem Informasi Terpadu</span>
+    <span class="text-xs mt-2 inline-block text-slate-500">Website Resmi Sistem Informasi Terpadu</span>
   </footer>
   <script>
     document.addEventListener('DOMContentLoaded', () => {

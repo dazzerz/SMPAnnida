@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${escapeHTML(g.nip || '-')}</td>
                 <td><strong>${escapeHTML(g.nama || '-')}</strong></td>
                 <td>${escapeHTML(g.mata_pelajaran || '-')}</td>
-                <td><span class="${displayWali !== '-' ? 'badge badge-primary' : 'text-gray-400'}">${escapeHTML(displayWali)}</span></td>
+                <td><span class="${displayWali !== '-' ? 'badge badge-primary' : 'text-slate-500'}">${escapeHTML(displayWali)}</span></td>
                 <td>${statusBadge}</td>
                 <td style="text-align: center;">
                     <button class="btn-edit-guru btn btn-outline" data-id="${g.id}" style="padding: 4px 10px; font-size: 12px;">Edit</button>

@@ -1014,51 +1014,170 @@ option {
 
 /* =========================================================================
    UNIVERSAL LIGHT THEME CARD & TYPOGRAPHY POLISH (per DESIGN.md)
+   Guarantees WCAG AA (4.5:1 for normal text) and AAA (7.0:1 for body/muted)
    ========================================================================= */
-h1, h2, h3, h4, h5, h6,
+
+/* Headings on light canvas */
+h1:not(.sidebar *):not(#student-sidebar *),
+h2:not(.sidebar *):not(#student-sidebar *),
+h3:not(.sidebar *):not(#student-sidebar *),
+h4:not(.sidebar *):not(#student-sidebar *),
+h5:not(.sidebar *):not(#student-sidebar *),
+h6:not(.sidebar *):not(#student-sidebar *),
 .page-title,
 .section-title {
   color: #0f172a !important;
 }
 
-/* Light Theme Card Elements */
-.main-content .bg-slate-900,
-.main-content .bg-gray-900,
+/* Universal Light Surfaces: Turn legacy dark backgrounds into clean white cards */
+.card,
+.surface-card,
+.glass-panel,
+.glass-panel-custom,
+.glass-card,
+.glass-login,
+.login-main-card,
+.metric-card,
+.dashboard-card,
+.bento-card,
+.table-container,
+.settings-container,
+.modal-content,
+.modal-card,
+.tab-panel .glass-card,
+main .bg-slate-900:not(.sidebar *):not(#student-sidebar *),
+main .bg-slate-950:not(.sidebar *):not(#student-sidebar *),
 .content-area .bg-slate-900,
-.content-area .bg-gray-900 {
+.app-container .bg-slate-900 {
   background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Sub-panels and secondary cards */
+.login-left-col,
+.pendaftar-item,
+.bento-card .p-2,
+.bento-card .p-2\.5 {
+  background-color: #f8fafc !important;
   border-color: #e2e8f0 !important;
   color: #0f172a !important;
 }
 
-.main-content .border-slate-800,
-.main-content .border-slate-700,
-.main-content .border-slate-700\/60,
-.content-area .border-slate-800,
-.content-area .border-slate-700 {
-  border-color: #e2e8f0 !important;
+/* Universal High Contrast Text Replacements on Light Backgrounds */
+/* White text on white surfaces -> Slate 900 (15.8:1 contrast) */
+.text-white:not(button):not(button *):not(.btn):not(.btn *):not(.btn-primary):not(.btn-primary *):not(.bg-primary):not(.bg-primary *):not(.bg-emerald-600):not(.bg-emerald-600 *):not(.bg-emerald-700):not(.bg-emerald-700 *):not(.bg-rose-600):not(.bg-rose-600 *):not(.sidebar *):not(#student-sidebar *) {
+  color: #0f172a !important;
 }
 
-.main-content .text-slate-400,
-.main-content .text-gray-400,
-.content-area .text-slate-400,
-.content-area .text-gray-400 {
+/* Gray/Slate 400 on white -> Slate 600 (7.0:1 contrast, AAA compliant) */
+.text-slate-400:not(.sidebar *):not(#student-sidebar *),
+.text-gray-400:not(.sidebar *):not(#student-sidebar *),
+.text-zinc-400:not(.sidebar *):not(#student-sidebar *) {
   color: #475569 !important;
 }
 
-.main-content .text-slate-300,
-.main-content .text-gray-300,
-.content-area .text-slate-300,
-.content-area .text-gray-300 {
+/* Gray/Slate 300 / 200 on white -> Slate 700 (9.5:1 contrast, AAA compliant) */
+.text-slate-300:not(.sidebar *):not(#student-sidebar *),
+.text-gray-300:not(.sidebar *):not(#student-sidebar *),
+.text-slate-200:not(.sidebar *):not(#student-sidebar *),
+.text-gray-200:not(.sidebar *):not(#student-sidebar *) {
   color: #334155 !important;
 }
 
-/* Ensure buttons with solid colors keep their readable white text */
+/* Emerald 400 on white (fails at 1.7:1) -> Green 700 (4.8:1 contrast, AA compliant) */
+.text-emerald-400:not(.sidebar *):not(#student-sidebar *),
+.text-emerald-300:not(.sidebar *):not(#student-sidebar *),
+.text-green-400:not(.sidebar *):not(#student-sidebar *) {
+  color: #15803d !important;
+}
+
+/* Amber 400 / Yellow 500 on white -> Amber 700 (4.6:1 contrast, AA compliant) */
+.text-amber-400:not(.sidebar *):not(#student-sidebar *),
+.text-amber-300:not(.sidebar *):not(#student-sidebar *),
+.text-yellow-500:not(.sidebar *):not(#student-sidebar *),
+.text-yellow-400:not(.sidebar *):not(#student-sidebar *) {
+  color: #b45309 !important;
+}
+
+/* Rose / Red on white -> Red 700 (5.0:1 contrast, AA compliant) */
+.text-rose-400:not(.sidebar *):not(#student-sidebar *),
+.text-rose-300:not(.sidebar *):not(#student-sidebar *),
+.text-red-400:not(.sidebar *):not(#student-sidebar *),
+.text-red-300:not(.sidebar *):not(#student-sidebar *) {
+  color: #b91c1c !important;
+}
+
+/* Blue on white -> Blue 700 (5.0:1 contrast, AA compliant) */
+.text-blue-400:not(.sidebar *):not(#student-sidebar *),
+.text-blue-300:not(.sidebar *):not(#student-sidebar *) {
+  color: #1d4ed8 !important;
+}
+
+/* Purple on white -> Purple 700 (5.0:1 contrast, AA compliant) */
+.text-purple-400:not(.sidebar *):not(#student-sidebar *),
+.text-purple-300:not(.sidebar *):not(#student-sidebar *) {
+  color: #7e22ce !important;
+}
+
+/* Dark borders cleanup on light surfaces */
+.border-white\/5,
+.border-white\/10,
+.border-white\/15,
+.border-white\/20,
+.border-slate-800,
+.border-slate-700,
+.border-slate-700\/60,
+.divide-white\/5,
+.divide-white\/10 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Dark bar tracks on light cards -> Soft Slate 200 */
+.bg-slate-800:not(.sidebar *):not(#student-sidebar *),
+.bg-slate-700:not(.sidebar *):not(#student-sidebar *) {
+  background-color: #e2e8f0 !important;
+}
+
+/* Form inputs & controls on light theme */
+input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+select,
+textarea,
+.auth-input,
+.input-control {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+input::placeholder,
+textarea::placeholder,
+.auth-input::placeholder {
+  color: #64748b !important;
+  opacity: 1 !important;
+}
+
+/* Form labels */
+label {
+  color: #334155 !important;
+}
+
+/* Interactive link contrast protection (Green 700 #15803d = 4.8:1 contrast on white) */
+a.link-accent,
+.quick-access-link,
+a.hover\:text-emerald-400:hover {
+  color: #15803d !important;
+  text-decoration: underline;
+}
+
+/* Buttons with solid backgrounds keep crisp white text */
 .btn-primary,
 .bg-emerald-600,
 .bg-emerald-500,
 .bg-green-600,
 .bg-green-700,
+button[type="submit"]:not(.bg-transparent),
 .btn-primary .text-white,
 button.bg-emerald-600 .text-white,
 button.bg-emerald-500 .text-white {
@@ -1076,3 +1195,4 @@ button.bg-emerald-500 .text-white {
 .modal-content label {
   color: #334155 !important;
 }
+

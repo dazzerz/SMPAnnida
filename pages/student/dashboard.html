@@ -50,7 +50,7 @@
   </style>
   <script type="module" src="/js/core/pwa.js"></script>
 </head>
-<body class="text-white font-body-md min-h-screen flex flex-col">
+<body class="text-slate-900 font-body-md min-h-screen flex flex-col bg-slate-50">
 
   <!-- App Wrapper -->
   <div class="relative z-10 flex min-h-screen">
@@ -63,69 +63,69 @@
           <img src="/logo_1x1.png" alt="Logo SMP Annida" class="w-10 h-10 object-contain rounded-full shadow-md">
           <div>
             <div class="font-headline-md font-bold text-lg text-emerald-400">SMP ANNIDA</div>
-            <div class="text-[0.7rem] text-gray-400 uppercase tracking-wider font-semibold">Portal Siswa</div>
+            <div class="text-[0.7rem] text-gray-300 uppercase tracking-wider font-semibold">Portal Siswa</div>
           </div>
         </a>
 
         <!-- Navigation Menu -->
         <nav class="space-y-1.5 text-sm font-medium">
-          <a href="#beranda" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all active bg-white/10 text-white font-semibold" data-target="panel-beranda">
-            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">dashboard</span>
+          <a href="#beranda" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all active bg-white/15 text-white font-bold" data-target="panel-beranda">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-300">dashboard</span>
             <span>Beranda</span>
           </a>
-          <a href="#jadwal" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-jadwal">
-            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">calendar_month</span>
+          <a href="#jadwal" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all" data-target="panel-jadwal">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-300">calendar_month</span>
             <span>Jadwal Pelajaran</span>
           </a>
-          <a href="#presensi" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-presensi">
-            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">fact_check</span>
+          <a href="#presensi" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all" data-target="panel-presensi">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-300">fact_check</span>
             <span>Presensi Saya</span>
           </a>
-          <a href="#cbt" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-cbt">
-            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">quiz</span>
+          <a href="#cbt" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all" data-target="panel-cbt">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-300">quiz</span>
             <span>Ujian CBT Online</span>
           </a>
-          <a href="#tugas" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-tugas">
-            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">assignment</span>
+          <a href="#tugas" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all" data-target="panel-tugas">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-300">assignment</span>
             <span>Tugas & PR</span>
           </a>
-          <a href="#materi-lms" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-materi-lms">
-            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">menu_book</span>
+          <a href="#materi-lms" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all" data-target="panel-materi-lms">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-300">menu_book</span>
             <span>Materi E-Learning</span>
           </a>
-          <a href="#materi" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-materi">
-            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">menu_book</span>
+          <a href="#materi" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all" data-target="panel-materi">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-300">menu_book</span>
             <span>Jurnal & Materi</span>
           </a>
-          <a href="#tahfidz" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-tahfidz">
-            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">auto_stories</span>
+          <a href="#tahfidz" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all" data-target="panel-tahfidz">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-300">auto_stories</span>
             <span>Tracker Tahfidz</span>
           </a>
-          <a href="#nilai" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-nilai">
-            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">grade</span>
+          <a href="#nilai" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all" data-target="panel-nilai">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-300">grade</span>
             <span>Nilai & Rapor</span>
           </a>
-          <a href="#berkas" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-berkas">
-            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">folder_shared</span>
+          <a href="#berkas" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all" data-target="panel-berkas">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-300">folder_shared</span>
             <span>Berkas PPDB</span>
           </a>
-          <a href="#akun" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-300 hover:bg-white/10 hover:text-white transition-all" data-target="panel-akun">
-            <span class="material-symbols-outlined text-[1.2rem] text-emerald-400">manage_accounts</span>
+          <a href="#akun" class="nav-item-btn flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-200 hover:bg-white/10 hover:text-white transition-all" data-target="panel-akun">
+            <span class="material-symbols-outlined text-[1.2rem] text-emerald-300">manage_accounts</span>
             <span>Pengaturan Akun</span>
           </a>
         </nav>
       </div>
 
       <!-- User Profile & Logout Widget -->
-      <div class="border-t border-white/10 pt-4">
+      <div class="border-t border-white/15 pt-4">
         <div class="flex items-center gap-3 mb-3">
-          <div class="w-10 h-10 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center font-bold text-emerald-400 text-lg" id="user-avatar-initial">S</div>
+          <div class="w-10 h-10 rounded-full bg-emerald-500/30 border border-emerald-400/50 flex items-center justify-center font-bold text-white text-lg" id="user-avatar-initial">S</div>
           <div class="flex-1 overflow-hidden">
-            <div class="font-semibold text-sm truncate text-white" id="user-display-name">Memuat...</div>
-            <div class="text-[0.75rem] text-gray-400 truncate" id="user-display-class">Siswa Aktif</div>
+            <div class="font-bold text-sm truncate text-white" id="user-display-name">Memuat...</div>
+            <div class="text-[0.75rem] text-gray-300 truncate" id="user-display-class">Siswa Aktif</div>
           </div>
         </div>
-        <button id="btn-student-logout" class="w-full bg-white/5 hover:bg-rose-500/20 text-rose-300 hover:text-rose-200 border border-white/10 hover:border-rose-500/40 font-semibold py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+        <button id="btn-student-logout" class="w-full bg-white/10 hover:bg-rose-500/30 text-rose-200 border border-white/15 hover:border-rose-400/40 font-semibold py-2 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
           <span class="material-symbols-outlined text-sm">logout</span>
           <span>Keluar Sesi</span>
         </button>
@@ -135,56 +135,55 @@
     <!-- Main Content Panel -->
     <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
       
-      
       <!-- Sticky Mobile Top Bar & Pill Navigation -->
-      <div class="md:hidden sticky top-0 z-40 bg-slate-900 border border-slate-800 rounded-xl p-3 mb-6 shadow-xl space-y-3">
+      <div class="md:hidden sticky top-0 z-40 bg-white border border-slate-200 rounded-xl p-3 mb-6 shadow-sm space-y-3">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <img src="/logo_1x1.png" alt="Logo" class="w-8 h-8 rounded-full">
             <div>
-              <h3 class="font-bold text-sm text-emerald-400 leading-tight">Portal Siswa</h3>
-              <p class="text-[0.7rem] text-gray-300 truncate max-w-[180px]" id="mobile-student-name">Memuat...</p>
+              <h3 class="font-bold text-sm text-emerald-700 leading-tight">Portal Siswa</h3>
+              <p class="text-[0.7rem] text-slate-600 truncate max-w-[180px]" id="mobile-student-name">Memuat...</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <button id="btn-mobile-logout" class="p-1.5 bg-rose-500/20 text-rose-300 rounded-lg text-xs flex items-center gap-1 font-semibold" title="Keluar Sesi">
+            <button id="btn-mobile-logout" class="p-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-xs flex items-center gap-1 font-semibold" title="Keluar Sesi">
               <span class="material-symbols-outlined text-sm">logout</span>
             </button>
           </div>
         </div>
 
-        <div class="flex overflow-x-auto whitespace-nowrap gap-1.5 pb-1 scrollbar-none border-t border-white/10 pt-2">
-          <a href="#beranda" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-600 text-white shadow-sm flex items-center gap-1 shrink-0" data-target="panel-beranda">
+        <div class="flex overflow-x-auto whitespace-nowrap gap-1.5 pb-1 scrollbar-none border-t border-slate-200 pt-2">
+          <a href="#beranda" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-700 text-white shadow-sm flex items-center gap-1 shrink-0" data-target="panel-beranda">
             <span class="material-symbols-outlined text-xs">dashboard</span> Beranda
           </a>
-          <a href="#jadwal" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-jadwal">
+          <a href="#jadwal" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-jadwal">
             <span class="material-symbols-outlined text-xs">calendar_month</span> Jadwal
           </a>
-          <a href="#presensi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-presensi">
+          <a href="#presensi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-presensi">
             <span class="material-symbols-outlined text-xs">fact_check</span> Presensi
           </a>
-          <a href="#cbt" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-cbt">
+          <a href="#cbt" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-cbt">
             <span class="material-symbols-outlined text-xs">quiz</span> Ujian CBT
           </a>
-          <a href="#tugas" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-tugas">
+          <a href="#tugas" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-tugas">
             <span class="material-symbols-outlined text-xs">assignment</span> Tugas
           </a>
-          <a href="#materi-lms" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-materi-lms">
+          <a href="#materi-lms" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-materi-lms">
             <span class="material-symbols-outlined text-xs">menu_book</span> Materi
           </a>
-          <a href="#materi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-materi">
-            <span class="material-symbols-outlined text-xs">menu_book</span> Materi
+          <a href="#materi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-materi">
+            <span class="material-symbols-outlined text-xs">menu_book</span> Jurnal
           </a>
-          <a href="#tahfidz" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-tahfidz">
+          <a href="#tahfidz" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-tahfidz">
             <span class="material-symbols-outlined text-xs">auto_stories</span> Tahfidz
           </a>
-          <a href="#nilai" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-nilai">
+          <a href="#nilai" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-nilai">
             <span class="material-symbols-outlined text-xs">grade</span> Nilai
           </a>
-          <a href="#berkas" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-berkas">
+          <a href="#berkas" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-berkas">
             <span class="material-symbols-outlined text-xs">folder_shared</span> Berkas
           </a>
-          <a href="#akun" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-gray-300 hover:text-white flex items-center gap-1 shrink-0" data-target="panel-akun">
+          <a href="#akun" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-akun">
             <span class="material-symbols-outlined text-xs">manage_accounts</span> Akun
           </a>
         </div>
@@ -193,102 +192,102 @@
       <!-- PANEL 1: BERANDA -->
       <section id="panel-beranda" class="student-panel space-y-6">
         <!-- Digital Student Card -->
-        <div class="p-6 md:p-8 rounded-xl bg-slate-900 border border-emerald-500/40 shadow-xl relative overflow-hidden">
+        <div class="p-6 md:p-8 rounded-xl bg-white border border-slate-200 shadow-sm relative overflow-hidden">
           <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
             <div class="flex items-center gap-4 md:gap-6">
-              <div class="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center font-headline-md text-2xl md:text-3xl font-bold text-emerald-300 shadow-inner" id="hero-avatar">
-                <span class="material-symbols-outlined text-3xl md:text-4xl text-emerald-400">school</span>
+              <div class="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center font-headline-md text-2xl md:text-3xl font-bold text-emerald-700 shadow-sm" id="hero-avatar">
+                <span class="material-symbols-outlined text-3xl md:text-4xl text-emerald-700">school</span>
               </div>
               <div>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[0.75rem] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 mb-2">
-                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[0.75rem] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 mb-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
                   <span>Santri / Siswa Aktif</span>
                 </span>
-                <h1 class="font-headline-md text-2xl md:text-3xl font-bold text-white mb-1" id="hero-student-name" class="break-words">Memuat Data Siswa...</h1>
-                <p class="text-sm text-gray-300 flex flex-wrap gap-x-4 gap-y-1">
-                  <span>NISN: <b class="text-emerald-300" id="hero-student-nisn">-</b></span>
-                  <span>Kelas: <b class="text-emerald-300" id="hero-student-class">-</b></span>
-                  <span>Email: <b class="text-emerald-300" id="hero-student-email" class="break-all">-</b></span>
+                <h1 class="font-headline-md text-2xl md:text-3xl font-bold text-slate-900 mb-1" id="hero-student-name" class="break-words">Memuat Data Siswa...</h1>
+                <p class="text-sm text-slate-600 flex flex-wrap gap-x-4 gap-y-1">
+                  <span>NISN: <b class="text-emerald-700 font-bold" id="hero-student-nisn">-</b></span>
+                  <span>Kelas: <b class="text-emerald-700 font-bold" id="hero-student-class">-</b></span>
+                  <span>Email: <b class="text-emerald-700 font-bold" id="hero-student-email" class="break-all">-</b></span>
                 </p>
               </div>
             </div>
             <div class="flex flex-col items-end gap-2 text-right">
-              <div class="text-xs text-gray-400">Tahun Ajaran 2026/2027</div>
-              <div class="text-lg font-bold text-emerald-400 font-headline-md">SMP ANNIDA SETU</div>
+              <div class="text-xs text-slate-500 font-medium">Tahun Ajaran 2026/2027</div>
+              <div class="text-lg font-bold text-emerald-700 font-headline-md">SMP ANNIDA SETU</div>
             </div>
           </div>
           <div class="absolute -right-10 -bottom-10 opacity-5 select-none pointer-events-none">
-            <span class="material-symbols-outlined text-[12rem] text-emerald-400">account_balance</span>
+            <span class="material-symbols-outlined text-[12rem] text-emerald-800">account_balance</span>
           </div>
         </div>
 
         <!-- Quick Metric Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl">
+          <div class="p-5 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 text-xl">
               <span class="material-symbols-outlined text-2xl">analytics</span>
             </div>
             <div>
-              <div class="text-xs text-gray-400">Kehadiran Bulan Ini</div>
-              <div class="text-xl font-bold text-white" id="stat-attendance">100%</div>
+              <div class="text-xs text-slate-500 font-medium">Kehadiran Bulan Ini</div>
+              <div class="text-xl font-bold text-slate-900" id="stat-attendance">100%</div>
             </div>
           </div>
 
-          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl">
+          <div class="p-5 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 text-xl">
               <span class="material-symbols-outlined text-2xl">auto_stories</span>
             </div>
             <div>
-              <div class="text-xs text-gray-400">Capaian Tahfidz</div>
-              <div class="text-xl font-bold text-white" id="stat-tahfidz">- Juz</div>
+              <div class="text-xs text-slate-500 font-medium">Capaian Tahfidz</div>
+              <div class="text-xl font-bold text-slate-900" id="stat-tahfidz">- Juz</div>
             </div>
           </div>
 
-          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl">
+          <div class="p-5 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-700 text-xl">
               <span class="material-symbols-outlined text-2xl">calendar_month</span>
             </div>
             <div>
-              <div class="text-xs text-gray-400">Jadwal Hari Ini</div>
-              <div class="text-xl font-bold text-white" id="stat-today-classes">- Mapel</div>
+              <div class="text-xs text-slate-500 font-medium">Jadwal Hari Ini</div>
+              <div class="text-xl font-bold text-slate-900" id="stat-today-classes">- Mapel</div>
             </div>
           </div>
 
-          <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl">
+          <div class="p-5 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-700 text-xl">
               <span class="material-symbols-outlined text-2xl">folder_shared</span>
             </div>
             <div>
-              <div class="text-xs text-gray-400">Status Berkas PPDB</div>
-              <div class="text-xl font-bold text-emerald-400" id="stat-ppdb-docs">Terverifikasi</div>
+              <div class="text-xs text-slate-500 font-medium">Status Berkas PPDB</div>
+              <div class="text-xl font-bold text-emerald-700" id="stat-ppdb-docs">Terverifikasi</div>
             </div>
           </div>
         </div>
 
         <!-- Today Schedules Preview & Announcements -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="lg:col-span-2 p-6 rounded-xl bg-slate-900 border border-slate-800">
-            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-              <span class="material-symbols-outlined text-emerald-400">calendar_today</span>
+          <div class="lg:col-span-2 p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
+            <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-slate-900">
+              <span class="material-symbols-outlined text-emerald-700">calendar_today</span>
               <span>Jadwal Pelajaran Hari Ini</span>
             </h3>
             <div id="today-schedules-list" class="space-y-3">
-              <div class="text-sm text-gray-400 text-center py-6">Memuat jadwal hari ini...</div>
+              <div class="text-sm text-slate-500 text-center py-6">Memuat jadwal hari ini...</div>
             </div>
           </div>
 
-          <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
-            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-              <span class="material-symbols-outlined text-emerald-400">campaign</span>
+          <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
+            <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-slate-900">
+              <span class="material-symbols-outlined text-emerald-700">campaign</span>
               <span>Pengumuman Sekolah</span>
             </h3>
-            <div class="space-y-3 text-xs text-gray-300">
-              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
-                <div class="font-semibold text-white mb-1">Setoran Hafalan Mingguan</div>
+            <div class="space-y-3 text-xs text-slate-600">
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div class="font-bold text-slate-900 mb-1">Setoran Hafalan Mingguan</div>
                 <p>Jadwal setoran Ziyadah dan Muraja'ah bersama musyrif setiap hari Senin & Kamis ba'da Ashar.</p>
               </div>
-              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
-                <div class="font-semibold text-white mb-1">Kegiatan Eco Green Project</div>
+              <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div class="font-bold text-slate-900 mb-1">Kegiatan Eco Green Project</div>
                 <p>Praktik lapangan sekolah alam diadakan setiap hari Rabu. Kenakan seragam lapangan rapi.</p>
               </div>
             </div>
@@ -298,28 +297,28 @@
 
       <!-- PANEL 2: JADWAL PELAJARAN -->
       <section id="panel-jadwal" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
           <div class="flex justify-between items-center mb-6">
             <div>
-              <h2 class="text-xl font-bold font-headline-md text-white">Jadwal Pelajaran Mingguan</h2>
-              <p class="text-xs text-gray-400">Jadwal aktif kelas Anda di SMP Annida</p>
+              <h2 class="text-xl font-bold font-headline-md text-slate-900">Jadwal Pelajaran Mingguan</h2>
+              <p class="text-xs text-slate-500">Jadwal aktif kelas Anda di SMP Annida</p>
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="weekly-schedule-grid">
-            <div class="text-center py-8 text-gray-400 col-span-full">Memuat jadwal mingguan...</div>
+            <div class="text-center py-8 text-slate-400 col-span-full">Memuat jadwal mingguan...</div>
           </div>
         </div>
       </section>
 
       <!-- PANEL 3: PRESENSI SAYA -->
       <section id="panel-presensi" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
-          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Riwayat Presensi & Kehadiran</h2>
-          <p class="text-xs text-gray-400 mb-6">Pencatatan presensi real-time oleh guru mata pelajaran</p>
+        <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
+          <h2 class="text-xl font-bold font-headline-md text-slate-900 mb-2">Riwayat Presensi & Kehadiran</h2>
+          <p class="text-xs text-slate-500 mb-6">Pencatatan presensi real-time oleh guru mata pelajaran</p>
           
           <div class="overflow-x-auto">
             <table class="data-table w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-white/5 border-b border-white/10 text-gray-400">
+              <thead class="text-xs uppercase bg-slate-50 border-b border-slate-200 text-slate-700 font-bold">
                 <tr>
                   <th class="py-3 px-4">Tanggal</th>
                   <th class="py-3 px-4">Mata Pelajaran</th>
@@ -328,49 +327,46 @@
                   <th class="py-3 px-4">Catatan</th>
                 </tr>
               </thead>
-              <tbody id="student-attendance-tbody" class="divide-y divide-white/5 text-gray-300">
-                <tr><td colspan="5" class="py-6 text-center text-gray-400">Memuat data presensi...</td></tr>
+              <tbody id="student-attendance-tbody" class="divide-y divide-slate-100 text-slate-800">
+                <tr><td colspan="5" class="py-6 text-center text-slate-500">Memuat data presensi...</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      
-      
       <!-- PANEL: UJIAN & KUIS CBT ONLINE (ANTI-CHEAT) -->
       <section id="panel-cbt" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
-              <h2 class="text-xl font-bold font-headline-md text-white mb-1">Ujian & Kuis Online (CBT Anti-Cheat)</h2>
-              <p class="text-xs text-gray-400">Kerjakan ujian dengan pengawasan integritas waktu dan deteksi tab otomatis</p>
+              <h2 class="text-xl font-bold font-headline-md text-slate-900 mb-1">Ujian & Kuis Online (CBT Anti-Cheat)</h2>
+              <p class="text-xs text-slate-500">Kerjakan ujian dengan pengawasan integritas waktu dan deteksi tab otomatis</p>
             </div>
             <div class="flex items-center gap-2">
-              <span class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm">security</span> Anti-Cheat Aktif
+              <span class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm text-emerald-700">security</span> Anti-Cheat Aktif
               </span>
             </div>
           </div>
 
           <!-- Feed Daftar Ujian CBT -->
           <div id="student-cbt-feed" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="text-center py-8 text-gray-400 col-span-full">Memuat daftar ujian aktif...</div>
+            <div class="text-center py-8 text-slate-500 col-span-full">Memuat daftar ujian aktif...</div>
           </div>
         </div>
       </section>
 
-      
       <!-- PANEL: MATERI E-LEARNING INTERAKTIF (DEDICATED) -->
       <section id="panel-materi-lms" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
-              <h2 class="text-xl font-bold font-headline-md text-white mb-1">Pusat Materi Pembelajaran Digital</h2>
-              <p class="text-xs text-gray-400">Tonton video YouTube, baca dokumen PDF, dan buka simulasi interaktif tanpa keluar aplikasi</p>
+              <h2 class="text-xl font-bold font-headline-md text-slate-900 mb-1">Pusat Materi Pembelajaran Digital</h2>
+              <p class="text-xs text-slate-500">Tonton video YouTube, baca dokumen PDF, dan buka simulasi interaktif tanpa keluar aplikasi</p>
             </div>
             <div class="flex items-center gap-2">
-              <select id="filter-student-material-subject" class="bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+              <select id="filter-student-material-subject" class="bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-600 font-medium">
                 <option value="">Semua Mata Pelajaran</option>
               </select>
             </div>
@@ -378,68 +374,68 @@
 
           <!-- Feed Daftar Materi E-Learning Siswa -->
           <div id="student-materials-lms-feed" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="text-center py-8 text-gray-400 col-span-full">Memuat materi pembelajaran...</div>
+            <div class="text-center py-8 text-slate-500 col-span-full">Memuat materi pembelajaran...</div>
           </div>
         </div>
       </section>
 
       <!-- PANEL: TUGAS & E-LEARNING (LMS) -->
       <section id="panel-tugas" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
-              <h2 class="text-xl font-bold font-headline-md text-white mb-1">Pusat Tugas & E-Learning (LMS)</h2>
-              <p class="text-xs text-gray-400">Daftar tugas, lembar kerja, dan pengumpulan berkas jawaban Anda</p>
+              <h2 class="text-xl font-bold font-headline-md text-slate-900 mb-1">Pusat Tugas & E-Learning (LMS)</h2>
+              <p class="text-xs text-slate-500">Daftar tugas, lembar kerja, dan pengumpulan berkas jawaban Anda</p>
             </div>
             <div class="flex items-center gap-2">
-              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white" data-filter="all">Semua</button>
-              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10" data-filter="pending">Belum Dikumpul</button>
-              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10" data-filter="submitted">Sudah Dikumpul</button>
-              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10" data-filter="graded">Dinilai</button>
+              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-700 text-white" data-filter="all">Semua</button>
+              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200" data-filter="pending">Belum Dikumpul</button>
+              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200" data-filter="submitted">Sudah Dikumpul</button>
+              <button class="tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200" data-filter="graded">Dinilai</button>
             </div>
           </div>
 
           <!-- Ringkasan Statistik Tugas -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-            <div class="p-4 rounded-xl bg-white/5 border border-white/10">
-              <div class="text-xs text-gray-400 mb-1">Total Tugas</div>
-              <div class="text-2xl font-bold text-white" id="stat-total-tugas">0</div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="text-xs text-slate-500 font-medium mb-1">Total Tugas</div>
+              <div class="text-2xl font-bold text-slate-900" id="stat-total-tugas">0</div>
             </div>
-            <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30">
-              <div class="text-xs text-amber-300 mb-1">Perlu Dikerjakan</div>
-              <div class="text-2xl font-bold text-amber-400" id="stat-pending-tugas">0</div>
+            <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+              <div class="text-xs text-amber-800 font-bold mb-1">Perlu Dikerjakan</div>
+              <div class="text-2xl font-bold text-amber-700" id="stat-pending-tugas">0</div>
             </div>
-            <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
-              <div class="text-xs text-blue-300 mb-1">Menunggu Penilaian</div>
-              <div class="text-2xl font-bold text-blue-400" id="stat-submitted-tugas">0</div>
+            <div class="p-4 rounded-xl bg-blue-50 border border-blue-200">
+              <div class="text-xs text-blue-800 font-bold mb-1">Menunggu Penilaian</div>
+              <div class="text-2xl font-bold text-blue-700" id="stat-submitted-tugas">0</div>
             </div>
-            <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-              <div class="text-xs text-emerald-300 mb-1">Rata-rata Nilai</div>
-              <div class="text-2xl font-bold text-emerald-400" id="stat-avg-tugas">-</div>
+            <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+              <div class="text-xs text-emerald-800 font-bold mb-1">Rata-rata Nilai</div>
+              <div class="text-2xl font-bold text-emerald-700" id="stat-avg-tugas">-</div>
             </div>
           </div>
 
           <!-- Feed Daftar Tugas -->
           <div id="student-assignments-feed" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="text-center py-8 text-gray-400 col-span-full">Memuat daftar tugas & materi...</div>
+            <div class="text-center py-8 text-slate-500 col-span-full">Memuat daftar tugas & materi...</div>
           </div>
         </div>
       </section>
 
       <!-- PANEL 4: JURNAL & MATERI PEMBELAJARAN INTERAKTIF -->
       <section id="panel-materi" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
+        <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
             <div>
-              <h2 class="text-xl font-bold font-headline-md text-white mb-1">Pusat Materi Interaktif & E-Learning</h2>
-              <p class="text-xs text-gray-400">Tonton video pembelajaran, baca modul PDF, dan buka simulasi interaktif</p>
+              <h2 class="text-xl font-bold font-headline-md text-slate-900 mb-1">Pusat Materi Interaktif & E-Learning</h2>
+              <p class="text-xs text-slate-500">Tonton video pembelajaran, baca modul PDF, dan buka simulasi interaktif</p>
             </div>
             <div class="flex items-center gap-2">
-              <button class="materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white flex items-center gap-1.5" id="tab-btn-interactive-materi" data-target="view-interactive-materi">
+              <button class="materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-700 text-white flex items-center gap-1.5" id="tab-btn-interactive-materi" data-target="view-interactive-materi">
                 <span class="material-symbols-outlined text-sm">auto_stories</span>
                 <span>Modul Interaktif</span>
               </button>
-              <button class="materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10 flex items-center gap-1.5" id="tab-btn-journal-materi" data-target="view-journal-materi">
+              <button class="materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 flex items-center gap-1.5" id="tab-btn-journal-materi" data-target="view-journal-materi">
                 <span class="material-symbols-outlined text-sm">edit_note</span>
                 <span>Catatan Jurnal Guru</span>
               </button>
@@ -449,14 +445,14 @@
           <!-- Sub-view 1: Modul Interaktif (Grid Materi Video / PDF / HTML) -->
           <div id="view-interactive-materi" class="space-y-4">
             <div id="student-interactive-materials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div class="text-center py-8 text-gray-400 col-span-full">Memuat modul materi interaktif...</div>
+              <div class="text-center py-8 text-slate-500 col-span-full">Memuat modul materi interaktif...</div>
             </div>
           </div>
 
           <!-- Sub-view 2: Linimasa Jurnal Guru -->
           <div id="view-journal-materi" class="space-y-4 hidden">
             <div id="student-journal-feed" class="space-y-4">
-              <div class="text-center py-8 text-gray-400">Memuat catatan jurnal guru...</div>
+              <div class="text-center py-8 text-slate-500">Memuat catatan jurnal guru...</div>
             </div>
           </div>
         </div>
@@ -464,12 +460,12 @@
 
       <!-- PANEL 5: TRACKER TAHFIDZ -->
       <section id="panel-tahfidz" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
-          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Tracker Setoran Tahfidz Al-Qur'an</h2>
-          <p class="text-xs text-gray-400 mb-6">Pencatatan hafalan Ziyadah & Muraja'ah bersama Musyrif</p>
+        <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
+          <h2 class="text-xl font-bold font-headline-md text-slate-900 mb-2">Tracker Setoran Tahfidz Al-Qur'an</h2>
+          <p class="text-xs text-slate-500 mb-6">Pencatatan hafalan Ziyadah & Muraja'ah bersama Musyrif</p>
           <div class="overflow-x-auto">
             <table class="data-table w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-white/5 border-b border-white/10 text-gray-400">
+              <thead class="text-xs uppercase bg-slate-50 border-b border-slate-200 text-slate-700 font-bold">
                 <tr>
                   <th class="py-3 px-4">Tanggal</th>
                   <th class="py-3 px-4">Juz</th>
@@ -479,8 +475,8 @@
                   <th class="py-3 px-4">Catatan Musyrif</th>
                 </tr>
               </thead>
-              <tbody id="student-tahfidz-tbody" class="divide-y divide-white/5 text-gray-300">
-                <tr><td colspan="6" class="py-6 text-center text-gray-400">Belum ada riwayat setoran tahfidz.</td></tr>
+              <tbody id="student-tahfidz-tbody" class="divide-y divide-slate-100 text-slate-800">
+                <tr><td colspan="6" class="py-6 text-center text-slate-500">Belum ada riwayat setoran tahfidz.</td></tr>
               </tbody>
             </table>
           </div>
@@ -489,12 +485,12 @@
 
       <!-- PANEL 6: NILAI & RAPOR -->
       <section id="panel-nilai" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
-          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Transkrip Nilai & Capaian Akademik</h2>
-          <p class="text-xs text-gray-400 mb-6">Rekapitulasi penilaian tugas, UTS, dan UAS</p>
+        <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
+          <h2 class="text-xl font-bold font-headline-md text-slate-900 mb-2">Transkrip Nilai & Capaian Akademik</h2>
+          <p class="text-xs text-slate-500 mb-6">Rekapitulasi penilaian tugas, UTS, dan UAS</p>
           <div class="overflow-x-auto">
             <table class="data-table w-full text-left text-sm">
-              <thead class="text-xs uppercase bg-white/5 border-b border-white/10 text-gray-400">
+              <thead class="text-xs uppercase bg-slate-50 border-b border-slate-200 text-slate-700 font-bold">
                 <tr>
                   <th class="py-3 px-4">Mata Pelajaran</th>
                   <th class="py-3 px-4">Jenis Penilaian</th>
@@ -503,8 +499,8 @@
                   <th class="py-3 px-4">Tahun Ajaran</th>
                 </tr>
               </thead>
-              <tbody id="student-grades-tbody" class="divide-y divide-white/5 text-gray-300">
-                <tr><td colspan="5" class="py-6 text-center text-gray-400">Memuat data nilai akademik...</td></tr>
+              <tbody id="student-grades-tbody" class="divide-y divide-slate-100 text-slate-800">
+                <tr><td colspan="5" class="py-6 text-center text-slate-500">Memuat data nilai akademik...</td></tr>
               </tbody>
             </table>
           </div>
@@ -513,42 +509,42 @@
 
       <!-- PANEL 7: BERKAS PPDB -->
       <section id="panel-berkas" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800">
-          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Berkas Digital Pendaftaran PPDB</h2>
-          <p class="text-xs text-gray-400 mb-6">Arsip dokumen persyaratan yang diunggah saat pendaftaran masuk</p>
+        <div class="p-6 rounded-xl bg-white border border-slate-200 shadow-sm">
+          <h2 class="text-xl font-bold font-headline-md text-slate-900 mb-2">Berkas Digital Pendaftaran PPDB</h2>
+          <p class="text-xs text-slate-500 mb-6">Arsip dokumen persyaratan yang diunggah saat pendaftaran masuk</p>
           <div id="student-ppdb-docs-list" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="p-5 rounded-xl bg-white/5 border border-white/10">
-              <div class="font-bold text-sm text-white mb-1 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-base text-blue-400">description</span>
+            <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="font-bold text-sm text-slate-900 mb-1 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base text-blue-600">description</span>
                 <span>Kartu Keluarga (KK)</span>
               </div>
-              <div class="text-xs text-emerald-400 font-semibold mb-3 flex items-center gap-1">
+              <div class="text-xs text-emerald-700 font-bold mb-3 flex items-center gap-1">
                 <span class="material-symbols-outlined text-sm">verified</span>
                 <span>Terverifikasi Panitia</span>
               </div>
-              <span class="text-xs text-gray-400">Tersimpan di Cloud Storage</span>
+              <span class="text-xs text-slate-500">Tersimpan di Cloud Storage</span>
             </div>
-            <div class="p-5 rounded-xl bg-white/5 border border-white/10">
-              <div class="font-bold text-sm text-white mb-1 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-base text-blue-400">description</span>
+            <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="font-bold text-sm text-slate-900 mb-1 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base text-blue-600">description</span>
                 <span>Akta Kelahiran</span>
               </div>
-              <div class="text-xs text-emerald-400 font-semibold mb-3 flex items-center gap-1">
+              <div class="text-xs text-emerald-700 font-bold mb-3 flex items-center gap-1">
                 <span class="material-symbols-outlined text-sm">verified</span>
                 <span>Terverifikasi Panitia</span>
               </div>
-              <span class="text-xs text-gray-400">Tersimpan di Cloud Storage</span>
+              <span class="text-xs text-slate-500">Tersimpan di Cloud Storage</span>
             </div>
-            <div class="p-5 rounded-xl bg-white/5 border border-white/10">
-              <div class="font-bold text-sm text-white mb-1 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-base text-blue-400">description</span>
+            <div class="p-5 rounded-xl bg-slate-50 border border-slate-200">
+              <div class="font-bold text-sm text-slate-900 mb-1 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base text-blue-600">description</span>
                 <span>Ijazah / SKL SD</span>
               </div>
-              <div class="text-xs text-emerald-400 font-semibold mb-3 flex items-center gap-1">
+              <div class="text-xs text-emerald-700 font-bold mb-3 flex items-center gap-1">
                 <span class="material-symbols-outlined text-sm">verified</span>
                 <span>Terverifikasi Panitia</span>
               </div>
-              <span class="text-xs text-gray-400">Tersimpan di Cloud Storage</span>
+              <span class="text-xs text-slate-500">Tersimpan di Cloud Storage</span>
             </div>
           </div>
         </div>
@@ -556,20 +552,20 @@
 
       <!-- PANEL 8: PENGATURAN AKUN -->
       <section id="panel-akun" class="student-panel hidden space-y-6">
-        <div class="p-6 rounded-xl bg-slate-900 border border-slate-800 max-w-xl">
-          <h2 class="text-xl font-bold font-headline-md text-white mb-2">Keamanan Akun & Ganti Password</h2>
-          <p class="text-xs text-gray-400 mb-6">Perbarui kata sandi akun portal Anda secara berkala</p>
+        <div class="p-6 rounded-xl bg-white border border-slate-200 max-w-xl shadow-sm">
+          <h2 class="text-xl font-bold font-headline-md text-slate-900 mb-2">Keamanan Akun & Ganti Password</h2>
+          <p class="text-xs text-slate-500 mb-6">Perbarui kata sandi akun portal Anda secara berkala</p>
           
           <form id="form-change-password" class="space-y-4">
             <div>
-              <label class="block text-xs font-semibold text-gray-300 mb-1">Password Baru</label>
-              <input type="password" id="new-password" required minlength="6" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500" placeholder="Minimal 6 karakter">
+              <label class="block text-xs font-bold text-slate-700 mb-1">Password Baru</label>
+              <input type="password" id="new-password" required minlength="6" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 text-sm focus:outline-none focus:border-emerald-600" placeholder="Minimal 6 karakter">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-gray-300 mb-1">Konfirmasi Password Baru</label>
-              <input type="password" id="confirm-new-password" required minlength="6" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500" placeholder="Ulangi password baru">
+              <label class="block text-xs font-bold text-slate-700 mb-1">Konfirmasi Password Baru</label>
+              <input type="password" id="confirm-new-password" required minlength="6" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 text-sm focus:outline-none focus:border-emerald-600" placeholder="Ulangi password baru">
             </div>
-            <button type="submit" id="btn-save-password" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2.5 px-6 rounded-xl text-sm transition-all shadow-md">
+            <button type="submit" id="btn-save-password" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 px-6 rounded-xl text-sm transition-all shadow-sm cursor-pointer">
               Simpan Password Baru
             </button>
           </form>
@@ -581,24 +577,24 @@
 
   <!-- MODAL: FORCED PASSWORD UPDATE ON FIRST LOGIN -->
   <div id="modal-forced-password" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-emerald-500/40 rounded-xl p-6 md:p-8 max-w-md w-full shadow-2xl">
-      <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl mb-4 border border-emerald-500/40">
+    <div class="bg-white border border-slate-200 rounded-xl p-6 md:p-8 max-w-md w-full shadow-2xl text-slate-900">
+      <div class="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-700 text-2xl mb-4 border border-emerald-200">
         <span class="material-symbols-outlined text-2xl">lock_reset</span>
       </div>
-      <h3 class="font-headline-md text-2xl font-bold text-white mb-2">Ganti Password Perdana</h3>
-      <p class="text-xs text-gray-300 mb-6 leading-relaxed">
+      <h3 class="font-headline-md text-2xl font-bold text-slate-900 mb-2">Ganti Password Perdana</h3>
+      <p class="text-xs text-slate-600 mb-6 leading-relaxed">
         Demi keamanan akun Anda, Anda diwajibkan untuk membuat kata sandi pribadi baru pada saat pertama kali masuk ke Portal Siswa.
       </p>
       <form id="form-forced-password" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-gray-300 mb-1">Kata Sandi Baru</label>
-          <input type="password" id="forced-new-password" required minlength="6" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500" placeholder="Minimal 6 karakter">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Kata Sandi Baru</label>
+          <input type="password" id="forced-new-password" required minlength="6" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 text-sm focus:outline-none focus:border-emerald-600" placeholder="Minimal 6 karakter">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-300 mb-1">Konfirmasi Kata Sandi Baru</label>
-          <input type="password" id="forced-confirm-password" required minlength="6" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-emerald-500" placeholder="Ketik ulang kata sandi">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Konfirmasi Kata Sandi Baru</label>
+          <input type="password" id="forced-confirm-password" required minlength="6" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-slate-900 text-sm focus:outline-none focus:border-emerald-600" placeholder="Ketik ulang kata sandi">
         </div>
-        <button type="submit" id="btn-forced-save" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-6 rounded-xl text-sm transition-all shadow-lg">
+        <button type="submit" id="btn-forced-save" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 px-6 rounded-xl text-sm transition-all shadow-md cursor-pointer">
           Aktifkan Akun & Lanjutkan
         </button>
       </form>
@@ -609,13 +605,13 @@
 
   <!-- MODAL PENGUMPULAN TUGAS SISWA -->
   <div id="modal-submit-tugas" class="modal hidden">
-    <div class="modal-content card glass max-w-lg w-full p-6 rounded-xl bg-slate-900 border border-slate-800 text-white space-y-4">
-      <div class="flex justify-between items-center border-b border-white/10 pb-3">
+    <div class="modal-content card glass max-w-lg w-full p-6 rounded-xl bg-white border border-slate-200 text-slate-900 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-200 pb-3">
         <div>
-          <h3 class="text-lg font-bold text-emerald-400" id="modal-tugas-title">Kumpulkan Tugas</h3>
-          <p class="text-xs text-gray-400" id="modal-tugas-subject">Mata Pelajaran</p>
+          <h3 class="text-lg font-bold text-emerald-700" id="modal-tugas-title">Kumpulkan Tugas</h3>
+          <p class="text-xs text-slate-500" id="modal-tugas-subject">Mata Pelajaran</p>
         </div>
-        <button id="btn-close-modal-tugas" class="p-1 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center">
+        <button id="btn-close-modal-tugas" class="p-1 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center cursor-pointer">
           <span class="material-symbols-outlined text-base">close</span>
         </button>
       </div>
@@ -623,29 +619,29 @@
       <form id="form-submit-tugas" class="space-y-4">
         <input type="hidden" id="submit-assignment-id">
 
-        <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-gray-300 space-y-1">
-          <div class="font-semibold text-white">Petunjuk Pengerjaan:</div>
-          <p id="modal-tugas-desc" class="text-gray-400 leading-relaxed">-</p>
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-1">
+          <div class="font-bold text-slate-900">Petunjuk Pengerjaan:</div>
+          <p id="modal-tugas-desc" class="text-slate-600 leading-relaxed">-</p>
         </div>
 
         <div>
-          <label class="block text-xs font-medium text-gray-300 mb-1">Unggah Berkas Tugas (Maks 5MB)</label>
-          <div class="border-2 border-dashed border-white/20 rounded-xl p-4 text-center hover:border-emerald-500/50 transition-all bg-white/5 cursor-pointer" id="drop-zone-tugas">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Unggah Berkas Tugas (Maks 5MB)</label>
+          <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:border-emerald-600 transition-all bg-slate-50 cursor-pointer" id="drop-zone-tugas">
             <input type="file" id="tugas-file-input" class="hidden" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp">
-            <span class="material-symbols-outlined text-3xl text-emerald-400 mb-1">cloud_upload</span>
-            <div class="text-xs text-gray-300 font-medium" id="tugas-file-label">Klik untuk pilih file atau seret file ke sini</div>
-            <div class="text-[0.65rem] text-gray-500 mt-1">Format: PDF, Word (DOC/DOCX), atau Foto (JPG/PNG)</div>
+            <span class="material-symbols-outlined text-3xl text-emerald-700 mb-1">cloud_upload</span>
+            <div class="text-xs text-slate-700 font-semibold" id="tugas-file-label">Klik untuk pilih file atau seret file ke sini</div>
+            <div class="text-[0.65rem] text-slate-500 mt-1">Format: PDF, Word (DOC/DOCX), atau Foto (JPG/PNG)</div>
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-medium text-gray-300 mb-1">Catatan Tambahan (Opsional)</label>
-          <textarea id="tugas-notes" class="w-full bg-slate-800 border border-white/10 rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500" rows="2" placeholder="Tuliskan catatan tambahan untuk guru..."></textarea>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Tambahan (Opsional)</label>
+          <textarea id="tugas-notes" class="w-full bg-white border border-slate-300 rounded-xl p-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-600" rows="2" placeholder="Tuliskan catatan tambahan untuk guru..."></textarea>
         </div>
 
         <div class="flex justify-end gap-2 pt-2">
-          <button type="button" id="btn-cancel-submit-tugas" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-gray-300">Batal</button>
-          <button type="submit" id="btn-save-submit-tugas" class="px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 text-white flex items-center gap-1.5">
+          <button type="button" id="btn-cancel-submit-tugas" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer">Batal</button>
+          <button type="submit" id="btn-save-submit-tugas" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white flex items-center gap-1.5 cursor-pointer shadow-sm">
             <span class="material-symbols-outlined text-sm">send</span>
             <span id="btn-save-tugas-text">Kirim Tugas</span>
           </button>
@@ -657,20 +653,20 @@
 
   <!-- MODAL CBT EXAM RUNNER (FULLSCREEN FOCUS MODE) -->
   <div id="modal-cbt-runner" class="modal hidden">
-    <div class="modal-content card glass max-w-5xl w-full p-6 rounded-2xl bg-slate-950 border border-white/20 text-white space-y-6 flex flex-col max-h-[95vh] overflow-hidden">
+    <div class="modal-content card glass max-w-5xl w-full p-6 rounded-2xl bg-white border border-slate-200 text-slate-900 space-y-6 flex flex-col max-h-[95vh] overflow-hidden shadow-2xl">
       <!-- Top Exam Header -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/10 pb-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-200 pb-4">
         <div>
-          <span class="px-2.5 py-0.5 rounded-md text-[0.7rem] font-bold bg-emerald-500/20 text-emerald-300" id="cbt-exam-subject">Mata Pelajaran</span>
-          <h3 class="text-lg font-bold text-white mt-1" id="cbt-exam-title">Judul Ujian</h3>
+          <span class="px-2.5 py-0.5 rounded-md text-[0.7rem] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200" id="cbt-exam-subject">Mata Pelajaran</span>
+          <h3 class="text-lg font-bold text-slate-900 mt-1" id="cbt-exam-title">Judul Ujian</h3>
         </div>
         <div class="flex items-center gap-3">
-          <div class="px-3 py-1 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold flex items-center gap-1" id="cbt-tab-alert-badge">
+          <div class="px-3 py-1 rounded-xl bg-amber-50 text-amber-800 border border-amber-200 text-xs font-bold flex items-center gap-1" id="cbt-tab-alert-badge">
             <span class="material-symbols-outlined text-sm">tab</span>
             <span>Tab Switch: <span id="cbt-tab-switch-count">0</span></span>
           </div>
-          <div class="px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-sm font-black flex items-center gap-1.5" id="cbt-timer-badge">
-            <span class="material-symbols-outlined text-base animate-pulse">timer</span>
+          <div class="px-4 py-2 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-sm font-black flex items-center gap-1.5" id="cbt-timer-badge">
+            <span class="material-symbols-outlined text-base animate-pulse text-emerald-700">timer</span>
             <span id="cbt-timer-text">60:00</span>
           </div>
         </div>
@@ -680,12 +676,12 @@
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 overflow-y-auto pr-1">
         <!-- Question Box (3 cols) -->
         <div class="lg:col-span-3 space-y-4">
-          <div class="flex items-center justify-between text-xs text-gray-400">
-            <span>Nomor Soal: <span class="font-bold text-white text-base" id="cbt-current-q-num">1</span> dari <span id="cbt-total-q-num">10</span></span>
-            <span class="px-2 py-0.5 rounded bg-white/10 text-gray-300" id="cbt-question-type-badge">Pilihan Ganda</span>
+          <div class="flex items-center justify-between text-xs text-slate-500">
+            <span>Nomor Soal: <span class="font-bold text-slate-900 text-base" id="cbt-current-q-num">1</span> dari <span id="cbt-total-q-num">10</span></span>
+            <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold border border-slate-200" id="cbt-question-type-badge">Pilihan Ganda</span>
           </div>
 
-          <div class="p-5 rounded-2xl bg-white/5 border border-white/10 text-sm text-gray-100 leading-relaxed font-medium" id="cbt-question-text">
+          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 text-sm text-slate-900 leading-relaxed font-medium" id="cbt-question-text">
             Pertanyaan ujian akan dimuat di sini...
           </div>
 
@@ -696,37 +692,37 @@
         </div>
 
         <!-- Question Number Navigator (1 col) -->
-        <div class="p-4 rounded-2xl bg-slate-900 border border-white/10 space-y-3 flex flex-col justify-between">
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 flex flex-col justify-between">
           <div>
-            <div class="text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">Navigasi Soal</div>
+            <div class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Navigasi Soal</div>
             <div class="grid grid-cols-5 gap-2" id="cbt-nav-grid">
               <!-- Rendered by JS -->
             </div>
           </div>
 
-          <div class="text-[0.7rem] text-gray-400 space-y-1 border-t border-white/10 pt-2">
-            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span> Sudah Dijawab</div>
+          <div class="text-[0.7rem] text-slate-600 space-y-1 border-t border-slate-200 pt-2 font-medium">
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-emerald-600 inline-block"></span> Sudah Dijawab</div>
             <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-amber-500 inline-block"></span> Ragu-ragu</div>
-            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-white/10 inline-block"></span> Belum Dijawab</div>
+            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-slate-200 inline-block border border-slate-300"></span> Belum Dijawab</div>
           </div>
         </div>
       </div>
 
       <!-- Action Footer -->
-      <div class="flex items-center justify-between border-t border-white/10 pt-4">
-        <button id="btn-cbt-prev" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-gray-300 flex items-center gap-1">
+      <div class="flex items-center justify-between border-t border-slate-200 pt-4">
+        <button id="btn-cbt-prev" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 flex items-center gap-1 cursor-pointer">
           <span class="material-symbols-outlined text-sm">arrow_back</span> Sebelumnya
         </button>
 
-        <button id="btn-cbt-doubt" class="px-4 py-2 rounded-xl text-xs font-semibold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 flex items-center gap-1">
+        <button id="btn-cbt-doubt" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1 cursor-pointer">
           <span class="material-symbols-outlined text-sm">flag</span> Ragu-ragu
         </button>
 
         <div class="flex items-center gap-2">
-          <button id="btn-cbt-next" class="px-4 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-gray-300 flex items-center gap-1">
+          <button id="btn-cbt-next" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 flex items-center gap-1 cursor-pointer">
             Selanjutnya <span class="material-symbols-outlined text-sm">arrow_forward</span>
           </button>
-          <button id="btn-cbt-submit" class="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-600 text-white flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
+          <button id="btn-cbt-submit" class="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-800 text-white flex items-center gap-1.5 shadow-md cursor-pointer">
             <span class="material-symbols-outlined text-sm">check_circle</span> Kumpulkan Ujian
           </button>
         </div>
@@ -736,13 +732,13 @@
 
   <!-- MODAL CBT RESULTS & FULL DISCUSSION (MODE PEMBAHASAN LENGKAP) -->
   <div id="modal-cbt-results" class="modal hidden">
-    <div class="modal-content card glass max-w-4xl w-full p-6 rounded-2xl bg-slate-950 border border-white/20 text-white space-y-6 max-h-[90vh] overflow-y-auto">
-      <div class="flex justify-between items-center border-b border-white/10 pb-3">
+    <div class="modal-content card glass max-w-4xl w-full p-6 rounded-2xl bg-white border border-slate-200 text-slate-900 space-y-6 max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div class="flex justify-between items-center border-b border-slate-200 pb-3">
         <div>
-          <h3 class="text-xl font-bold text-emerald-400" id="results-quiz-title">Hasil Ujian & Pembahasan</h3>
-          <p class="text-xs text-gray-400" id="results-quiz-subtitle">Koreksi otomatis dan ulasan butir soal</p>
+          <h3 class="text-xl font-bold text-emerald-700" id="results-quiz-title">Hasil Ujian & Pembahasan</h3>
+          <p class="text-xs text-slate-500" id="results-quiz-subtitle">Koreksi otomatis dan ulasan butir soal</p>
         </div>
-        <button id="btn-close-results-modal" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold flex items-center gap-1">
+        <button id="btn-close-results-modal" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-semibold text-slate-700 border border-slate-300 flex items-center gap-1 cursor-pointer">
           <span class="material-symbols-outlined text-sm">close</span>
           <span>Tutup</span>
         </button>
@@ -750,21 +746,21 @@
 
       <!-- Score Banner -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-center">
-          <div class="text-xs text-emerald-300">Total Skor</div>
-          <div class="text-3xl font-black text-emerald-400" id="results-total-score">0</div>
+        <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
+          <div class="text-xs text-emerald-800 font-bold">Total Skor</div>
+          <div class="text-3xl font-black text-emerald-700" id="results-total-score">0</div>
         </div>
-        <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30 text-center">
-          <div class="text-xs text-blue-300">Jawaban Benar</div>
-          <div class="text-2xl font-bold text-blue-400" id="results-correct-count">0</div>
+        <div class="p-4 rounded-xl bg-blue-50 border border-blue-200 text-center">
+          <div class="text-xs text-blue-800 font-bold">Jawaban Benar</div>
+          <div class="text-2xl font-bold text-blue-700" id="results-correct-count">0</div>
         </div>
-        <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-center">
-          <div class="text-xs text-rose-300">Jawaban Salah</div>
-          <div class="text-2xl font-bold text-rose-400" id="results-wrong-count">0</div>
+        <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-center">
+          <div class="text-xs text-rose-800 font-bold">Jawaban Salah</div>
+          <div class="text-2xl font-bold text-rose-700" id="results-wrong-count">0</div>
         </div>
-        <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-center">
-          <div class="text-xs text-amber-300">Pelanggaran Tab</div>
-          <div class="text-2xl font-bold text-amber-400" id="results-tab-switches">0</div>
+        <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-center">
+          <div class="text-xs text-amber-800 font-bold">Pelanggaran Tab</div>
+          <div class="text-2xl font-bold text-amber-700" id="results-tab-switches">0</div>
         </div>
       </div>
 
@@ -778,30 +774,30 @@
 
   <!-- MODAL MATERIAL VIEWER (SMART IFRAME VIEWER FOR YOUTUBE, PDF, HTML) -->
   <div id="modal-material-viewer" class="modal hidden !p-0 md:!p-3">
-    <div class="modal-content card glass w-full md:w-[98vw] md:max-w-[98vw] h-[100dvh] md:h-[96vh] p-2 md:p-3.5 rounded-none md:rounded-2xl bg-slate-950 border-0 md:border md:border-white/20 text-white flex flex-col shadow-2xl overflow-hidden">
-      <div class="flex justify-between items-center border-b border-white/10 pb-2 mb-2 shrink-0">
+    <div class="modal-content card glass w-full md:w-[98vw] md:max-w-[98vw] h-[100dvh] md:h-[96vh] p-2 md:p-3.5 rounded-none md:rounded-2xl bg-white border-0 md:border md:border-slate-200 text-slate-900 flex flex-col shadow-2xl overflow-hidden">
+      <div class="flex justify-between items-center border-b border-slate-200 pb-2 mb-2 shrink-0">
         <div class="flex items-center gap-2 md:gap-3 min-w-0">
-          <span class="p-1.5 md:p-2 rounded-lg md:rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0">
+          <span class="p-1.5 md:p-2 rounded-lg md:rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 shrink-0">
             <span class="material-symbols-outlined text-lg md:text-xl" id="student-viewer-icon">play_circle</span>
           </span>
           <div class="min-w-0">
-            <h3 class="text-xs md:text-sm font-bold text-white truncate max-w-[180px] sm:max-w-md md:max-w-xl lg:max-w-3xl" id="student-viewer-title">Judul Materi</h3>
-            <p class="text-[10px] md:text-xs text-emerald-400 truncate" id="student-viewer-subtitle">Materi Pembelajaran Siswa</p>
+            <h3 class="text-xs md:text-sm font-bold text-slate-900 truncate max-w-[180px] sm:max-w-md md:max-w-xl lg:max-w-3xl" id="student-viewer-title">Judul Materi</h3>
+            <p class="text-[10px] md:text-xs text-emerald-700 font-semibold truncate" id="student-viewer-subtitle">Materi Pembelajaran Siswa</p>
           </div>
         </div>
         <div class="flex items-center gap-1.5 md:gap-2 shrink-0">
-          <a href="#" target="_blank" id="student-viewer-open-external" class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl bg-white/10 hover:bg-white/20 text-[11px] md:text-xs text-gray-200 flex items-center gap-1">
+          <a href="#" target="_blank" id="student-viewer-open-external" class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl bg-slate-100 hover:bg-slate-200 text-[11px] md:text-xs text-slate-700 border border-slate-300 font-semibold flex items-center gap-1">
             <span class="material-symbols-outlined text-sm">open_in_new</span>
             <span class="hidden sm:inline">Buka Tab Baru</span>
           </a>
-          <button id="btn-close-student-viewer" class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-[11px] md:text-xs font-bold cursor-pointer flex items-center gap-1">
+          <button id="btn-close-student-viewer" class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] md:text-xs font-bold cursor-pointer flex items-center gap-1">
             <span class="material-symbols-outlined text-xs">close</span>
             <span class="hidden sm:inline">Tutup</span>
           </button>
         </div>
       </div>
 
-      <div class="flex-1 w-full h-full rounded-none md:rounded-xl overflow-hidden bg-slate-900 border-0 md:border md:border-white/10 relative flex items-center justify-center min-h-0">
+      <div class="flex-1 w-full h-full rounded-none md:rounded-xl overflow-hidden bg-slate-100 border-0 md:border md:border-slate-200 relative flex items-center justify-center min-h-0">
         <iframe id="student-viewer-iframe" class="w-full h-full border-0 block" style="width: 100%; height: 100%; border: none;" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         <div id="student-viewer-fallback-img" class="hidden max-h-full max-w-full p-2 md:p-4 flex items-center justify-center">
           <img id="student-viewer-img-el" src="" alt="Lampiran Materi" class="max-h-full max-w-full rounded-lg object-contain shadow-2xl">
@@ -813,30 +809,30 @@
 
   <!-- MODAL SMART VIEWER MATERI SISWA -->
   <div id="modal-viewer-materi-student" class="modal hidden !p-0 md:!p-3">
-    <div class="modal-content card glass w-full md:w-[98vw] md:max-w-[98vw] h-[100dvh] md:h-[96vh] p-2 md:p-3.5 rounded-none md:rounded-2xl bg-slate-950 border-0 md:border md:border-white/20 text-white flex flex-col shadow-2xl overflow-hidden">
-      <div class="flex justify-between items-center border-b border-white/10 pb-2 mb-2 shrink-0">
+    <div class="modal-content card glass w-full md:w-[98vw] md:max-w-[98vw] h-[100dvh] md:h-[96vh] p-2 md:p-3.5 rounded-none md:rounded-2xl bg-white border-0 md:border md:border-slate-200 text-slate-900 flex flex-col shadow-2xl overflow-hidden">
+      <div class="flex justify-between items-center border-b border-slate-200 pb-2 mb-2 shrink-0">
         <div class="flex items-center gap-2 md:gap-3 min-w-0">
-          <span class="p-1.5 md:p-2 rounded-lg md:rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0">
+          <span class="p-1.5 md:p-2 rounded-lg md:rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 shrink-0">
             <span class="material-symbols-outlined text-lg md:text-xl" id="stu-viewer-icon">play_circle</span>
           </span>
           <div class="min-w-0">
-            <h3 class="text-xs md:text-sm font-bold text-white truncate max-w-[180px] sm:max-w-md md:max-w-xl lg:max-w-3xl" id="stu-viewer-title">Judul Materi</h3>
-            <p class="text-[10px] md:text-xs text-emerald-400 truncate" id="stu-viewer-subtitle">Materi Pembelajaran Siswa</p>
+            <h3 class="text-xs md:text-sm font-bold text-slate-900 truncate max-w-[180px] sm:max-w-md md:max-w-xl lg:max-w-3xl" id="stu-viewer-title">Judul Materi</h3>
+            <p class="text-[10px] md:text-xs text-emerald-700 font-semibold truncate" id="stu-viewer-subtitle">Materi Pembelajaran Siswa</p>
           </div>
         </div>
         <div class="flex items-center gap-1.5 md:gap-2 shrink-0">
-          <button type="button" id="stu-viewer-open-external" class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl bg-white/10 hover:bg-white/20 text-[11px] md:text-xs text-gray-200 flex items-center gap-1 cursor-pointer">
+          <button type="button" id="stu-viewer-open-external" class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl bg-slate-100 hover:bg-slate-200 text-[11px] md:text-xs text-slate-700 border border-slate-300 font-semibold flex items-center gap-1 cursor-pointer">
             <span class="material-symbols-outlined text-sm">open_in_new</span>
             <span class="hidden sm:inline">Buka Tab Baru</span>
           </button>
-          <button id="btn-close-stu-viewer" class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 text-[11px] md:text-xs font-bold cursor-pointer flex items-center gap-1">
+          <button id="btn-close-stu-viewer" class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg md:rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] md:text-xs font-bold cursor-pointer flex items-center gap-1">
             <span class="material-symbols-outlined text-xs">close</span>
             <span class="hidden sm:inline">Tutup</span>
           </button>
         </div>
       </div>
 
-      <div class="flex-1 w-full h-full rounded-none md:rounded-xl overflow-hidden bg-slate-900 border-0 md:border md:border-white/10 relative flex items-center justify-center min-h-0">
+      <div class="flex-1 w-full h-full rounded-none md:rounded-xl overflow-hidden bg-slate-100 border-0 md:border md:border-slate-200 relative flex items-center justify-center min-h-0">
         <iframe id="stu-viewer-iframe" class="w-full h-full border-0 block" style="width: 100%; height: 100%; border: none;" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         <div id="stu-viewer-fallback-img" class="hidden max-h-full max-w-full p-2 md:p-4 flex items-center justify-center">
           <img id="stu-viewer-img-el" src="" alt="Lampiran Materi" class="max-h-full max-w-full rounded-lg object-contain shadow-2xl">

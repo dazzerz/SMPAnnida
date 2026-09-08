@@ -119,7 +119,7 @@ function renderAssignmentsTable(list) {
         }
 
         let progressCell = isMateri 
-            ? '<span class="text-xs text-gray-400">Hanya Dibaca</span>'
+            ? '<span class="text-xs text-slate-500">Hanya Dibaca</span>'
             : `<span class="text-xs font-semibold px-2 py-1 rounded bg-emerald-500/20 text-emerald-300">${subCount} Terkumpul (${gradedCount} Dinilai)</span>`;
 
         return `
@@ -128,9 +128,9 @@ function renderAssignmentsTable(list) {
                 <td>
                     <div class="flex items-center gap-2 mb-1">
                         ${typeBadge}
-                        <span class="font-bold text-white">${escapeHTML(a.title)}</span>
+                        <span class="font-bold text-slate-900">${escapeHTML(a.title)}</span>
                     </div>
-                    <div class="text-xs text-gray-400 truncate max-w-xs">${escapeHTML(a.description || '-')}</div>
+                    <div class="text-xs text-slate-500 truncate max-w-xs">${escapeHTML(a.description || '-')}</div>
                 </td>
                 <td><span class="badge badge-primary">${escapeHTML(a.class_name)}</span></td>
                 <td>${escapeHTML(a.subject)}</td>
@@ -576,7 +576,7 @@ function renderCbtTable(list) {
             <tr>
                 <td>${idx + 1}</td>
                 <td>
-                    <div class="font-bold text-white">${escapeHTML(q.title)}</div>
+                    <div class="font-bold text-slate-900">${escapeHTML(q.title)}</div>
                     <div class="text-xs text-emerald-400">${qCount} Butir Soal</div>
                 </td>
                 <td><span class="badge badge-primary">${escapeHTML(q.class_name)}</span></td>

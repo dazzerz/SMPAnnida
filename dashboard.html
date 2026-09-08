@@ -64,20 +64,21 @@
       justify-content: space-between;
       align-items: center;
       padding: 0.75rem 1rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
       border-radius: 10px;
       transition: all 0.3s ease;
+      color: #0f172a;
     }
     
     .pendaftar-item:hover {
-      background: rgba(255, 255, 255, 0.06);
+      background: #f8fafc;
       transform: translateX(4px);
     }
     
     .status-badge-mini {
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 700;
       padding: 0.25rem 0.625rem;
       border-radius: 6px;
       text-transform: uppercase;
@@ -85,21 +86,21 @@
     }
     
     .status-badge-verifikasi {
-      background: rgba(245, 158, 11, 0.15);
-      color: #fbbf24;
-      border: 1px solid rgba(245, 158, 11, 0.25);
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
     }
     
     .status-badge-lulus {
-      background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.25);
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
     }
     
     .status-badge-draft {
-      background: rgba(156, 163, 175, 0.15);
-      color: #d1d5db;
-      border: 1px solid rgba(156, 163, 175, 0.25);
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
     }
     
     .empty-state-card {
@@ -211,15 +212,15 @@
       <div class="glass-panel metric-card bento-card bento-1x1 p-5">
         <div class="metric-card-content">
           <div>
-            <div class="metric-title text-sm text-gray-400 font-medium">Total Siswa Aktif</div>
-            <div class="metric-value text-3xl font-bold text-white mt-1" id="dash-students">--</div>
+            <div class="metric-title text-sm text-slate-600 font-semibold">Total Siswa Aktif</div>
+            <div class="metric-value text-3xl font-bold text-slate-900 mt-1" id="dash-students">--</div>
           </div>
           <div class="sparkline-wrapper">
             <canvas id="sparkline-students"></canvas>
           </div>
         </div>
-        <div class="metric-footer text-xs text-emerald-400 mt-3 font-semibold flex items-center gap-1">
-          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <div class="metric-footer text-xs text-emerald-700 mt-3 font-semibold flex items-center gap-1">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
           Terhubung ke database
         </div>
       </div>
@@ -227,15 +228,15 @@
       <div class="glass-panel metric-card bento-card bento-1x1 p-5">
         <div class="metric-card-content">
           <div>
-            <div class="metric-title text-sm text-gray-400 font-medium">Kas Saat Ini</div>
-            <div class="metric-value text-3xl font-bold text-white mt-1" id="dash-cash">Rp ---</div>
+            <div class="metric-title text-sm text-slate-600 font-semibold">Kas Saat Ini</div>
+            <div class="metric-value text-3xl font-bold text-slate-900 mt-1" id="dash-cash">Rp ---</div>
           </div>
           <div class="sparkline-wrapper">
             <canvas id="sparkline-cash"></canvas>
           </div>
         </div>
-        <div class="metric-footer text-xs text-emerald-400 mt-3 font-semibold flex items-center gap-1">
-          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <div class="metric-footer text-xs text-emerald-700 mt-3 font-semibold flex items-center gap-1">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
           Saldo bersih transaksi
         </div>
       </div>
@@ -243,15 +244,15 @@
       <div class="glass-panel metric-card bento-card bento-1x1 p-5">
         <div class="metric-card-content">
           <div>
-            <div class="metric-title text-sm text-gray-400 font-medium">Open Amount (SPP)</div>
-            <div class="metric-value text-3xl font-bold text-yellow-500 mt-1" id="dash-open">Rp ---</div>
+            <div class="metric-title text-sm text-slate-600 font-semibold">Open Amount (SPP)</div>
+            <div class="metric-value text-3xl font-bold text-amber-700 mt-1" id="dash-open">Rp ---</div>
           </div>
           <div class="sparkline-wrapper">
             <canvas id="sparkline-open"></canvas>
           </div>
         </div>
-        <div class="metric-footer text-xs text-yellow-500 mt-3 font-semibold flex items-center gap-1">
-          <span class="inline-block w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+        <div class="metric-footer text-xs text-amber-700 mt-3 font-semibold flex items-center gap-1">
+          <span class="inline-block w-2 h-2 rounded-full bg-amber-600 animate-pulse"></span>
           Belum tertagih tahun ini
         </div>
       </div>
@@ -259,15 +260,15 @@
       <div class="glass-panel metric-card bento-card bento-1x1 p-5">
         <div class="metric-card-content">
           <div>
-            <div class="metric-title text-sm text-gray-400 font-medium">Pendaftar PPDB Baru</div>
-            <div class="metric-value text-3xl font-bold text-emerald-400 mt-1" id="dash-ppdb">--</div>
+            <div class="metric-title text-sm text-slate-600 font-semibold">Pendaftar PPDB Baru</div>
+            <div class="metric-value text-3xl font-bold text-emerald-700 mt-1" id="dash-ppdb">--</div>
           </div>
           <div class="sparkline-wrapper">
             <canvas id="sparkline-ppdb"></canvas>
           </div>
         </div>
-        <div class="metric-footer text-xs text-emerald-400 mt-3 font-semibold flex items-center gap-1">
-          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <div class="metric-footer text-xs text-emerald-700 mt-3 font-semibold flex items-center gap-1">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
           Siswa terdaftar online
         </div>
       </div>
@@ -276,16 +277,16 @@
     <!-- Grafik & Pendaftar Terakhir -->
     <div class="main-grid">
       <div class="glass-panel p-5">
-        <h3 class="text-lg font-bold text-white mb-2">Grafik Arus Kas Bulanan</h3>
-        <p class="text-sm text-gray-400 mb-4">Tren pemasukan dan pengeluaran dari data transaksi 6 bulan terakhir.</p>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">Grafik Arus Kas Bulanan</h3>
+        <p class="text-sm text-slate-600 mb-4">Tren pemasukan dan pengeluaran dari data transaksi 6 bulan terakhir.</p>
         <div class="chart-container-panel">
           <canvas id="cashflow-chart"></canvas>
         </div>
       </div>
       
       <div class="glass-panel p-5">
-        <h3 class="text-lg font-bold text-white mb-2">Pendaftar PPDB Terakhir</h3>
-        <p class="text-sm text-gray-400 mb-4">Calon siswa baru yang mendaftar online.</p>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">Pendaftar PPDB Terakhir</h3>
+        <p class="text-sm text-slate-600 mb-4">Calon siswa baru yang mendaftar online.</p>
         <div id="pendaftar-container">
           <div class="empty-state-card" id="pendaftar-empty">
             <svg class="empty-state-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -294,8 +295,8 @@
               <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
               <path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
-            <div class="text-white font-medium">Belum ada data pendaftar</div>
-            <p class="text-xs text-gray-400 mt-1">Seluruh data registrasi PPDB baru akan muncul di sini secara real-time.</p>
+            <div class="text-slate-900 font-semibold">Belum ada data pendaftar</div>
+            <p class="text-xs text-slate-500 mt-1">Seluruh data registrasi PPDB baru akan muncul di sini secara real-time.</p>
           </div>
           <ul class="pendaftar-list" id="pendaftar-list" style="display: none;"></ul>
         </div>
@@ -481,18 +482,18 @@
             maintainAspectRatio: false,
             plugins: {
               legend: {
-                labels: { color: '#e4e4e7', font: { family: 'Inter', size: 12 } }
+                labels: { color: '#0f172a', font: { family: 'Nunito Sans, sans-serif', size: 12, weight: 'bold' } }
               }
             },
             scales: {
               x: {
-                grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                ticks: { color: '#a1a1aa' }
+                grid: { color: 'rgba(0, 0, 0, 0.06)' },
+                ticks: { color: '#475569' }
               },
               y: {
-                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                grid: { color: 'rgba(0, 0, 0, 0.06)' },
                 ticks: {
-                  color: '#a1a1aa',
+                  color: '#475569',
                   callback: function(value) {
                     return 'Rp ' + value.toLocaleString('id-ID');
                   }
@@ -539,8 +540,8 @@
             li.className = 'pendaftar-item';
             li.innerHTML = `
               <div class="flex flex-col text-left">
-                <span class="font-semibold text-white">${nama}</span>
-                <span class="text-xs text-gray-400">No: ${p.no_pendaftaran} • ${dateStr}</span>
+                <span class="font-bold text-slate-900">${nama}</span>
+                <span class="text-xs text-slate-500">No: ${p.no_pendaftaran} • ${dateStr}</span>
               </div>
               <span class="status-badge-mini status-badge-${statusClass}">${status}</span>
             `;

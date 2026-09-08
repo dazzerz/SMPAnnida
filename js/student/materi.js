@@ -43,7 +43,7 @@ export async function loadStudentMaterials(student) {
 
         if (error) {
             console.warn('Gagal memuat tabel materials:', error.message);
-            feed.innerHTML = '<div class="text-center py-8 text-gray-400 col-span-full">Belum ada materi pembelajaran yang diterbitkan guru untuk kelas Anda.</div>';
+            feed.innerHTML = '<div class="text-center py-8 text-slate-500 col-span-full">Belum ada materi pembelajaran yang diterbitkan guru untuk kelas Anda.</div>';
             return;
         }
 
@@ -70,7 +70,7 @@ function renderStudentMaterials(list) {
 
     if (filtered.length === 0) {
         feed.innerHTML = `
-            <div class="p-8 rounded-xl bg-slate-900 border border-slate-800 text-center col-span-full">
+            <div class="p-8 rounded-xl bg-white border border-slate-200 text-center col-span-full shadow-sm">
                 <span class="material-symbols-outlined text-4xl text-gray-500 mb-2">menu_book</span>
                 <div class="text-sm font-semibold text-gray-300">Belum ada materi pembelajaran</div>
                 <p class="text-xs text-gray-500 mt-1">Materi digital (Video YouTube, PDF, dan Simulasi) dari guru akan tampil di sini.</p>
@@ -99,18 +99,18 @@ function renderStudentMaterials(list) {
         }
 
         return `
-            <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/40 transition-all flex flex-col justify-between">
+            <div class="p-5 rounded-xl bg-white border border-slate-200 hover:border-emerald-600 transition-all flex flex-col justify-between shadow-sm">
                 <div>
                     <div class="flex items-center justify-between gap-2 mb-3">
                         <span class="px-2.5 py-0.5 rounded-lg text-[0.7rem] font-bold bg-white/10 text-gray-300">${escapeHTML(m.subject)}</span>
                         ${typeBadge}
                     </div>
-                    <h4 class="text-base font-bold text-white mb-1.5 leading-snug">${escapeHTML(m.title)}</h4>
-                    <p class="text-xs text-gray-400 line-clamp-3 mb-4 leading-relaxed">${escapeHTML(m.description || 'Pelajari materi ini secara mandiri.')}</p>
+                    <h4 class="text-base font-bold text-slate-900 mb-1.5 leading-snug">${escapeHTML(m.title)}</h4>
+                    <p class="text-xs text-slate-600 line-clamp-3 mb-4 leading-relaxed">${escapeHTML(m.description || 'Pelajari materi ini secara mandiri.')}</p>
                 </div>
 
                 <div class="border-t border-white/10 pt-3 space-y-2">
-                    <div class="flex items-center justify-between text-[0.75rem] text-gray-400">
+                    <div class="flex items-center justify-between text-[0.75rem] text-slate-500">
                         <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-emerald-400">person</span> ${escapeHTML(m.teacher_name)}</span>
                         <span class="text-xs text-gray-500">${m.class_name}</span>
                     </div>

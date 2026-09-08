@@ -149,14 +149,14 @@ function renderMaterialsTable(list) {
             <tr>
                 <td data-label="No">${idx + 1}</td>
                 <td data-label="Materi">
-                    <div class="font-bold text-white">${escapeHTML(m.title)}</div>
-                    <div class="text-xs text-gray-400 truncate max-w-xs">${escapeHTML(m.description || '-')}</div>
+                    <div class="font-bold text-slate-900">${escapeHTML(m.title)}</div>
+                    <div class="text-xs text-slate-500 truncate max-w-xs">${escapeHTML(m.description || '-')}</div>
                     <div class="text-[10px] text-gray-500 mt-1">Oleh: ${escapeHTML(m.teacher_name || 'Admin')}</div>
                 </td>
                 <td data-label="Kelas"><span class="badge badge-primary">${escapeHTML(m.class_name)}</span></td>
                 <td data-label="Mata Pelajaran">${escapeHTML(m.subject)}</td>
                 <td data-label="Format">${typeBadge}</td>
-                <td data-label="Dibuat"><span class="text-xs text-gray-400">${createdDate}</span></td>
+                <td data-label="Dibuat"><span class="text-xs text-slate-500">${createdDate}</span></td>
                 <td data-label="Aksi">
                     <div class="flex items-center gap-1.5">
                         <button class="btn-preview-materi btn-sm btn-primary flex items-center gap-1" data-url="${escapeHTML(m.material_url)}" data-title="${escapeHTML(m.title)}" data-subtitle="${m.subject} • Kelas ${m.class_name}" data-type="${mType}" title="Buka Materi di Web">
