@@ -1198,3 +1198,44 @@ button.bg-emerald-500 .text-white {
   color: #334155 !important;
 }
 
+
+
+/* =========================================================================
+   STUDENT PORTAL MOBILE BOTTOM NAVIGATION BAR
+   ========================================================================= */
+.student-bottom-nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 64px !important;
+  background-color: #166534 !important;
+  border-top: 1px solid #15803d !important;
+  z-index: 1040 !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+.bottom-nav-item {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav-item:active {
+  transform: scale(0.94);
+}
+
+.bottom-nav-item.active,
+.bottom-nav-item.active .bottom-nav-icon,
+.bottom-nav-item.active .bottom-nav-label {
+  color: #4ade80 !important;
+  font-weight: 700 !important;
+}
+
+.bottom-sheet-panel {
+  background-color: #166534 !important;
+  border-top: 2px solid #15803d !important;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.4) !important;
+}

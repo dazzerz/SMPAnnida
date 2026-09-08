@@ -439,36 +439,128 @@ async function loadPpdbDocs(student) {
   if (statDocs) statDocs.textContent = 'Terverifikasi';
 }
 
-// ── 9. TAB NAVIGATION ROUTER ───────────────────────────────────────────
+// ── 9. TAB NAVIGATION ROUTER & BOTTOM NAV CONTROLLER ────────────────────
 function initTabNavigation() {
-  const navBtns = document.querySelectorAll('.nav-item-btn');
+  const navBtns = document.querySelectorAll('.nav-item-btn, .bottom-nav-item[data-target], .more-menu-item[data-target]');
   const panels = document.querySelectorAll('.student-panel');
+
+  const bottomNavItems = document.querySelectorAll('.bottom-nav-item[data-target]');
+  const moreSheet = document.getElementById('bottom-sheet-more');
+  const moreBackdrop = document.getElementById('bottom-sheet-backdrop');
+  const moreBtn = document.getElementById('btn-bottom-nav-more');
+  const closeMoreBtn = document.getElementById('btn-close-bottom-sheet');
+
+  const closeMoreSheet = () => {
+    if (moreSheet) {
+      moreSheet.classList.add('translate-y-full', 'opacity-0', 'pointer-events-none');
+      moreSheet.classList.remove('translate-y-0', 'opacity-100');
+    }
+    if (moreBackdrop) {
+      moreBackdrop.classList.add('opacity-0', 'pointer-events-none');
+      moreBackdrop.classList.remove('opacity-100');
+    }
+    if (moreBtn) {
+      moreBtn.setAttribute('aria-expanded', 'false');
+    }
+  };
+
+  const openMoreSheet = () => {
+    if (moreSheet) {
+      moreSheet.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
+      moreSheet.classList.add('translate-y-0', 'opacity-100');
+    }
+    if (moreBackdrop) {
+      moreBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+      moreBackdrop.classList.add('opacity-100');
+    }
+    if (moreBtn) {
+      moreBtn.setAttribute('aria-expanded', 'true');
+    }
+  };
+
+  if (moreBtn) {
+    moreBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isExpanded = moreBtn.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        closeMoreSheet();
+      } else {
+        openMoreSheet();
+      }
+    });
+  }
+
+  if (closeMoreBtn) {
+    closeMoreBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeMoreSheet();
+    });
+  }
+
+  if (moreBackdrop) {
+    moreBackdrop.addEventListener('click', () => {
+      closeMoreSheet();
+    });
+  }
 
   const switchTab = (targetId) => {
     panels.forEach(p => p.classList.add('hidden'));
-    navBtns.forEach(b => {
-      if (b.classList.contains('rounded-full')) {
-        b.classList.remove('bg-emerald-700', 'text-white');
-        b.classList.add('bg-slate-100', 'text-slate-700');
-      } else {
-        b.classList.remove('bg-white/10', 'text-white', 'font-semibold');
-        b.classList.add('text-gray-300');
-      }
+
+    // Reset desktop sidebar buttons
+    document.querySelectorAll('.sidebar .nav-item-btn').forEach(b => {
+      b.classList.remove('bg-white/10', 'text-white', 'font-semibold');
+      b.classList.add('text-gray-300');
+    });
+
+    // Reset bottom nav items
+    bottomNavItems.forEach(b => {
+      b.classList.remove('active');
+    });
+
+    // Reset more menu items
+    document.querySelectorAll('.more-menu-item').forEach(b => {
+      b.classList.remove('ring-2', 'ring-[#4ade80]', 'font-bold');
     });
 
     const activePanel = document.getElementById(targetId);
     if (activePanel) activePanel.classList.remove('hidden');
 
-    const activeBtns = Array.from(navBtns).filter(b => b.getAttribute('data-target') === targetId || b.getAttribute('href') === '#' + targetId);
-    activeBtns.forEach(activeBtn => {
-      if (activeBtn.classList.contains('rounded-full')) {
-        activeBtn.classList.add('bg-emerald-700', 'text-white', 'font-semibold');
-        activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
-      } else {
-        activeBtn.classList.add('bg-white/10', 'text-white', 'font-semibold');
-        activeBtn.classList.remove('text-gray-300');
+    // Activate matching desktop sidebar button
+    const cleanId = targetId ? targetId.replace('panel-', '') : '';
+    const activeSidebarBtn = Array.from(document.querySelectorAll('.sidebar .nav-item-btn')).find(b => 
+      b.getAttribute('data-target') === targetId || b.getAttribute('href') === '#' + cleanId
+    );
+    if (activeSidebarBtn) {
+      activeSidebarBtn.classList.add('bg-white/10', 'text-white', 'font-semibold');
+      activeSidebarBtn.classList.remove('text-gray-300');
+    }
+
+    // Activate matching bottom nav item if present
+    const activeBottomBtn = Array.from(bottomNavItems).find(b => 
+      b.getAttribute('data-target') === targetId || b.getAttribute('href') === '#' + cleanId
+    );
+    if (activeBottomBtn) {
+      activeBottomBtn.classList.add('active');
+      if (moreBtn) moreBtn.classList.remove('active');
+    } else {
+      // If active tab is one of the items inside 'Lainnya', highlight the 'Lainnya' button
+      if (moreBtn) {
+        moreBtn.classList.add('active');
       }
-    });
+      const activeMoreItem = Array.from(document.querySelectorAll('.more-menu-item')).find(b => 
+        b.getAttribute('data-target') === targetId || b.getAttribute('href') === '#' + cleanId
+      );
+      if (activeMoreItem) {
+        activeMoreItem.classList.add('ring-2', 'ring-[#4ade80]', 'font-bold');
+      }
+    }
+
+    // Always close sheet after navigation
+    closeMoreSheet();
+
+    // Scroll to top of content on mobile
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   navBtns.forEach(btn => {
@@ -487,7 +579,11 @@ function initTabNavigation() {
     const matchBtn = Array.from(navBtns).find(b => b.getAttribute('href') === hash);
     if (matchBtn) {
       switchTab(matchBtn.getAttribute('data-target'));
+    } else {
+      switchTab('panel-beranda');
     }
+  } else {
+    switchTab('panel-beranda');
   }
 }
 
