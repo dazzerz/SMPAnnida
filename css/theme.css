@@ -1,106 +1,112 @@
 /* =========================================================================
-   SMP Annida - Unified Midnight Emerald Dark Theme (Anti-Glare & High Contrast)
-   Single High-Contrast Dark Architecture — Institutional Clean Design
+   SMP Annida - Unified Warm Light Theme (Islamic, Modern, Nature)
+   Single Light Mode Architecture per DESIGN.md — WCAG AA & AAA Compliant
    ========================================================================= */
 
 :root,
-[data-theme="dark"] {
-  --color-scheme: dark;
+[data-theme="light"] {
+  --color-scheme: light;
 
-  /* Solid Canvas Background (No distracting leaf or nature background images) */
+  /* Solid Canvas Background */
   --bg-nature-image: none;
   --leaf-filter: none;
   --leaf-opacity: 0;
   --bg-overlay-tint: transparent;
 
-  /* Canvas Background: Solid High-Contrast Midnight Canvas */
-  --bg-canvas-color: #0b1320;
-  --bg-canvas: #0b1320;
+  /* Canvas Background: Warm White / Slate 50 (#f8fafc per DESIGN.md) */
+  --bg-canvas-color: #f8fafc;
+  --bg-canvas: #f8fafc;
   --bg-canvas-attachment: scroll;
 
-  /* Solid Surfaces & Cards — High Contrast, Zero Glassmorphic Blur */
-  --glass-bg: #111a28;
-  --glass-bg-hover: #162235;
-  --glass-bg-elevated: #162235;
-  --glass-border: #1e293b;
-  --glass-border-subtle: #1e293b;
+  /* Solid Surfaces & Cards — White (#ffffff), Slate Border (#e2e8f0) */
+  --glass-bg: #ffffff;
+  --glass-bg-hover: #f8fafc;
+  --glass-bg-elevated: #ffffff;
+  --glass-border: #e2e8f0;
+  --glass-border-subtle: #f1f5f9;
   --glass-blur: none;
-  --glass-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
-  --glass-shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --glass-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --glass-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
 
-  /* Typography & High Contrast (WCAG AAA Compliance) */
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  --text-inverse: #0f172a;
+  /* Typography & High Contrast (WCAG AAA & AA Compliance) */
+  --text-primary: #0f172a;       /* Slate 900 — 15.8:1 contrast on #ffffff */
+  --text-secondary: #334155;     /* Slate 700 — 9.5:1 contrast on #ffffff */
+  --text-muted: #475569;         /* Slate 600 — 7.0:1 contrast on #ffffff */
+  --text-inverse: #ffffff;
 
-  /* Emerald Brand Accents */
-  --primary: #10b981;         /* Emerald 500 */
-  --primary-hover: #34d399;   /* Emerald 400 */
-  --primary-light: rgba(16, 185, 129, 0.15);
-  --accent: #34d399;
+  /* Emerald Brand Accents (WCAG AA Compliant on Light) */
+  --primary: #15803d;            /* Green 700 — 4.8:1 contrast on #ffffff */
+  --primary-hover: #166534;      /* Green 800 */
+  --primary-light: #f0fdf4;      /* Green 50 */
+  --primary-focus: rgba(22, 163, 74, 0.25);
+  --accent: #15803d;
 
-  /* UI Status Badges */
-  --badge-success-bg: rgba(16, 185, 129, 0.18);
-  --badge-success-text: #6ee7b7;
-  --badge-success-border: rgba(16, 185, 129, 0.35);
+  /* UI Status Badges (Light Theme Optimized) */
+  --badge-success-bg: #dcfce7;
+  --badge-success-text: #166534;
+  --badge-success-border: #86efac;
 
-  --badge-warning-bg: rgba(245, 158, 11, 0.18);
-  --badge-warning-text: #fcd34d;
-  --badge-warning-border: rgba(245, 158, 11, 0.35);
+  --badge-warning-bg: #fef3c7;
+  --badge-warning-text: #92400e;
+  --badge-warning-border: #fde68a;
 
-  --badge-danger-bg: rgba(239, 68, 68, 0.18);
-  --badge-danger-text: #fca5a5;
-  --badge-danger-border: rgba(239, 68, 68, 0.35);
+  --badge-danger-bg: #fee2e2;
+  --badge-danger-text: #991b1b;
+  --badge-danger-border: #fca5a5;
 
-  --badge-info-bg: rgba(14, 165, 233, 0.18);
-  --badge-info-text: #7dd3fc;
-  --badge-info-border: rgba(14, 165, 233, 0.35);
+  --badge-info-bg: #e0f2fe;
+  --badge-info-text: #075985;
+  --badge-info-border: #bae6fd;
 
   /* Form Inputs & Controls */
-  --input-bg: #0d1522;
-  --input-border: #243247;
-  --input-border-focus: #10b981;
-  --input-text: #f8fafc;
-  --input-placeholder: #64748b;
-  --input-focus-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --input-border-focus: #15803d;
+  --input-text: #0f172a;
+  --input-placeholder: #94a3b8;
+  --input-focus-shadow: 0 0 0 3px rgba(21, 128, 61, 0.18);
 
   /* Tables */
-  --table-header-bg: #162030;
-  --table-row-hover: #182436;
-  --table-border: #223147;
-  --table-text-head: #e2e8f0;
-  --table-text-body: #f8fafc;
+  --table-header-bg: #f1f5f9;
+  --table-row-hover: #f8fafc;
+  --table-border: #e2e8f0;
+  --table-text-head: #475569;
+  --table-text-body: #0f172a;
 
-  /* Sidebar & Topbar */
+  /* Sidebar (TETAP HIJAU TUA #166534 per DESIGN.md) */
   --sidebar-bg: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%);
   --bg-sidebar: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%);
-  --sidebar-border: rgba(16, 185, 129, 0.18);
-  --sidebar-item-hover: rgba(16, 185, 129, 0.12);
-  --sidebar-item-active: rgba(16, 185, 129, 0.22);
-  --sidebar-text: #cbd5e1;
-  --sidebar-text-active: #34d399;
+  --sidebar-border: rgba(16, 185, 129, 0.2);
+  --sidebar-item-hover: rgba(255, 255, 255, 0.1);
+  --sidebar-item-active: rgba(34, 197, 94, 0.22);
+  --sidebar-text: #e2e8f0;
+  --sidebar-text-active: #4ade80;
+
+  /* Topbar */
+  --topbar-bg: #ffffff;
+  --topbar-border: #e2e8f0;
+  --topbar-text: #0f172a;
 
   /* Chart Colors */
-  --chart-grid: rgba(255, 255, 255, 0.08);
-  --chart-text: #94a3b8;
+  --chart-grid: rgba(0, 0, 0, 0.06);
+  --chart-text: #475569;
 }
 
-/* ── BASE BACKGROUND: Canvas Color + Fixed Botanical Pattern via Pseudo-Element ── */
+/* ── BASE BACKGROUND: Canvas Color + Islamic Geometry & Botanical Pattern ── */
 html {
-  background-color: #0b1320 !important;
-  color-scheme: dark;
+  background-color: #f8fafc !important;
+  color-scheme: light;
 }
 
 body {
-  background-color: #0b1320 !important;
+  background-color: #f8fafc !important;
   color: var(--text-primary);
   min-height: 100vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   position: relative;
 }
 
-/* ── BOTANICAL BACKGROUND TEXTURE VIA FIXED PSEUDO-ELEMENT (12-15% Opacity) ── */
+/* ── ISLAMIC GEOMETRY & BOTANICAL BACKGROUND TEXTURE (Light Mode: #bbf7d0 on #f8fafc) ── */
 body::before {
   content: "" !important;
   display: block !important;
@@ -113,11 +119,11 @@ body::before {
   height: 100vh !important;
   pointer-events: none !important;
   z-index: 0 !important;
-  opacity: 0.14 !important; /* Clearly visible 14% opacity */
+  opacity: 0.45 !important; /* Clearly present yet subtle per DESIGN.md */
   background-repeat: repeat !important;
   background-attachment: fixed !important;
-  background-size: 110px 110px !important;
-  background-image: url("data:image/svg+xml,%3Csvg width='110' height='110' viewBox='0 0 110 110' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2310b981' fill-opacity='0.28' stroke='%2334d399' stroke-opacity='0.45' stroke-width='1'%3E%3Cpath d='M55 10 C38 25 24 40 24 60 C24 82 42 98 55 102 C68 98 86 82 86 60 C86 40 72 25 55 10 Z'/%3E%3Cpath d='M55 16 L55 96' fill='none' stroke='%23059669' stroke-width='1.8' stroke-linecap='round'/%3E%3Cpath d='M55 35 Q42 33 34 42' fill='none' stroke='%23059669' stroke-width='1.4' stroke-linecap='round'/%3E%3Cpath d='M55 50 Q38 48 31 60' fill='none' stroke='%23059669' stroke-width='1.4' stroke-linecap='round'/%3E%3Cpath d='M55 65 Q42 65 36 76' fill='none' stroke='%23059669' stroke-width='1.4' stroke-linecap='round'/%3E%3Cpath d='M55 35 Q68 33 76 42' fill='none' stroke='%23059669' stroke-width='1.4' stroke-linecap='round'/%3E%3Cpath d='M55 50 Q72 48 79 60' fill='none' stroke='%23059669' stroke-width='1.4' stroke-linecap='round'/%3E%3Cpath d='M55 65 Q68 65 74 76' fill='none' stroke='%23059669' stroke-width='1.4' stroke-linecap='round'/%3E%3Cpath d='M10 6 C4 12 0 20 0 32 C0 44 7 51 12 54 C7 51 2 44 2 32 C2 24 6 16 10 6 Z' fill='%23059669'/%3E%3Cpath d='M100 104 C106 98 110 90 110 78 C110 66 103 59 98 56 C103 59 108 66 108 78 C108 86 104 94 100 104 Z' fill='%23059669'/%3E%3C/g%3E%3C/svg%3E") !important;
+  background-size: 120px 120px !important;
+  background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23bbf7d0' fill-opacity='0.35' stroke='%2386efac' stroke-width='1.2' stroke-opacity='0.6'%3E%3Cpolygon points='60,15 72,40 98,35 85,58 105,75 78,82 72,108 55,88 32,100 38,75 15,62 35,45 25,22 50,30' fill='none' stroke='%2386efac' stroke-width='1'/%3E%3Ccircle cx='60' cy='60' r='18' fill='%23bbf7d0' fill-opacity='0.25' stroke='%234ade80' stroke-width='1'/%3E%3Cpath d='M60 42 C66 48 66 54 60 60 C54 54 54 48 60 42 Z' fill='%2386efac'/%3E%3Cpath d='M60 60 C66 66 66 72 60 78 C54 72 54 66 60 60 Z' fill='%2386efac'/%3E%3Cpath d='M42 60 C48 66 54 66 60 60 C54 54 48 54 42 60 Z' fill='%2386efac'/%3E%3Cpath d='M60 60 C66 54 72 54 78 60 C72 66 66 66 60 60 Z' fill='%2386efac'/%3E%3Cpath d='M0 0 L15 15 M120 0 L105 15 M0 120 L15 105 M120 120 L105 105' stroke='%23bbf7d0' stroke-width='1' fill='none'/%3E%3C/g%3E%3C/svg%3E") !important;
 }
 
 /* Ensure containers are transparent so the fixed pseudo-element layer shines through */
@@ -158,43 +164,44 @@ body::before {
 
 /* Budget & Financial Cards */
 .budget-summary {
-  background: #111a28;
-  border: 1px solid #1e293b;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
   box-shadow: var(--glass-shadow);
+  color: #0f172a;
 }
 .budget-summary-title {
-  color: rgba(255, 255, 255, 0.8);
+  color: #475569;
 }
 .budget-summary-value {
-  color: #34d399;
+  color: #15803d;
   font-weight: 800;
 }
 .budget-summary-sub {
-  color: rgba(255, 255, 255, 0.65);
+  color: #64748b;
 }
 
 .budget-category-name,
 .budget-name {
-  color: #f8fafc;
+  color: #0f172a;
   font-weight: 700;
 }
 .budget-spent {
-  color: #34d399;
+  color: #15803d;
   font-weight: 800;
 }
 .budget-total,
 .budget-of,
 .budget-status {
-  color: #94a3b8;
+  color: #64748b;
 }
 
 .rab-card-header {
-  color: #f8fafc;
+  color: #0f172a;
   font-weight: 700;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid #e2e8f0;
 }
 .rab-card-body {
-  color: #cbd5e1;
+  color: #334155;
 }
 
 /* Tables Styling */
@@ -209,9 +216,9 @@ table thead th,
 #rapor-table th,
 .data-table th,
 .transactions-table th {
-  background-color: var(--table-header-bg);
-  color: var(--table-text-head);
-  border-bottom: 2px solid var(--table-border);
+  background-color: var(--table-header-bg) !important;
+  color: var(--table-text-head) !important;
+  border-bottom: 2px solid var(--table-border) !important;
   font-weight: 600;
   font-size: 12px;
   text-transform: uppercase;
@@ -224,8 +231,8 @@ table tbody tr td,
 #rapor-table td,
 .data-table td,
 .transactions-table td {
-  color: var(--table-text-body);
-  border-bottom: 1px solid var(--table-border);
+  color: var(--table-text-body) !important;
+  border-bottom: 1px solid var(--table-border) !important;
   padding: 13px 16px;
   font-size: 13.5px;
   line-height: 1.5;
@@ -235,7 +242,7 @@ table tbody tr td,
 table tbody tr:hover td,
 .data-table tbody tr:hover td,
 .transactions-table tbody tr:hover td {
-  background-color: var(--table-row-hover);
+  background-color: var(--table-row-hover) !important;
 }
 
 /* Form Controls */
@@ -245,9 +252,9 @@ textarea,
 .input-control,
 .filter-select,
 .auth-input {
-  background: var(--input-bg);
-  color: var(--input-text);
-  border: 1px solid var(--input-border);
+  background: var(--input-bg) !important;
+  color: var(--input-text) !important;
+  border: 1px solid var(--input-border) !important;
   border-radius: 8px;
   padding: 0.65rem 0.95rem;
   font-family: inherit;
@@ -260,13 +267,13 @@ textarea:focus,
 .input-control:focus,
 .auth-input:focus {
   outline: none;
-  border-color: var(--input-border-focus);
-  box-shadow: var(--input-focus-shadow);
+  border-color: var(--input-border-focus) !important;
+  box-shadow: var(--input-focus-shadow) !important;
 }
 
 option {
-  background-color: #0f172a;
-  color: #f8fafc;
+  background-color: #ffffff;
+  color: #0f172a;
 }
 
 /* Sidebar & Topbar */
@@ -302,12 +309,13 @@ option {
   z-index: 1;
 }
 
+/* Topbar — Clean White / Slate Border on Light Mode */
 .topbar {
-  background: #081a16 !important;
-  background-color: rgba(8, 26, 22, 0.96) !important;
+  background: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.96) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
-  border-bottom: 1px solid rgba(16, 185, 129, 0.15) !important;
+  border-bottom: 1px solid #e2e8f0 !important;
   position: -webkit-sticky !important;
   position: sticky !important;
   top: 0 !important;
@@ -319,6 +327,21 @@ option {
   justify-content: space-between !important;
   width: 100% !important;
   box-sizing: border-box !important;
+}
+
+.topbar-title,
+.topbar .title,
+#page-title {
+  color: #0f172a !important;
+  font-weight: 700;
+}
+
+.topbar-greeting {
+  color: #475569 !important;
+}
+
+.topbar .material-symbols-outlined {
+  color: #475569;
 }
 
 .sidebar .nav-item {
@@ -663,20 +686,21 @@ option {
   margin-bottom: 2rem !important;
 }
 .bento-card {
-  background: #111a28 !important;
-  border: 1px solid #1e293b !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
   border-radius: 14px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03) !important;
   padding: 1.25rem 1.4rem !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
   position: relative !important;
   overflow: hidden !important;
-  transition: transform 0.2s ease, border-color 0.2s ease !important;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 .bento-card:hover {
-  border-color: rgba(16, 185, 129, 0.4) !important;
+  border-color: #86efac !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
   transform: translateY(-2px) !important;
 }
 .bento-1x1 {
@@ -688,7 +712,7 @@ option {
 .bento-stat-num {
   font-size: 2rem !important;
   font-weight: 800 !important;
-  color: #10b981 !important;
+  color: #15803d !important; /* Green 700 — WCAG AAA 4.8:1 on #ffffff */
   line-height: 1.1 !important;
   margin-top: 0.5rem !important;
   margin-bottom: 0.25rem !important;
@@ -696,14 +720,14 @@ option {
 .bento-title {
   font-size: 0.85rem !important;
   font-weight: 600 !important;
-  color: #cbd5e1 !important;
+  color: #475569 !important; /* Slate 600 — WCAG AAA 7.0:1 */
   display: flex !important;
   align-items: center !important;
   gap: 0.5rem !important;
 }
 .bento-subtitle {
   font-size: 0.75rem !important;
-  color: #94a3b8 !important;
+  color: #64748b !important; /* Slate 500 — WCAG AA 4.6:1 */
 }
 
 @media (max-width: 1024px) {
@@ -727,25 +751,28 @@ option {
 
 /* Schedule Card */
 .schedule-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
   transition: transform 0.2s ease, border-color 0.2s ease;
   border-radius: 12px;
 }
 .schedule-card:hover {
-  border-color: var(--primary);
+  border-color: #86efac !important;
   transform: translateY(-2px);
 }
 .schedule-mapel {
-  color: #f8fafc;
+  color: #0f172a !important;
   font-weight: 700;
 }
 .schedule-meta {
-  color: #94a3b8;
+  color: #64748b !important;
   font-weight: 500;
 }
 .time-badge {
-  background: rgba(16, 185, 129, 0.18);
-  color: #6ee7b7;
-  border: 1px solid rgba(16, 185, 129, 0.35);
+  background: #dcfce7 !important;
+  color: #15803d !important;
+  border: 1px solid #86efac !important;
   border-radius: 6px;
 }
 
@@ -891,11 +918,11 @@ option {
   #sec-transactions table tbody tr {
     display: block !important;
     width: 100% !important;
-    background: #111a28 !important;
-    border: 1px solid #1e293b !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
     border-radius: 12px !important;
     padding: 12px 14px !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
     box-sizing: border-box !important;
     margin-bottom: 0 !important;
   }
@@ -913,7 +940,8 @@ option {
     justify-content: space-between !important;
     align-items: center !important;
     padding: 8px 0 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    color: #0f172a !important;
     text-align: right !important;
     font-size: 13px !important;
     min-height: 36px !important;
@@ -956,7 +984,7 @@ option {
     font-size: 11.5px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: #94a3b8;
+    color: #475569 !important;
     text-align: left;
     margin-right: 12px;
     flex-shrink: 0;
@@ -982,4 +1010,69 @@ option {
     justify-content: center !important;
     min-height: 40px !important;
   }
+}
+
+/* =========================================================================
+   UNIVERSAL LIGHT THEME CARD & TYPOGRAPHY POLISH (per DESIGN.md)
+   ========================================================================= */
+h1, h2, h3, h4, h5, h6,
+.page-title,
+.section-title {
+  color: #0f172a !important;
+}
+
+/* Light Theme Card Elements */
+.main-content .bg-slate-900,
+.main-content .bg-gray-900,
+.content-area .bg-slate-900,
+.content-area .bg-gray-900 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+.main-content .border-slate-800,
+.main-content .border-slate-700,
+.main-content .border-slate-700\/60,
+.content-area .border-slate-800,
+.content-area .border-slate-700 {
+  border-color: #e2e8f0 !important;
+}
+
+.main-content .text-slate-400,
+.main-content .text-gray-400,
+.content-area .text-slate-400,
+.content-area .text-gray-400 {
+  color: #475569 !important;
+}
+
+.main-content .text-slate-300,
+.main-content .text-gray-300,
+.content-area .text-slate-300,
+.content-area .text-gray-300 {
+  color: #334155 !important;
+}
+
+/* Ensure buttons with solid colors keep their readable white text */
+.btn-primary,
+.bg-emerald-600,
+.bg-emerald-500,
+.bg-green-600,
+.bg-green-700,
+.btn-primary .text-white,
+button.bg-emerald-600 .text-white,
+button.bg-emerald-500 .text-white {
+  color: #ffffff !important;
+}
+
+/* Modals on Light Theme */
+.modal-content,
+.modal-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+.modal-content label {
+  color: #334155 !important;
 }

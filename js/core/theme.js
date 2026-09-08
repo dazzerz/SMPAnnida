@@ -1,25 +1,25 @@
 /**
- * theme.js – Dedicated Midnight Emerald Dark Theme Manager for SMP Annida
+ * theme.js – Dedicated Light Mode Theme Manager for SMP Annida (per DESIGN.md)
  * Features:
- * - Locks data-theme="dark" permanently on both <html> and <body>
- * - Ensures class="dark" is active for Tailwind CSS
- * - Eliminates light-mode style collisions & glare
+ * - Locks data-theme="light" permanently on both <html> and <body>
+ * - Removes class="dark" for Tailwind CSS
+ * - Sets light-mode Chart.js defaults
  * - Keeps API methods safe & backward-compatible
  */
 
 const THEME_STORAGE_KEY = 'smpannida_theme';
 
 export function getSystemTheme() {
-  return 'dark';
+  return 'light';
 }
 
 export function getSavedTheme() {
-  return 'dark';
+  return 'light';
 }
 
-export function applyTheme(theme = 'dark') {
-  // Always lock to dark theme
-  const targetTheme = 'dark';
+export function applyTheme(theme = 'light') {
+  // Always lock to light theme per DESIGN.md
+  const targetTheme = 'light';
   
   // 1. Set data-theme on <html> and <body>
   document.documentElement.setAttribute('data-theme', targetTheme);
@@ -27,15 +27,15 @@ export function applyTheme(theme = 'dark') {
     document.body.setAttribute('data-theme', targetTheme);
   }
 
-  // 2. Ensure "dark" class is active for Tailwind CSS
-  document.documentElement.classList.add('dark');
-  document.documentElement.classList.remove('light');
+  // 2. Ensure "dark" class is removed and "light" is active for Tailwind CSS
+  document.documentElement.classList.remove('dark');
+  document.documentElement.classList.add('light');
   if (document.body) {
-    document.body.classList.add('dark');
-    document.body.classList.remove('light');
+    document.body.classList.remove('dark');
+    document.body.classList.add('light');
   }
 
-  // 3. Persist permanent dark theme
+  // 3. Persist permanent light theme
   try {
     localStorage.setItem(THEME_STORAGE_KEY, targetTheme);
     localStorage.setItem('theme', targetTheme);
@@ -43,10 +43,10 @@ export function applyTheme(theme = 'dark') {
     // Ignore storage errors in restricted contexts
   }
 
-  // 4. Update Chart.js defaults if Chart is in scope
+  // 4. Update Chart.js defaults if Chart is in scope (High contrast on light)
   if (typeof window !== 'undefined' && typeof window.Chart !== 'undefined') {
-    window.Chart.defaults.color = '#94a3b8';
-    window.Chart.defaults.borderColor = 'rgba(255,255,255,0.08)';
+    window.Chart.defaults.color = '#475569';
+    window.Chart.defaults.borderColor = 'rgba(0, 0, 0, 0.08)';
   }
 
   // 5. Hide or deactivate any remaining toggle buttons
@@ -56,17 +56,17 @@ export function applyTheme(theme = 'dark') {
   });
 
   // 6. Dispatch custom event for reactive modules
-  window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: 'dark' } }));
+  window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: 'light' } }));
 }
 
 export function toggleTheme() {
-  // Permanent dark mode: always ensure dark mode remains active
-  applyTheme('dark');
-  return 'dark';
+  // Permanent light mode: always ensure light mode remains active
+  applyTheme('light');
+  return 'light';
 }
 
 export function initTheme() {
-  applyTheme('dark');
+  applyTheme('light');
 }
 
 export function bindThemeSwitcher(btnElementOrId = 'theme-toggle-btn') {

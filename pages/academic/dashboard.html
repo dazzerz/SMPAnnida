@@ -6,9 +6,10 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      document.documentElement.classList.add('dark');
-      try { localStorage.setItem('smpannida_theme', 'dark'); } catch(_) {}
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+      try { localStorage.setItem('smpannida_theme', 'light'); } catch(_) {}
     })();
   </script>
     <meta charset="UTF-8">
@@ -188,32 +189,32 @@
                             <div>
                                 <div class="bento-title justify-between">
                                     <div class="flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-emerald-400">menu_book</span>
-                                        <span class="font-semibold text-white">Jurnal Guru Hari Ini</span>
+                                        <span class="material-symbols-outlined text-emerald-600">menu_book</span>
+                                        <span class="font-semibold text-slate-800">Jurnal Guru Hari Ini</span>
                                     </div>
-                                    <span class="text-[11px] text-emerald-400 font-medium px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">Monitoring</span>
+                                    <span class="text-[11px] text-emerald-800 font-medium px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200">Monitoring</span>
                                 </div>
 
                                 <div class="grid grid-cols-3 gap-2.5 my-3">
-                                    <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-700/60 text-center">
-                                        <div class="text-xs text-gray-300 font-medium">Total Jurnal</div>
-                                        <div class="text-lg font-bold text-emerald-400 mt-0.5" id="stat-jurnal-total">0</div>
+                                    <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-center">
+                                        <div class="text-xs text-slate-600 font-medium">Total Jurnal</div>
+                                        <div class="text-lg font-bold text-emerald-700 mt-0.5" id="stat-jurnal-total">0</div>
                                     </div>
-                                    <div class="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-center">
-                                        <div class="text-xs text-emerald-300 font-medium">Sudah Mengisi</div>
-                                        <div class="text-lg font-bold text-emerald-400 mt-0.5" id="stat-jurnal-guru-sudah">0</div>
+                                    <div class="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-center">
+                                        <div class="text-xs text-emerald-800 font-medium">Sudah Mengisi</div>
+                                        <div class="text-lg font-bold text-emerald-700 mt-0.5" id="stat-jurnal-guru-sudah">0</div>
                                     </div>
-                                    <div class="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-center">
-                                        <div class="text-xs text-rose-300 font-medium">Belum Mengisi</div>
-                                        <div class="text-lg font-bold text-rose-400 mt-0.5" id="stat-jurnal-guru-belum">0</div>
+                                    <div class="p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-center">
+                                        <div class="text-xs text-rose-800 font-medium">Belum Mengisi</div>
+                                        <div class="text-lg font-bold text-rose-700 mt-0.5" id="stat-jurnal-guru-belum">0</div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="bento-subtitle flex items-center justify-between pt-1 border-t border-white/5 text-[11px]">
+                            <div class="bento-subtitle flex items-center justify-between pt-1 border-t border-slate-200 text-[11px]">
                                 <span>Guru Check-in:</span>
-                                <span class="font-semibold text-gray-200">
-                                    <span id="stat-guru-in" class="text-emerald-400 font-bold">0</span> / <span id="stat-guru-total">0</span> Guru (Out: <span id="stat-guru-out">0</span>, Belum: <span id="stat-guru-belum">0</span>)
+                                <span class="font-semibold text-slate-700">
+                                    <span id="stat-guru-in" class="text-emerald-700 font-bold">0</span> / <span id="stat-guru-total">0</span> Guru (Out: <span id="stat-guru-out">0</span>, Belum: <span id="stat-guru-belum">0</span>)
                                 </span>
                             </div>
                         </div>

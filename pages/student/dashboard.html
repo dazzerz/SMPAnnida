@@ -5,14 +5,15 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      document.documentElement.classList.add('dark');
-      try { localStorage.setItem('smpannida_theme', 'dark'); } catch(_) {}
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+      try { localStorage.setItem('smpannida_theme', 'light'); } catch(_) {}
     })();
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <title>Portal Siswa — SMP Annida</title>
+  <title>Portal Siswa: SMP Annida</title>
   <link rel="icon" href="/logo_1x1.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
