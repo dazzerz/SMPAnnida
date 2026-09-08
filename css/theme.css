@@ -625,6 +625,34 @@ option {
   }
 }
 
+/* ── SIDEBAR OVERLAY (Mobile & Tablet: Clean Semi-Transparent Backdrop, Zero Blur) ── */
+.sidebar-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  z-index: 1150 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.25s ease !important;
+}
+
+.sidebar-overlay.show,
+.sidebar-overlay.active {
+  display: block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+@media (min-width: 1024px) {
+  .sidebar-overlay {
+    display: none !important;
+    pointer-events: none !important;
+  }
+}
+
 /* =========================================================================
    BENTO GRID LAYOUT ARCHITECTURE
    ========================================================================= */
