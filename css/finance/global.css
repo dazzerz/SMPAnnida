@@ -18,7 +18,7 @@
   --bg-card-hover: #f8fafc;
   --bg-elevated: #ffffff;
   --bg-input: #ffffff;
-  --bg-sidebar: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%);
+  --bg-sidebar: #166534;
 
   --border-color: #e2e8f0;
   --border-focus: #15803d;
@@ -51,7 +51,7 @@
   --gradient-success: linear-gradient(135deg, #15803d, #166534);
   --gradient-danger: linear-gradient(135deg, #dc2626, #b91c1c);
   --gradient-gold: linear-gradient(135deg, #d97706, #b45309);
-  --gradient-sidebar: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%);
+  --gradient-sidebar: linear-gradient(180deg, #166534 0%, #14532d 100%);
   --gradient-card: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
 
   /* Glass effect */
