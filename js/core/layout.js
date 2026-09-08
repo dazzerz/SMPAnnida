@@ -75,15 +75,15 @@ export function injectSidebar(containerId) {
       <!-- Submenu Links Container -->
       <nav class="split-rail-panel-menu sidebar-nav">
         <!-- MAIN CATEGORY -->
-        <div class="category-panel-content" data-category="main" style="display:none;">
-          <a href="${basePath}dashboard.html" class="nav-item" data-target="super-dashboard" data-tooltip="Super Dashboard">
+        <div class="category-panel-content" id="nav-group-main" data-category="main" style="display:none;">
+          <a href="${basePath}dashboard.html" class="nav-item nav-link" data-target="super-dashboard" data-tooltip="Super Dashboard">
             <span class="material-symbols-outlined nav-icon">grid_view</span>
             <span class="nav-text">Super Dashboard</span>
           </a>
         </div>
 
         <!-- ACADEMIC CATEGORY -->
-        <div class="category-panel-content" data-category="academic">
+        <div class="category-panel-content" id="nav-group-academic" data-category="academic">
           <a href="${basePath}pages/academic/dashboard.html#dashboard" class="nav-item nav-link" data-target="dashboard" data-tooltip="Dashboard">
             <span class="material-symbols-outlined nav-icon">insights</span>
             <span class="nav-text">Dashboard</span>
@@ -147,40 +147,40 @@ export function injectSidebar(containerId) {
         </div>
 
         <!-- FINANCE CATEGORY -->
-        <div class="category-panel-content" data-category="finance" style="display:none;">
-          <a href="${basePath}pages/finance/dashboard.html#transactions" class="nav-item" data-target="transactions" data-tooltip="Transaksi Kas">
+        <div class="category-panel-content" id="nav-group-finance" data-category="finance" style="display:none;">
+          <a href="${basePath}pages/finance/dashboard.html#transactions" class="nav-item nav-link" data-target="transactions" data-tooltip="Transaksi Kas">
             <span class="material-symbols-outlined nav-icon">payments</span>
             <span class="nav-text">Transaksi Kas</span>
           </a>
-          <a href="${basePath}pages/finance/dashboard.html#budget" class="nav-item" data-target="budget" data-tooltip="Budget Bulanan">
+          <a href="${basePath}pages/finance/dashboard.html#budget" class="nav-item nav-link" data-target="budget" data-tooltip="Budget Bulanan">
             <span class="material-symbols-outlined nav-icon">savings</span>
             <span class="nav-text">Budget Bulanan</span>
           </a>
-          <a href="${basePath}pages/finance/dashboard.html#rab" class="nav-item" data-target="rab" data-tooltip="RAB Kelas">
+          <a href="${basePath}pages/finance/dashboard.html#rab" class="nav-item nav-link" data-target="rab" data-tooltip="RAB Kelas">
             <span class="material-symbols-outlined nav-icon">table_chart</span>
             <span class="nav-text">RAB Kelas</span>
           </a>
-          <a href="${basePath}pages/finance/dashboard.html#reports" class="nav-item" data-target="reports" data-tooltip="Laporan Keuangan">
+          <a href="${basePath}pages/finance/dashboard.html#reports" class="nav-item nav-link" data-target="reports" data-tooltip="Laporan Keuangan">
             <span class="material-symbols-outlined nav-icon">analytics</span>
             <span class="nav-text">Laporan</span>
           </a>
-          <a href="${basePath}pages/finance/dashboard.html#syahriah" class="nav-item" data-target="syahriah" data-tooltip="Syahriah Guru">
+          <a href="${basePath}pages/finance/dashboard.html#syahriah" class="nav-item nav-link" data-target="syahriah" data-tooltip="Syahriah Guru">
             <span class="material-symbols-outlined nav-icon">account_balance_wallet</span>
             <span class="nav-text">Syahriah Guru</span>
           </a>
         </div>
 
         <!-- PPDB CATEGORY -->
-        <div class="category-panel-content" data-category="ppdb" style="display:none;">
-          <a href="${basePath}pages/ppdb/dashboard-admin.html" class="nav-item" data-target="ppdb-admin" data-tooltip="Pendaftar Baru">
+        <div class="category-panel-content" id="nav-group-ppdb" data-category="ppdb" style="display:none;">
+          <a href="${basePath}pages/ppdb/dashboard-admin.html" class="nav-item nav-link" data-target="ppdb-admin" data-tooltip="Pendaftar Baru">
             <span class="material-symbols-outlined nav-icon">person_add</span>
             <span class="nav-text">Pendaftar Baru</span>
           </a>
         </div>
 
         <!-- SYSTEM CATEGORY -->
-        <div class="category-panel-content" data-category="system" style="display:none;">
-          <a href="${basePath}pages/finance/dashboard.html#settings" class="nav-item" data-target="settings" data-tooltip="Pengaturan">
+        <div class="category-panel-content" id="nav-group-system" data-category="system" style="display:none;">
+          <a href="${basePath}pages/finance/dashboard.html#settings" class="nav-item nav-link" data-target="settings" data-tooltip="Pengaturan">
             <span class="material-symbols-outlined nav-icon">settings</span>
             <span class="nav-text">Pengaturan</span>
           </a>
@@ -639,7 +639,7 @@ if (typeof document !== 'undefined' && !window.__sidebar_lifecycle_bound) {
         }
 
         // If mobile sidebar is open and clicked anywhere outside sidebar and hamburger button
-        if (window.innerWidth < 1024) {
+        if (window.innerWidth < 768) {
             const hasOpen = document.querySelector('.sidebar.open, #sidebar.open, .sidebar-overlay.show, .sidebar-overlay.active');
             if (hasOpen) {
                 const insideSidebar = e.target.closest('.sidebar, #sidebar, #student-sidebar, .split-rail-container');

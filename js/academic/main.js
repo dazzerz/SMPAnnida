@@ -86,7 +86,7 @@ async function checkAuth() {
         // Commit to auth module
         authState.setAuth(_user, _teacher, _admin, _guest, _pembina || false);
 
-        if (error || (!user && !_guest)) {
+        if (!user && !_guest) {
             if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
             return;
         }
@@ -161,10 +161,11 @@ export function handleAcademicHashChange() {
         targetSection.style.display = 'block';
     }
 
-    if (window.innerWidth < 1024) {
+    if (window.innerWidth < 768) {
         document.getElementById('sidebar')?.classList.remove('open');
         const overlay = document.getElementById('sidebar-overlay') || document.querySelector('.overlay');
         if (overlay) overlay.classList.remove('show', 'active');
+        if (window._closeSidebar) window._closeSidebar();
     }
 }
 
@@ -207,12 +208,12 @@ if (menuToggle) {
 }
 
 // Also close sidebar when nav link is clicked on mobile
-document.querySelectorAll('.nav-item.nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-        if (window.innerWidth < 1024 && window._closeSidebar) {
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.nav-item, .nav-link')) {
+        if (window.innerWidth < 768 && window._closeSidebar) {
             window._closeSidebar();
         }
-    });
+    }
 });
 
 // Toggle Dark Mode
