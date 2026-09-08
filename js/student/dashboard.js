@@ -174,14 +174,14 @@ async function loadTodaySchedules(student) {
       const room = s.room ? `Ruang ${s.room}` : 'Kelas';
 
       return `
-        <div class="p-4 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between hover:bg-white/10 transition-all">
+        <div class="p-4 rounded-xl bg-white border border-slate-200 flex items-center justify-between hover:bg-slate-50 transition-all">
           <div class="flex items-center gap-4">
             <div class="px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold text-xs border border-emerald-500/30">
               ${jamMulai} - ${jamSelesai}
             </div>
             <div>
-              <div class="font-bold text-white text-sm">${escapeHTML(mapel)}</div>
-              <div class="text-xs text-gray-400">👨‍🏫 ${escapeHTML(guru)} • 📍 ${escapeHTML(room)}</div>
+              <div class="font-bold text-slate-800 text-sm">${escapeHTML(mapel)}</div>
+              <div class="text-xs text-slate-500">👨‍🏫 ${escapeHTML(guru)} • 📍 ${escapeHTML(room)}</div>
             </div>
           </div>
           <span class="text-xs text-emerald-400 font-semibold px-2 py-1 rounded bg-emerald-500/10 border border-emerald-500/20">
@@ -228,19 +228,19 @@ async function loadWeeklySchedules(student) {
     grid.innerHTML = daysOrder.map(day => {
       const dayScheds = scheds.filter(s => s.day_of_week === day);
       return `
-        <div class="p-5 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-between">
-          <div class="font-headline-md font-bold text-emerald-300 mb-3 border-b border-white/10 pb-2 flex justify-between items-center">
+        <div class="p-5 rounded-2xl bg-white border border-slate-200 flex flex-col justify-between">
+          <div class="font-headline-md font-bold text-emerald-800 mb-3 border-b border-slate-200 pb-2 flex justify-between items-center">
             <span>${day}</span>
-            <span class="text-xs font-normal text-gray-400">${dayScheds.length} Mapel</span>
+            <span class="text-xs font-normal text-slate-500">${dayScheds.length} Mapel</span>
           </div>
           <div class="space-y-2.5 flex-1">
             ${dayScheds.length ? dayScheds.map(ds => `
-              <div class="p-2.5 rounded-lg bg-black/20 text-xs border border-white/5">
-                <div class="flex justify-between font-semibold text-white">
+              <div class="p-2.5 rounded-lg bg-slate-50 text-xs border border-slate-200">
+                <div class="flex justify-between font-semibold text-slate-800">
                   <span>${escapeHTML(ds.subjects?.nama_mapel || '-')}</span>
-                  <span class="text-emerald-400">${ds.start_time?.substring(0, 5)}</span>
+                  <span class="text-emerald-700 font-bold">${ds.start_time?.substring(0, 5)}</span>
                 </div>
-                <div class="text-[0.7rem] text-gray-400 mt-1">👨‍🏫 ${escapeHTML(ds.teachers?.nama || 'Dewan Guru')}</div>
+                <div class="text-[0.7rem] text-slate-500 mt-1">👨‍🏫 ${escapeHTML(ds.teachers?.nama || 'Dewan Guru')}</div>
               </div>
             `).join('') : '<div class="text-xs text-gray-500 italic py-4 text-center">Tidak ada jadwal</div>'}
           </div>
@@ -293,11 +293,11 @@ async function loadAttendanceHistory(student) {
 
     tbody.innerHTML = records.map(r => `
       <tr class="hover:bg-white/5 transition-colors">
-        <td class="py-3 px-4 font-medium text-white">${formatDate(r.attendance_date)}</td>
+        <td class="py-3 px-4 font-medium text-slate-800">${formatDate(r.attendance_date)}</td>
         <td class="py-3 px-4">${escapeHTML(r.subjects?.nama_mapel || '-')}</td>
-        <td class="py-3 px-4 text-xs text-gray-400">${r.start_time?.substring(0, 5) || '-'} - ${r.end_time?.substring(0, 5) || '-'}</td>
+        <td class="py-3 px-4 text-xs text-slate-500">${r.start_time?.substring(0, 5) || '-'} - ${r.end_time?.substring(0, 5) || '-'}</td>
         <td class="py-3 px-4">${statusBadge(r.status)}</td>
-        <td class="py-3 px-4 text-xs text-gray-400">${escapeHTML(r.notes || '-')}</td>
+        <td class="py-3 px-4 text-xs text-slate-500">${escapeHTML(r.notes || '-')}</td>
       </tr>
     `).join('');
 
@@ -331,7 +331,7 @@ async function loadJournalMaterials(student) {
     if (error) throw error;
 
     if (!journals || !journals.length) {
-      feed.innerHTML = '<div class="text-sm text-gray-400 py-8 text-center bg-white/5 rounded-2xl">Belum ada catatan materi jurnal pembelajaran untuk kelas Anda.</div>';
+      feed.innerHTML = '<div class="text-sm text-slate-500 py-8 text-center bg-slate-50 border border-slate-200 rounded-2xl">Belum ada catatan materi jurnal pembelajaran untuk kelas Anda.</div>';
       return;
     }
 
@@ -340,9 +340,9 @@ async function loadJournalMaterials(student) {
         <div class="flex flex-wrap justify-between items-start gap-2 mb-3">
           <div>
             <div class="text-xs font-bold text-emerald-400 uppercase tracking-wider">${escapeHTML(j.subjects?.nama_mapel || 'Mata Pelajaran')}</div>
-            <div class="text-lg font-bold text-white">${escapeHTML(j.materi || 'Materi Pembelajaran')}</div>
+            <div class="text-lg font-bold text-slate-900">${escapeHTML(j.materi || 'Materi Pembelajaran')}</div>
           </div>
-          <div class="text-right text-xs text-gray-400">
+          <div class="text-right text-xs text-slate-500">
             <div>${formatDate(j.date)}</div>
             <div>Jam: ${escapeHTML(j.jam_pelajaran || '-')}</div>
           </div>
@@ -350,7 +350,7 @@ async function loadJournalMaterials(student) {
         <div class="text-sm text-gray-300 leading-relaxed bg-black/20 p-3.5 rounded-xl border border-white/5">
           ${escapeHTML(j.catatan || 'Tidak ada catatan tambahan dari guru.')}
         </div>
-        <div class="mt-3 text-xs text-gray-400 flex items-center gap-1.5">
+        <div class="mt-3 text-xs text-slate-500 flex items-center gap-1.5">
           <span>👨‍🏫 Pengampu:</span>
           <b class="text-gray-300">${escapeHTML(j.teachers?.nama || 'Dewan Guru')}</b>
         </div>
@@ -378,7 +378,7 @@ async function loadTahfidzRecords(student) {
       .limit(20);
 
     if (error || !records || !records.length) {
-      tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-gray-400">Belum ada riwayat setoran hafalan tercatat.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-slate-500">Belum ada riwayat setoran hafalan tercatat.</td></tr>';
       if (statBadge) statBadge.textContent = '30 Juz';
       return;
     }
@@ -387,12 +387,12 @@ async function loadTahfidzRecords(student) {
 
     tbody.innerHTML = records.map(r => `
       <tr class="hover:bg-white/5 transition-colors">
-        <td class="py-3 px-4 font-medium text-white">${formatDate(r.tanggal)}</td>
+        <td class="py-3 px-4 font-medium text-slate-800">${formatDate(r.tanggal)}</td>
         <td class="py-3 px-4 font-bold text-emerald-400">Juz ${r.juz}</td>
         <td class="py-3 px-4">${escapeHTML(r.surah_mulai)} : ${r.ayat_mulai || 1} - ${escapeHTML(r.surah_selesai)} : ${r.ayat_selesai || 'Selesai'}</td>
         <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-xs bg-emerald-500/20 text-emerald-300 font-semibold">${escapeHTML(r.kategori)}</span></td>
         <td class="py-3 px-4 font-bold text-emerald-300">${escapeHTML(r.nilai_kelancaran || 'A')}</td>
-        <td class="py-3 px-4 text-xs text-gray-400">${escapeHTML(r.catatan || '-')}</td>
+        <td class="py-3 px-4 text-xs text-slate-500">${escapeHTML(r.catatan || '-')}</td>
       </tr>
     `).join('');
 
@@ -414,17 +414,17 @@ async function loadGrades(student) {
       .order('created_at', { ascending: false });
 
     if (error || !grades || !grades.length) {
-      tbody.innerHTML = '<tr><td colspan="5" class="py-6 text-center text-gray-400">Belum ada data nilai akademik semester ini.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" class="py-6 text-center text-slate-500">Belum ada data nilai akademik semester ini.</td></tr>';
       return;
     }
 
     tbody.innerHTML = grades.map(g => `
       <tr class="hover:bg-white/5 transition-colors">
-        <td class="py-3 px-4 font-semibold text-white">${escapeHTML(g.mata_pelajaran || '-')}</td>
+        <td class="py-3 px-4 font-semibold text-slate-800">${escapeHTML(g.mata_pelajaran || '-')}</td>
         <td class="py-3 px-4 text-xs text-emerald-400 font-bold uppercase">${escapeHTML(g.jenis_penilaian || 'Tugas')}</td>
         <td class="py-3 px-4 font-bold text-lg text-emerald-300">${g.nilai || 0}</td>
-        <td class="py-3 px-4 text-xs text-gray-400">${escapeHTML(g.semester || 'Ganjil')}</td>
-        <td class="py-3 px-4 text-xs text-gray-400">${escapeHTML(g.tahun_ajaran || '2026/2027')}</td>
+        <td class="py-3 px-4 text-xs text-slate-500">${escapeHTML(g.semester || 'Ganjil')}</td>
+        <td class="py-3 px-4 text-xs text-slate-500">${escapeHTML(g.tahun_ajaran || '2026/2027')}</td>
       </tr>
     `).join('');
 
@@ -447,18 +447,28 @@ function initTabNavigation() {
   const switchTab = (targetId) => {
     panels.forEach(p => p.classList.add('hidden'));
     navBtns.forEach(b => {
-      b.classList.remove('bg-white/10', 'text-white', 'font-semibold');
-      b.classList.add('text-gray-300');
+      if (b.classList.contains('rounded-full')) {
+        b.classList.remove('bg-emerald-700', 'text-white');
+        b.classList.add('bg-slate-100', 'text-slate-700');
+      } else {
+        b.classList.remove('bg-white/10', 'text-white', 'font-semibold');
+        b.classList.add('text-gray-300');
+      }
     });
 
     const activePanel = document.getElementById(targetId);
     if (activePanel) activePanel.classList.remove('hidden');
 
-    const activeBtn = Array.from(navBtns).find(b => b.getAttribute('data-target') === targetId);
-    if (activeBtn) {
-      activeBtn.classList.add('bg-white/10', 'text-white', 'font-semibold');
-      activeBtn.classList.remove('text-gray-300');
-    }
+    const activeBtns = Array.from(navBtns).filter(b => b.getAttribute('data-target') === targetId || b.getAttribute('href') === '#' + targetId);
+    activeBtns.forEach(activeBtn => {
+      if (activeBtn.classList.contains('rounded-full')) {
+        activeBtn.classList.add('bg-emerald-700', 'text-white', 'font-semibold');
+        activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
+      } else {
+        activeBtn.classList.add('bg-white/10', 'text-white', 'font-semibold');
+        activeBtn.classList.remove('text-gray-300');
+      }
+    });
   };
 
   navBtns.forEach(btn => {
@@ -697,12 +707,12 @@ function renderAssignmentList(list, filter) {
             <span class="px-2.5 py-0.5 rounded-lg text-[0.7rem] font-bold bg-white/10 text-gray-300">${escapeHTML(a.subject || 'Mapel')}</span>
             ${badgeStatus}
           </div>
-          <h4 class="text-base font-bold text-white mb-1.5">${escapeHTML(a.title)}</h4>
-          <p class="text-xs text-gray-400 line-clamp-2 mb-4 leading-relaxed">${escapeHTML(a.description || 'Tidak ada instruksi khusus.')}</p>
+          <h4 class="text-base font-bold text-slate-900 mb-1.5">${escapeHTML(a.title)}</h4>
+          <p class="text-xs text-slate-600 line-clamp-2 mb-4 leading-relaxed">${escapeHTML(a.description || 'Tidak ada instruksi khusus.')}</p>
         </div>
 
         <div class="border-t border-white/10 pt-3 space-y-3">
-          <div class="flex items-center justify-between text-[0.75rem] text-gray-400">
+          <div class="flex items-center justify-between text-[0.75rem] text-slate-500">
             <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-emerald-400">person</span> ${escapeHTML(a.teacher_name || 'Guru')}</span>
             <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-amber-400">timer</span> ${deadlineText}</span>
           </div>
@@ -720,8 +730,8 @@ function renderAssignmentList(list, filter) {
               <span>Kumpulkan Tugas</span>
             </button>
           ` : `
-            <div class="p-2.5 rounded-xl bg-slate-800/80 border border-white/10 text-xs space-y-1">
-              <div class="flex items-center justify-between text-gray-400 text-[0.7rem]">
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
+              <div class="flex items-center justify-between text-slate-500 text-[0.7rem]">
                 <span>Terkumpul: ${new Date(a.submission.submitted_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
                 <a href="${a.submission.file_url}" target="_blank" class="text-emerald-400 hover:underline flex items-center gap-0.5">
                   <span class="material-symbols-outlined text-xs">download</span> File Anda
@@ -729,7 +739,7 @@ function renderAssignmentList(list, filter) {
               </div>
               ${a.submission.feedback ? `
                 <div class="pt-1 text-[0.75rem] text-emerald-300 border-t border-white/5 mt-1">
-                  <span class="font-bold text-white">Catatan Guru:</span> "${escapeHTML(a.submission.feedback)}"
+                  <span class="font-bold text-slate-800">Catatan Guru:</span> "${escapeHTML(a.submission.feedback)}"
                 </div>
               ` : ''}
             </div>
@@ -755,9 +765,9 @@ function initAssignmentFilters() {
   document.querySelectorAll('.tugas-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tugas-filter-btn').forEach(b => {
-        b.className = 'tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10';
+        b.className = 'tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
       });
-      btn.className = 'tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white';
+      btn.className = 'tugas-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-700 text-white';
       currentFilterType = btn.getAttribute('data-filter') || 'all';
       renderAssignmentList(allStudentAssignments, currentFilterType);
     });
@@ -961,12 +971,12 @@ function renderCbtQuizzesList(list) {
               </span>
             `}
           </div>
-          <h4 class="text-base font-bold text-white mb-1.5">${escapeHTML(q.title)}</h4>
-          <p class="text-xs text-gray-400 line-clamp-2 mb-4 leading-relaxed">${escapeHTML(q.description || 'Ujian CBT dengan evaluasi otomatis.')}</p>
+          <h4 class="text-base font-bold text-slate-900 mb-1.5">${escapeHTML(q.title)}</h4>
+          <p class="text-xs text-slate-600 line-clamp-2 mb-4 leading-relaxed">${escapeHTML(q.description || 'Ujian CBT dengan evaluasi otomatis.')}</p>
         </div>
 
         <div class="border-t border-white/10 pt-3 space-y-3">
-          <div class="flex items-center justify-between text-[0.75rem] text-gray-400">
+          <div class="flex items-center justify-between text-[0.75rem] text-slate-500">
             <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-emerald-400">person</span> ${escapeHTML(q.teacher_name)}</span>
             <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-amber-400">timer</span> ${q.duration_minutes} Menit</span>
           </div>
@@ -1106,7 +1116,7 @@ function renderCurrentQuestion() {
 
   if (q.type === 'essay') {
     optionsContainer.innerHTML = `
-      <textarea id="cbt-essay-input" class="w-full bg-slate-900 border border-white/20 rounded-xl p-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500" rows="5" placeholder="Ketikkan jawaban uraian Anda di sini...">${escapeHTML(currentAnswer)}</textarea>
+      <textarea id="cbt-essay-input" class="w-full bg-white border border-slate-300 rounded-xl p-4 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-600" rows="5" placeholder="Ketikkan jawaban uraian Anda di sini...">${escapeHTML(currentAnswer)}</textarea>
     `;
     const input = document.getElementById('cbt-essay-input');
     input.oninput = (e) => {
@@ -1118,8 +1128,8 @@ function renderCurrentQuestion() {
     optionsContainer.innerHTML = opts.map(opt => {
       const isSelected = currentAnswer === opt.key;
       return `
-        <button type="button" class="btn-cbt-option w-full p-3.5 rounded-xl border text-left flex items-center gap-3.5 transition-all cursor-pointer ${isSelected ? 'bg-emerald-500/20 border-emerald-500 text-white font-bold' : 'bg-white/5 border-white/10 text-gray-300 hover:bg-white/10'}" data-key="${opt.key}">
-          <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs ${isSelected ? 'bg-emerald-500 text-white' : 'bg-white/10 text-gray-300'}">${opt.key}</span>
+        <button type="button" class="btn-cbt-option w-full p-3.5 rounded-xl border text-left flex items-center gap-3.5 transition-all cursor-pointer ${isSelected ? 'bg-emerald-50 border-emerald-600 text-emerald-900 font-bold' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'}" data-key="${opt.key}">
+          <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs ${isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}">${opt.key}</span>
           <span class="text-sm flex-1 leading-relaxed">${escapeHTML(opt.text)}</span>
         </button>
       `;
@@ -1155,7 +1165,7 @@ function renderCbtNavigator() {
 
     let bgClass = 'bg-white/10 text-gray-300 border-white/10';
     if (isDoubt) bgClass = 'bg-amber-500 text-black border-amber-400 font-bold';
-    else if (hasAnswered) bgClass = 'bg-emerald-500 text-white border-emerald-400 font-bold';
+    else if (hasAnswered) bgClass = 'bg-emerald-700 text-white border-emerald-600 font-bold';
 
     const borderFocus = isCurrent ? 'ring-2 ring-white ring-offset-2 ring-offset-slate-950' : '';
 
@@ -1327,25 +1337,25 @@ async function showCbtResultsAndDiscussion(quiz, attempt) {
       ) : '<span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-500/20 text-blue-300">Soal Uraian (Menunggu Koreksi Guru)</span>';
 
       return `
-        <div class="p-5 rounded-2xl bg-white/5 border ${isCorrect ? 'border-emerald-500/30' : 'border-white/10'} space-y-3">
-          <div class="flex items-center justify-between text-xs text-gray-400">
-            <span class="font-bold text-white">Soal No. ${idx + 1}</span>
+        <div class="p-5 rounded-2xl bg-white border ${isCorrect ? 'border-emerald-500/30' : 'border-slate-200'} space-y-3">
+          <div class="flex items-center justify-between text-xs text-slate-500">
+            <span class="font-bold text-slate-900">Soal No. ${idx + 1}</span>
             ${statusBadge}
           </div>
 
-          <div class="text-sm text-gray-100 font-medium leading-relaxed">
+          <div class="text-sm text-slate-800 font-medium leading-relaxed">
             ${escapeHTML(q.question_text).replace(/\n/g, '<br>')}
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 text-xs">
-            <div class="p-3 rounded-xl bg-slate-900 border border-white/10">
-              <span class="text-gray-400">Jawaban Anda:</span>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-slate-600">Jawaban Anda:</span>
               <div class="font-bold ${isCorrect ? 'text-emerald-400' : 'text-rose-400'} text-sm mt-0.5">${escapeHTML(studentAns)}</div>
             </div>
             ${isPg ? `
-              <div class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30">
-                <span class="text-emerald-300 font-semibold">Kunci Jawaban Benar:</span>
-                <div class="font-bold text-emerald-400 text-sm mt-0.5">${q.correct_key}</div>
+              <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-300">
+                <span class="text-emerald-800 font-semibold">Kunci Jawaban Benar:</span>
+                <div class="font-bold text-emerald-800 text-sm mt-0.5">${q.correct_key}</div>
               </div>
             ` : ''}
           </div>
@@ -1355,7 +1365,7 @@ async function showCbtResultsAndDiscussion(quiz, attempt) {
               <div class="font-bold text-emerald-300 mb-0.5 flex items-center gap-1">
                 <span class="material-symbols-outlined text-sm">lightbulb</span> Pembahasan:
               </div>
-              <p class="text-gray-400 leading-relaxed">${escapeHTML(q.explanation)}</p>
+              <p class="text-slate-700 leading-relaxed">${escapeHTML(q.explanation)}</p>
             </div>
           ` : ''}
         </div>
@@ -1444,12 +1454,12 @@ function renderStudentMaterialsGrid(list) {
               <span class="material-symbols-outlined text-xs">${iconName}</span> ${typeLabel}
             </span>
           </div>
-          <h4 class="text-base font-bold text-white mb-1.5">${escapeHTML(m.title)}</h4>
-          <p class="text-xs text-gray-400 line-clamp-3 mb-4 leading-relaxed">${escapeHTML(m.description || 'Pelajari materi ini secara mandiri.')}</p>
+          <h4 class="text-base font-bold text-slate-900 mb-1.5">${escapeHTML(m.title)}</h4>
+          <p class="text-xs text-slate-600 line-clamp-3 mb-4 leading-relaxed">${escapeHTML(m.description || 'Pelajari materi ini secara mandiri.')}</p>
         </div>
 
         <div class="border-t border-white/10 pt-3 space-y-2">
-          <div class="flex items-center justify-between text-[0.75rem] text-gray-400">
+          <div class="flex items-center justify-between text-[0.75rem] text-slate-500">
             <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs text-emerald-400">person</span> ${escapeHTML(m.teacher_name)}</span>
             <span class="text-xs text-gray-500">${m.class_name}</span>
           </div>
@@ -1485,15 +1495,15 @@ function initMateriTabHandlers() {
 
   if (tabBtnInteractive && tabBtnJournal && viewInteractive && viewJournal) {
     tabBtnInteractive.onclick = () => {
-      tabBtnInteractive.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white';
-      tabBtnJournal.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10';
+      tabBtnInteractive.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-700 text-white';
+      tabBtnJournal.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
       viewInteractive.classList.remove('hidden');
       viewJournal.classList.add('hidden');
     };
 
     tabBtnJournal.onclick = () => {
-      tabBtnJournal.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-white';
-      tabBtnInteractive.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-white/5 text-gray-300 hover:bg-white/10';
+      tabBtnJournal.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-700 text-white';
+      tabBtnInteractive.className = 'materi-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200';
       viewJournal.classList.remove('hidden');
       viewInteractive.classList.add('hidden');
     };

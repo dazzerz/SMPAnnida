@@ -31,7 +31,7 @@
   display: none;
   background: transparent;
   border: 1px solid rgba(255,255,255,0.2);
-  color: var(--text-primary, #fff);
+  color: var(--sidebar-text, #ffffff);
   border-radius: 8px;
   width: 32px;
   height: 32px;
@@ -48,7 +48,7 @@
   display: none;
   background: transparent;
   border: none;
-  color: var(--text-primary, #fff);
+  color: var(--topbar-text, #0f172a);
   font-size: 1.5rem;
   cursor: pointer;
   padding: 4px 8px;
@@ -57,8 +57,9 @@
   flex-shrink: 0;
 }
 .mobile-menu-btn:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.05);
 }
+
 
 /* =========================================================================
    TOPBAR (sticky navigation bar)
@@ -73,10 +74,10 @@
   z-index: 500;
   min-height: 60px;
   flex-shrink: 0;
-  background: var(--topbar-bg, rgba(11, 19, 25, 0.92));
+  background: var(--topbar-bg, #ffffff);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  border-bottom: 1px solid var(--border, #e2e8f0);
 }
 .topbar-left, .topbar-right {
   display: flex;
@@ -86,17 +87,18 @@
 .topbar-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-primary, #fff);
+  color: var(--topbar-text, #0f172a);
 }
 .topbar-greeting {
   font-size: 0.85rem;
-  color: var(--text-muted, #aaa);
+  color: var(--text-muted, #475569);
 }
 
 /* =========================================================================
    DESKTOP LAYOUT (min-width: 769px)
    ========================================================================= */
 @media (min-width: 1024px) {
+
   /* Ensure body is flex row on desktop */
   body {
     display: flex;

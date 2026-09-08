@@ -108,13 +108,13 @@
       <section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
         
         <!-- KPI 1: Total Pendaftar -->
-        <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-emerald-500">
+        <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-emerald-600">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Pendaftar</p>
-              <h3 class="text-2xl font-bold text-white mt-1" id="kpi-total">0</h3>
+              <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Total Pendaftar</p>
+              <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-total">0</h3>
             </div>
-            <span class="material-symbols-outlined text-emerald-400 text-2xl">groups</span>
+            <span class="material-symbols-outlined text-emerald-600 text-2xl">groups</span>
           </div>
         </div>
 
@@ -122,21 +122,21 @@
         <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-amber-500">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Menunggu</p>
-              <h3 class="text-2xl font-bold text-white mt-1" id="kpi-verif">0</h3>
+              <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Menunggu</p>
+              <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-verif">0</h3>
             </div>
-            <span class="material-symbols-outlined text-amber-400 text-2xl">hourglass_top</span>
+            <span class="material-symbols-outlined text-amber-600 text-2xl">hourglass_top</span>
           </div>
         </div>
 
         <!-- KPI 3: Pemetaan Tahfidz -->
-        <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-purple-500 cursor-pointer hover:bg-white/10 transition-all" onclick="showTahfidzTab()">
+        <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-purple-500 cursor-pointer hover:bg-slate-50 transition-all" onclick="showTahfidzTab()">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pemetaan Tahfidz</p>
-              <h3 class="text-2xl font-bold text-white mt-1" id="kpi-seleksi">0</h3>
+              <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Pemetaan Tahfidz</p>
+              <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-seleksi">0</h3>
             </div>
-            <span class="material-symbols-outlined text-purple-400 text-2xl">assignment</span>
+            <span class="material-symbols-outlined text-purple-600 text-2xl">assignment</span>
           </div>
         </div>
 
@@ -144,10 +144,10 @@
         <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-blue-500">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Lulus</p>
-              <h3 class="text-2xl font-bold text-white mt-1" id="kpi-lulus">0</h3>
+              <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Lulus</p>
+              <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-lulus">0</h3>
             </div>
-            <span class="material-symbols-outlined text-blue-400 text-2xl">school</span>
+            <span class="material-symbols-outlined text-blue-600 text-2xl">school</span>
           </div>
         </div>
 
@@ -156,10 +156,10 @@
         <div class="glass-card rounded-2xl p-5 shadow-lg border-l-4 border-red-500 col-span-2 lg:col-span-1">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Perlu Revisi</p>
-              <h3 class="text-2xl font-bold text-white mt-1" id="kpi-revisi">0</h3>
+              <p class="text-xs font-bold text-slate-600 uppercase tracking-wider">Perlu Revisi</p>
+              <h3 class="text-2xl font-bold text-slate-900 mt-1" id="kpi-revisi">0</h3>
             </div>
-            <span class="material-symbols-outlined text-rose-400 text-2xl">warning</span>
+            <span class="material-symbols-outlined text-rose-600 text-2xl">warning</span>
           </div>
         </div>
 
@@ -170,7 +170,7 @@
         
         <!-- Bar Chart (Col-span-2) -->
         <div class="glass-card rounded-2xl p-6 shadow-xl lg:col-span-2 space-y-4">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Tren Pendaftaran Bulanan</h3>
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Tren Pendaftaran Bulanan</h3>
           <div class="w-full h-[280px] flex items-center justify-center relative">
             <canvas id="ppdb-monthly-chart"></canvas>
           </div>
@@ -178,28 +178,28 @@
 
         <!-- Program Distribution (Col-span-1) -->
         <div class="glass-card rounded-2xl p-6 shadow-xl space-y-4">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Distribusi Program</h3>
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Distribusi Program</h3>
           <div class="space-y-4 pt-2">
             <div>
-              <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+              <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
                 <span>Hanya Sekolah (Reguler)</span>
                 <span id="dist-reguler-text">0 pendaftar (0%)</span>
               </div>
-              <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
                 <div class="bg-emerald-500 h-full transition-all duration-500" id="dist-reguler-bar" style="width: 0%"></div>
               </div>
             </div>
             <div>
-              <div class="flex justify-between text-xs font-medium text-slate-300 mb-1">
+              <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
                 <span>Sekolah + Pondok (Boarding)</span>
                 <span id="dist-pondok-text">0 pendaftar (0%)</span>
               </div>
-              <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
                 <div class="bg-blue-500 h-full transition-all duration-500" id="dist-pondok-bar" style="width: 0%"></div>
               </div>
             </div>
           </div>
-          <div class="pt-6 border-t border-white/5 text-center text-xs text-slate-400">
+          <div class="pt-6 border-t border-slate-200 text-center text-xs text-slate-500">
             SMP Annida 2 Setu - PPDB 2027/2028
           </div>
         </div>
@@ -209,11 +209,11 @@
       <!-- Pendaftar Data Table -->
       <section class="glass-card rounded-2xl p-6 shadow-xl space-y-4">
         <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Daftar Pendaftar Terbaru</h3>
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-700">Daftar Pendaftar Terbaru</h3>
           <div class="flex items-center gap-3 w-full sm:w-auto">
-            <button type="button" id="btn-export-excel" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-lg flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-sm">download</span> Export Excel</button>
+            <button type="button" id="btn-export-excel" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-lg flex items-center gap-2 whitespace-nowrap"><span class="material-symbols-outlined text-sm">download</span> Export Excel</button>
             <div class="relative w-full sm:max-w-xs">
-              <input type="text" id="admin-search-input" placeholder="Cari nama atau nomor..." class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-2 text-xs text-slate-300 focus:ring-emerald-500 focus:border-emerald-500">
+              <input type="text" id="admin-search-input" placeholder="Cari nama atau nomor..." class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2 text-xs text-slate-900 focus:ring-emerald-600 focus:border-emerald-600">
             </div>
           </div>
         </div>
@@ -221,7 +221,7 @@
         <div class="table-container overflow-x-auto w-full">
           <table class="w-full text-left border-collapse min-w-[700px]">
             <thead>
-              <tr class="border-b border-white/10 text-xs text-slate-400 uppercase font-semibold">
+              <tr class="border-b border-slate-200 text-xs text-slate-600 uppercase font-semibold bg-slate-50">
                 <th class="py-3 px-4">No. Daftar</th>
                 <th class="py-3 px-4">Nama Siswa</th>
                 <th class="py-3 px-4">Program</th>
@@ -230,10 +230,10 @@
                 <th class="py-3 px-4 text-center">Aksi</th>
               </tr>
             </thead>
-            <tbody id="table-pendaftar-body" class="divide-y divide-white/5 text-sm text-slate-200">
+            <tbody id="table-pendaftar-body" class="divide-y divide-slate-200 text-sm text-slate-800">
               <!-- Dynamically populated via JS -->
               <tr>
-                <td colspan="6" class="py-8 text-center text-slate-400">Memuat data pendaftar...</td>
+                <td colspan="6" class="py-8 text-center text-slate-500">Memuat data pendaftar...</td>
               </tr>
             </tbody>
           </table>
@@ -250,10 +250,10 @@
       <div class="glass-card rounded-2xl p-6 lg:p-8 shadow-xl space-y-6">
         <div class="flex justify-between items-center pb-4 border-b border-white/10">
           <div>
-            <h2 class="text-xl lg:text-2xl font-bold text-white">Detail Verifikasi Berkas</h2>
-            <p class="text-slate-400 text-xs mt-1">ID Pendaftaran: <span id="detail-reg-id" class="font-mono text-slate-300">-</span></p>
+            <h2 class="text-xl lg:text-2xl font-bold text-slate-900">Detail Verifikasi Berkas</h2>
+            <p class="text-slate-600 text-xs mt-1">ID Pendaftaran: <span id="detail-reg-id" class="font-mono text-slate-800 font-bold">-</span></p>
           </div>
-          <button class="tab-trigger bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-semibold px-4 py-2 rounded-xl text-xs transition-all" data-target="admin-dashboard">
+          <button class="tab-trigger bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-semibold px-4 py-2 rounded-xl text-xs transition-all" data-target="admin-dashboard">
             ← Kembali ke List
           </button>
         </div>
@@ -261,97 +261,97 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <!-- Data Orang Tua & Siswa (Left) -->
           <div class="space-y-6">
-            <h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400 border-b border-white/5 pb-2">Informasi Calon Murid</h3>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-2">Informasi Calon Murid</h3>
             
             <div class="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span class="text-xs text-slate-400 block">Nama Lengkap Siswa</span>
-                <span class="font-medium text-slate-100" id="detail-siswa-nama">-</span>
+                <span class="text-xs text-slate-600 block">Nama Lengkap Siswa</span>
+                <span class="font-semibold text-slate-900" id="detail-siswa-nama">-</span>
               </div>
               <div>
-                <span class="text-xs text-slate-400 block">NIK / NISN</span>
-                <span class="font-medium text-slate-100" id="detail-siswa-nik-nisn">-</span>
+                <span class="text-xs text-slate-600 block">NIK / NISN</span>
+                <span class="font-semibold text-slate-900" id="detail-siswa-nik-nisn">-</span>
               </div>
               <div>
-                <span class="text-xs text-slate-400 block">Tempat, Tanggal Lahir</span>
-                <span class="font-medium text-slate-100" id="detail-siswa-ttl">-</span>
+                <span class="text-xs text-slate-600 block">Tempat, Tanggal Lahir</span>
+                <span class="font-semibold text-slate-900" id="detail-siswa-ttl">-</span>
               </div>
               <div>
-                <span class="text-xs text-slate-400 block">Sekolah Asal (NPSN)</span>
-                <span class="font-medium text-slate-100" id="detail-siswa-sekolah">-</span>
+                <span class="text-xs text-slate-600 block">Sekolah Asal (NPSN)</span>
+                <span class="font-semibold text-slate-900" id="detail-siswa-sekolah">-</span>
               </div>
               <div class="col-span-2">
-                <span class="text-xs text-slate-400 block">Alamat Rumah</span>
-                <span class="font-medium text-slate-100" id="detail-siswa-alamat">-</span>
+                <span class="text-xs text-slate-600 block">Alamat Rumah</span>
+                <span class="font-semibold text-slate-900" id="detail-siswa-alamat">-</span>
               </div>
             </div>
 
-            <h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400 border-b border-white/5 pb-2 pt-4">Informasi Orang Tua / Wali</h3>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-2 pt-4">Informasi Orang Tua / Wali</h3>
             <div class="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span class="text-xs text-slate-400 block">Nama Ayah (Pekerjaan)</span>
-                <span class="font-medium text-slate-100" id="detail-ortu-ayah">-</span>
+                <span class="text-xs text-slate-600 block">Nama Ayah (Pekerjaan)</span>
+                <span class="font-semibold text-slate-900" id="detail-ortu-ayah">-</span>
               </div>
               <div>
-                <span class="text-xs text-slate-400 block">Nama Ibu (Pekerjaan)</span>
-                <span class="font-medium text-slate-100" id="detail-ortu-ibu">-</span>
+                <span class="text-xs text-slate-600 block">Nama Ibu (Pekerjaan)</span>
+                <span class="font-semibold text-slate-900" id="detail-ortu-ibu">-</span>
               </div>
               <div class="col-span-2">
-                <span class="text-xs text-slate-400 block">No. WhatsApp Wali</span>
-                <span class="font-medium text-emerald-400 font-mono" id="detail-ortu-wa">-</span>
+                <span class="text-xs text-slate-600 block">No. WhatsApp Wali</span>
+                <span class="font-bold text-emerald-800 font-mono" id="detail-ortu-wa">-</span>
               </div>
             </div>
           </div>
 
           <!-- Document Preview & Actions (Right) -->
-          <div class="space-y-6 bg-slate-900/40 p-6 rounded-2xl border border-white/5 shadow-inner">
-            <h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400 border-b border-white/5 pb-2">Checklist Verifikasi Berkas</h3>
+          <div class="space-y-6 bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-2">Checklist Verifikasi Berkas</h3>
             
             <div class="space-y-4">
               <!-- Dokumen 1: Kartu Keluarga -->
-              <div class="glass-card rounded-xl p-4 border border-white/10 space-y-3">
+              <div class="glass-card rounded-xl p-4 border border-slate-200 space-y-3 bg-white">
                 <div class="flex justify-between items-center">
-                  <span class="text-xs font-bold text-slate-300">1. Kartu Keluarga (KK)</span>
-                  <a href="#" target="_blank" id="doc-kk-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">Pratinjau KK</a>
+                  <span class="text-xs font-bold text-slate-800">1. Kartu Keluarga (KK)</span>
+                  <a href="#" target="_blank" id="doc-kk-link" class="text-xs text-blue-600 hover:underline flex items-center gap-1 font-semibold">Pratinjau KK</a>
                 </div>
                 <div class="flex gap-2">
-                  <button type="button" onclick="setDocStatus('kartu_keluarga', 'approved')" id="btn-kartu_keluarga-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">Setujui</button>
-                  <button type="button" onclick="setDocStatus('kartu_keluarga', 'rejected')" id="btn-kartu_keluarga-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">Tolak / Revisi</button>
+                  <button type="button" onclick="setDocStatus('kartu_keluarga', 'approved')" id="btn-kartu_keluarga-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition-all font-bold">Setujui</button>
+                  <button type="button" onclick="setDocStatus('kartu_keluarga', 'rejected')" id="btn-kartu_keluarga-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 transition-all font-bold">Tolak / Revisi</button>
                 </div>
-                <input type="text" id="note-kartu_keluarga" placeholder="Catatan revisi Kartu Keluarga..." class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-300 hidden">
+                <input type="text" id="note-kartu_keluarga" placeholder="Catatan revisi Kartu Keluarga..." class="w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 hidden">
               </div>
 
               <!-- Dokumen 2: Akta Kelahiran -->
-              <div class="glass-card rounded-xl p-4 border border-white/10 space-y-3">
+              <div class="glass-card rounded-xl p-4 border border-slate-200 space-y-3 bg-white">
                 <div class="flex justify-between items-center">
-                  <span class="text-xs font-bold text-slate-300">2. Akta Kelahiran</span>
-                  <a href="#" target="_blank" id="doc-akta-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">Pratinjau Akta</a>
+                  <span class="text-xs font-bold text-slate-800">2. Akta Kelahiran</span>
+                  <a href="#" target="_blank" id="doc-akta-link" class="text-xs text-blue-600 hover:underline flex items-center gap-1 font-semibold">Pratinjau Akta</a>
                 </div>
                 <div class="flex gap-2">
-                  <button type="button" onclick="setDocStatus('akta_kelahiran', 'approved')" id="btn-akta_kelahiran-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">Setujui</button>
-                  <button type="button" onclick="setDocStatus('akta_kelahiran', 'rejected')" id="btn-akta_kelahiran-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">Tolak / Revisi</button>
+                  <button type="button" onclick="setDocStatus('akta_kelahiran', 'approved')" id="btn-akta_kelahiran-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition-all font-bold">Setujui</button>
+                  <button type="button" onclick="setDocStatus('akta_kelahiran', 'rejected')" id="btn-akta_kelahiran-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 transition-all font-bold">Tolak / Revisi</button>
                 </div>
-                <input type="text" id="note-akta_kelahiran" placeholder="Catatan revisi Akta Kelahiran..." class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-300 hidden">
+                <input type="text" id="note-akta_kelahiran" placeholder="Catatan revisi Akta Kelahiran..." class="w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 hidden">
               </div>
 
               <!-- Dokumen 3: Ijazah / SKL -->
-              <div class="glass-card rounded-xl p-4 border border-white/10 space-y-3">
+              <div class="glass-card rounded-xl p-4 border border-slate-200 space-y-3 bg-white">
                 <div class="flex justify-between items-center">
-                  <span class="text-xs font-bold text-slate-300">3. Ijazah / SKL</span>
-                  <a href="#" target="_blank" id="doc-ijazah-link" class="text-xs text-blue-400 hover:underline flex items-center gap-1">Pratinjau SKL</a>
+                  <span class="text-xs font-bold text-slate-800">3. Ijazah / SKL</span>
+                  <a href="#" target="_blank" id="doc-ijazah-link" class="text-xs text-blue-600 hover:underline flex items-center gap-1 font-semibold">Pratinjau SKL</a>
                 </div>
                 <div class="flex gap-2">
-                  <button type="button" onclick="setDocStatus('ijazah', 'approved')" id="btn-ijazah-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all">Setujui</button>
-                  <button type="button" onclick="setDocStatus('ijazah', 'rejected')" id="btn-ijazah-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all">Tolak / Revisi</button>
+                  <button type="button" onclick="setDocStatus('ijazah', 'approved')" id="btn-ijazah-approve" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition-all font-bold">Setujui</button>
+                  <button type="button" onclick="setDocStatus('ijazah', 'rejected')" id="btn-ijazah-reject" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 transition-all font-bold">Tolak / Revisi</button>
                 </div>
-                <input type="text" id="note-ijazah" placeholder="Catatan revisi SKL..." class="w-full bg-[#121c2c] border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-300 hidden">
+                <input type="text" id="note-ijazah" placeholder="Catatan revisi SKL..." class="w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-900 hidden">
               </div>
             </div>
 
             <!-- Decisions -->
-            <div class="space-y-4 pt-4 border-t border-white/10">
+            <div class="space-y-4 pt-4 border-t border-slate-200">
               <div class="space-y-2">
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Aksi Keputusan Status Pendaftaran</label>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Aksi Keputusan Status Pendaftaran</label>
                 <div class="grid grid-cols-1 gap-2">
                   <button type="button" onclick="saveAdminVerification('Verifikasi')" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
                     Validasi DP (Lanjut ke Verifikasi Berkas)
@@ -377,32 +377,32 @@
     <div id="tab-admin-seleksi" class="tab-panel space-y-6">
       
       <div class="glass-card rounded-2xl p-6 lg:p-8 shadow-xl">
-        <h2 class="text-xl lg:text-2xl font-bold text-white mb-2">Pemetaan Tahfidz & Kelulusan</h2>
-        <p class="text-slate-400 text-sm mb-6">Masukkan level hafalan calon siswa untuk pemetaan tahfidz. Tes ini bersifat pemetaan adab & hafalan, serta tidak menggugurkan calon siswa.</p>
+        <h2 class="text-xl lg:text-2xl font-bold text-slate-900 mb-2">Pemetaan Tahfidz & Kelulusan</h2>
+        <p class="text-slate-600 text-sm mb-6">Masukkan level hafalan calon siswa untuk pemetaan tahfidz. Tes ini bersifat pemetaan adab & hafalan, serta tidak menggugurkan calon siswa.</p>
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <!-- Input Hafalan (Left/1 Col) -->
           <div class="space-y-4 lg:col-span-1">
-            <h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400">Input Hasil Tes</h3>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-800">Input Hasil Tes</h3>
             
             <div class="space-y-3">
               <div>
-                <label class="block text-xs font-semibold text-slate-400 mb-1">Pilih Calon Siswa</label>
-                <select class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-200" id="seleksi-student-select">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Calon Siswa</label>
+                <select class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900" id="seleksi-student-select">
                   <!-- Dynamically populated -->
                 </select>
               </div>
               
               <div>
-                <label class="block text-xs font-semibold text-slate-400 mb-1">Level Hafalan</label>
-                <input type="text" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-200" id="val-level-hafalan" placeholder="Contoh: Juz 30 / Belum Ada">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Level Hafalan</label>
+                <input type="text" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900" id="val-level-hafalan" placeholder="Contoh: Juz 30 / Belum Ada">
               </div>
               
               <button onclick="adminSaveHafalan()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs shadow-lg transition-all mt-3">
                 Simpan Pemetaan Hafalan
               </button>
               
-              <div class="border-t border-white/10 my-4 pt-4">
+              <div class="border-t border-slate-200 my-4 pt-4">
                 <button onclick="adminSetLulus()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-xl text-xs shadow-lg transition-all">
                   Nyatakan Lulus Seleksi
                 </button>
@@ -412,12 +412,12 @@
           
           <!-- Student List (Right/2 Cols) -->
           <div class="space-y-4 lg:col-span-2">
-            <h3 class="text-sm font-semibold uppercase tracking-wider text-emerald-400">Daftar Siswa Tahap Tes Tahfidz</h3>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-800">Daftar Siswa Tahap Tes Tahfidz</h3>
             
             <div class="table-container overflow-x-auto w-full">
               <table class="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr class="border-b border-white/10 text-slate-400 uppercase font-semibold">
+                  <tr class="border-b border-slate-200 text-slate-600 uppercase font-semibold bg-slate-50">
                     <th class="py-2.5 px-3">No. Daftar</th>
                     <th class="py-2.5 px-3">Nama Siswa</th>
                     <th class="py-2.5 px-3">Level Hafalan</th>
@@ -425,7 +425,7 @@
                     <th class="py-2.5 px-3 text-center">Aksi Kelulusan</th>
                   </tr>
                 </thead>
-                <tbody id="ranking-table-body" class="divide-y divide-white/5 text-slate-300">
+                <tbody id="ranking-table-body" class="divide-y divide-slate-200 text-slate-800">
                   <tr>
                     <td colspan="5" class="py-6 text-center text-slate-500">Memuat pendaftar tahap tahfidz...</td>
                   </tr>
@@ -441,29 +441,29 @@
     <!-- ========================================================================= -->
     <!-- MODAL KONVERSI SISWA & TERBITKAN AKUN PORTAL -->
     <!-- ========================================================================= -->
-    <div id="modal-konversi-siswa" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-      <div class="glass-card bg-[#0b1320]/95 border border-emerald-500/40 rounded-3xl p-6 lg:p-8 max-w-lg w-full shadow-2xl space-y-6">
-        <div class="flex justify-between items-center border-b border-white/10 pb-4">
+    <div id="modal-konversi-siswa" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+      <div class="glass-card bg-white border border-slate-200 rounded-3xl p-6 lg:p-8 max-w-lg w-full shadow-2xl space-y-6">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center"><span class="material-symbols-outlined text-2xl">school</span></div>
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center"><span class="material-symbols-outlined text-2xl">school</span></div>
             <div>
-              <h3 class="font-bold text-white text-base">Konversi ke Siswa Aktif</h3>
-              <p class="text-xs text-slate-400">Terbitkan Akun Portal & Tempatkan Kelas</p>
+              <h3 class="font-bold text-slate-900 text-base">Konversi ke Siswa Aktif</h3>
+              <p class="text-xs text-slate-600">Terbitkan Akun Portal & Tempatkan Kelas</p>
             </div>
           </div>
-          <button onclick="closeKonversiModal()" class="text-slate-400 hover:text-white flex items-center justify-center"><span class="material-symbols-outlined text-base">close</span></button>
+          <button onclick="closeKonversiModal()" class="text-slate-400 hover:text-slate-700 flex items-center justify-center"><span class="material-symbols-outlined text-base">close</span></button>
         </div>
 
         <div class="space-y-4">
-          <div class="p-3.5 rounded-xl bg-white/5 border border-white/5 space-y-1 text-xs">
-            <div class="flex justify-between"><span class="text-slate-400">Nama Calon Siswa:</span> <b class="text-white" id="konversi-nama">-</b></div>
-            <div class="flex justify-between"><span class="text-slate-400">No. Pendaftaran:</span> <span class="text-emerald-400 font-mono" id="konversi-no-reg">-</span></div>
-            <div class="flex justify-between"><span class="text-slate-400">NISN:</span> <span class="text-slate-300" id="konversi-nisn">-</span></div>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1 text-xs text-slate-800">
+            <div class="flex justify-between"><span class="text-slate-600">Nama Calon Siswa:</span> <b class="text-slate-900" id="konversi-nama">-</b></div>
+            <div class="flex justify-between"><span class="text-slate-600">No. Pendaftaran:</span> <span class="text-emerald-800 font-mono font-bold" id="konversi-no-reg">-</span></div>
+            <div class="flex justify-between"><span class="text-slate-600">NISN:</span> <span class="text-slate-800 font-bold" id="konversi-nisn">-</span></div>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Pilih Kelas Akademik</label>
-            <select id="konversi-select-kelas" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:ring-emerald-500 focus:border-emerald-500">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Kelas Akademik</label>
+            <select id="konversi-select-kelas" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:ring-emerald-600 focus:border-emerald-600">
               <option value="7A">Kelas 7A</option>
               <option value="7B">Kelas 7B</option>
               <option value="7C">Kelas 7C</option>
@@ -473,16 +473,16 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Nomor Induk Siswa (NIS) - Opsional</label>
-            <input type="text" id="konversi-input-nis" placeholder="Contoh: 202607001" class="w-full bg-[#121c2c] border border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:ring-emerald-500 focus:border-emerald-500">
+            <label class="block text-xs font-bold text-slate-700 mb-1">Nomor Induk Siswa (NIS) - Opsional</label>
+            <input type="text" id="konversi-input-nis" placeholder="Contoh: 202607001" class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-900 focus:ring-emerald-600 focus:border-emerald-600">
           </div>
 
-          <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-[0.75rem] text-emerald-300">
+          <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-[0.75rem] text-emerald-800 font-medium">
             Sistem akan otomatis mengenerate email resmi <b>nama.depan@smpannida.sch.id</b> dan password awal untuk login di Portal Siswa.
           </div>
 
           <div class="flex gap-3 pt-2">
-            <button type="button" onclick="closeKonversiModal()" class="flex-1 py-2.5 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-300 transition-all">Batal</button>
+            <button type="button" onclick="closeKonversiModal()" class="flex-1 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-all">Batal</button>
             <button type="button" id="btn-submit-konversi" onclick="submitKonversiSiswa()" class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg transition-all">Konversi & Terbitkan Akun</button>
           </div>
         </div>
@@ -490,35 +490,35 @@
     </div>
 
     <!-- MODAL HASIL KREDENSIAL AKUN SISWA -->
-    <div id="modal-kredensial-siswa" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-      <div class="glass-card bg-[#0b1320]/95 border border-emerald-500/40 rounded-3xl p-6 lg:p-8 max-w-md w-full shadow-2xl space-y-6 text-center">
-        <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto"><span class="material-symbols-outlined text-3xl">check_circle</span></div>
+    <div id="modal-kredensial-siswa" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+      <div class="glass-card bg-white border border-slate-200 rounded-3xl p-6 lg:p-8 max-w-md w-full shadow-2xl space-y-6 text-center">
+        <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center mx-auto"><span class="material-symbols-outlined text-3xl">check_circle</span></div>
         <div>
-          <h3 class="font-bold text-white text-lg">Akun Siswa Berhasil Diterbitkan!</h3>
-          <p class="text-xs text-slate-400 mt-1">Siswa telah terdaftar di data akademik dan dapat mengakses Portal Siswa.</p>
+          <h3 class="font-bold text-slate-900 text-lg">Akun Siswa Berhasil Diterbitkan!</h3>
+          <p class="text-xs text-slate-600 mt-1">Siswa telah terdaftar di data akademik dan dapat mengakses Portal Siswa.</p>
         </div>
 
-        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 text-left space-y-2 text-xs">
-          <div><span class="text-slate-400">Nama Siswa:</span> <b class="text-white ml-1" id="cred-student-name">-</b></div>
-          <div><span class="text-slate-400">Kelas:</span> <b class="text-emerald-400 ml-1" id="cred-student-class">-</b></div>
-          <div class="border-t border-white/10 my-2 pt-2">
-            <span class="text-slate-400">Email Login:</span>
-            <div class="font-mono font-bold text-emerald-300 text-sm mt-0.5" id="cred-student-email">-</div>
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-left space-y-2 text-xs">
+          <div><span class="text-slate-600 font-semibold">Nama Siswa:</span> <b class="text-slate-900 ml-1" id="cred-student-name">-</b></div>
+          <div><span class="text-slate-600 font-semibold">Kelas:</span> <b class="text-emerald-800 ml-1 font-bold" id="cred-student-class">-</b></div>
+          <div class="border-t border-slate-200 my-2 pt-2">
+            <span class="text-slate-600 font-semibold">Email Login:</span>
+            <div class="font-mono font-bold text-emerald-900 text-sm mt-0.5 bg-emerald-50 p-2 rounded border border-emerald-200" id="cred-student-email">-</div>
           </div>
           <div>
-            <span class="text-slate-400">Password Awal:</span>
-            <div class="font-mono font-bold text-amber-300 text-sm mt-0.5" id="cred-student-password">-</div>
+            <span class="text-slate-600 font-semibold">Password Awal:</span>
+            <div class="font-mono font-bold text-amber-900 text-sm mt-0.5 bg-amber-50 p-2 rounded border border-amber-200" id="cred-student-password">-</div>
           </div>
         </div>
 
         <div class="space-y-2">
-          <button onclick="copyStudentCredentials()" id="btn-copy-cred" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-all">
+          <button onclick="copyStudentCredentials()" id="btn-copy-cred" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 font-semibold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-all">
             Salin Kredensial
           </button>
           <a href="#" id="link-wa-share" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition-all">
             Kirim via WhatsApp ke Wali Murid
           </a>
-          <button onclick="closeCredentialModal()" class="w-full text-xs text-slate-400 hover:text-white py-2">Tutup</button>
+          <button onclick="closeCredentialModal()" class="w-full text-xs text-slate-600 hover:text-slate-900 font-semibold py-2">Tutup</button>
         </div>
       </div>
     </div>

@@ -533,7 +533,7 @@ function updateAnnouncementTab(status, studentName) {
       announceBadge.className = 'inline-flex items-center px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider';
       announceBadge.textContent = '🟢 Diterima / Lulus';
     }
-    announceText.innerHTML = `Selamat! Calon siswa atas nama <strong class="text-white">${escapeHTML(cleanName)}</strong> dinyatakan <strong>LULUS / DITERIMA</strong> seleksi penerimaan murid baru SMP Annida Tahun Ajaran 2027/2028.`;
+    announceText.innerHTML = `Selamat! Calon siswa atas nama <strong class="text-slate-900">${escapeHTML(cleanName)}</strong> dinyatakan <strong>LULUS / DITERIMA</strong> seleksi penerimaan murid baru SMP Annida Tahun Ajaran 2027/2028.`;
     
     if (announceActions) announceActions.classList.remove('hidden');
     if (btnCetakLulus) btnCetakLulus.classList.remove('hidden');
@@ -549,7 +549,7 @@ function updateAnnouncementTab(status, studentName) {
       announceBadge.className = 'inline-flex items-center px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 text-xs font-bold uppercase tracking-wider';
       announceBadge.textContent = '🔴 Belum Memenuhi Syarat';
     }
-    announceText.innerHTML = `Mohon Maaf, calon siswa atas nama <strong class="text-white">${escapeHTML(cleanName)}</strong> belum memenuhi kriteria penerimaan tahun ajaran 2027/2028. Terima kasih atas partisipasi dan minat Ayah/Bunda mendaftar di SMP Annida.`;
+    announceText.innerHTML = `Mohon Maaf, calon siswa atas nama <strong class="text-slate-900">${escapeHTML(cleanName)}</strong> belum memenuhi kriteria penerimaan tahun ajaran 2027/2028. Terima kasih atas partisipasi dan minat Ayah/Bunda mendaftar di SMP Annida.`;
     
     if (announceActions) announceActions.classList.add('hidden');
     if (btnCetakLulus) btnCetakLulus.classList.add('hidden');
@@ -563,7 +563,7 @@ function updateAnnouncementTab(status, studentName) {
       announceBadge.className = 'inline-flex items-center px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold uppercase tracking-wider';
       announceBadge.textContent = '🟣 Tahap Seleksi Tes Tahfidz';
     }
-    announceText.innerHTML = `Berkas persyaratan calon siswa atas nama <strong class="text-white">${escapeHTML(cleanName)}</strong> telah <strong>LOLOS VERIFIKASI</strong>. Calon siswa dijadwalkan mengikuti <strong>Tes Pemetaan Tahfidz & Wawancara</strong>. Silakan hadir sesuai jadwal seleksi yang telah diinformasikan Panitia PPDB.`;
+    announceText.innerHTML = `Berkas persyaratan calon siswa atas nama <strong class="text-slate-900">${escapeHTML(cleanName)}</strong> telah <strong>LOLOS VERIFIKASI</strong>. Calon siswa dijadwalkan mengikuti <strong>Tes Pemetaan Tahfidz & Wawancara</strong>. Silakan hadir sesuai jadwal seleksi yang telah diinformasikan Panitia PPDB.`;
     
     if (announceActions) announceActions.classList.add('hidden');
     if (btnCetakLulus) btnCetakLulus.classList.add('hidden');
@@ -577,7 +577,7 @@ function updateAnnouncementTab(status, studentName) {
       announceBadge.className = 'inline-flex items-center px-3 py-1 rounded-full bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-bold uppercase tracking-wider';
       announceBadge.textContent = '🔴 Perlu Revisi Dokumen';
     }
-    announceText.innerHTML = `Panitia menemukan dokumen persyaratan calon siswa atas nama <strong class="text-white">${escapeHTML(cleanName)}</strong> yang belum sesuai. Silakan buka tab <strong>Berkas</strong> untuk mengunggah ulang dokumen yang ditandai revisi.`;
+    announceText.innerHTML = `Panitia menemukan dokumen persyaratan calon siswa atas nama <strong class="text-slate-900">${escapeHTML(cleanName)}</strong> yang belum sesuai. Silakan buka tab <strong>Berkas</strong> untuk mengunggah ulang dokumen yang ditandai revisi.`;
     
     if (announceActions) announceActions.classList.add('hidden');
     if (btnCetakLulus) btnCetakLulus.classList.add('hidden');
@@ -592,7 +592,7 @@ function updateAnnouncementTab(status, studentName) {
       announceBadge.className = 'inline-flex items-center px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold uppercase tracking-wider';
       announceBadge.textContent = '🟡 Dalam Proses Verifikasi';
     }
-    announceText.innerHTML = `Pendaftaran calon siswa atas nama <strong class="text-white">${escapeHTML(cleanName)}</strong> sedang dalam proses peninjauan dan verifikasi berkas oleh Panitia PPDB. Pengumuman hasil seleksi akan diperbarui setelah berkas dinyatakan lengkap dan tes seleksi diselesaikan.`;
+    announceText.innerHTML = `Pendaftaran calon siswa atas nama <strong class="text-slate-900">${escapeHTML(cleanName)}</strong> sedang dalam proses peninjauan dan verifikasi berkas oleh Panitia PPDB. Pengumuman hasil seleksi akan diperbarui setelah berkas dinyatakan lengkap dan tes seleksi diselesaikan.`;
     
     if (announceActions) announceActions.classList.add('hidden');
     if (btnCetakLulus) btnCetakLulus.classList.add('hidden');
@@ -618,10 +618,10 @@ function updateTimelineUI(status) {
     const line = document.getElementById(`line-track-${i}`);
     
     if (icon) {
-      icon.className = 'w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-700 text-slate-400';
+      icon.className = 'w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-slate-100 text-slate-500 border border-slate-300';
       icon.textContent = i;
     }
-    if (text) text.className = 'text-xs font-medium text-slate-400 mt-1';
+    if (text) text.className = 'text-xs font-semibold text-slate-600 mt-1';
     if (line) line.className = 'hidden md:block h-0.5 bg-slate-700 flex-1 mx-2';
   }
 
@@ -643,7 +643,7 @@ function updateTimelineUI(status) {
         icon.className = 'w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-red-500 text-white ring-4 ring-red-500/20';
         icon.textContent = '✗';
       } else if (i === activeMax && status !== 'Lulus') {
-        icon.className = 'w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-amber-500 text-white ring-4 ring-amber-500/20';
+        icon.className = 'w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-amber-600 text-white ring-4 ring-amber-500/20';
         icon.textContent = i;
       } else {
         icon.className = 'w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-emerald-500 text-white ring-4 ring-emerald-500/20';
@@ -651,10 +651,10 @@ function updateTimelineUI(status) {
       }
     }
     if (i === 4 && status === 'Revisi') {
-      if (text) text.className = 'text-xs font-semibold text-red-400 mt-1';
+      if (text) text.className = 'text-xs font-semibold text-red-800 mt-1';
       if (line) line.className = 'hidden md:block h-0.5 bg-red-500 flex-1 mx-2';
     } else {
-      if (text) text.className = 'text-xs font-semibold text-emerald-400 mt-1';
+      if (text) text.className = 'text-xs font-semibold text-emerald-800 mt-1';
       if (line) line.className = 'hidden md:block h-0.5 bg-emerald-500 flex-1 mx-2';
     }
   }
@@ -834,7 +834,7 @@ function renderAdminTable(data) {
       <td class="py-4 px-4 font-mono font-bold text-slate-300">${escapeHTML(r.no_pendaftaran)}</td>
       <td class="py-4 px-4 font-semibold text-slate-100">${escapeHTML(studentName)}</td>
       <td class="py-4 px-4 text-xs text-slate-300">${progLabel}</td>
-      <td class="py-4 px-4 text-xs text-slate-400">${dateFormatted}</td>
+      <td class="py-4 px-4 text-xs text-slate-600">${dateFormatted}</td>
       <td class="py-4 px-4 text-center">
         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold uppercase tracking-wider ${badgeClass}">
           ${badgeText}
@@ -1079,7 +1079,7 @@ function renderRankingData(data) {
     const levelHafalan = docVerif.level_hafalan || 'Belum diinput';
     
     // Status color
-    const badgeColor = r.status_pendaftaran === 'Lulus' ? 'text-emerald-400 font-bold' : 'text-slate-400';
+    const badgeColor = r.status_pendaftaran === 'Lulus' ? 'text-emerald-700 font-bold' : 'text-slate-600';
 
     const tr = document.createElement('tr');
     tr.className = 'border-b border-white/5 hover:bg-white/[0.01]';
@@ -1096,7 +1096,7 @@ function renderRankingData(data) {
     }
 
     tr.innerHTML = `
-      <td class="py-3 px-3 font-mono text-slate-400">${escapeHTML(r.no_pendaftaran)}</td>
+      <td class="py-3 px-3 font-mono text-slate-600">${escapeHTML(r.no_pendaftaran)}</td>
       <td class="py-3 px-3 font-semibold text-slate-200">${escapeHTML(name)}</td>
       <td class="py-3 px-3 font-medium text-slate-300">${escapeHTML(levelHafalan)}</td>
       <td class="py-3 px-3 ${badgeColor}">${r.status_pendaftaran === 'Lulus' ? 'Lulus' : 'Tes Tahfidz'}</td>
