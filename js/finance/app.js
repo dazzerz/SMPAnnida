@@ -115,13 +115,19 @@ function updateGreeting(user) {
 
 // ── Sidebar ───────────────────────────────────────
 function initSidebar(user) {
-  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
-    document.getElementById('sidebar')?.classList.toggle('open');
-    document.getElementById('sidebar-overlay')?.classList.toggle('show');
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar && sidebar.classList.contains('open')) {
+      if (typeof window._closeSidebar === 'function') window._closeSidebar();
+      else sidebar.classList.remove('open');
+    } else {
+      if (typeof window._openSidebar === 'function') window._openSidebar();
+      else sidebar?.classList.add('open');
+    }
   });
   document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
-    document.getElementById('sidebar')?.classList.remove('open');
-    document.getElementById('sidebar-overlay')?.classList.remove('show');
+    if (typeof window._closeSidebar === 'function') window._closeSidebar();
   });
   if (user) {
     document.getElementById('logout-btn')?.addEventListener('click', handleLogout);

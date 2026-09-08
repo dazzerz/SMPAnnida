@@ -356,17 +356,8 @@ export function injectSidebar(containerId) {
         document.body.appendChild(overlay);
     }
 
-    window._openSidebar = function() {
-        container.classList.add('open', 'active', 'show');
-        overlay.classList.add('show', 'active');
-        document.body.style.overflow = 'hidden';
-    };
-
-    window._closeSidebar = function() {
-        container.classList.remove('open', 'active', 'show');
-        overlay.classList.remove('show', 'active');
-        document.body.style.overflow = '';
-    };
+    window._openSidebar = openMobileSidebar;
+    window._closeSidebar = closeMobileSidebar;
 
     const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
     if (sidebarCloseBtn) {
@@ -547,3 +538,125 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
   }
 }
 
+
+
+// ── Robust Mobile Sidebar & Overlay Controller ───────────────────────────
+export function closeMobileSidebar() {
+    const sidebars = document.querySelectorAll('.sidebar, #sidebar, #student-sidebar, .split-rail-container');
+    sidebars.forEach(sb => {
+        sb.classList.remove('open', 'active', 'show');
+        if (window.innerWidth < 1024 && sb.classList.contains('split-rail-container')) {
+            sb.classList.add('panel-collapsed');
+        }
+    });
+    const overlays = document.querySelectorAll('.sidebar-overlay, #sidebar-overlay');
+    overlays.forEach(ov => {
+        ov.classList.remove('show', 'active');
+        ov.style.display = 'none';
+        ov.style.pointerEvents = 'none';
+        ov.style.opacity = '0';
+    });
+    document.body.style.overflow = '';
+    document.body.classList.remove('sidebar-open');
+}
+
+export function openMobileSidebar() {
+    const sidebars = document.querySelectorAll('.sidebar, #sidebar, #student-sidebar, .split-rail-container');
+    sidebars.forEach(sb => {
+        sb.classList.add('open', 'active', 'show');
+    });
+    let overlay = document.getElementById('sidebar-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'sidebar-overlay';
+        overlay.className = 'sidebar-overlay';
+        document.body.appendChild(overlay);
+    }
+    overlay.style.display = '';
+    overlay.style.pointerEvents = '';
+    overlay.style.opacity = '';
+    overlay.classList.add('show', 'active');
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('sidebar-open');
+}
+
+// Bind globally immediately so any caller has access
+if (typeof window !== 'undefined') {
+    window._closeSidebar = closeMobileSidebar;
+    window._openSidebar = openMobileSidebar;
+}
+
+// ── Tab Visibility & Window Focus Lifecycle Handlers ─────────────────────
+// Automatically closes mobile sidebar and cleans up overlay when switching tabs
+function handleTabVisibilityOrFocusChange() {
+    const hasOpenSidebar = document.querySelector('.sidebar.open, #sidebar.open, .sidebar-overlay.show, .sidebar-overlay.active, .sidebar.show');
+    if (hasOpenSidebar || (typeof document !== 'undefined' && document.body.classList.contains('sidebar-open'))) {
+        closeMobileSidebar();
+    }
+}
+
+if (typeof document !== 'undefined' && !window.__sidebar_lifecycle_bound) {
+    window.__sidebar_lifecycle_bound = true;
+
+    // 1. Visibility change (user switches tab, minimizes browser, locks screen)
+    document.addEventListener('visibilitychange', () => {
+        handleTabVisibilityOrFocusChange();
+    });
+
+    // 2. Window blur & focus (user clicks outside browser or switches application)
+    window.addEventListener('blur', () => {
+        handleTabVisibilityOrFocusChange();
+    });
+    window.addEventListener('focus', () => {
+        handleTabVisibilityOrFocusChange();
+    });
+
+    // 3. Mobile tab sleep / freeze lifecycle
+    window.addEventListener('pagehide', () => {
+        handleTabVisibilityOrFocusChange();
+    });
+    window.addEventListener('pageshow', () => {
+        handleTabVisibilityOrFocusChange();
+    });
+
+    // 4. Global capture-phase event delegation for closing overlay or outside clicks
+    document.addEventListener('click', function(e) {
+        // If clicked on overlay
+        if (e.target.closest('.sidebar-overlay, #sidebar-overlay')) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeMobileSidebar();
+            return;
+        }
+
+        // If clicked close button
+        const closeBtn = e.target.closest('#sidebar-close-btn, #panel-close-btn, .sidebar-close-btn, .split-rail-panel-close');
+        if (closeBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeMobileSidebar();
+            return;
+        }
+
+        // If mobile sidebar is open and clicked anywhere outside sidebar and hamburger button
+        if (window.innerWidth < 1024) {
+            const hasOpen = document.querySelector('.sidebar.open, #sidebar.open, .sidebar-overlay.show, .sidebar-overlay.active');
+            if (hasOpen) {
+                const insideSidebar = e.target.closest('.sidebar, #sidebar, #student-sidebar, .split-rail-container');
+                const insideHamburger = e.target.closest('#mobile-menu-btn, .mobile-menu-btn, .menu-toggle, #menu-toggle');
+                if (!insideSidebar && !insideHamburger) {
+                    e.preventDefault();
+                    closeMobileSidebar();
+                }
+            }
+        }
+    }, true); // Capturing phase ensures overlay click is never swallowed
+
+    // 5. Touch support on overlay for immediate mobile response
+    document.addEventListener('touchend', function(e) {
+        if (e.target.closest('.sidebar-overlay, #sidebar-overlay')) {
+            e.preventDefault();
+            closeMobileSidebar();
+        }
+    }, { passive: false });
+}
