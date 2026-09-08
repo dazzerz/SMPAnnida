@@ -17,7 +17,7 @@
 .sidebar {
   width: var(--sidebar-width);
   min-height: 100vh;
-  background: var(--bg-sidebar);
+  background: var(--bg-sidebar, #166534);
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;

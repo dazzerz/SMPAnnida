@@ -74,8 +74,8 @@
   --table-text-body: #0f172a;
 
   /* Sidebar (TETAP HIJAU TUA #166534 per DESIGN.md) */
-  --sidebar-bg: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%);
-  --bg-sidebar: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%);
+  --sidebar-bg: #166534;
+  --bg-sidebar: #166534;
   --sidebar-border: rgba(16, 185, 129, 0.2);
   --sidebar-item-hover: rgba(255, 255, 255, 0.1);
   --sidebar-item-active: rgba(34, 197, 94, 0.22);
@@ -279,8 +279,8 @@ option {
 /* Sidebar & Topbar */
 .sidebar,
 #student-sidebar {
-  background: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%) !important;
-  border-right: 1px solid rgba(16, 185, 129, 0.2) !important;
+  background: #166534 !important;
+  border-right: 1px solid #15803d !important;
   position: relative;
   overflow-x: hidden;
 }
@@ -345,17 +345,18 @@ option {
 }
 
 .sidebar .nav-item {
-  color: #cbd5e1;
+  color: #f0fdf4 !important;
   transition: all 0.2s ease;
 }
 .sidebar .nav-item:hover {
-  background: rgba(16, 185, 129, 0.12);
-  color: #ffffff;
+  background: #14532d !important;
+  color: #ffffff !important;
 }
 .sidebar .nav-item.active {
-  background: rgba(16, 185, 129, 0.22);
-  color: #34d399;
+  background: #14532d !important;
+  color: #ffffff !important;
   font-weight: 700;
+  border-left: 3px solid #34d399 !important;
 }
 
 /* =========================================================================
@@ -400,8 +401,8 @@ option {
   min-width: 52px !important;
   max-width: 52px !important;
   height: 100vh !important;
-  background: #061514 !important;
-  border-right: 1px solid rgba(16, 185, 129, 0.18) !important;
+  background: #14532d !important;
+  border-right: 1px solid #15803d !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
@@ -422,8 +423,8 @@ option {
   overflow: hidden;
   margin-bottom: 0.75rem;
   transition: transform 0.2s ease;
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #15803d;
   flex-shrink: 0;
 }
 .split-rail-logo:hover {
@@ -445,7 +446,7 @@ option {
   border-radius: 10px;
   border: 1px solid transparent;
   background: transparent;
-  color: #94a3b8;
+  color: #f0fdf4;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -455,13 +456,13 @@ option {
   padding: 0;
 }
 .rail-btn:hover {
-  background: rgba(16, 185, 129, 0.15);
-  color: #34d399;
+  background: #166534;
+  color: #ffffff;
 }
 .rail-btn.active {
-  background: rgba(16, 185, 129, 0.24);
-  color: #10b981;
-  border-color: rgba(16, 185, 129, 0.45);
+  background: #166534;
+  color: #ffffff;
+  border-color: #34d399;
 }
 .rail-btn.active::before {
   content: '';
@@ -483,7 +484,7 @@ option {
   width: 100%;
   flex-shrink: 0;
   padding-top: 0.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid #15803d;
 }
 
 /* LAPISAN 2: Context Submenu Panel (200px) */
@@ -492,8 +493,8 @@ option {
   min-width: 200px !important;
   max-width: 200px !important;
   height: 100vh !important;
-  background: linear-gradient(180deg, #072217 0%, #0a1c18 55%, #061514 100%) !important;
-  border-right: 1px solid rgba(16, 185, 129, 0.2) !important;
+  background: #166534 !important;
+  border-right: 1px solid #15803d !important;
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important;
@@ -535,13 +536,13 @@ option {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid #15803d;
   flex-shrink: 0;
 }
 .split-rail-panel-title {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   white-space: nowrap;
@@ -551,7 +552,7 @@ option {
 .split-rail-panel-close {
   background: transparent;
   border: none;
-  color: #94a3b8;
+  color: #f0fdf4;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -562,7 +563,7 @@ option {
 }
 .split-rail-panel-close:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
+  background: #14532d;
 }
 
 .split-rail-panel-search {
@@ -588,20 +589,20 @@ option {
   display: flex !important;
   align-items: center !important;
   gap: 0.55rem !important;
-  color: #cbd5e1 !important;
+  color: #f0fdf4 !important;
   text-decoration: none !important;
   transition: all 0.15s ease !important;
   border-left: 3px solid transparent !important;
   white-space: nowrap !important;
 }
 .split-rail-panel-menu .nav-item:hover {
-  background: rgba(16, 185, 129, 0.14) !important;
+  background: #14532d !important;
   color: #ffffff !important;
 }
 .split-rail-panel-menu .nav-item.active {
-  background: rgba(16, 185, 129, 0.22) !important;
-  color: #34d399 !important;
-  border-left: 3px solid #10b981 !important;
+  background: #14532d !important;
+  color: #ffffff !important;
+  border-left: 3px solid #34d399 !important;
   font-weight: 600 !important;
 }
 
@@ -614,7 +615,7 @@ option {
 
 .split-rail-panel-footer {
   padding: 0.65rem 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid #15803d;
   flex-shrink: 0;
 }
 
@@ -633,6 +634,7 @@ option {
     max-width: 252px !important;
     z-index: 1200 !important;
     box-shadow: 0 0 35px rgba(0, 0, 0, 0.8) !important;
+    background: #166534 !important;
   }
   .sidebar.split-rail-container.open {
     transform: translateX(0) !important;
