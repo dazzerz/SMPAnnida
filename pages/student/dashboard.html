@@ -133,59 +133,26 @@
     </aside>
 
     <!-- Main Content Panel -->
-    <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
+    <main class="flex-1 p-4 md:p-8 pb-24 md:pb-8 overflow-y-auto max-w-7xl mx-auto w-full">
       
-      <!-- Sticky Mobile Top Bar & Pill Navigation -->
-      <div class="md:hidden sticky top-0 z-40 bg-white border border-slate-200 rounded-xl p-3 mb-6 shadow-sm space-y-3">
+      <!-- Sticky Mobile Top Bar (Clean & Streamlined) -->
+      <div class="md:hidden sticky top-0 z-40 bg-white border border-slate-200 rounded-xl p-3 mb-6 shadow-sm">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
+            <button id="mobile-menu-btn" class="mobile-menu-btn p-1.5 rounded-lg text-slate-700 hover:bg-slate-100 flex items-center justify-center cursor-pointer" aria-label="Buka menu navigasi">
+              <span class="material-symbols-outlined text-2xl text-emerald-800">menu</span>
+            </button>
             <img src="/logo_1x1.png" alt="Logo" class="w-8 h-8 rounded-full">
             <div>
-              <h3 class="font-bold text-sm text-emerald-700 leading-tight">Portal Siswa</h3>
+              <h3 class="font-bold text-sm text-emerald-800 leading-tight">Portal Siswa</h3>
               <p class="text-[0.7rem] text-slate-600 truncate max-w-[180px]" id="mobile-student-name">Memuat...</p>
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <button id="btn-mobile-logout" class="p-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-xs flex items-center gap-1 font-semibold" title="Keluar Sesi">
+            <button id="btn-mobile-logout" class="p-1.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-lg text-xs flex items-center gap-1 font-semibold cursor-pointer" title="Keluar Sesi">
               <span class="material-symbols-outlined text-sm">logout</span>
             </button>
           </div>
-        </div>
-
-        <div class="flex overflow-x-auto whitespace-nowrap gap-1.5 pb-1 scrollbar-none border-t border-slate-200 pt-2">
-          <a href="#beranda" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-700 text-white shadow-sm flex items-center gap-1 shrink-0" data-target="panel-beranda">
-            <span class="material-symbols-outlined text-xs">dashboard</span> Beranda
-          </a>
-          <a href="#jadwal" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-jadwal">
-            <span class="material-symbols-outlined text-xs">calendar_month</span> Jadwal
-          </a>
-          <a href="#presensi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-presensi">
-            <span class="material-symbols-outlined text-xs">fact_check</span> Presensi
-          </a>
-          <a href="#cbt" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-cbt">
-            <span class="material-symbols-outlined text-xs">quiz</span> Ujian CBT
-          </a>
-          <a href="#tugas" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-tugas">
-            <span class="material-symbols-outlined text-xs">assignment</span> Tugas
-          </a>
-          <a href="#materi-lms" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-materi-lms">
-            <span class="material-symbols-outlined text-xs">menu_book</span> Materi
-          </a>
-          <a href="#materi" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-materi">
-            <span class="material-symbols-outlined text-xs">menu_book</span> Jurnal
-          </a>
-          <a href="#tahfidz" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-tahfidz">
-            <span class="material-symbols-outlined text-xs">auto_stories</span> Tahfidz
-          </a>
-          <a href="#nilai" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-nilai">
-            <span class="material-symbols-outlined text-xs">grade</span> Nilai
-          </a>
-          <a href="#berkas" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-berkas">
-            <span class="material-symbols-outlined text-xs">folder_shared</span> Berkas
-          </a>
-          <a href="#akun" class="nav-item-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-1 shrink-0 border border-slate-200" data-target="panel-akun">
-            <span class="material-symbols-outlined text-xs">manage_accounts</span> Akun
-          </a>
         </div>
       </div>
 
@@ -840,6 +807,107 @@
       </div>
     </div>
   </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- MOBILE BOTTOM NAVIGATION BAR & 'LAINNYA' SHEET (< 768px)               -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+  <!-- Backdrop for 'Lainnya' Sheet -->
+  <div id="bottom-sheet-backdrop" class="md:hidden fixed inset-0 bg-black/60 z-50 opacity-0 pointer-events-none transition-opacity duration-200 ease-out" aria-hidden="true"></div>
+
+  <!-- 'Lainnya' Bottom Sheet Modal Panel -->
+  <div id="bottom-sheet-more" class="md:hidden fixed left-0 right-0 bottom-16 z-50 bg-[#166534] border-t-2 border-[#15803d] rounded-t-2xl shadow-2xl p-4 transform translate-y-full opacity-0 pointer-events-none transition-all duration-250 ease-out" role="dialog" aria-modal="true" aria-labelledby="bottom-sheet-title">
+    <div class="flex items-center justify-between pb-3 mb-3 border-b border-[#15803d]">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-emerald-300 text-xl">widgets</span>
+        <h4 id="bottom-sheet-title" class="text-sm font-bold text-white tracking-wide">Menu Lainnya</h4>
+      </div>
+      <button type="button" id="btn-close-bottom-sheet" class="p-1.5 text-emerald-100 hover:text-white rounded-lg hover:bg-[#14532d] transition-colors cursor-pointer" aria-label="Tutup menu lainnya">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+    </div>
+
+    <!-- Grid Menu Lainnya: Ujian CBT, Tahfidz, Berkas, Akun, Beranda, Jadwal, Presensi -->
+    <div class="grid grid-cols-4 gap-2.5">
+      <!-- Beranda -->
+      <button type="button" class="more-menu-item flex flex-col items-center justify-center p-2.5 rounded-xl bg-[#14532d] text-white hover:bg-[#15803d] transition-colors cursor-pointer" data-target="panel-beranda" href="#beranda">
+        <span class="material-symbols-outlined text-2xl mb-1 text-emerald-300">dashboard</span>
+        <span class="text-[10px] font-medium text-center truncate w-full">Beranda</span>
+      </button>
+
+      <!-- Jadwal -->
+      <button type="button" class="more-menu-item flex flex-col items-center justify-center p-2.5 rounded-xl bg-[#14532d] text-white hover:bg-[#15803d] transition-colors cursor-pointer" data-target="panel-jadwal" href="#jadwal">
+        <span class="material-symbols-outlined text-2xl mb-1 text-emerald-300">calendar_month</span>
+        <span class="text-[10px] font-medium text-center truncate w-full">Jadwal</span>
+      </button>
+
+      <!-- Presensi -->
+      <button type="button" class="more-menu-item flex flex-col items-center justify-center p-2.5 rounded-xl bg-[#14532d] text-white hover:bg-[#15803d] transition-colors cursor-pointer" data-target="panel-presensi" href="#presensi">
+        <span class="material-symbols-outlined text-2xl mb-1 text-emerald-300">fact_check</span>
+        <span class="text-[10px] font-medium text-center truncate w-full">Presensi</span>
+      </button>
+
+      <!-- Ujian CBT -->
+      <button type="button" class="more-menu-item flex flex-col items-center justify-center p-2.5 rounded-xl bg-[#14532d] text-white hover:bg-[#15803d] transition-colors cursor-pointer" data-target="panel-cbt" href="#cbt">
+        <span class="material-symbols-outlined text-2xl mb-1 text-emerald-300">quiz</span>
+        <span class="text-[10px] font-medium text-center truncate w-full">Ujian CBT</span>
+      </button>
+
+      <!-- Tahfidz -->
+      <button type="button" class="more-menu-item flex flex-col items-center justify-center p-2.5 rounded-xl bg-[#14532d] text-white hover:bg-[#15803d] transition-colors cursor-pointer" data-target="panel-tahfidz" href="#tahfidz">
+        <span class="material-symbols-outlined text-2xl mb-1 text-emerald-300">auto_stories</span>
+        <span class="text-[10px] font-medium text-center truncate w-full">Tahfidz</span>
+      </button>
+
+      <!-- Berkas -->
+      <button type="button" class="more-menu-item flex flex-col items-center justify-center p-2.5 rounded-xl bg-[#14532d] text-white hover:bg-[#15803d] transition-colors cursor-pointer" data-target="panel-berkas" href="#berkas">
+        <span class="material-symbols-outlined text-2xl mb-1 text-emerald-300">folder_shared</span>
+        <span class="text-[10px] font-medium text-center truncate w-full">Berkas</span>
+      </button>
+
+      <!-- Akun -->
+      <button type="button" class="more-menu-item flex flex-col items-center justify-center p-2.5 rounded-xl bg-[#14532d] text-white hover:bg-[#15803d] transition-colors cursor-pointer" data-target="panel-akun" href="#akun">
+        <span class="material-symbols-outlined text-2xl mb-1 text-emerald-300">manage_accounts</span>
+        <span class="text-[10px] font-medium text-center truncate w-full">Akun</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modern Fixed Bottom Navigation Bar -->
+  <nav id="student-bottom-nav" class="md:hidden fixed bottom-0 left-0 right-0 z-50 h-16 bg-[#166534] border-t border-[#15803d] shadow-[0_-4px_20px_rgba(0,0,0,0.25)] flex items-center justify-around px-2" aria-label="Navigasi Utama Mobile">
+    
+    <!-- 1. Materi -->
+    <button type="button" class="bottom-nav-item flex-1 flex flex-col items-center justify-center py-1 text-white hover:text-emerald-300 transition-colors cursor-pointer" data-target="panel-materi-lms" href="#materi-lms">
+      <span class="material-symbols-outlined text-2xl bottom-nav-icon">menu_book</span>
+      <span class="text-[11px] font-medium bottom-nav-label mt-0.5">Materi</span>
+    </button>
+
+    <!-- 2. Tugas -->
+    <button type="button" class="bottom-nav-item flex-1 flex flex-col items-center justify-center py-1 text-white hover:text-emerald-300 transition-colors cursor-pointer" data-target="panel-tugas" href="#tugas">
+      <span class="material-symbols-outlined text-2xl bottom-nav-icon">assignment</span>
+      <span class="text-[11px] font-medium bottom-nav-label mt-0.5">Tugas</span>
+    </button>
+
+    <!-- 3. Nilai -->
+    <button type="button" class="bottom-nav-item flex-1 flex flex-col items-center justify-center py-1 text-white hover:text-emerald-300 transition-colors cursor-pointer" data-target="panel-nilai" href="#nilai">
+      <span class="material-symbols-outlined text-2xl bottom-nav-icon">grade</span>
+      <span class="text-[11px] font-medium bottom-nav-label mt-0.5">Nilai</span>
+    </button>
+
+    <!-- 4. Jurnal -->
+    <button type="button" class="bottom-nav-item flex-1 flex flex-col items-center justify-center py-1 text-white hover:text-emerald-300 transition-colors cursor-pointer" data-target="panel-materi" href="#materi">
+      <span class="material-symbols-outlined text-2xl bottom-nav-icon">history_edu</span>
+      <span class="text-[11px] font-medium bottom-nav-label mt-0.5">Jurnal</span>
+    </button>
+
+    <!-- 5. Lainnya -->
+    <button type="button" id="btn-bottom-nav-more" class="bottom-nav-item flex-1 flex flex-col items-center justify-center py-1 text-white hover:text-emerald-300 transition-colors cursor-pointer" aria-expanded="false" aria-controls="bottom-sheet-more">
+      <span class="material-symbols-outlined text-2xl bottom-nav-icon">grid_view</span>
+      <span class="text-[11px] font-medium bottom-nav-label mt-0.5">Lainnya</span>
+    </button>
+
+  </nav>
 
 </body>
 </html>
