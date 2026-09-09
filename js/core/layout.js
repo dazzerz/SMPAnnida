@@ -370,7 +370,11 @@ export function injectSidebar(containerId) {
         overlay = document.createElement('div');
         overlay.id = 'sidebar-overlay';
         overlay.className = 'sidebar-overlay';
-        document.body.appendChild(overlay);
+        if (container.parentNode) {
+            container.parentNode.appendChild(overlay);
+        } else {
+            document.body.appendChild(overlay);
+        }
     }
 
     window._openSidebar = openMobileSidebar;
@@ -482,8 +486,9 @@ if (typeof document !== 'undefined' && !window.__mobile_toggle_bound) {
     const btn = e.target.closest('#mobile-menu-btn, .mobile-menu-btn, .menu-toggle, #menu-toggle');
     if (btn) {
       e.preventDefault();
-      const sidebar = document.getElementById('sidebar');
-      if (sidebar && sidebar.classList.contains('open')) {
+      const sidebarEl = document.querySelector('.sidebar.split-rail-container, .sidebar, #student-sidebar');
+      const isOpen = sidebarEl && (sidebarEl.classList.contains('open') || sidebarEl.classList.contains('active'));
+      if (isOpen) {
         if (window._closeSidebar) window._closeSidebar();
       } else {
         if (window._openSidebar) window._openSidebar();
@@ -577,7 +582,9 @@ export function openMobileSidebar() {
         overlay = document.createElement('div');
         overlay.id = 'sidebar-overlay';
         overlay.className = 'sidebar-overlay';
-        document.body.appendChild(overlay);
+        
+        const appContainer = document.querySelector('.app-container') || document.body;
+        appContainer.appendChild(overlay);
     }
     overlay.style.display = '';
     overlay.style.pointerEvents = '';
