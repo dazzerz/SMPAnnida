@@ -352,6 +352,18 @@ export function injectSidebar(containerId) {
     updateActiveSidebar();
     window.addEventListener('hashchange', updateActiveSidebar);
 
+    // Auto-close mobile sidebar when a nav item is clicked
+    container.addEventListener('click', (e) => {
+        const navItem = e.target.closest('.nav-item, .nav-link');
+        if (navItem && window.innerWidth < 768) {
+            // Small delay so href navigation registers before sidebar closes
+            setTimeout(() => {
+                if (window._closeSidebar) window._closeSidebar();
+                else closeMobileSidebar();
+            }, 150);
+        }
+    });
+
     // Overlay Drawer Management for Mobile
     let overlay = document.getElementById('sidebar-overlay');
     if (!overlay) {
