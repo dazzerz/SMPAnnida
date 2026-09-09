@@ -12,7 +12,7 @@ export function injectSidebar(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    container.classList.add('split-rail-container');
+    container.classList.add('split-rail-container', 'sidebar');
 
     const path = window.location.pathname;
     const basePath = path.includes('/pages/') ? '../../' : './';
