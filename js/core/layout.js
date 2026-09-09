@@ -635,12 +635,16 @@ if (typeof document !== 'undefined' && !window.__sidebar_lifecycle_bound) {
 
         // If mobile sidebar is open and clicked anywhere outside sidebar and hamburger button
         if (window.innerWidth < 768) {
-            const hasOpen = document.querySelector('.sidebar.open, #sidebar.open, .sidebar-overlay.show, .sidebar-overlay.active');
+            const hasOpen = document.querySelector(
+                '.sidebar.open, #sidebar.open, .sidebar-overlay.show, .sidebar-overlay.active, .split-rail-container.open'
+            );
             if (hasOpen) {
-                const insideSidebar = e.target.closest('.sidebar, #sidebar, #student-sidebar, .split-rail-container');
+                const insideSidebar = e.target.closest(
+                    '.sidebar, #sidebar, #student-sidebar, .split-rail-container, .split-rail-panel, .split-rail-panel-menu'
+                );
                 const insideHamburger = e.target.closest('#mobile-menu-btn, .mobile-menu-btn, .menu-toggle, #menu-toggle');
                 if (!insideSidebar && !insideHamburger) {
-                    e.preventDefault();
+                    // Do NOT call preventDefault here — it would block href navigation on menu items
                     closeMobileSidebar();
                 }
             }
