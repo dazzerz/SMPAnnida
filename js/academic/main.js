@@ -179,7 +179,7 @@ if (document.readyState === 'loading') {
 
 // Global click delegation for academic navigation
 document.addEventListener('click', (e) => {
-    const link = e.target.closest('#nav-group-academic .nav-item, .nav-link');
+    const link = e.target.closest('#nav-group-academic .nav-item, #nav-group-academic a, .nav-item[data-target]');
     if (link) {
         const href = link.getAttribute('href');
         const target = link.getAttribute('data-target') || (href && href.includes('#') ? href.split('#')[1] : null);
@@ -187,31 +187,9 @@ document.addEventListener('click', (e) => {
             e.preventDefault();
             window.location.hash = target;
             handleAcademicHashChange();
-        }
-    }
-});
-
-
-// Toggle Sidebar – delegates to layout.js helpers if available
-const menuToggle = document.getElementById('menu-toggle');
-if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-        if (window._openSidebar && window._closeSidebar) {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar && sidebar.classList.contains('open')) {
+            if (window.innerWidth < 768 && window._closeSidebar) {
                 window._closeSidebar();
-            } else {
-                window._openSidebar();
             }
-        }
-    });
-}
-
-// Also close sidebar when nav link is clicked on mobile
-document.addEventListener('click', (e) => {
-    if (e.target.closest('.nav-item, .nav-link')) {
-        if (window.innerWidth < 768 && window._closeSidebar) {
-            window._closeSidebar();
         }
     }
 });

@@ -264,9 +264,14 @@ export function injectSidebar(containerId) {
 
     // Close & Toggle Functions
     function closeSubmenuPanel() {
-        togglePanel(true);
-        if (window.innerWidth < 768 && window._closeSidebar) {
-            window._closeSidebar();
+        if (window.innerWidth < 768) {
+            if (window._closeSidebar) {
+                window._closeSidebar();
+            } else {
+                container.classList.remove('open', 'active', 'show');
+            }
+        } else {
+            togglePanel(true);
         }
     }
 
@@ -372,14 +377,7 @@ export function injectSidebar(containerId) {
         closeSubmenuPanel();
     });
 
-    // Auto-close drawer on link tap (mobile)
-    container.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-            if (window.innerWidth < 768) {
-                closeSubmenuPanel();
-            }
-        });
-    });
+
 
     // Close on click outside or click close button
     document.addEventListener('click', (e) => {
@@ -545,9 +543,6 @@ export function closeMobileSidebar() {
     const sidebars = document.querySelectorAll('.sidebar, #sidebar, #student-sidebar, .split-rail-container');
     sidebars.forEach(sb => {
         sb.classList.remove('open', 'active', 'show');
-        if (window.innerWidth < 1024 && sb.classList.contains('split-rail-container')) {
-            sb.classList.add('panel-collapsed');
-        }
     });
     const overlays = document.querySelectorAll('.sidebar-overlay, #sidebar-overlay');
     overlays.forEach(ov => {
