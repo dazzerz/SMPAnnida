@@ -3,7 +3,6 @@ import supabaseClient from '../core/supabase.js';
 import { escapeHTML, showToast } from '../core/utils.js';
 
 const db = supabaseClient;
-window.db = supabaseClient;
 
 document.addEventListener('DOMContentLoaded', () => {
     // Check elements exist

@@ -12,7 +12,7 @@ export function injectSidebar(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    container.classList.add('split-rail-container', 'sidebar');
+    container.classList.add('split-rail-container');
 
     const path = window.location.pathname;
     const basePath = path.includes('/pages/') ? '../../' : './';
@@ -352,29 +352,13 @@ export function injectSidebar(containerId) {
     updateActiveSidebar();
     window.addEventListener('hashchange', updateActiveSidebar);
 
-    // Auto-close mobile sidebar when a nav item is clicked
-    container.addEventListener('click', (e) => {
-        const navItem = e.target.closest('.nav-item, .nav-link');
-        if (navItem && window.innerWidth < 768) {
-            // Small delay so href navigation registers before sidebar closes
-            setTimeout(() => {
-                if (window._closeSidebar) window._closeSidebar();
-                else closeMobileSidebar();
-            }, 150);
-        }
-    });
-
     // Overlay Drawer Management for Mobile
     let overlay = document.getElementById('sidebar-overlay');
     if (!overlay) {
         overlay = document.createElement('div');
         overlay.id = 'sidebar-overlay';
         overlay.className = 'sidebar-overlay';
-        if (container.parentNode) {
-            container.parentNode.appendChild(overlay);
-        } else {
-            document.body.appendChild(overlay);
-        }
+        document.body.appendChild(overlay);
     }
 
     window._openSidebar = openMobileSidebar;
@@ -486,9 +470,8 @@ if (typeof document !== 'undefined' && !window.__mobile_toggle_bound) {
     const btn = e.target.closest('#mobile-menu-btn, .mobile-menu-btn, .menu-toggle, #menu-toggle');
     if (btn) {
       e.preventDefault();
-      const sidebarEl = document.querySelector('.sidebar.split-rail-container, .sidebar, #student-sidebar');
-      const isOpen = sidebarEl && (sidebarEl.classList.contains('open') || sidebarEl.classList.contains('active'));
-      if (isOpen) {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar && sidebar.classList.contains('open')) {
         if (window._closeSidebar) window._closeSidebar();
       } else {
         if (window._openSidebar) window._openSidebar();
@@ -582,9 +565,7 @@ export function openMobileSidebar() {
         overlay = document.createElement('div');
         overlay.id = 'sidebar-overlay';
         overlay.className = 'sidebar-overlay';
-        
-        const appContainer = document.querySelector('.app-container') || document.body;
-        appContainer.appendChild(overlay);
+        document.body.appendChild(overlay);
     }
     overlay.style.display = '';
     overlay.style.pointerEvents = '';
@@ -654,16 +635,12 @@ if (typeof document !== 'undefined' && !window.__sidebar_lifecycle_bound) {
 
         // If mobile sidebar is open and clicked anywhere outside sidebar and hamburger button
         if (window.innerWidth < 768) {
-            const hasOpen = document.querySelector(
-                '.sidebar.open, #sidebar.open, .sidebar-overlay.show, .sidebar-overlay.active, .split-rail-container.open'
-            );
+            const hasOpen = document.querySelector('.sidebar.open, #sidebar.open, .sidebar-overlay.show, .sidebar-overlay.active');
             if (hasOpen) {
-                const insideSidebar = e.target.closest(
-                    '.sidebar, #sidebar, #student-sidebar, .split-rail-container, .split-rail-panel, .split-rail-panel-menu'
-                );
+                const insideSidebar = e.target.closest('.sidebar, #sidebar, #student-sidebar, .split-rail-container');
                 const insideHamburger = e.target.closest('#mobile-menu-btn, .mobile-menu-btn, .menu-toggle, #menu-toggle');
                 if (!insideSidebar && !insideHamburger) {
-                    // Do NOT call preventDefault here — it would block href navigation on menu items
+                    e.preventDefault();
                     closeMobileSidebar();
                 }
             }

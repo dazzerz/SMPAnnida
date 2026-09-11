@@ -278,8 +278,28 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', async (e) => {
                 if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = btn.getAttribute('data-id') || e.currentTarget?.getAttribute('data-id') || e.target?.getAttribute('data-id');
-                if (confirm('Yakin ingin menghapus kelas ini?')) {
+                const k = currentKelasData.find(x => String(x.id) === String(id));
+                const namaKelas = k?.nama_kelas || '';
+
+                if (confirm(`Yakin ingin menghapus kelas ${namaKelas || ''}?`)) {
                     try {
+                        // Foreign Key Guard: Check dependencies before deletion
+                        const [{ count: studentCount, error: errStudent }, { count: scheduleCount, error: errSchedule }] = await Promise.all([
+                            db.from('students').select('id', { count: 'exact', head: true }).eq('kelas', namaKelas),
+                            db.from('class_schedules').select('id', { count: 'exact', head: true }).eq('class_id', id)
+                        ]);
+
+                        if (errStudent) throw errStudent;
+                        if (errSchedule) throw errSchedule;
+
+                        if (studentCount > 0) {
+                            return showToast(`Gagal: Kelas tidak bisa dihapus karena masih menampung ${studentCount} siswa aktif. Pindahkan siswa terlebih dahulu.`, 'error');
+                        }
+
+                        if (scheduleCount > 0) {
+                            return showToast(`Gagal: Kelas tidak bisa dihapus karena masih memiliki ${scheduleCount} jadwal pelajaran aktif.`, 'error');
+                        }
+
                         const { error } = await db.from('classes').delete().eq('id', id);
                         if (error) throw error;
                         showToast('Kelas berhasil dihapus', 'success');

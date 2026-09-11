@@ -14,7 +14,6 @@ injectSidebar('sidebar');
 
 import supabaseClient from '../core/supabase.js';
 const db = supabaseClient;
-window.db = supabaseClient;
 
 // NOTE: window.isGuest is set inside checkAuth() AFTER session is confirmed.
 // Do NOT set it here synchronously — that causes a race condition.

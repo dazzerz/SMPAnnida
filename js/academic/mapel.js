@@ -118,8 +118,28 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', async (e) => {
                 if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
-                if (confirm('Yakin ingin menghapus mata pelajaran ini?')) {
+                const mapel = currentData.find(x => String(x.id) === String(id));
+                const namaMapel = mapel?.nama_mapel || '';
+
+                if (confirm(`Yakin ingin menghapus mata pelajaran ${namaMapel || ''}?`)) {
                     try {
+                        // Foreign Key Guard: Check dependencies before deletion
+                        const [{ count: scheduleCount, error: errSchedule }, { count: gradeCount, error: errGrade }] = await Promise.all([
+                            db.from('class_schedules').select('id', { count: 'exact', head: true }).eq('subject_id', id),
+                            db.from('grades').select('id', { count: 'exact', head: true }).eq('mata_pelajaran', namaMapel)
+                        ]);
+
+                        if (errSchedule) throw errSchedule;
+                        if (errGrade) throw errGrade;
+
+                        if (scheduleCount > 0) {
+                            return showToast(`Gagal: Mata pelajaran tidak bisa dihapus karena masih digunakan di ${scheduleCount} jadwal pelajaran aktif.`, 'error');
+                        }
+
+                        if (gradeCount > 0) {
+                            return showToast(`Gagal: Mata pelajaran tidak bisa dihapus karena memiliki riwayat pada ${gradeCount} data nilai siswa.`, 'error');
+                        }
+
                         const { error } = await db.from('subjects').delete().eq('id', id);
                         if (error) throw error;
                         showToast('Mapel berhasil dihapus', 'success');
