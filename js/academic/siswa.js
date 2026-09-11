@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentData = [];
     let classesData = [];
     let currentPage = 1;
+    let totalItems = 0;
     const itemsPerPage = 20;
 
     // Guest Mode Protection
@@ -32,36 +33,82 @@ document.addEventListener('DOMContentLoaded', () => {
         btnAddSiswa.style.display = 'none'; 
     }
 
-    // Load Data
+    // Build Server-Side Query for Students with Filters
+    function buildStudentsQuery(isCountOnly = false) {
+        let query = db.from('students');
+
+        if (isCountOnly) {
+            query = query.select('id', { count: 'exact', head: true });
+        } else {
+            query = query.select('*', { count: 'exact' });
+        }
+
+        const sStat = filterStatus ? filterStatus.value.trim().toLowerCase() : '';
+        const sKelas = filterKelas ? filterKelas.value.trim() : '';
+        const sSearch = filterSearch ? filterSearch.value.trim() : '';
+
+        // Server-side filter: status aktif
+        if (sStat === 'aktif') {
+            query = query.eq('aktif', true);
+        } else if (sStat === 'nonaktif') {
+            query = query.eq('aktif', false);
+        }
+
+        // Server-side filter: kelas
+        if (sKelas) {
+            query = query.eq('kelas', sKelas);
+        }
+
+        // Server-side filter: search with ilike
+        if (sSearch) {
+            // Support searching by nama_lengkap, nis, or email via or clause
+            query = query.or(`nama_lengkap.ilike.%${sSearch}%,nis.ilike.%${sSearch}%,email.ilike.%${sSearch}%`);
+        }
+
+        return query;
+    }
+
+    // Load Data using Server-Side Pagination
     async function loadData() {
         if (!tbodySiswa) return;
         tbodySiswa.innerHTML = '<tr><td colspan="7" style="text-align: center;">Memuat data siswa...</td></tr>';
         try {
-            // Load Classes for dropdowns
-            const { data: cData } = await db.from('classes').select('id, nama_kelas').order('nama_kelas');
-            classesData = cData || [];
-            updateKelasDropdowns();
+            // Load Classes for dropdowns if not loaded yet
+            if (classesData.length === 0) {
+                const { data: cData } = await db.from('classes').select('id, nama_kelas').order('nama_kelas');
+                classesData = cData || [];
+                updateKelasDropdowns();
+            }
 
-            // Load Students
-            const { data, error } = await db.from('students').select('*').order('nama_lengkap', { ascending: true });
+            const from = (currentPage - 1) * itemsPerPage;
+            const to = from + itemsPerPage - 1;
+
+            const query = buildStudentsQuery(false)
+                .order('nama_lengkap', { ascending: true })
+                .range(from, to);
+
+            const { data, count, error } = await query;
             if (error) throw error;
+
             currentData = data || [];
-            
-            currentPage = 1;
+            totalItems = count !== null && count !== undefined ? count : currentData.length;
+
             renderTable();
         } catch (err) {
             console.error("Error loading students:", err);
             tbodySiswa.innerHTML = '<tr><td colspan="7" style="color:var(--danger); text-align:center;">Gagal memuat data.</td></tr>';
+            if (infoSiswa) infoSiswa.textContent = 'Gagal memuat data';
+            if (paginationSiswa) paginationSiswa.innerHTML = '';
         }
     }
 
     function updateKelasDropdowns() {
         const options = '<option value="">Semua Kelas</option>' + 
-            classesData.map(c => `<option value="${c.nama_kelas}">${c.nama_kelas}</option>`).join('');
+            classesData.map(c => `<option value="${escapeHTML(c.nama_kelas)}">${escapeHTML(c.nama_kelas)}</option>`).join('');
         if(filterKelas) filterKelas.innerHTML = options;
 
         const formOptions = '<option value="">-- Belum ada kelas --</option>' + 
-            classesData.map(c => `<option value="${c.nama_kelas}">${c.nama_kelas}</option>`).join('');
+            classesData.map(c => `<option value="${escapeHTML(c.nama_kelas)}">${escapeHTML(c.nama_kelas)}</option>`).join('');
         const formKelasSelect = document.getElementById('siswa-kelas');
         if(formKelasSelect) formKelasSelect.innerHTML = formOptions;
     }
@@ -80,44 +127,29 @@ document.addEventListener('DOMContentLoaded', () => {
         return { email, defaultPass };
     }
 
-    // Render Table
+    // Render Table from Server-Paginated Data
     function renderTable() {
         if (!tbodySiswa) return;
-        const sStat = filterStatus.value.toLowerCase();
-        const sKelas = filterKelas.value.toLowerCase();
-        const sSearch = filterSearch.value.toLowerCase();
 
-        const filtered = currentData.filter(s => {
-            const mStat = !sStat || 
-                (sStat === 'aktif' && s.aktif) || 
-                (sStat === 'nonaktif' && !s.aktif);
-            const mKelas = !sKelas || (s.kelas && s.kelas.toLowerCase().includes(sKelas));
-            const mSearch = !sSearch || 
-                (s.nama_lengkap && s.nama_lengkap.toLowerCase().includes(sSearch)) || 
-                (s.nis && String(s.nis).toLowerCase().includes(sSearch)) ||
-                (s.email && s.email.toLowerCase().includes(sSearch));
-            
-            return mStat && mKelas && mSearch;
-        });
-
-        const totalItems = filtered.length;
         const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
-        
-        if (currentPage > totalPages) currentPage = totalPages;
-        
-        const startIdx = (currentPage - 1) * itemsPerPage;
-        const endIdx = startIdx + itemsPerPage;
-        const paginatedData = filtered.slice(startIdx, endIdx);
-
-        tbodySiswa.innerHTML = '';
-        if (paginatedData.length === 0) {
-            tbodySiswa.innerHTML = '<tr><td colspan="7" style="text-align: center;">Tidak ada data ditemukan.</td></tr>';
-            infoSiswa.textContent = 'Menampilkan 0 dari 0 data';
-            paginationSiswa.innerHTML = '';
+        if (currentPage > totalPages && totalPages > 0) {
+            currentPage = totalPages;
+            loadData();
             return;
         }
 
-        paginatedData.forEach((s, index) => {
+        const startIdx = (currentPage - 1) * itemsPerPage;
+        const endIdx = startIdx + currentData.length;
+
+        tbodySiswa.innerHTML = '';
+        if (currentData.length === 0) {
+            tbodySiswa.innerHTML = '<tr><td colspan="7" style="text-align: center;">Tidak ada data ditemukan.</td></tr>';
+            if (infoSiswa) infoSiswa.textContent = 'Menampilkan 0 dari 0 data';
+            if (paginationSiswa) paginationSiswa.innerHTML = '';
+            return;
+        }
+
+        currentData.forEach((s, index) => {
             const isAktif = s.aktif !== false;
             const statusBadge = isAktif ? 
                 '<span style="padding: 4px 8px; background: rgba(40,167,69,0.1); color: var(--success); border-radius: 4px; font-size: 12px;">Aktif</span>' : 
@@ -155,7 +187,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Update Pagination UI
-        infoSiswa.textContent = `Menampilkan ${startIdx + 1} - ${Math.min(endIdx, totalItems)} dari ${totalItems} data`;
+        if (infoSiswa) {
+            infoSiswa.textContent = `Menampilkan ${startIdx + 1} - ${endIdx} dari ${totalItems} data`;
+        }
         renderPaginationControls(totalPages);
 
         // Bind Edit Buttons
@@ -163,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', (e) => {
                 if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
-                const student = currentData.find(st => st.id == id);
+                const student = currentData.find(st => String(st.id) === String(id));
                 if (student) openModal(student);
             });
         });
@@ -189,6 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderPaginationControls(totalPages) {
+        if (!paginationSiswa) return;
         paginationSiswa.innerHTML = '';
         if (totalPages <= 1) return;
 
@@ -197,16 +232,26 @@ document.addEventListener('DOMContentLoaded', () => {
         btnPrev.style.padding = '2px 8px';
         btnPrev.textContent = '«';
         btnPrev.disabled = currentPage === 1;
-        btnPrev.onclick = () => { if(currentPage > 1) { currentPage--; renderTable(); } };
+        btnPrev.onclick = () => { 
+            if (currentPage > 1) { 
+                currentPage--; 
+                loadData(); 
+            } 
+        };
         paginationSiswa.appendChild(btnPrev);
 
-        // Simple pagination (show few buttons)
-        for(let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+        // Show window of page buttons around currentPage
+        for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
             const btn = document.createElement('button');
             btn.className = i === currentPage ? 'btn btn-primary' : 'btn btn-outline';
             btn.style.padding = '2px 8px';
             btn.textContent = i;
-            btn.onclick = () => { currentPage = i; renderTable(); };
+            btn.onclick = () => { 
+                if (currentPage !== i) {
+                    currentPage = i; 
+                    loadData(); 
+                }
+            };
             paginationSiswa.appendChild(btn);
         }
 
@@ -215,7 +260,12 @@ document.addEventListener('DOMContentLoaded', () => {
         btnNext.style.padding = '2px 8px';
         btnNext.textContent = '»';
         btnNext.disabled = currentPage === totalPages;
-        btnNext.onclick = () => { if(currentPage < totalPages) { currentPage++; renderTable(); } };
+        btnNext.onclick = () => { 
+            if (currentPage < totalPages) { 
+                currentPage++; 
+                loadData(); 
+            } 
+        };
         paginationSiswa.appendChild(btnNext);
     }
 
@@ -319,29 +369,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Helper to fetch filtered dataset for bulk operations (Excel / PDF)
+    async function fetchFilteredStudentsForBulk() {
+        const query = buildStudentsQuery(false)
+            .order('nama_lengkap', { ascending: true });
+        const { data, error } = await query;
+        if (error) throw error;
+        return data || [];
+    }
+
     // Event Listeners for Filters
+    let searchDebounceTimer = null;
+
     [filterStatus, filterKelas].forEach(el => {
-        if (el) el.addEventListener('change', () => { currentPage = 1; renderTable(); });
+        if (el) el.addEventListener('change', () => { 
+            currentPage = 1; 
+            loadData(); 
+        });
     });
+
     if (filterSearch) {
-        filterSearch.addEventListener('input', () => { currentPage = 1; renderTable(); });
+        filterSearch.addEventListener('input', () => { 
+            clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => {
+                currentPage = 1;
+                loadData();
+            }, 300);
+        });
     }
 
     // ── Export Akun Kredensial Siswa to Excel ──────────────────────────────
     const btnExportKredensial = document.getElementById('btn-export-kredensial-siswa');
     if (btnExportKredensial) {
         btnExportKredensial.addEventListener('click', async () => {
-            if (currentData.length === 0) {
-                showToast('Tidak ada data siswa untuk diekspor', 'warning');
-                return;
-            }
             try {
                 btnExportKredensial.disabled = true;
                 btnExportKredensial.textContent = '⏳ Mengunduh...';
 
+                const targetStudents = await fetchFilteredStudentsForBulk();
+                if (targetStudents.length === 0) {
+                    showToast('Tidak ada data siswa untuk diekspor', 'warning');
+                    return;
+                }
+
                 const XLSX = await import('xlsx');
                 
-                const exportRows = currentData.map((s, index) => {
+                const exportRows = targetStudents.map((s, index) => {
                     const { email, defaultPass } = getStudentEmailAndPass(s);
                     return {
                         'No': index + 1,
@@ -379,13 +452,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCetakKartu = document.getElementById('btn-cetak-kartu-siswa');
     if (btnCetakKartu) {
         btnCetakKartu.addEventListener('click', async () => {
-            if (currentData.length === 0) {
-                showToast('Tidak ada data siswa untuk dicetak', 'warning');
-                return;
-            }
             try {
                 btnCetakKartu.disabled = true;
                 btnCetakKartu.textContent = '⏳ Membuat PDF...';
+
+                const targetStudents = await fetchFilteredStudentsForBulk();
+                if (targetStudents.length === 0) {
+                    showToast('Tidak ada data siswa untuk dicetak', 'warning');
+                    return;
+                }
 
                 const { jsPDF } = await import('jspdf');
                 const doc = new jsPDF({
@@ -406,7 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let row = 0;
                 let cardsOnPage = 0;
 
-                currentData.forEach((s) => {
+                targetStudents.forEach((s) => {
                     if (cardsOnPage === 8) {
                         doc.addPage();
                         col = 0;

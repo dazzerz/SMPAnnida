@@ -593,18 +593,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                // Build query for attendance
-                let query = db.from('attendance_students').select('student_id, status, attendance_date').in('student_id', students.map(s => s.id));
+                // Build query for attendance with server-side date range filtering (Month & Year)
+                const currentYear = new Date().getFullYear();
+                const mNum = parseInt(bulan);
+                const lastDayOfMonth = new Date(currentYear, mNum, 0).getDate();
+                const startDateStr = `${currentYear}-${String(mNum).padStart(2, '0')}-01`;
+                const endDateStr = `${currentYear}-${String(mNum).padStart(2, '0')}-${String(lastDayOfMonth).padStart(2, '0')}`;
+
+                let query = db.from('attendance_students')
+                    .select('student_id, status, attendance_date')
+                    .in('student_id', students.map(s => s.id))
+                    .gte('attendance_date', startDateStr)
+                    .lte('attendance_date', endDateStr);
+
                 if (mapel) query = query.eq('subject_id', mapel);
                 
                 const { data: attData, error: errAtt } = await query;
                 if (errAtt) throw errAtt;
 
-                // Filter by month
-                const filteredAtt = (attData || []).filter(a => {
-                    const d = new Date(a.attendance_date);
-                    return (d.getMonth() + 1) === parseInt(bulan);
-                });
+                const filteredAtt = attData || [];
 
                 // Group by student
                 const rekap = {};
@@ -762,20 +769,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (errStu) throw errStu;
                 if (!students || students.length === 0) throw new Error("Tidak ada siswa di kelas ini");
 
-                // Get attendance
+                // Build query for attendance with server-side date range filtering
+                let expYear = new Date().getFullYear();
+                if (tahun) {
+                    const match = tahun.match(/\d{4}/);
+                    if (match) expYear = parseInt(match[0]);
+                }
+                const mNum = parseInt(bulan);
+                const lastDayOfMonth = new Date(expYear, mNum, 0).getDate();
+                const startDateStr = `${expYear}-${String(mNum).padStart(2, '0')}-01`;
+                const endDateStr = `${expYear}-${String(mNum).padStart(2, '0')}-${String(lastDayOfMonth).padStart(2, '0')}`;
+
                 let query = db.from('attendance_students')
                     .select('student_id, status, attendance_date, subject_id, subjects(nama_mapel), teachers(nama)')
-                    .in('student_id', students.map(s => s.id));
+                    .in('student_id', students.map(s => s.id))
+                    .gte('attendance_date', startDateStr)
+                    .lte('attendance_date', endDateStr);
                 if (mapelId) query = query.eq('subject_id', mapelId);
 
                 const { data: attDataRaw, error: errAtt } = await query;
                 if (errAtt) throw errAtt;
 
-                // Filter by month
-                const attData = (attDataRaw || []).filter(a => {
-                    const d = new Date(a.attendance_date);
-                    return (d.getMonth() + 1) === parseInt(bulan);
-                });
+                const attData = attDataRaw || [];
 
                 let mapelName = mapelId ? (attData.length > 0 && attData[0].subjects ? attData[0].subjects.nama_mapel : 'Mapel') : 'Semua Mapel';
                 let teacherName = mapelId ? (attData.length > 0 && attData[0].teachers ? attData[0].teachers.nama : 'Guru') : 'Semua Guru';
