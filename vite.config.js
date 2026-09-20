@@ -1,7 +1,20 @@
+import fs from 'fs';
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 const root = import.meta.dirname;
+
+// --- TAMBAHAN FIX UNTUK LAZY LOAD PARTIALS ---
+const partialsDir = resolve(root, 'pages/academic/partials');
+const partialInputs = {};
+if (fs.existsSync(partialsDir)) {
+  const partialFiles = fs.readdirSync(partialsDir).filter(f => f.endsWith('.html'));
+  partialFiles.forEach(file => {
+    const name = file.replace('.html', '');
+    partialInputs[`partial_${name}`] = resolve(partialsDir, file);
+  });
+}
+// ---------------------------------------------
 
 export default defineConfig({
   base: '/',
@@ -27,7 +40,8 @@ export default defineConfig({
         ppdbRegister: resolve(root, 'pages/ppdb/register.html'),
         ppdbSuccess: resolve(root, 'pages/ppdb/success.html'),
         ppdbPrivacyPolicy: resolve(root, 'pages/ppdb/privacy-policy.html'),
-        studentDashboard: resolve(root, 'pages/student/dashboard.html')
+        studentDashboard: resolve(root, 'pages/student/dashboard.html'),
+        ...partialInputs
       },
       output: {
         manualChunks(id) {
