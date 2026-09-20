@@ -238,74 +238,112 @@
     </div>
 
     <!-- MODAL FULLSCREEN PRESENTER MODE (INFOCUS PROYECTOR MODE) -->
-    <div id="modal-infocus-presenter" class="fixed inset-0 z-[99999] hidden bg-slate-950 text-white flex flex-col justify-between p-6 md:p-12 overflow-hidden select-none font-sans" style="display: none;">
-        <!-- Header: Judul Tugas, Mapel & Timer Raksasa Mencolok -->
-        <header class="flex items-center justify-between border-b-2 border-slate-800 pb-5 mb-4">
-            <div class="flex items-center gap-4">
-                <span class="px-4 py-1.5 rounded-2xl bg-emerald-500/20 text-emerald-400 font-extrabold text-lg md:text-xl border border-emerald-500/40 uppercase tracking-widest flex items-center gap-2">
-                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 animate-ping"></span>
-                    <span>Live Exam</span>
-                </span>
-                <div>
-                    <h1 id="infocus-task-title" class="text-2xl md:text-4xl font-black text-white tracking-wide truncate max-w-3xl">Judul Ujian Akademik</h1>
-                    <p id="infocus-task-subtitle" class="text-sm md:text-lg text-slate-400 font-semibold mt-0.5">Mata Pelajaran & Kelas</p>
+    <div id="modal-infocus-presenter" class="fixed inset-0 z-[99999] hidden bg-slate-950 text-slate-900 flex flex-col justify-between p-4 md:p-8 overflow-y-auto select-none font-sans" style="display: none;">
+        
+        <!-- Floating Giant Neon Timer Display (Fixed di pojok kanan atas agar tidak merusak layout Kop) -->
+        <div class="fixed top-4 right-4 md:top-6 md:right-8 z-50 flex items-center gap-2">
+            <div class="flex flex-col items-end bg-slate-950/90 p-2 rounded-2xl border border-slate-800 shadow-2xl backdrop-blur-md">
+                <span class="text-[0.65rem] font-bold tracking-widest text-slate-400 uppercase">Sisa Waktu Soal</span>
+                <div id="infocus-timer-badge" class="px-4 py-1.5 md:px-6 md:py-2 rounded-xl bg-rose-950/90 border-2 border-rose-500 shadow-[0_0_25px_rgba(244,63,94,0.4)] flex items-center gap-2">
+                    <span class="material-symbols-outlined text-xl md:text-2xl text-rose-400 animate-pulse">timer</span>
+                    <span id="infocus-timer-display" class="font-mono text-2xl md:text-4xl font-black text-rose-300 tracking-wider">04:00</span>
                 </div>
             </div>
+            <button id="btn-quit-infocus" class="p-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-slate-400 hover:text-rose-400 hover:bg-slate-800 shadow-xl transition-all" title="Keluar dari Mode Presenter">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+        </div>
 
-            <!-- Giant Neon Timer Display -->
-            <div class="flex items-center gap-3">
-                <div class="flex flex-col items-end">
-                    <span class="text-[0.7rem] md:text-xs font-bold tracking-widest text-slate-400 uppercase">Sisa Waktu Soal Ini</span>
-                    <div id="infocus-timer-badge" class="px-6 py-2.5 md:px-8 md:py-3 rounded-2xl bg-rose-950/80 border-2 border-rose-500 shadow-[0_0_30px_rgba(244,63,94,0.4)] flex items-center gap-3">
-                        <span class="material-symbols-outlined text-2xl md:text-3xl text-rose-400 animate-pulse">timer</span>
-                        <span id="infocus-timer-display" class="font-mono text-3xl md:text-5xl font-black text-rose-300 tracking-wider">04:00</span>
+        <!-- Kontainer Kertas Ujian (White Canvas) untuk Formal Kop Surat & Soal -->
+        <div class="max-w-7xl mx-auto w-full flex-1 flex flex-col justify-between">
+            
+            <!-- HEADER: KOP SURAT UJIAN RESMI (Background Putih Murni & Double Border) -->
+            <div class="bg-white rounded-2xl p-5 md:p-6 shadow-xl text-slate-900 mb-6 border border-slate-200">
+                <div class="flex items-center gap-4 md:gap-6 pb-4">
+                    <!-- Logo Sekolah -->
+                    <div class="shrink-0 flex items-center justify-center">
+                        <img src="../../assets/logo/1.webp" alt="Logo SMP Annida" class="h-20 md:h-24 w-auto object-contain drop-shadow-sm">
+                    </div>
+
+                    <!-- Judul & Metadata Ujian -->
+                    <div class="flex-1">
+                        <div class="text-center md:text-left mb-2">
+                            <h2 id="infocus-kop-exam-title" class="text-lg md:text-2xl font-black uppercase tracking-wider text-slate-900">
+                                UJIAN TENGAH SEMESTER GANJIL 2026/2027
+                            </h2>
+                            <h3 class="text-base md:text-xl font-extrabold uppercase tracking-wide text-emerald-800">
+                                SMP ANNIDA AL ISLAMY SETU
+                            </h3>
+                        </div>
+
+                        <!-- Metadata Table (Mata Pelajaran, Kelas, Guru) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1 text-xs md:text-sm font-semibold border-t border-slate-200 pt-2 text-slate-800">
+                            <div class="flex items-center">
+                                <span class="w-36 text-slate-500">Mata Pelajaran</span>
+                                <span class="mr-2">:</span>
+                                <span id="infocus-kop-subject" class="font-bold text-slate-900 text-sm md:text-base">Bahasa Indonesia</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-36 text-slate-500">Kelas</span>
+                                <span class="mr-2">:</span>
+                                <span id="infocus-kop-class" class="font-bold text-slate-900 text-sm md:text-base">7</span>
+                            </div>
+                            <div class="flex items-center col-span-1 md:col-span-2">
+                                <span class="w-36 text-slate-500">Guru Mata Pelajaran</span>
+                                <span class="mr-2">:</span>
+                                <span id="infocus-kop-teacher" class="font-bold text-slate-900 text-sm md:text-base">-</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button id="btn-quit-infocus" class="ml-4 p-2 rounded-xl text-slate-500 hover:text-rose-400 hover:bg-slate-900 transition-colors" title="Keluar dari Mode Presenter">
-                    <span class="material-symbols-outlined text-2xl">close</span>
-                </button>
-            </div>
-        </header>
 
-        <!-- Body: Butir Soal & Pilihan Jawaban dengan Font Raksasa (Terbaca dari Kursi Belakang) -->
-        <main class="flex-1 flex flex-col justify-center max-w-7xl mx-auto w-full my-auto px-4 md:px-8 py-6">
-            <!-- Tipe Soal Badge -->
-            <div class="mb-4">
-                <span id="infocus-question-type-badge" class="px-4 py-1.5 rounded-xl bg-blue-500/20 text-blue-300 border border-blue-500/30 text-base md:text-lg font-bold tracking-wide">
-                    Soal Pilihan Ganda
-                </span>
+                <!-- Garis Bawah Ganda Tebal Khas Kop Surat Ujian Resmi -->
+                <div class="border-b-[4px] border-double border-slate-900 mt-1"></div>
             </div>
 
-            <!-- Teks Soal Ukuran Ekstra Besar -->
-            <div class="bg-slate-900/90 border-2 border-slate-700/80 rounded-3xl p-6 md:p-10 shadow-2xl mb-6 backdrop-blur-sm">
-                <div id="infocus-question-text" class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-50 leading-snug md:leading-normal">
-                    Teks soal sedang disiapkan...
+            <!-- BODY: TEKS SOAL (Background Putih Terang Kontras & Format Kaya) -->
+            <div class="flex-1 flex flex-col justify-center my-2">
+                <!-- Tipe Soal Badge -->
+                <div class="mb-3 flex items-center justify-between">
+                    <span id="infocus-question-type-badge" class="px-4 py-1 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-300 text-sm md:text-base font-bold tracking-wide">
+                        A. Soal Pilihan Ganda
+                    </span>
+                    <span id="infocus-question-number-badge" class="px-3 py-1 rounded-xl bg-slate-800 text-amber-300 text-sm md:text-base font-extrabold">
+                        Nomor Soal: 1
+                    </span>
+                </div>
+
+                <!-- Kartu Teks Soal (Putih Murni dengan Border Rapi untuk Puisi / Kotak Bacaan) -->
+                <div class="bg-white border-2 border-slate-300 rounded-2xl p-6 md:p-8 shadow-xl mb-6">
+                    <div id="infocus-question-text" class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 leading-relaxed md:leading-normal">
+                        Teks soal sedang disiapkan...
+                    </div>
+                </div>
+
+                <!-- Opsi Pilihan Jawaban Modern & Raksasa -->
+                <div id="infocus-options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+                    <!-- Opsi Jawaban diinjeksi via JS -->
                 </div>
             </div>
 
-            <!-- Opsi Pilihan Jawaban / Essay Area -->
-            <div id="infocus-options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                <!-- Opsi Jawaban diinjeksi via JS -->
-            </div>
-        </main>
+            <!-- Footer: Progress Butir Soal & Tombol Force Next Kecil Khusus Guru -->
+            <footer class="flex items-center justify-between border-t-2 border-slate-800 pt-5 mt-4">
+                <div class="flex items-center gap-4">
+                    <span class="text-xl md:text-2xl font-black text-amber-400" id="infocus-progress-text">
+                        Soal 1 dari 10
+                    </span>
+                    <span class="text-xs md:text-sm text-slate-400 font-medium hidden sm:inline">
+                        (Dilarang mencontek • Berpindah otomatis saat waktu habis)
+                    </span>
+                </div>
 
-        <!-- Footer: Progress Butir Soal & Tombol Force Next Kecil Khusus Guru -->
-        <footer class="flex items-center justify-between border-t-2 border-slate-800 pt-5 mt-4">
-            <div class="flex items-center gap-4">
-                <span class="text-xl md:text-2xl font-black text-amber-400" id="infocus-progress-text">
-                    Soal 1 dari 10
-                </span>
-                <span class="text-xs md:text-sm text-slate-500 font-medium hidden sm:inline">
-                    (Dilarang mencontek • Berpindah otomatis saat waktu habis)
-                </span>
-            </div>
-
-            <!-- Tombol Force Next Guru (TIDAK ADA TOMBOL BACK) -->
-            <div class="flex items-center gap-3">
-                <button id="btn-force-next-infocus" class="px-5 py-2.5 md:px-6 md:py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-600 text-sm md:text-base font-bold flex items-center gap-2 transition-all cursor-pointer shadow-lg active:scale-95">
-                    <span>Lanjut (Force Next)</span>
-                    <span class="material-symbols-outlined text-lg">skip_next</span>
-                </button>
-            </div>
-        </footer>
+                <!-- Tombol Force Next Guru (TIDAK ADA TOMBOL BACK) -->
+                <div class="flex items-center gap-3">
+                    <button id="btn-force-next-infocus" class="px-5 py-2.5 md:px-6 md:py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-600 text-sm md:text-base font-bold flex items-center gap-2 transition-all cursor-pointer shadow-lg active:scale-95">
+                        <span>Lanjut (Force Next)</span>
+                        <span class="material-symbols-outlined text-lg">skip_next</span>
+                    </button>
+                </div>
+            </footer>
+        </div>
     </div>

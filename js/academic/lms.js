@@ -915,15 +915,25 @@ export async function startInfocusMode(tugasOrQuizId) {
             return;
         }
 
-        activeInfocusItem = { title, subtitle };
+        activeInfocusItem = { 
+            title, 
+            subtitle,
+            subject: targetQuiz?.subject || targetAssignment?.subject || 'Bahasa Indonesia',
+            className: targetQuiz?.class_name || targetAssignment?.class_name || '7',
+            teacherName: targetQuiz?.teacher_name || targetAssignment?.teacher_name || 'Awfa Dikhrish, S.S.'
+        };
 
         // Buka modal fullscreen
         const modalPresenter = document.getElementById('modal-infocus-presenter');
-        const taskTitleEl = document.getElementById('infocus-task-title');
-        const taskSubtitleEl = document.getElementById('infocus-task-subtitle');
+        const kopExamTitle = document.getElementById('infocus-kop-exam-title');
+        const kopSubject = document.getElementById('infocus-kop-subject');
+        const kopClass = document.getElementById('infocus-kop-class');
+        const kopTeacher = document.getElementById('infocus-kop-teacher');
 
-        if (taskTitleEl) taskTitleEl.textContent = title;
-        if (taskSubtitleEl) taskSubtitleEl.textContent = subtitle;
+        if (kopExamTitle) kopExamTitle.textContent = activeInfocusItem.title.toUpperCase();
+        if (kopSubject) kopSubject.textContent = activeInfocusItem.subject;
+        if (kopClass) kopClass.textContent = activeInfocusItem.className;
+        if (kopTeacher) kopTeacher.textContent = activeInfocusItem.teacherName;
 
         if (modalPresenter) {
             modalPresenter.style.display = 'flex';
@@ -979,6 +989,7 @@ export function playNextInfocusQuestion() {
 
     // Elemen UI Presenter
     const badgeTypeEl = document.getElementById('infocus-question-type-badge');
+    const badgeNumEl = document.getElementById('infocus-question-number-badge');
     const qTextEl = document.getElementById('infocus-question-text');
     const optionsContainer = document.getElementById('infocus-options-container');
     const progressTextEl = document.getElementById('infocus-progress-text');
@@ -987,15 +998,34 @@ export function playNextInfocusQuestion() {
 
     // Update Header & Badge
     if (badgeTypeEl) {
-        badgeTypeEl.textContent = isPG ? 'Pilihan Ganda (Batas Waktu: 4 Menit)' : 'Soal Essay / Uraian (Batas Waktu: 10 Menit)';
+        badgeTypeEl.textContent = isPG ? 'A. Soal Pilihan Ganda (Batas Waktu: 4 Menit)' : 'B. Soal Essay / Uraian (Batas Waktu: 10 Menit)';
         badgeTypeEl.className = isPG 
-            ? 'px-4 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-base md:text-lg font-bold tracking-wide inline-block'
-            : 'px-4 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-base md:text-lg font-bold tracking-wide inline-block';
+            ? 'px-4 py-1 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-300 text-sm md:text-base font-bold tracking-wide inline-block'
+            : 'px-4 py-1 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 text-sm md:text-base font-bold tracking-wide inline-block';
     }
 
-    // Update Teks Soal (Ukuran Ekstra Besar)
+    if (badgeNumEl) {
+        badgeNumEl.textContent = `Nomor Soal: ${currentInfocusIndex + 1}`;
+    }
+
+    // Update Teks Soal Menggunakan innerHTML (Rich Content: kotak puisi, teks bacaan, dsb.)
     if (qTextEl) {
-        qTextEl.innerHTML = escapeHTML(currentQ.question_text || '').replace(/\n/g, '<br>');
+        let rawContent = currentQ.question_text || '';
+        // Format puisi / teks kotak jika ada pola pembatas atau box
+        let formattedContent = rawContent;
+        
+        // Jika rawContent sudah berupa HTML yang diformat
+        if (formattedContent.includes('<div') || formattedContent.includes('<p') || formattedContent.includes('<table')) {
+            qTextEl.innerHTML = formattedContent;
+        } else {
+            // Autodeteksi blok puisi (baris-baris berima atau teks bacaan khusus)
+            formattedContent = escapeHTML(rawContent).replace(/\n/g, '<br>');
+            // Styling khusus untuk kutipan puisi / teks bacaan
+            formattedContent = formattedContent.replace(/(Bacalah puisi[^\n<]*|<br>Bacalah[^\n<]*)(.+?)(Jenis puisi|Suasana yang|Objek utama|$)/is, (match, prefix, poem, suffix) => {
+                return `${prefix}<div class="my-4 p-4 border-2 border-slate-800 rounded-xl bg-slate-50 font-serif text-lg md:text-2xl text-slate-900 shadow-inner inline-block max-w-xl leading-relaxed">${poem}</div><br>${suffix}`;
+            });
+            qTextEl.innerHTML = formattedContent;
+        }
     }
 
     // Update Opsi Jawaban
