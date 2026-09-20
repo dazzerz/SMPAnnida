@@ -1,10 +1,16 @@
 <section id="tugas-lms" class="page-section aca-inline-11">
-                    <div class="aca-inline-56">
+                    <div class="aca-inline-56 flex flex-wrap items-center justify-between gap-3">
                         <h1>Pusat Tugas & E-Learning (LMS)</h1>
-                        <button id="btn-add-assignment" class="btn-primary flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm">add_task</span>
-                            <span>+ Buat Tugas Baru</span>
-                        </button>
+                        <div class="flex items-center gap-2">
+                            <button id="btn-tayang-tugas" class="btn btn-primary flex items-center gap-1.5 shadow-md">
+                                <span class="text-base">📺</span>
+                                <span>Tayangkan Soal (Infocus)</span>
+                            </button>
+                            <button id="btn-add-assignment" class="btn-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">add_task</span>
+                                <span>+ Buat Tugas Baru</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Filter Bar -->
@@ -188,4 +194,118 @@
                 </table>
             </div>
         </div>
+    </div>
+
+    <!-- Modal Pilih Tugas / Ujian untuk Ditayangkan ke Infocus -->
+    <div id="modal-select-infocus" class="modal hidden aca-inline-53" style="display: none;">
+        <div class="modal-content card glass max-w-lg w-full p-6 bg-white border border-slate-200 text-slate-900 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3 mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">📺</span>
+                    <h3 class="text-lg font-bold text-slate-900">Pilih Soal Tayang (Infocus)</h3>
+                </div>
+                <button id="btn-close-select-infocus" class="btn-secondary text-sm flex items-center gap-1 cursor-pointer">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Pilih tugas atau bank soal yang akan diproyeksikan ke layar infocus. Sistem akan menampilkan soal butir-demi-butir dengan countdown timer otomatis.
+                </p>
+                <div class="form-group">
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Tugas / Kuis</label>
+                    <select id="select-infocus-task" class="input-control w-full text-sm">
+                        <option value="">-- Memuat daftar tugas & kuis... --</option>
+                    </select>
+                </div>
+                <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 space-y-1">
+                    <div class="font-bold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">info</span> Aturan Mode Infocus:
+                    </div>
+                    <div>• Soal Pilihan Ganda (PG) tayang selama <strong>4 Menit</strong>.</div>
+                    <div>• Soal Essay / Uraian tayang selama <strong>10 Menit</strong>.</div>
+                    <div>• Timer otomatis berganti ke soal berikutnya tanpa tombol kembali (Back).</div>
+                </div>
+            </div>
+            <div class="modal-actions flex justify-end gap-2 pt-4 mt-4 border-t border-slate-200">
+                <button type="button" id="btn-cancel-select-infocus" class="btn-secondary text-sm">Batal</button>
+                <button type="button" id="btn-start-selected-infocus" class="btn-primary text-sm flex items-center gap-1.5 font-bold">
+                    <span>Mulai Tayang Proyektor</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FULLSCREEN PRESENTER MODE (INFOCUS PROYECTOR MODE) -->
+    <div id="modal-infocus-presenter" class="fixed inset-0 z-[99999] hidden bg-slate-950 text-white flex flex-col justify-between p-6 md:p-12 overflow-hidden select-none font-sans" style="display: none;">
+        <!-- Header: Judul Tugas, Mapel & Timer Raksasa Mencolok -->
+        <header class="flex items-center justify-between border-b-2 border-slate-800 pb-5 mb-4">
+            <div class="flex items-center gap-4">
+                <span class="px-4 py-1.5 rounded-2xl bg-emerald-500/20 text-emerald-400 font-extrabold text-lg md:text-xl border border-emerald-500/40 uppercase tracking-widest flex items-center gap-2">
+                    <span class="w-3.5 h-3.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>Live Exam</span>
+                </span>
+                <div>
+                    <h1 id="infocus-task-title" class="text-2xl md:text-4xl font-black text-white tracking-wide truncate max-w-3xl">Judul Ujian Akademik</h1>
+                    <p id="infocus-task-subtitle" class="text-sm md:text-lg text-slate-400 font-semibold mt-0.5">Mata Pelajaran & Kelas</p>
+                </div>
+            </div>
+
+            <!-- Giant Neon Timer Display -->
+            <div class="flex items-center gap-3">
+                <div class="flex flex-col items-end">
+                    <span class="text-[0.7rem] md:text-xs font-bold tracking-widest text-slate-400 uppercase">Sisa Waktu Soal Ini</span>
+                    <div id="infocus-timer-badge" class="px-6 py-2.5 md:px-8 md:py-3 rounded-2xl bg-rose-950/80 border-2 border-rose-500 shadow-[0_0_30px_rgba(244,63,94,0.4)] flex items-center gap-3">
+                        <span class="material-symbols-outlined text-2xl md:text-3xl text-rose-400 animate-pulse">timer</span>
+                        <span id="infocus-timer-display" class="font-mono text-3xl md:text-5xl font-black text-rose-300 tracking-wider">04:00</span>
+                    </div>
+                </div>
+                <button id="btn-quit-infocus" class="ml-4 p-2 rounded-xl text-slate-500 hover:text-rose-400 hover:bg-slate-900 transition-colors" title="Keluar dari Mode Presenter">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Body: Butir Soal & Pilihan Jawaban dengan Font Raksasa (Terbaca dari Kursi Belakang) -->
+        <main class="flex-1 flex flex-col justify-center max-w-7xl mx-auto w-full my-auto px-4 md:px-8 py-6">
+            <!-- Tipe Soal Badge -->
+            <div class="mb-4">
+                <span id="infocus-question-type-badge" class="px-4 py-1.5 rounded-xl bg-blue-500/20 text-blue-300 border border-blue-500/30 text-base md:text-lg font-bold tracking-wide">
+                    Soal Pilihan Ganda
+                </span>
+            </div>
+
+            <!-- Teks Soal Ukuran Ekstra Besar -->
+            <div class="bg-slate-900/90 border-2 border-slate-700/80 rounded-3xl p-6 md:p-10 shadow-2xl mb-6 backdrop-blur-sm">
+                <div id="infocus-question-text" class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-50 leading-snug md:leading-normal">
+                    Teks soal sedang disiapkan...
+                </div>
+            </div>
+
+            <!-- Opsi Pilihan Jawaban / Essay Area -->
+            <div id="infocus-options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <!-- Opsi Jawaban diinjeksi via JS -->
+            </div>
+        </main>
+
+        <!-- Footer: Progress Butir Soal & Tombol Force Next Kecil Khusus Guru -->
+        <footer class="flex items-center justify-between border-t-2 border-slate-800 pt-5 mt-4">
+            <div class="flex items-center gap-4">
+                <span class="text-xl md:text-2xl font-black text-amber-400" id="infocus-progress-text">
+                    Soal 1 dari 10
+                </span>
+                <span class="text-xs md:text-sm text-slate-500 font-medium hidden sm:inline">
+                    (Dilarang mencontek • Berpindah otomatis saat waktu habis)
+                </span>
+            </div>
+
+            <!-- Tombol Force Next Guru (TIDAK ADA TOMBOL BACK) -->
+            <div class="flex items-center gap-3">
+                <button id="btn-force-next-infocus" class="px-5 py-2.5 md:px-6 md:py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-600 text-sm md:text-base font-bold flex items-center gap-2 transition-all cursor-pointer shadow-lg active:scale-95">
+                    <span>Lanjut (Force Next)</span>
+                    <span class="material-symbols-outlined text-lg">skip_next</span>
+                </button>
+            </div>
+        </footer>
     </div>

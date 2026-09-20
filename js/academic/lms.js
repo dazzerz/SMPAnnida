@@ -14,12 +14,20 @@ let masterClasses = [];
 let masterSubjects = [];
 let activeReviewAssignmentId = null;
 
+// State Live Infocus Presenter Mode
+let currentInfocusIndex = 0;
+let infocusTimer = null;
+let soalInfocus = [];
+let activeInfocusItem = null;
+let infocusSecondsRemaining = 0;
+
 export function initLmsTeacherModule() {
     initCbtTeacherModule();
     loadLmsDropdowns();
     loadAssignments();
     initLmsEventListeners();
     initMaterialViewer();
+    initInfocusPresenterListeners();
 }
 
 async function loadLmsDropdowns() {
@@ -146,6 +154,10 @@ function renderAssignmentsTable(list) {
                         ` : ''}
 
                         ${!isMateri ? `
+                            <button class="btn-tayang-row btn-sm btn-primary flex items-center gap-1 bg-amber-600 hover:bg-amber-700 text-white" data-id="${a.id}" title="Tayangkan ke Infocus">
+                                <span>📺</span>
+                                <span class="hidden xl:inline">Tayang</span>
+                            </button>
                             <button class="btn-review-lms btn-sm btn-primary" data-id="${a.id}" data-title="${escapeHTML(a.title)}" data-subtitle="Kelas ${a.class_name} • ${a.subject}" title="Review & Beri Nilai Siswa">
                                 Review (${subCount})
                             </button>
@@ -166,6 +178,13 @@ function renderAssignmentsTable(list) {
             const title = btn.getAttribute('data-title');
             const subtitle = btn.getAttribute('data-subtitle');
             openMaterialViewer(url, title, subtitle);
+        });
+    });
+
+    tbody.querySelectorAll('.btn-tayang-row').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            if (id) startInfocusMode(id);
         });
     });
 
@@ -820,9 +839,327 @@ function parseRawQuestions(text, quizId) {
     return questions;
 }
 
+// =========================================================================
+// ── 4. LIVE PRESENTER MODE (INFOCUS PROYECTOR CONTROLLER) ─────────────────
+// =========================================================================
+
+export async function startInfocusMode(tugasOrQuizId) {
+    if (!tugasOrQuizId) {
+        showToast('Pilih tugas atau kuis terlebih dahulu!', 'warning');
+        return;
+    }
+
+    try {
+        showToast('Menyiapkan Live Presenter Mode...', 'info');
+
+        let title = 'Ujian / Tugas Siswa';
+        let subtitle = 'SMP Annida Live Exam';
+        soalInfocus = [];
+        currentInfocusIndex = 0;
+
+        // 1. Cek apakah ini Quiz CBT
+        let targetQuiz = (allCbtQuizzes || []).find(q => q.id === tugasOrQuizId);
+        if (!targetQuiz) {
+            // Coba fetch dari tabel quizzes
+            const { data: qData } = await db.from('quizzes').select('*').eq('id', tugasOrQuizId).maybeSingle();
+            if (qData) targetQuiz = qData;
+        }
+
+        if (targetQuiz) {
+            title = targetQuiz.title || 'Ujian CBT Online';
+            subtitle = `${targetQuiz.subject || ''} • Kelas ${targetQuiz.class_name || 'Semua'}`;
+
+            // Ambil questions dari quiz_questions
+            const { data: questions, error: qErr } = await db
+                .from('quiz_questions')
+                .select('*')
+                .eq('quiz_id', targetQuiz.id)
+                .order('question_order', { ascending: true });
+
+            if (qErr) throw qErr;
+            if (questions && questions.length > 0) {
+                soalInfocus = questions;
+            }
+        }
+
+        // 2. Jika bukan quiz CBT atau soal belum ditemukan di CBT, cek tabel assignments (Tugas)
+        if (soalInfocus.length === 0) {
+            let targetAssignment = (allAssignments || []).find(a => a.id === tugasOrQuizId);
+            if (!targetAssignment) {
+                const { data: aData } = await db.from('assignments').select('*').eq('id', tugasOrQuizId).maybeSingle();
+                if (aData) targetAssignment = aData;
+            }
+
+            if (targetAssignment) {
+                title = targetAssignment.title || 'Tugas Siswa';
+                subtitle = `${targetAssignment.subject || ''} • Kelas ${targetAssignment.class_name || 'Semua'}`;
+
+                // Jika ada description berformat soal, parse menggunakan text parser
+                const rawDesc = targetAssignment.description || '';
+                const parsed = parseRawQuestions(rawDesc, targetAssignment.id);
+                if (parsed.length > 0) {
+                    soalInfocus = parsed;
+                } else if (rawDesc.trim()) {
+                    // Jika satu instruksi/soal tunggal
+                    soalInfocus = [{
+                        type: 'essay',
+                        question_text: rawDesc,
+                        options: null
+                    }];
+                }
+            }
+        }
+
+        if (soalInfocus.length === 0) {
+            showToast('Tidak ada butir soal yang dapat ditayangkan untuk tugas/ujian ini.', 'warning');
+            return;
+        }
+
+        activeInfocusItem = { title, subtitle };
+
+        // Buka modal fullscreen
+        const modalPresenter = document.getElementById('modal-infocus-presenter');
+        const taskTitleEl = document.getElementById('infocus-task-title');
+        const taskSubtitleEl = document.getElementById('infocus-task-subtitle');
+
+        if (taskTitleEl) taskTitleEl.textContent = title;
+        if (taskSubtitleEl) taskSubtitleEl.textContent = subtitle;
+
+        if (modalPresenter) {
+            modalPresenter.style.display = 'flex';
+            modalPresenter.classList.remove('hidden');
+            // Coba request fullscreen browser untuk tampilan infocus maksimal
+            if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            }
+        }
+
+        // Tutup modal pemilih jika sedang terbuka
+        const modalSelect = document.getElementById('modal-select-infocus');
+        if (modalSelect) {
+            modalSelect.style.display = 'none';
+            modalSelect.classList.add('hidden');
+        }
+
+        // Mulai soal pertama
+        playNextInfocusQuestion();
+
+    } catch (err) {
+        console.error('Gagal memulai infocus mode:', err);
+        showToast('Gagal memulai Presenter Mode: ' + err.message, 'error');
+    }
+}
+
+export function playNextInfocusQuestion() {
+    if (infocusTimer) {
+        clearInterval(infocusTimer);
+        infocusTimer = null;
+    }
+
+    const modalPresenter = document.getElementById('modal-infocus-presenter');
+
+    // Jika soal sudah habis, tutup modal fullscreen dan tampilkan pesan selesai
+    if (!soalInfocus || currentInfocusIndex >= soalInfocus.length) {
+        if (modalPresenter) {
+            modalPresenter.style.display = 'none';
+            modalPresenter.classList.add('hidden');
+        }
+        if (document.fullscreenElement && document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {});
+        }
+        showToast('🎉 Ujian Selesai! Seluruh butir soal telah selesai ditayangkan.', 'success');
+        return;
+    }
+
+    const currentQ = soalInfocus[currentInfocusIndex];
+    const isPG = currentQ.type === 'multiple_choice' && Array.isArray(currentQ.options) && currentQ.options.length > 0;
+
+    // Batas waktu: PG = 4 menit (240 detik), Essay = 10 menit (600 detik)
+    infocusSecondsRemaining = isPG ? 240 : 600;
+
+    // Elemen UI Presenter
+    const badgeTypeEl = document.getElementById('infocus-question-type-badge');
+    const qTextEl = document.getElementById('infocus-question-text');
+    const optionsContainer = document.getElementById('infocus-options-container');
+    const progressTextEl = document.getElementById('infocus-progress-text');
+    const timerDisplayEl = document.getElementById('infocus-timer-display');
+    const timerBadgeEl = document.getElementById('infocus-timer-badge');
+
+    // Update Header & Badge
+    if (badgeTypeEl) {
+        badgeTypeEl.textContent = isPG ? 'Pilihan Ganda (Batas Waktu: 4 Menit)' : 'Soal Essay / Uraian (Batas Waktu: 10 Menit)';
+        badgeTypeEl.className = isPG 
+            ? 'px-4 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-base md:text-lg font-bold tracking-wide inline-block'
+            : 'px-4 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-base md:text-lg font-bold tracking-wide inline-block';
+    }
+
+    // Update Teks Soal (Ukuran Ekstra Besar)
+    if (qTextEl) {
+        qTextEl.innerHTML = escapeHTML(currentQ.question_text || '').replace(/\n/g, '<br>');
+    }
+
+    // Update Opsi Jawaban
+    if (optionsContainer) {
+        if (isPG) {
+            optionsContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6';
+            optionsContainer.innerHTML = currentQ.options.map(opt => `
+                <div class="p-5 md:p-6 rounded-2xl bg-slate-900 border-2 border-slate-700/80 text-white flex items-center gap-4 shadow-xl">
+                    <span class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-slate-800 border border-slate-600 flex items-center justify-center font-black text-2xl md:text-3xl text-amber-400 shrink-0">
+                        ${escapeHTML(opt.key)}
+                    </span>
+                    <span class="text-xl md:text-2xl lg:text-3xl font-bold leading-relaxed text-slate-100">
+                        ${escapeHTML(opt.text)}
+                    </span>
+                </div>
+            `).join('');
+        } else {
+            optionsContainer.className = 'w-full';
+            optionsContainer.innerHTML = `
+                <div class="p-6 md:p-8 rounded-2xl bg-slate-900/60 border-2 border-dashed border-slate-700 text-slate-300 text-lg md:text-xl font-medium leading-relaxed">
+                    ✍️ Tuliskan jawaban uraian lengkap di lembar jawaban masing-masing dengan rapi dan teliti.
+                </div>
+            `;
+        }
+    }
+
+    // Update Progress Footer (Soal X dari Y)
+    if (progressTextEl) {
+        progressTextEl.textContent = `Soal ${currentInfocusIndex + 1} dari ${soalInfocus.length}`;
+    }
+
+    // Timer Countdown Loop
+    function updateTimer() {
+        const m = Math.floor(infocusSecondsRemaining / 60);
+        const s = infocusSecondsRemaining % 60;
+        const timeFormatted = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+        if (timerDisplayEl) timerDisplayEl.textContent = timeFormatted;
+
+        // Visual peringatan ketika sisa <= 60 detik
+        if (timerBadgeEl) {
+            if (infocusSecondsRemaining <= 60) {
+                timerBadgeEl.className = 'px-6 py-2.5 md:px-8 md:py-3 rounded-2xl bg-rose-600 border-2 border-rose-400 shadow-[0_0_40px_rgba(244,63,94,0.8)] flex items-center gap-3 animate-pulse';
+            } else {
+                timerBadgeEl.className = 'px-6 py-2.5 md:px-8 md:py-3 rounded-2xl bg-rose-950/80 border-2 border-rose-500 shadow-[0_0_30px_rgba(244,63,94,0.4)] flex items-center gap-3';
+            }
+        }
+
+        if (infocusSecondsRemaining <= 0) {
+            clearInterval(infocusTimer);
+            infocusTimer = null;
+            // Waktu habis: otomatis naikkan index dan panggil soal berikutnya tanpa ampun
+            currentInfocusIndex++;
+            playNextInfocusQuestion();
+            return;
+        }
+
+        infocusSecondsRemaining--;
+    }
+
+    updateTimer();
+    infocusTimer = setInterval(updateTimer, 1000);
+}
+
+function initInfocusPresenterListeners() {
+    const btnTayang = document.getElementById('btn-tayang-tugas');
+    const modalSelect = document.getElementById('modal-select-infocus');
+    const btnCloseSelect = document.getElementById('btn-close-select-infocus');
+    const btnCancelSelect = document.getElementById('btn-cancel-select-infocus');
+    const btnStartSelected = document.getElementById('btn-start-selected-infocus');
+    const selectTask = document.getElementById('select-infocus-task');
+
+    const modalPresenter = document.getElementById('modal-infocus-presenter');
+    const btnQuit = document.getElementById('btn-quit-infocus');
+    const btnForceNext = document.getElementById('btn-force-next-infocus');
+
+    // Buka Modal Pemilihan Tugas/Kuis untuk Ditayangkan
+    if (btnTayang) {
+        btnTayang.onclick = () => {
+            if (!modalSelect || !selectTask) return;
+
+            let optionsHtml = '<option value="">-- Pilih Tugas / Ujian CBT --</option>';
+
+            if (allCbtQuizzes && allCbtQuizzes.length > 0) {
+                optionsHtml += '<optgroup label="Ujian CBT Online">';
+                allCbtQuizzes.forEach(q => {
+                    optionsHtml += `<option value="${q.id}">[CBT] ${escapeHTML(q.title)} (${escapeHTML(q.subject)} - ${escapeHTML(q.class_name)})</option>`;
+                });
+                optionsHtml += '</optgroup>';
+            }
+
+            if (allAssignments && allAssignments.length > 0) {
+                optionsHtml += '<optgroup label="Tugas & Soal LMS">';
+                allAssignments.filter(a => a.type !== 'materi').forEach(a => {
+                    optionsHtml += `<option value="${a.id}">[Tugas] ${escapeHTML(a.title)} (${escapeHTML(a.subject)} - ${escapeHTML(a.class_name)})</option>`;
+                });
+                optionsHtml += '</optgroup>';
+            }
+
+            selectTask.innerHTML = optionsHtml;
+            modalSelect.style.display = 'flex';
+            modalSelect.classList.remove('hidden');
+        };
+    }
+
+    if (btnCloseSelect) {
+        btnCloseSelect.onclick = () => {
+            modalSelect.style.display = 'none';
+            modalSelect.classList.add('hidden');
+        };
+    }
+    if (btnCancelSelect) {
+        btnCancelSelect.onclick = () => {
+            modalSelect.style.display = 'none';
+            modalSelect.classList.add('hidden');
+        };
+    }
+
+    if (btnStartSelected && selectTask) {
+        btnStartSelected.onclick = () => {
+            const selectedId = selectTask.value;
+            if (!selectedId) {
+                showToast('Pilih salah satu tugas atau ujian CBT terlebih dahulu!', 'warning');
+                return;
+            }
+            startInfocusMode(selectedId);
+        };
+    }
+
+    // Tombol Lanjut (Force Next) Guru
+    if (btnForceNext) {
+        btnForceNext.onclick = () => {
+            if (confirm('Lanjut ke butir soal berikutnya sekarang?')) {
+                currentInfocusIndex++;
+                playNextInfocusQuestion();
+            }
+        };
+    }
+
+    // Tombol Keluar dari Presenter Mode
+    if (btnQuit) {
+        btnQuit.onclick = () => {
+            if (confirm('Keluar dari Live Presenter Mode?')) {
+                if (infocusTimer) {
+                    clearInterval(infocusTimer);
+                    infocusTimer = null;
+                }
+                if (modalPresenter) {
+                    modalPresenter.style.display = 'none';
+                    modalPresenter.classList.add('hidden');
+                }
+                if (document.fullscreenElement && document.exitFullscreen) {
+                    document.exitFullscreen().catch(() => {});
+                }
+                showToast('Presenter mode ditutup.', 'info');
+            }
+        };
+    }
+}
+
 // Expose globally for SPA router
 window.loadLms = initLmsTeacherModule;
 window.loadCbt = initCbtTeacherModule;
+window.startInfocusMode = startInfocusMode;
 
 document.addEventListener('sectionLoaded', (e) => {
     if (e.detail && (e.detail.id === 'tugas-lms' || e.detail.id === 'cbt-admin')) {
