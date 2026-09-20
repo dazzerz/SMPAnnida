@@ -1,0 +1,113 @@
+<section id="data-migration" class="page-section aca-inline-11">
+                    
+                    <!-- Readiness Banner -->
+                    <div id="db-readiness-banner" class="card glass aca-inline-40">
+                        <h1 class="aca-inline-168 flex items-center gap-2" id="db-readiness-status">
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block animate-pulse"></span>
+                            <span>DATABASE STATUS: NOT READY</span>
+                        </h1>
+                        <p class="aca-inline-169" id="db-readiness-desc">
+                            Sistem belum siap untuk production. Selesaikan seluruh tahapan import di bawah ini.
+                        </p>
+                        <div class="aca-inline-170">
+                            <span>Master Data: <strong id="rb-master-count">0</strong></span>
+                            <span class="aca-inline-64">Errors: <strong id="rb-error-count">0</strong></span>
+                            <span class="aca-inline-171">Orphans: <strong id="rb-orphan-count">0</strong></span>
+                            <span class="aca-inline-172">Duplicates: <strong id="rb-duplicate-count">0</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Database Health Checker -->
+                    <div class="card glass aca-inline-4">
+                        <div class="aca-inline-173">
+                            <h2 class="aca-inline-143">Database Health Checker</h2>
+                            <button id="btn-run-integrity" class="btn-primary aca-inline-41">Run Integrity Check</button>
+                        </div>
+                        <div class="dashboard-cards aca-inline-42">
+                            <div class="card glass"><h3 class="aca-inline-174">Teachers</h3><p class="number" id="hc-teachers">0</p></div>
+                            <div class="card glass"><h3 class="aca-inline-174">Students</h3><p class="number" id="hc-students">0</p></div>
+                            <div class="card glass"><h3 class="aca-inline-174">Subjects</h3><p class="number" id="hc-subjects">0</p></div>
+                            <div class="card glass"><h3 class="aca-inline-174">Classes</h3><p class="number" id="hc-classes">0</p></div>
+                            <div class="card glass"><h3 class="aca-inline-174">Academic Years</h3><p class="number" id="hc-years">0</p></div>
+                            <div class="card glass"><h3 class="aca-inline-174">Schedules</h3><p class="number" id="hc-schedules">0</p></div>
+                        </div>
+                    </div>
+
+                    <!-- Migration Wizard -->
+                    <div class="card glass aca-inline-4">
+                        <h2 class="aca-inline-73">Import Wizard</h2>
+                        <p class="aca-inline-175">Import harus dilakukan secara berurutan. Pilih file Excel Anda untuk memulai.</p>
+                        
+                        <div class="aca-inline-176">
+                            <div class="form-group aca-inline-43">
+                                <label>Pilih Tahap Import</label>
+                                <select id="dm-type" class="input-control">
+                                    <option value="">-- Pilih Langkah --</option>
+                                    <option value="tahun" id="opt-tahun">Step 1: Academic Year</option>
+                                    <option value="guru" id="opt-guru" disabled>Step 2: Teachers</option>
+                                    <option value="mapel" id="opt-mapel" disabled>Step 3: Subjects</option>
+                                    <option value="kelas" id="opt-kelas" disabled>Step 4: Classes</option>
+                                    <option value="siswa" id="opt-siswa" disabled>Step 5: Students</option>
+                                    <option value="jadwal" id="opt-jadwal" disabled>Step 6: Schedules</option>
+                                </select>
+                            </div>
+                            <button id="btn-dm-download" type="button" class="btn btn-outline" disabled>Download Template</button>
+                            <label class="btn btn-outline aca-inline-44" id="label-dm-upload">
+                                Upload Excel
+                                <input type="file" id="dm-upload" accept=".xlsx, .xls" class="aca-inline-11" disabled>
+                            </label>
+                        </div>
+
+                        <!-- Panel Aksi Import -->
+                        <div id="panel-import-action" class="aca-inline-11">
+                            <div class="aca-inline-173">
+                                <h3 class="aca-inline-177">Preview Data</h3>
+                                <div class="aca-inline-178">
+                                    <button id="btn-dm-clear" class="btn btn-outline">Clear Preview</button>
+                                    <button id="btn-dm-import" class="btn-primary">Import Data Sekarang</button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group" id="dm-duplicate-strategy-container" class="aca-inline-179">
+                                <label>Strategi Duplikasi (Bila ada data sama)</label>
+                                <select id="dm-duplicate-strategy" class="input-control aca-inline-45">
+                                    <option value="skip">Lewati (Skip)</option>
+                                    <option value="update">Update Existing (Upsert)</option>
+                                    <option value="cancel">Batalkan Import</option>
+                                </select>
+                            </div>
+
+                            <div class="aca-inline-180">
+                                <span>Total: <strong id="prev-total">0</strong></span>
+                                <span class="aca-inline-63">Valid: <strong id="prev-valid">0</strong></span>
+                                <span class="aca-inline-171">Update: <strong id="prev-update">0</strong></span>
+                                <span class="aca-inline-64">Error: <strong id="prev-error">0</strong></span>
+                                <span class="aca-inline-172">Duplicate: <strong id="prev-duplicate">0</strong></span>
+                            </div>
+
+                            <div class="table-responsive aca-inline-46">
+                                <table class="data-table">
+                                    <thead><tr id="prev-thead"></tr></thead>
+                                    <tbody id="prev-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress & Log -->
+                    <div id="dm-progress-container" class="card glass aca-inline-47">
+                        <div class="aca-inline-173">
+                            <h2 class="aca-inline-143">Progress Import</h2>
+                            <button id="btn-download-error-report" class="btn btn-danger aca-inline-48">Download Error Report (Excel)</button>
+                        </div>
+                        <div class="aca-inline-181">
+                            <div id="dm-progress-bar" class="aca-inline-182"></div>
+                        </div>
+                        <div class="aca-inline-183">
+                            <span id="dm-progress-text">0%</span>
+                            <span id="dm-progress-stats">0 / 0</span>
+                        </div>
+                        <div id="dm-import-log" class="aca-inline-184">
+                        </div>
+                    </div>
+                </section>

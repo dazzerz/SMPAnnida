@@ -5,7 +5,12 @@ import { resolveUserRole } from '../core/auth.js';
 
 const db = supabaseClient;
 
-document.addEventListener('DOMContentLoaded', () => {
+let isAttendanceInitialized = false;
+
+function initTeacherAttendanceSection() {
+    const absensiSection = document.getElementById('absensi-guru');
+    if (!absensiSection || isAttendanceInitialized) return;
+
     const elDate = document.getElementById('tg-date');
     const elCheckIn = document.getElementById('tg-checkin-time');
     const elCheckOut = document.getElementById('tg-checkout-time');
@@ -33,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tbodyRekap = document.getElementById('tg-rekap-tbody');
 
     if (!elDate || !btnCamera) return;
+    isAttendanceInitialized = true;
 
     let currentTeacherId = null;
     let currentLat = null;
@@ -574,7 +580,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    const absensiSection = document.getElementById('absensi-guru');
     if (absensiSection) {
         observer.observe(absensiSection, { attributes: true, attributeFilter: ['style'] });
     }
@@ -595,5 +600,19 @@ document.addEventListener('DOMContentLoaded', () => {
             loadAttendance();
         }
     });
+}
+
+// Listen for DOM, sectionLoaded, and hashchange
+document.addEventListener('DOMContentLoaded', initTeacherAttendanceSection);
+window.addEventListener('sectionLoaded', (e) => {
+    if (e.detail && e.detail.id === 'absensi-guru') {
+        initTeacherAttendanceSection();
+    }
 });
+if (document.getElementById('absensi-guru')) {
+    initTeacherAttendanceSection();
+}
+
+window.loadAttendance = initTeacherAttendanceSection;
+export { initTeacherAttendanceSection };
 

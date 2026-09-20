@@ -1,0 +1,174 @@
+<section id="kelas" class="page-section aca-inline-11">
+                    <div class="aca-inline-166">
+                        <!-- Bagian Tahun Ajaran -->
+                        <div>
+                            <div class="aca-inline-56">
+                                <h1>Master Tahun Ajaran</h1>
+                                <button id="btn-add-tahun" class="btn-primary">Tambah Tahun Ajaran</button>
+                            </div>
+                            <div class="card glass">
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="aca-inline-98">No</th>
+                                                <th>Tahun Ajaran</th>
+                                                <th>Semester</th>
+                                                <th>Status</th>
+                                                <th class="aca-inline-165">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody-tahun">
+                                            <tr><td colspan="5" class="aca-inline-77">Memuat data tahun ajaran...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="aca-inline-167">
+
+                        <!-- Bagian Master Kelas -->
+                        <div>
+                            <div class="aca-inline-56">
+                                <h1>Master Kelas</h1>
+                                <button id="btn-add-kelas" class="btn-primary">Tambah Kelas</button>
+                            </div>
+                            <div class="card glass">
+                                <!-- Filters -->
+                                <div class="aca-inline-16">
+                                    <div class="form-group aca-inline-19">
+                                        <label>Tingkat</label>
+                                        <select id="filter-tingkat-kelas" class="input-control">
+                                            <option value="">Semua Tingkat</option>
+                                            <option value="7">Kelas 7</option>
+                                            <option value="8">Kelas 8</option>
+                                            <option value="9">Kelas 9</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group aca-inline-19">
+                                        <label>Status</label>
+                                        <select id="filter-status-kelas" class="input-control">
+                                            <option value="">Semua Status</option>
+                                            <option value="Aktif">Aktif</option>
+                                            <option value="Nonaktif">Nonaktif</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group aca-inline-19">
+                                        <label>Wali Kelas</label>
+                                        <select id="filter-wali-kelas" class="input-control">
+                                            <option value="">Semua Wali Kelas</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group aca-inline-26">
+                                        <label>Cari Nama Kelas</label>
+                                        <input type="text" id="filter-search-kelas" class="input-control" placeholder="Cari nama kelas...">
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="aca-inline-98">No</th>
+                                                <th>Nama Kelas</th>
+                                                <th class="aca-inline-77">Tingkat</th>
+                                                <th>Wali Kelas</th>
+                                                <th class="aca-inline-77">Ruangan</th>
+                                                <th class="aca-inline-77">Kapasitas</th>
+                                                <th class="aca-inline-77">Status</th><th class="aca-inline-77">Aksi</th>
+                                                <th class="aca-inline-165">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody-kelas">
+                                            <tr><td colspan="8" class="aca-inline-77">Memuat data kelas...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+<!-- Modal Form Tahun Ajaran -->
+    <div id="modal-tahun" class="modal hidden aca-inline-49" style="display: none;" style="display: none;">
+        <div class="modal-content card glass aca-inline-51">
+            <h2 id="modal-tahun-title" class="aca-inline-18">Tambah Tahun Ajaran</h2>
+            <form id="form-tahun">
+                <input type="hidden" id="tahun-id">
+                <div class="form-group aca-inline-29">
+                    <label>Tahun Ajaran</label>
+                    <input type="text" id="tahun-nama" class="input-control" placeholder="Contoh: 2026/2027" required>
+                </div>
+                <div class="form-group aca-inline-29">
+                    <label>Semester</label>
+                    <select id="tahun-semester" class="input-control" required>
+                        <option value="Ganjil">Ganjil</option>
+                        <option value="Genap">Genap</option>
+                    </select>
+                </div>
+                <div class="form-group aca-inline-18">
+                    <label class="aca-inline-186">
+                        <input type="checkbox" id="tahun-aktif" class="aca-inline-187">
+                        <span>Set sebagai Aktif (Saat ini)</span>
+                    </label>
+                    <div class="aca-inline-189">Hanya boleh ada satu tahun ajaran yang aktif. Mengaktifkan ini akan menonaktifkan tahun ajaran lainnya.</div>
+                </div>
+                <div class="aca-inline-190">
+                    <button type="button" id="btn-close-modal-tahun" class="btn btn-outline">Batal</button>
+                    <button type="submit" id="btn-save-tahun" class="btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<!-- Modal Form Kelas -->
+    <div id="modal-kelas" class="modal hidden aca-inline-49" style="display: none;" style="display: none;">
+        <div class="modal-content card glass aca-inline-50">
+            <h2 id="modal-kelas-title" class="aca-inline-18">Tambah Kelas</h2>
+            <form id="form-kelas">
+                <input type="hidden" id="kelas-id">
+                
+                <div class="aca-inline-185">
+                    <div class="form-group">
+                        <label>Nama Kelas</label>
+                        <input type="text" id="kelas-nama" class="input-control" placeholder="Contoh: 7A" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tingkat</label>
+                        <select id="kelas-tingkat" class="input-control" required>
+                            <option value="">-- Pilih Tingkat --</option>
+                            <option value="7">Kelas 7</option>
+                            <option value="8">Kelas 8</option>
+                            <option value="9">Kelas 9</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Wali Kelas</label>
+                        <select id="kelas-wali" class="input-control">
+                            <option value="">-- Pilih Wali Kelas --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ruangan</label>
+                        <input type="text" id="kelas-ruangan" class="input-control" placeholder="Contoh: R.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Kapasitas Siswa</label>
+                        <input type="number" id="kelas-kapasitas" class="input-control" placeholder="Contoh: 32" min="1" required>
+                    </div>
+                    <div class="form-group aca-inline-52">
+                        <label class="aca-inline-186">
+                            <input type="checkbox" id="kelas-aktif" checked class="aca-inline-187">
+                            <span>Status Aktif</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="aca-inline-188">
+                    <button type="button" id="btn-close-modal-kelas" class="btn btn-outline">Batal</button>
+                    <button type="submit" id="btn-save-kelas" class="btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>

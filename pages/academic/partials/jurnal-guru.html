@@ -1,0 +1,85 @@
+<!-- Jurnal Guru Section -->
+                <section id="jurnal-guru" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
+                        <h1>Jurnal Guru</h1>
+                        <button id="btn-jurnal-save" class="btn-primary" disabled>Simpan Jurnal</button>
+                    </div>
+                    
+                    <div class="card glass">
+                        <div class="aca-inline-140">
+                            <div class="form-group">
+                                <label>Tanggal</label>
+                                <input type="date" id="jurnal-date" class="input-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Kelas</label>
+                                <select id="jurnal-class" class="input-control">
+                                    <option value="">-- Pilih Kelas --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Mapel</label>
+                                <select id="jurnal-subject" class="input-control">
+                                    <option value="">-- Pilih Mapel --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Jam Pelajaran</label>
+                                <input type="text" id="jurnal-time" class="input-control" placeholder="Contoh: Ke-1 s/d 3">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group aca-inline-29">
+                            <label>Materi Pokok</label>
+                            <input type="text" id="jurnal-material" class="input-control" placeholder="Masukkan materi utama yang diajarkan">
+                        </div>
+                        
+                        <div class="form-group aca-inline-25">
+                              <label>Catatan Kegiatan / Hambatan</label>
+                              <textarea id="jurnal-notes" class="input-control" rows="4" placeholder="Masukkan rincian kegiatan atau catatan khusus..." class="aca-inline-141"></textarea>
+                          </div>
+                      </div>
+
+                      <!-- Riwayat Jurnal -->
+                      <div class="card glass aca-inline-30">
+                          <div class="aca-inline-142">
+                              <h2 class="aca-inline-143">Riwayat Jurnal (Bulan Ini)</h2>
+                              <div class="aca-inline-144">
+                                  <select id="jurnal-filter-teacher" class="input-control aca-inline-31"><option value="">Semua Guru</option></select><input type="month" id="jurnal-filter-month" class="input-control aca-inline-32">
+                                  <button id="btn-jurnal-export" class="btn-primary aca-inline-33 flex items-center gap-1.5">
+                                      <span class="material-symbols-outlined text-sm">download</span>
+                                      <span>Export Excel</span>
+                                  </button>
+                              </div>
+                          </div>
+                          
+                          <div class="table-responsive">
+                              <table class="data-table">
+                                  <thead>
+                                      <tr>
+                                          <th>Tanggal</th>
+                                          <th>Guru</th>
+                                          <th>Kelas</th>
+                                          <th>Mapel</th>
+                                          <th>Jam Ke-</th>
+                                          <th>Materi Pokok</th>
+                                          <th class="aca-inline-145">Aksi</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="jurnal-history-tbody">
+                                      <tr>
+                                          <td colspan="7" class="aca-inline-146">Memuat riwayat jurnal...</td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                          <!-- P2 Fix: Pagination Controls -->
+                          <div class="pagination aca-inline-34">
+                              <div class="pagination-info" id="jurnal-pagination-info" class="aca-inline-147">Memuat halaman...</div>
+                              <div class="pagination-controls aca-inline-35">
+                                  <button id="btn-jurnal-prev" class="btn aca-inline-36" disabled>&laquo; Prev</button>
+                                  <button id="btn-jurnal-next" class="btn aca-inline-36" disabled>Next &raquo;</button>
+                              </div>
+                          </div>
+                      </div>
+                  </section>

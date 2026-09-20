@@ -1,0 +1,94 @@
+<!-- Absensi Guru Section -->
+                <section id="absensi-guru" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
+                        <h1>Absensi Guru</h1>
+                        <input type="date" id="tg-rekap-date" class="input-control aca-inline-37 admin-only hidden" style="display: none;">
+                    </div>
+                    
+                    <div class="tab-nav aca-inline-14">
+                        <button class="tab-btn active" data-tab="tg-pribadi" id="btn-tg-tab-pribadi">Absensi Anda</button>
+                        <button class="tab-btn admin-only hidden" data-tab="tg-rekap" id="btn-tg-tab-rekap" style="display: none;">Rekap Harian (Admin)</button>
+                    </div>
+
+                    <!-- TAB PRIBADI -->
+                    <div id="tab-tg-pribadi" class="tab-content aca-inline-38">
+                        <div class="card glass aca-inline-39">
+                            <div class="aca-inline-148">
+                                <div class="aca-inline-149">
+                                    <div class="aca-inline-150">Tanggal</div>
+                                    <div id="tg-date" class="aca-inline-151">-</div>
+                                </div>
+                                <div class="aca-inline-152">
+                                    <div class="aca-inline-150">Jam Masuk</div>
+                                    <div id="tg-checkin-time" class="aca-inline-153">--:--</div>
+                                </div>
+                                <div class="aca-inline-149">
+                                    <div class="aca-inline-150">Jam Keluar</div>
+                                    <div id="tg-checkout-time" class="aca-inline-154">--:--</div>
+                                </div>
+                            </div>
+
+                            <div class="aca-inline-155">
+                                <div>
+                                    <h3 class="aca-inline-156">Foto Masuk</h3>
+                                    <div id="tg-photo-in-container" class="aca-inline-157">
+                                        <div id="tg-photo-in-placeholder" class="aca-inline-158">Belum ada foto</div>
+                                        <img id="tg-photo-in" src="" class="aca-inline-159">
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="aca-inline-156">Foto Keluar</h3>
+                                    <div id="tg-photo-out-container" class="aca-inline-157">
+                                        <div id="tg-photo-out-placeholder" class="aca-inline-158">Belum ada foto</div>
+                                        <img id="tg-photo-out" src="" class="aca-inline-159">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="tg-camera-container" class="aca-inline-160">
+                                <video id="tg-video" class="aca-inline-161" autoplay playsinline></video>
+                                <canvas id="tg-canvas" class="aca-inline-11"></canvas>
+                            </div>
+
+                            <div class="aca-inline-77">
+                                <div class="aca-inline-162">
+                                    <button id="btn-tg-camera" class="btn btn-primary aca-inline-10" disabled>Nyalakan Kamera</button>
+                                    <input type="file" id="tg-file-input" accept="image/*" class="aca-inline-11">
+                                </div>
+                                <div id="tg-status-text" class="aca-inline-163">Memuat status absensi...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB REKAP (ADMIN ONLY) -->
+                    <div id="tab-tg-rekap" class="tab-content admin-only hidden" style="display: none;">
+                        <div class="card glass">
+                            <div class="aca-inline-142">
+                                <h2 class="aca-inline-143">Rekap Absensi Guru (Harian)</h2>
+                                <button id="btn-tg-export-excel" class="btn btn-outline aca-inline-24 flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-sm">download</span>
+                                    <span>Export Excel</span>
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Guru</th>
+                                            <th class="aca-inline-77">Jam Masuk</th>
+                                            <th class="aca-inline-77">Foto Masuk</th>
+                                            <th class="aca-inline-77">Jam Keluar</th>
+                                            <th class="aca-inline-77">Foto Keluar</th>
+                                            <th class="aca-inline-77">Lokasi</th>
+                                            <th class="aca-inline-77">Status</th><th class="aca-inline-77">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tg-rekap-tbody">
+                                        <tr><td colspan="7" class="aca-inline-78">Memuat rekap...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>

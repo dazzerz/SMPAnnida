@@ -4,10 +4,12 @@ import { showToast, escapeHTML } from '../core/utils.js';
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    // UI Elements
+let isJurnalSectionInitialized = false;
+
+function initJurnalSection() {
     const section = document.getElementById('jurnal-guru');
-    if (!section) return;
+    if (!section || isJurnalSectionInitialized) return;
+    isJurnalSectionInitialized = true;
 
     const elDate = document.getElementById('jurnal-date');
     const elClass = document.getElementById('jurnal-class');
@@ -510,5 +512,19 @@ document.addEventListener('DOMContentLoaded', () => {
             btnExport.disabled = false;
         }
     }
+}
+
+// Listen for DOM, sectionLoaded, and hashchange
+document.addEventListener('DOMContentLoaded', initJurnalSection);
+window.addEventListener('sectionLoaded', (e) => {
+    if (e.detail && e.detail.id === 'jurnal-guru') {
+        initJurnalSection();
+    }
 });
+if (document.getElementById('jurnal-guru')) {
+    initJurnalSection();
+}
+
+window.loadJournals = initJurnalSection;
+export { initJurnalSection };
 

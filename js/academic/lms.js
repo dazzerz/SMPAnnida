@@ -819,3 +819,27 @@ function parseRawQuestions(text, quizId) {
 
     return questions;
 }
+
+// Expose globally for SPA router
+window.loadLms = initLmsTeacherModule;
+window.loadCbt = initCbtTeacherModule;
+
+document.addEventListener('sectionLoaded', (e) => {
+    if (e.detail && (e.detail.id === 'tugas-lms' || e.detail.id === 'cbt-admin')) {
+        initLmsTeacherModule();
+    }
+});
+
+const isLmsOrCbt = window.location.hash === '#tugas-lms' || window.location.hash === '#cbt-admin';
+if (isLmsOrCbt) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLmsTeacherModule);
+    } else {
+        initLmsTeacherModule();
+    }
+}
+window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#tugas-lms' || window.location.hash === '#cbt-admin') {
+        initLmsTeacherModule();
+    }
+});

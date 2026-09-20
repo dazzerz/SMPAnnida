@@ -1,0 +1,121 @@
+<section id="mata-pelajaran" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
+                        <h1>Master Mata Pelajaran</h1>
+                        <button id="btn-add-mapel" class="btn-primary">Tambah Mapel</button>
+                    </div>
+
+                    <div class="card glass">
+                        <!-- Filters -->
+                        <div class="aca-inline-16">
+                            <div class="form-group aca-inline-19">
+                                <label>Status</label>
+                                <select id="filter-status-mapel" class="input-control">
+                                    <option value="">Semua Status</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Nonaktif">Nonaktif</option>
+                                </select>
+                            </div>
+                            <div class="form-group aca-inline-19">
+                                <label>Kelompok</label>
+                                <select id="filter-kelompok-mapel" class="input-control">
+                                    <option value="">Semua Kelompok</option>
+                                    <option value="A">Kelompok A (Wajib)</option>
+                                    <option value="B">Kelompok B (Wajib)</option>
+                                    <option value="C">Kelompok C (Peminatan)</option>
+                                    <option value="Mulok">Muatan Lokal</option>
+                                </select>
+                            </div>
+                            <div class="form-group aca-inline-19">
+                                <label>Guru Pengampu</label>
+                                <select id="filter-guru-mapel" class="input-control">
+                                    <option value="">Semua Guru</option>
+                                </select>
+                            </div>
+                            <div class="form-group aca-inline-26">
+                                <label>Cari Nama / Kode</label>
+                                <input type="text" id="filter-search-mapel" class="input-control" placeholder="Cari nama atau kode mapel...">
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th class="aca-inline-98">No</th>
+                                        <th>Kode</th>
+                                        <th>Nama</th>
+                                        <th>Guru Pengampu</th>
+                                        <th>Kelompok</th>
+                                        <th class="aca-inline-77">KKM</th>
+                                        <th class="aca-inline-77">Jam</th>
+                                        <th class="aca-inline-77">Status</th><th class="aca-inline-77">Aksi</th>
+                                        <th class="aca-inline-165">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-mapel">
+                                    <tr><td colspan="9" class="aca-inline-77">Memuat data mata pelajaran...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- Modal Form Mapel -->
+    <div id="modal-mapel" class="modal hidden aca-inline-49" style="display: none;" style="display: none;">
+        <div class="modal-content card glass aca-inline-50">
+            <h2 id="modal-mapel-title" class="aca-inline-18">Tambah Mata Pelajaran</h2>
+            <form id="form-mapel">
+                <input type="hidden" id="mapel-id">
+                
+                <div class="aca-inline-185">
+                    <div class="form-group">
+                        <label>Kode Mapel</label>
+                        <input type="text" id="mapel-kode" class="input-control" placeholder="Contoh: MTK01" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Mapel</label>
+                        <input type="text" id="mapel-nama" class="input-control" placeholder="Contoh: Matematika Wajib" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Kelompok</label>
+                        <select id="mapel-kelompok" class="input-control" required>
+                            <option value="">-- Pilih Kelompok --</option>
+                            <option value="A">Kelompok A (Wajib)</option>
+                            <option value="B">Kelompok B (Wajib)</option>
+                            <option value="C">Kelompok C (Peminatan)</option>
+                            <option value="Mulok">Muatan Lokal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Guru Pengampu</label>
+                        <select id="mapel-guru" class="input-control">
+                            <option value="">-- Pilih Guru --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>KKM</label>
+                        <input type="number" id="mapel-kkm" class="input-control" placeholder="Contoh: 75" min="0" max="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Jam Per Minggu</label>
+                        <input type="number" id="mapel-jam" class="input-control" placeholder="Contoh: 4" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Urutan Tampil (Opsional)</label>
+                        <input type="number" id="mapel-urutan" class="input-control" placeholder="Contoh: 1" min="0">
+                    </div>
+                    <div class="form-group aca-inline-8">
+                        <label class="aca-inline-186">
+                            <input type="checkbox" id="mapel-aktif" checked class="aca-inline-187">
+                            <span>Status Aktif</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="aca-inline-188">
+                    <button type="button" id="btn-close-modal-mapel" class="btn btn-outline">Batal</button>
+                    <button type="submit" id="btn-save-mapel" class="btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>

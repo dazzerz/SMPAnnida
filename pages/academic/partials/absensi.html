@@ -1,0 +1,172 @@
+<section id="absensi" class="page-section aca-inline-11">
+                    
+                    <!-- Header -->
+                    <div class="section-header aca-inline-12">
+                        <div>
+                            <h2 class="aca-inline-57 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-emerald-400">checklist</span>
+                                <span>Absensi Siswa</span>
+                            </h2>
+                            <p class="aca-inline-85">Input absensi per jam pelajaran</p>
+                        </div>
+                        <input type="date" id="attend-date" class="input-control aca-inline-13">
+                    </div>
+
+                    <!-- Tab Navigation -->
+                    <div class="tab-nav aca-inline-14">
+                        <button class="tab-btn active" data-tab="input-absensi">Input Absensi</button>
+                        <button class="tab-btn" data-tab="rekap-siswa">Rekap Per Siswa</button>
+                        <button class="tab-btn" data-tab="pivot-absensi">Rekap Harian</button>
+                        <button class="tab-btn" data-tab="export-absensi">Export Excel</button>
+                    </div>
+
+                    <!-- TAB 1: Input Absensi -->
+                    <div id="tab-input-absensi" class="tab-content">
+                        <!-- Daftar Jadwal Hari Ini -->
+                        <div id="schedule-list"></div>
+
+                        <!-- Form Input Absensi (tersembunyi sampai jadwal dipilih) -->
+                        <div id="attend-form-panel" class="aca-inline-15">
+                            <div class="aca-inline-86">
+                                <button id="btn-attend-back" class="btn btn-outline btn-sm">← Kembali</button>
+                                <h3 id="attend-panel-title" class="aca-inline-87"></h3>
+                                <button id="btn-hadir-semua" class="btn btn-outline btn-sm flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm text-emerald-400">done_all</span>
+                                    <span>Hadir Semua</span>
+                                </button>
+                            </div>
+                            <div class="card glass">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="aca-inline-88">No</th>
+                                            <th>Nama Siswa</th>
+                                            <th class="aca-inline-89">Status</th>
+                                            <th>Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="attend-tbody"></tbody>
+                                </table>
+                                <div class="aca-inline-90">
+                                    <button id="btn-attend-save" class="btn btn-primary flex items-center gap-1" disabled>
+                                        <span class="material-symbols-outlined text-sm">save</span>
+                                        <span>Simpan Absensi</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: Rekap Per Siswa -->
+                    <div id="tab-rekap-siswa" class="tab-content aca-inline-15">
+                        <!-- Filter + Tabel Rekap -->
+                        <div class="filter-bar aca-inline-16">
+                            <select id="rekap-kelas" class="input-control">
+                                <option value="">-- Pilih Kelas --</option>
+                            </select>
+                            <select id="rekap-bulan" class="input-control">
+                                <option value="1">Januari</option>
+                                <option value="2">Februari</option>
+                                <option value="3">Maret</option>
+                                <option value="4">April</option>
+                                <option value="5">Mei</option>
+                                <option value="6">Juni</option>
+                                <option value="7">Juli</option>
+                                <option value="8" selected>Agustus</option>
+                                <option value="9">September</option>
+                                <option value="10">Oktober</option>
+                                <option value="11">November</option>
+                                <option value="12">Desember</option>
+                            </select>
+                            <select id="rekap-mapel-filter" class="input-control">
+                                <option value="">Semua Mapel</option>
+                            </select>
+                            <button id="btn-lihat-rekap-absensi-siswa" class="btn-primary">Lihat Rekap</button>
+                        </div>
+                        <div class="card glass aca-inline-17">
+                            <table class="data-table" id="table-rekap-siswa">
+                                <thead id="thead-rekap-siswa">
+                                    <tr><th>Memuat...</th></tr>
+                                </thead>
+                                <tbody id="tbody-rekap-siswa"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: Pivot Harian -->
+                    <div id="tab-pivot-absensi" class="tab-content aca-inline-15">
+                        <!-- Filter + Grid Pivot -->
+                        <div class="filter-bar aca-inline-16">
+                            <select id="filter-kelas-rekap-absensi" class="input-control"><option value="">-- Pilih Kelas --</option></select>
+                            <input type="date" id="filter-dari-absensi" class="input-control">
+                            <input type="date" id="filter-sampai-absensi" class="input-control">
+                            <select id="filter-mapel-pivot" class="input-control">
+                                <option value="">Semua Mapel</option>
+                            </select>
+                            <button id="btn-lihat-rekap-absensi-harian" class="btn-primary">Tampilkan</button>
+                        </div>
+                        <div class="card glass aca-inline-17">
+                            <table class="data-table">
+                                <thead id="thead-pivot-absensi">
+                                    <tr><th>Memuat...</th></tr>
+                                </thead>
+                                <tbody id="tbody-rekap-absensi"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: Export Excel (kode lama dipertahankan) -->
+                    <div id="tab-export-absensi" class="tab-content aca-inline-15">
+                        <div class="card glass aca-inline-18">
+                            <h2 class="aca-inline-91">Export Rekap Absensi Bulanan</h2>
+                            <div class="aca-inline-92">
+                                <div class="form-group aca-inline-19">
+                                    <label>Tahun Ajaran</label>
+                                    <select id="export-tahun" class="input-control">
+                                        <option value="">-- Pilih Tahun --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group aca-inline-19">
+                                    <label>Semester</label>
+                                    <select id="export-semester" class="input-control">
+                                        <option value="">-- Pilih Semester --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group aca-inline-19">
+                                    <label>Bulan</label>
+                                    <select id="export-bulan" class="input-control">
+                                        <option value="1">Januari</option>
+                                        <option value="2">Februari</option>
+                                        <option value="3">Maret</option>
+                                        <option value="4">April</option>
+                                        <option value="5">Mei</option>
+                                        <option value="6">Juni</option>
+                                        <option value="7">Juli</option>
+                                        <option value="8" selected>Agustus</option>
+                                        <option value="9">September</option>
+                                        <option value="10">Oktober</option>
+                                        <option value="11">November</option>
+                                        <option value="12">Desember</option>
+                                    </select>
+                                </div>
+                                <div class="form-group aca-inline-19">
+                                    <label>Kelas</label>
+                                    <select id="export-kelas" class="input-control">
+                                        <option value="">-- Pilih Kelas --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group aca-inline-19">
+                                    <label>Mapel (Opsional)</label>
+                                    <select id="export-mapel" class="input-control">
+                                        <option value="">Semua Mapel (Harian)</option>
+                                    </select>
+                                </div>
+                                <button id="btn-export-excel" class="btn btn-outline aca-inline-20 flex items-center gap-1.5 justify-center">
+                                    <span class="material-symbols-outlined text-sm">download</span>
+                                    <span>Export Excel</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>

@@ -4,7 +4,13 @@ import { showToast, escapeHTML } from '../core/utils.js';
 
 const db = supabaseClient;
 
-document.addEventListener('DOMContentLoaded', () => {
+let isKelasSectionInitialized = false;
+
+function initKelasSection() {
+    const kelasSection = document.getElementById('kelas');
+    if (!kelasSection || isKelasSectionInitialized) return;
+    isKelasSectionInitialized = true;
+
     // Elements - Tahun Ajaran
     const tbodyTahun = document.getElementById('tbody-tahun');
     const btnAddTahun = document.getElementById('btn-add-tahun');
@@ -434,134 +440,150 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) el.addEventListener('change', renderTableKelas);
     });
 
-    // ---------------------------------------------------------
-    // GLOBAL INTEGRATION & DASHBOARD STATS
-    // ---------------------------------------------------------
+    loadDataTahunAjaran();
+    loadDataKelas();
+}
 
-    window.loadGlobalKelasTahunOptions = async function() {
-        try {
-            // Load both classes and academic_years once for the whole app
-            const [resKelas, resTahun] = await Promise.all([
-                db.from('classes').select('*').order('tingkat', { ascending: true }).order('nama_kelas', { ascending: true }),
-                db.from('academic_years').select('*').order('tahun_ajaran', { ascending: false })
-            ]);
+// ---------------------------------------------------------
+// GLOBAL INTEGRATION & DASHBOARD STATS
+// ---------------------------------------------------------
 
-            const allKelas = resKelas.data || [];
-            const activeKelas = allKelas.filter(k => k.aktif !== false);
-            const allTahun = resTahun.data || [];
+window.loadGlobalKelasTahunOptions = async function() {
+    try {
+        // Load both classes and academic_years once for the whole app
+        const [resKelas, resTahun] = await Promise.all([
+            db.from('classes').select('*').order('tingkat', { ascending: true }).order('nama_kelas', { ascending: true }),
+            db.from('academic_years').select('*').order('tahun_ajaran', { ascending: false })
+        ]);
 
-            // Expose globally for UUID conversions (Sprint 32A Addendum)
-            window.masterClasses = activeKelas;
-            window.masterTahunAjaran = allTahun;
+        const allKelas = resKelas.data || [];
+        const activeKelas = allKelas.filter(k => k.aktif !== false);
+        const allTahun = resTahun.data || [];
+        const activeTahun = allTahun.find(t => t.aktif === true) || allTahun[0];
 
-            // Populate Classes Dropdowns
-            const classSelectIds = [
-                'export-kelas', 'attend-class', 'select-kelas-nilai', 
-                'filter-kelas-rekap', 'filter-kelas-jadwal', 'rapor-kelas', 'jurnal-class',
-                'guru-wali', 'filter-wali-guru'
-            ];
-            
-            let classOptions = '<option value="">-- Pilih Kelas --</option>';
-            activeKelas.forEach(k => {
-                classOptions += `<option value="${escapeHTML(k.nama_kelas)}">${escapeHTML(k.nama_kelas)}</option>`;
-            });
+        // Format label kelas e.g. "Kelas 7A"
+        let optionsKelasHtml = '<option value="">-- Pilih Kelas --</option>';
+        activeKelas.forEach(k => {
+            optionsKelasHtml += `<option value="${escapeHTML(k.nama_kelas)}">${escapeHTML(k.nama_kelas)}</option>`;
+        });
 
-            classSelectIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.innerHTML = classOptions;
-            });
+        // Format label tahun ajaran e.g. "2024/2025"
+        let optionsTahunHtml = '<option value="">-- Pilih Tahun Ajaran --</option>';
+        allTahun.forEach(t => {
+            const isSelected = t.aktif ? 'selected' : '';
+            optionsTahunHtml += `<option value="${escapeHTML(t.tahun_ajaran)}" ${isSelected}>${escapeHTML(t.tahun_ajaran)} ${t.aktif ? '(Aktif)' : ''}</option>`;
+        });
 
-            // Populate Academic Years & Semesters Dropdowns
-            const tahunSelectIds = ['export-tahun', 'rapor-tahun'];
-            let tahunOptions = '<option value="">-- Pilih Tahun --</option>';
-            // Get unique tahun_ajaran
-            const uniqueTahun = [...new Set(allTahun.map(t => t.tahun_ajaran))].filter(Boolean);
-            uniqueTahun.forEach(t => {
-                tahunOptions += `<option value="${escapeHTML(t)}">${escapeHTML(t)}</option>`;
-            });
-
-            tahunSelectIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    const prevVal = el.value;
-                    el.innerHTML = tahunOptions;
-                    if (prevVal) el.value = prevVal; // preserve selection
-                }
-            });
-
-            const activeYearData = allTahun.find(t => t.aktif === true || String(t.aktif).toLowerCase() === 'true' || t.aktif === 1);
-            const activeYearText = activeYearData ? activeYearData.tahun_ajaran : 'Belum Diatur';
-            const activeSemesterText = activeYearData ? activeYearData.semester : 'Belum Diatur';
-            
-            // Export globally for insertions
-            window.activeTahunAjaran = activeYearText !== 'Belum Diatur' ? activeYearText : null;
-            window.activeSemester = activeSemesterText !== 'Belum Diatur' ? activeSemesterText : null;
-
-            // Populate Semester Dropdowns
-            const semesterSelectIds = ['export-semester', 'rapor-semester'];
-            const semesterOptions = `
-                <option value="">-- Pilih Semester --</option>
-                <option value="Ganjil">Ganjil</option>
-                <option value="Genap">Genap</option>
-            `;
-            
-            semesterSelectIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    const prevVal = el.value;
-                    el.innerHTML = semesterOptions;
-                    if (prevVal) el.value = prevVal;
-                    else el.value = activeSemesterText !== 'Belum Diatur' ? activeSemesterText : '';
-                }
-            });
-
-            tahunSelectIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el && !el.value) el.value = activeYearText !== 'Belum Diatur' ? activeYearText : '';
-            });
-
-            // Update Dashboard Stats
-            const statKelasEl = document.getElementById('stat-kelas-total');
-            const statWaliEl = document.getElementById('stat-walikelas-total');
-            const statTahunEl = document.getElementById('stat-tahun-aktif');
-            const statSemesterEl = document.getElementById('stat-semester-aktif');
-
-            if (statKelasEl) statKelasEl.textContent = activeKelas.length;
-            if (statWaliEl) {
-                try {
-                    // Cek guru dengan is_wali_kelas = true atau relasi kelas
-                    const [guruWaliRes, classesWaliRes] = await Promise.all([
-                        db.from('teachers').select('id').eq('is_wali_kelas', true),
-                        db.from('classes').select('wali_kelas_id').not('wali_kelas_id', 'is', null)
-                    ]);
-                    const countFromTeachers = guruWaliRes?.data?.length || 0;
-                    const countFromClasses = classesWaliRes?.data?.filter(c => c.wali_kelas_id)?.length || 0;
-                    statWaliEl.textContent = Math.max(countFromTeachers, countFromClasses);
-                } catch(e) {
-                    console.error("Gagal menghitung total wali kelas", e);
-                    statWaliEl.textContent = "0";
-                }
+        // Target Selects in other modules (Nilai, Siswa, Rapor, etc.)
+        const kelasSelectIds = [
+            'filter-kelas', 'student-class', 'filter-kelas-nilai', 
+            'rapor-kelas', 'bulk-class', 'jadwal-kelas', 'filter-kelas-jadwal',
+            'filter-kelas-mapel'
+        ];
+        
+        kelasSelectIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                const prevVal = el.value;
+                el.innerHTML = optionsKelasHtml;
+                if (prevVal) el.value = prevVal;
             }
-            if (statTahunEl) statTahunEl.textContent = activeYearText;
-            if (statSemesterEl) statSemesterEl.textContent = activeSemesterText;
+        });
 
-        } catch (err) {
-            console.error("Gagal memuat global opsi kelas dan tahun:", err);
-        }
-    };
+        const tahunSelectIds = [
+            'filter-tahun-nilai', 'rapor-tahun'
+        ];
 
-    // Initialize Global
-    window.loadGlobalKelasTahunOptions();
-    
-    // Hash routing setup
-    const initPage = () => {
-        if (window.location.hash === '#kelas') {
-            loadDataTahunAjaran();
-            loadDataKelas();
+        tahunSelectIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                const prevVal = el.value;
+                el.innerHTML = optionsTahunHtml;
+                if (prevVal) el.value = prevVal;
+            }
+        });
+
+        // Expose active info globally for easy access
+        const activeYearText = activeTahun ? activeTahun.tahun_ajaran : 'Belum Diatur';
+        const activeSemesterText = activeTahun ? activeTahun.semester : 'Belum Diatur';
+        window.activeAcademicYear = activeTahun;
+
+        // Populate Semester Dropdowns
+        const semesterSelectIds = ['export-semester', 'rapor-semester'];
+        const semesterOptions = `
+            <option value="">-- Pilih Semester --</option>
+            <option value="Ganjil">Ganjil</option>
+            <option value="Genap">Genap</option>
+        `;
+        
+        semesterSelectIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                const prevVal = el.value;
+                el.innerHTML = semesterOptions;
+                if (prevVal) el.value = prevVal;
+                else el.value = activeSemesterText !== 'Belum Diatur' ? activeSemesterText : '';
+            }
+        });
+
+        tahunSelectIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && !el.value) el.value = activeYearText !== 'Belum Diatur' ? activeYearText : '';
+        });
+
+        // Update Dashboard Stats
+        const statKelasEl = document.getElementById('stat-kelas-total');
+        const statWaliEl = document.getElementById('stat-walikelas-total');
+        const statTahunEl = document.getElementById('stat-tahun-aktif');
+        const statSemesterEl = document.getElementById('stat-semester-aktif');
+
+        if (statKelasEl) statKelasEl.textContent = activeKelas.length;
+        if (statWaliEl) {
+            try {
+                // Cek guru dengan is_wali_kelas = true atau relasi kelas
+                const [guruWaliRes, classesWaliRes] = await Promise.all([
+                    db.from('teachers').select('id').eq('is_wali_kelas', true),
+                    db.from('classes').select('wali_kelas_id').not('wali_kelas_id', 'is', null)
+                ]);
+                const countFromTeachers = guruWaliRes?.data?.length || 0;
+                const countFromClasses = classesWaliRes?.data?.filter(c => c.wali_kelas_id)?.length || 0;
+                statWaliEl.textContent = Math.max(countFromTeachers, countFromClasses);
+            } catch(e) {
+                console.error("Gagal menghitung total wali kelas", e);
+                statWaliEl.textContent = "0";
+            }
         }
-    };
-    
-    initPage();
-    window.addEventListener('hashchange', initPage);
+        if (statTahunEl) statTahunEl.textContent = activeYearText;
+        if (statSemesterEl) statSemesterEl.textContent = activeSemesterText;
+
+    } catch (err) {
+        console.error("Gagal memuat global opsi kelas dan tahun:", err);
+    }
+};
+
+// Expose loadClasses for router
+window.loadClasses = initKelasSection;
+
+// Initialize Global immediately
+window.loadGlobalKelasTahunOptions();
+
+// Listen for lazy load event or hash
+document.addEventListener('sectionLoaded', (e) => {
+    if (e.detail && e.detail.id === 'kelas') {
+        initKelasSection();
+    }
 });
 
+const isKelasPage = window.location.hash === '#kelas';
+if (isKelasPage) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initKelasSection);
+    } else {
+        initKelasSection();
+    }
+}
+window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#kelas') {
+        initKelasSection();
+    }
+});

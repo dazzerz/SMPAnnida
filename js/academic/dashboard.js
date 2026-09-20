@@ -3,7 +3,6 @@ import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { escapeHTML } from '../core/utils.js';
 const db = supabaseClient;
-window.db = supabaseClient;
 
 document.addEventListener('DOMContentLoaded', () => {
     let hasLoadedStats = false;

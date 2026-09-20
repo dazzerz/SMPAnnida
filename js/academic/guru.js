@@ -4,7 +4,13 @@ import { showToast, escapeHTML } from '../core/utils.js';
 
 const db = supabaseClient;
 
-document.addEventListener('DOMContentLoaded', () => {
+let isGuruInitialized = false;
+
+function initGuruSection() {
+    const guruSection = document.getElementById('guru');
+    if (!guruSection || isGuruInitialized) return;
+    isGuruInitialized = true;
+
     // Elements
     const tbodyGuru = document.getElementById('tbody-guru');
     const btnAddGuru = document.getElementById('btn-add-guru');
@@ -241,53 +247,68 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) el.addEventListener('change', renderTable);
     });
 
-    // Global Guru Loader
-    window.loadGlobalGuruOptions = async function() {
-        try {
-            const { data, error } = await db.from('teachers').select('id, nama, aktif').order('nama', { ascending: true });
-            if (error) throw error;
-            
-            const activeTeachers = data.filter(t => t.aktif !== false);
-            
-            // Expose globally for UUID conversions (Sprint 32A Addendum)
-            window.masterTeachers = activeTeachers;
-            
-            let optionsHtml = '<option value="">-- Pilih Guru --</option>';
-            activeTeachers.forEach(t => {
-                // Gunakan ID untuk value jika relasinya adalah UUID, atau nama jika backward compatible
-                optionsHtml += `<option value="${t.id}">${escapeHTML(t.nama)}</option>`;
-            });
-
-            // Elemen dropdown yang perlu disinkronkan dengan data Guru
-            const selectIds = ['mapel-guru', 'kelas-wali', 'filter-guru-mapel', 'filter-wali-kelas'];
-            selectIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    const prevVal = el.value;
-                    el.innerHTML = optionsHtml;
-                    if (prevVal) el.value = prevVal;
-                }
-            });
-            
-            // Dashboard Guru Statistics
-            const statGuruTotal = document.getElementById('stat-guru-total');
-            if (statGuruTotal) statGuruTotal.textContent = activeTeachers.length;
-            
-        } catch (err) {
-            console.error("Gagal memuat global opsi guru:", err);
-        }
-    };
-
-    window.loadGlobalGuruOptions();
-
-    // Initialize
-    const isGuruPage = window.location.hash === '#guru';
-    if (isGuruPage) {
-        loadData();
-    }
-    window.addEventListener('hashchange', () => {
-        if (window.location.hash === '#guru') {
-            loadData();
-        }
+    // Initial load when section is shown
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.target.id === 'guru' && mutation.target.style.display !== 'none') {
+                if (currentData.length === 0) loadData();
+            }
+        });
     });
+    
+    observer.observe(guruSection, { attributes: true, attributeFilter: ['style'] });
+    if (guruSection.style.display !== 'none') loadData();
+}
+
+// Global Guru Loader (needed for selects across pages even before #guru is loaded)
+window.loadGlobalGuruOptions = async function() {
+    try {
+        const { data, error } = await db.from('teachers').select('id, nama, aktif').order('nama', { ascending: true });
+        if (error) throw error;
+        
+        const activeTeachers = data.filter(t => t.aktif !== false);
+        
+        // Expose globally for UUID conversions (Sprint 32A Addendum)
+        window.masterTeachers = activeTeachers;
+        
+        let optionsHtml = '<option value="">-- Pilih Guru --</option>';
+        activeTeachers.forEach(t => {
+            // Gunakan ID untuk value jika relasinya adalah UUID, atau nama jika backward compatible
+            optionsHtml += `<option value="${t.id}">${escapeHTML(t.nama)}</option>`;
+        });
+
+        // Elemen dropdown yang perlu disinkronkan dengan data Guru
+        const selectIds = ['mapel-guru', 'kelas-wali', 'filter-guru-mapel', 'filter-wali-kelas'];
+        selectIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                const prevVal = el.value;
+                el.innerHTML = optionsHtml;
+                if (prevVal) el.value = prevVal;
+            }
+        });
+        
+        // Dashboard Guru Statistics
+        const statGuruTotal = document.getElementById('stat-guru-total');
+        if (statGuruTotal) statGuruTotal.textContent = activeTeachers.length;
+        
+    } catch (err) {
+        console.error("Gagal memuat global opsi guru:", err);
+    }
+};
+
+window.loadGlobalGuruOptions();
+
+// Listen for DOM, sectionLoaded, and hashchange
+document.addEventListener('DOMContentLoaded', initGuruSection);
+window.addEventListener('sectionLoaded', (e) => {
+    if (e.detail && (e.detail.id === 'guru' || e.detail.id === 'data-guru')) {
+        initGuruSection();
+    }
 });
+if (document.getElementById('guru')) {
+    initGuruSection();
+}
+
+window.loadTeachers = initGuruSection;
+export { initGuruSection };

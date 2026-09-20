@@ -166,7 +166,12 @@ async function saveAttendance(schedule, date, studentsPayload) {
     if (error) throw error;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+let isAttendanceSectionInitialized = false;
+
+function initStudentAttendanceSection() {
+    const absensiSec = document.getElementById('absensi');
+    if (!absensiSec || isAttendanceSectionInitialized) return;
+
     const dateInput     = document.getElementById('attend-date');
     const scheduleList  = document.getElementById('schedule-list');
     const formPanel     = document.getElementById('attend-form-panel');
@@ -177,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const panelTitle    = document.getElementById('attend-panel-title');
     
     if (!dateInput || !scheduleList) return;
+    isAttendanceSectionInitialized = true;
     
     dateInput.value = getDateStr();
     
@@ -884,5 +890,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.renderScheduleList = renderScheduleList;
+}
+
+// Listen for DOM, sectionLoaded, and hashchange
+document.addEventListener('DOMContentLoaded', initStudentAttendanceSection);
+window.addEventListener('sectionLoaded', (e) => {
+    if (e.detail && e.detail.id === 'absensi') {
+        initStudentAttendanceSection();
+    }
 });
+if (document.getElementById('absensi')) {
+    initStudentAttendanceSection();
+}
+
+window.loadStudentAttendance = initStudentAttendanceSection;
+export { initStudentAttendanceSection };
+
 

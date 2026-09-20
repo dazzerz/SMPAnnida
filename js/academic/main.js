@@ -142,24 +142,90 @@ if (localStorage.getItem('theme') === 'dark') {
 
 
 // ── SPA Router & Section Switcher ──
-export function handleAcademicHashChange() {
-    let hash = window.location.hash.replace('#', '') || 'dashboard';
-    if (!document.getElementById(hash)) {
-        hash = 'dashboard';
-    }
-    
-    document.querySelectorAll('.nav-link, .nav-item').forEach(l => l.classList.remove('active'));
+const lazyModules = [
+    'data-siswa', 'data-guru', 'guru', 'absensi-guru', 'jurnal-guru',
+    'absensi', 'nilai', 'rapor', 'jadwal', 'mata-pelajaran', 'kelas',
+    'cbt-admin', 'cbt', 'materi-lms', 'tugas-lms', 'data-migration'
+];
+
+export async function handleAcademicHashChange() {
+    let rawHash = window.location.hash.replace('#', '') || 'dashboard';
+    let hash = rawHash;
+    // Map alternate hashes to section IDs
+    let targetId = hash;
+    if (hash === 'data-guru') targetId = 'guru';
+    else if (hash === 'cbt') targetId = 'cbt-admin';
+
+    // Sembunyikan semua .page-section seperti biasa
     document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
-    
-    const activeLink = document.querySelector(`.nav-link[data-target="${hash}"]`) || 
-                       document.querySelector(`.nav-link[href*="#${hash}"]`) || 
-                       document.querySelector(`#nav-group-academic [data-target="${hash}"]`);
-    if (activeLink) activeLink.classList.add('active');
-    
-    const targetSection = document.getElementById(hash);
+    document.querySelectorAll('.nav-link, .nav-item').forEach(l => l.classList.remove('active'));
+
+    let targetSection = document.getElementById(targetId);
+
+    if (!targetSection && lazyModules.includes(hash)) {
+        try {
+            let fileName = `${hash}.html`;
+            if (hash === 'guru' || hash === 'data-guru') fileName = 'guru.html';
+            else if (hash === 'cbt' || hash === 'cbt-admin') fileName = 'cbt-admin.html';
+
+            const res = await fetch(`../../pages/academic/partials/${fileName}`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const htmlData = await res.text();
+            const contentArea = document.querySelector('.content-area') || document.querySelector('main');
+            if (contentArea) {
+                contentArea.insertAdjacentHTML('beforeend', htmlData);
+            }
+            targetSection = document.getElementById(targetId);
+
+            // Trigger initialization hook berdasarkan hash/modul
+            if (hash === 'data-siswa' && typeof window.loadStudents === 'function') {
+                window.loadStudents();
+            } else if ((hash === 'guru' || hash === 'data-guru') && typeof window.loadTeachers === 'function') {
+                window.loadTeachers();
+            } else if (hash === 'absensi-guru' && typeof window.loadAttendance === 'function') {
+                window.loadAttendance();
+            } else if (hash === 'jurnal-guru' && typeof window.loadJournals === 'function') {
+                window.loadJournals();
+            } else if (hash === 'absensi' && typeof window.loadStudentAttendance === 'function') {
+                window.loadStudentAttendance();
+            } else if ((hash === 'nilai' || hash === 'rapor') && typeof window.loadGrades === 'function') {
+                window.loadGrades();
+            } else if (hash === 'jadwal' && typeof window.loadSchedules === 'function') {
+                window.loadSchedules();
+            } else if (hash === 'mata-pelajaran' && typeof window.loadSubjects === 'function') {
+                window.loadSubjects();
+            } else if (hash === 'kelas' && typeof window.loadClasses === 'function') {
+                window.loadClasses();
+            } else if ((hash === 'tugas-lms' || hash === 'cbt-admin' || hash === 'cbt') && typeof window.loadLms === 'function') {
+                window.loadLms();
+            } else if (hash === 'materi-lms' && typeof window.loadMateri === 'function') {
+                window.loadMateri();
+            } else if (hash === 'data-migration' && typeof window.loadMigration === 'function') {
+                window.loadMigration();
+            }
+
+            window.dispatchEvent(new CustomEvent('sectionLoaded', { detail: { id: targetId, originalHash: hash } }));
+        } catch (err) {
+            console.error(`Gagal memuat partial ${hash}:`, err);
+        }
+    }
+
+    if (!targetSection && !lazyModules.includes(hash)) {
+        targetId = 'dashboard';
+        targetSection = document.getElementById('dashboard');
+    }
+
     if (targetSection) {
         targetSection.style.display = 'block';
     }
+
+    const activeLink = document.querySelector(`.nav-link[data-target="${rawHash}"]`) || 
+                       document.querySelector(`.nav-link[data-target="${targetId}"]`) || 
+                       document.querySelector(`.nav-link[href*="#${rawHash}"]`) || 
+                       document.querySelector(`.nav-link[href*="#${targetId}"]`) || 
+                       document.querySelector(`#nav-group-academic [data-target="${rawHash}"]`) ||
+                       document.querySelector(`#nav-group-academic [data-target="${targetId}"]`);
+    if (activeLink) activeLink.classList.add('active');
 
     if (window.innerWidth < 768) {
         document.getElementById('sidebar')?.classList.remove('open');
@@ -183,7 +249,7 @@ document.addEventListener('click', (e) => {
     if (link) {
         const href = link.getAttribute('href');
         const target = link.getAttribute('data-target') || (href && href.includes('#') ? href.split('#')[1] : null);
-        if (target && document.getElementById(target)) {
+        if (target && (document.getElementById(target) || lazyModules.includes(target))) {
             e.preventDefault();
             window.location.hash = target;
             handleAcademicHashChange();

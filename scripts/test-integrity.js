@@ -129,9 +129,14 @@ console.log('\n[TEST 9] Portal Siswa Readiness & Operational Audits:');
 const indexHtml = fs.readFileSync('index.html', 'utf8');
 assert(indexHtml.includes('Login Siswa'), 'index.html contains explicit Login Siswa CTA');
 
+// Test 9: Portal Siswa Readiness & Operational Audits
+console.log('\n[TEST 9] Portal Siswa Readiness & Operational Audits:');
+assert(indexHtml.includes('Login Siswa'), 'index.html contains explicit Login Siswa CTA');
+
 const academicHtml = fs.readFileSync('pages/academic/dashboard.html', 'utf8');
-assert(academicHtml.includes('btn-export-kredensial-siswa'), 'academic/dashboard.html includes btn-export-kredensial-siswa');
-assert(academicHtml.includes('btn-cetak-kartu-siswa'), 'academic/dashboard.html includes btn-cetak-kartu-siswa');
+const dataSiswaHtml = fs.readFileSync('pages/academic/partials/data-siswa.html', 'utf8');
+assert(academicHtml.includes('btn-export-kredensial-siswa') || dataSiswaHtml.includes('btn-export-kredensial-siswa'), 'academic/dashboard.html or partial includes btn-export-kredensial-siswa');
+assert(academicHtml.includes('btn-cetak-kartu-siswa') || dataSiswaHtml.includes('btn-cetak-kartu-siswa'), 'academic/dashboard.html or partial includes btn-cetak-kartu-siswa');
 
 const siswaJs = fs.readFileSync('js/academic/siswa.js', 'utf8');
 assert(siswaJs.includes('btn-export-kredensial-siswa'), 'js/academic/siswa.js includes Excel credential export');
@@ -158,10 +163,10 @@ assert(studentDashHtml.includes('id="modal-submit-tugas"'), 'Portal siswa includ
 const studentDashJs = fs.readFileSync('js/student/dashboard.js', 'utf8');
 assert(studentDashJs.includes('loadAssignments'), 'Portal siswa JS includes loadAssignments loader');
 
-const acaDashHtml = fs.readFileSync('pages/academic/dashboard.html', 'utf8');
-assert(acaDashHtml.includes('id="tugas-lms"'), 'Academic dashboard includes tugas-lms section');
-assert(acaDashHtml.includes('id="modal-assignment"'), 'Academic dashboard includes modal-assignment');
-assert(acaDashHtml.includes('id="modal-review-submissions"'), 'Academic dashboard includes modal-review-submissions');
+const tugasLmsHtml = fs.readFileSync('pages/academic/partials/tugas-lms.html', 'utf8');
+assert(academicHtml.includes('id="tugas-lms"') || tugasLmsHtml.includes('id="tugas-lms"'), 'Academic dashboard or partial includes tugas-lms section');
+assert(academicHtml.includes('id="modal-assignment"') || tugasLmsHtml.includes('id="modal-assignment"'), 'Academic dashboard or partial includes modal-assignment');
+assert(academicHtml.includes('id="modal-review-submissions"') || tugasLmsHtml.includes('id="modal-review-submissions"'), 'Academic dashboard or partial includes modal-review-submissions');
 
 const lmsTeacherJs = fs.readFileSync('js/academic/lms.js', 'utf8');
 assert(lmsTeacherJs.includes('openReviewSubmissionsModal'), 'LMS teacher JS includes review and grading modal');
@@ -185,10 +190,10 @@ assert(studentJs2.includes('startCbtExam'), 'Portal siswa JS includes startCbtEx
 assert(studentJs2.includes('initAntiCheatTracking'), 'Portal siswa JS includes anti-cheat visibility tracking');
 assert(studentJs2.includes('showCbtResultsAndDiscussion'), 'Portal siswa JS includes instant results discussion');
 
-const acaHtml2 = fs.readFileSync('pages/academic/dashboard.html', 'utf8');
-assert(acaHtml2.includes('id="cbt-admin"'), 'Academic dashboard includes cbt-admin section');
-assert(acaHtml2.includes('id="modal-quiz-cbt"'), 'Academic dashboard includes modal-quiz-cbt');
-assert(acaHtml2.includes('id="modal-text-parser"'), 'Academic dashboard includes modal-text-parser');
+const cbtAdminHtml = fs.readFileSync('pages/academic/partials/cbt-admin.html', 'utf8');
+assert(academicHtml.includes('id="cbt-admin"') || cbtAdminHtml.includes('id="cbt-admin"'), 'Academic dashboard or partial includes cbt-admin section');
+assert(academicHtml.includes('id="modal-quiz-cbt"') || cbtAdminHtml.includes('id="modal-quiz-cbt"'), 'Academic dashboard or partial includes modal-quiz-cbt');
+assert(academicHtml.includes('id="modal-text-parser"') || cbtAdminHtml.includes('id="modal-text-parser"'), 'Academic dashboard or partial includes modal-text-parser');
 
 const lmsJs2 = fs.readFileSync('js/academic/lms.js', 'utf8');
 assert(lmsJs2.includes('parseRawQuestions'), 'LMS JS includes smart text parser');
@@ -199,10 +204,9 @@ console.log('\n[TEST 12] Interactive Material Viewer & Multi-Format Validation:'
 const addTypeSql = fs.readFileSync('database/migrations/add_type_to_assignments.sql', 'utf8');
 assert(addTypeSql.includes('ADD COLUMN IF NOT EXISTS type'), 'Migration adds type column to assignments table');
 
-const acaHtml3 = fs.readFileSync('pages/academic/dashboard.html', 'utf8');
-assert(acaHtml3.includes('id="modal-material-viewer"'), 'Academic dashboard includes modal-material-viewer');
-assert(acaHtml3.includes('id="type-materi"'), 'Academic dashboard includes type-materi selection');
-assert(acaHtml3.includes('id="material-viewer-iframe"'), 'Academic dashboard includes material-viewer-iframe');
+assert(academicHtml.includes('id="modal-material-viewer"') || tugasLmsHtml.includes('id="modal-material-viewer"'), 'Academic dashboard or partial includes modal-material-viewer');
+assert(academicHtml.includes('id="type-materi"') || tugasLmsHtml.includes('id="type-materi"'), 'Academic dashboard or partial includes type-materi selection');
+assert(academicHtml.includes('id="material-viewer-iframe"') || tugasLmsHtml.includes('id="material-viewer-iframe"'), 'Academic dashboard or partial includes material-viewer-iframe');
 
 const lmsJs3 = fs.readFileSync('js/academic/lms.js', 'utf8');
 assert(lmsJs3.includes('formatEmbedUrl'), 'LMS JS includes YouTube and Drive embed formatter');
@@ -217,7 +221,7 @@ assert(studentJs3.includes('loadStudentInteractiveMaterials'), 'Portal siswa JS 
 assert(studentJs3.includes('openStudentMaterialViewer'), 'Portal siswa JS includes openStudentMaterialViewer launcher');
 
 
-// Test 13: Dedicated Materials Page & Smart In-App Viewer Validation
+// Test 13: Dedicated Materials Page & Smart Viewer Validation
 console.log('\n[TEST 13] Dedicated Materials Page & Smart Viewer Validation:');
 const materialsSql = fs.readFileSync('database/migrations/create_materials_table.sql', 'utf8');
 assert(materialsSql.includes('CREATE TABLE IF NOT EXISTS public.materials'), 'Migration creates materials table');
@@ -225,10 +229,10 @@ assert(materialsSql.includes('CREATE TABLE IF NOT EXISTS public.materials'), 'Mi
 const layoutJs = fs.readFileSync('js/core/layout.js', 'utf8');
 assert(layoutJs.includes('data-target="materi-lms"'), 'Layout includes dedicated Materi sidebar link');
 
-const acaHtml4 = fs.readFileSync('pages/academic/dashboard.html', 'utf8');
-assert(acaHtml4.includes('id="materi-lms"'), 'Academic dashboard includes materi-lms section');
-assert(acaHtml4.includes('id="modal-form-materi"'), 'Academic dashboard includes modal-form-materi');
-assert(acaHtml4.includes('id="modal-viewer-materi"'), 'Academic dashboard includes modal-viewer-materi');
+const materiLmsHtml = fs.readFileSync('pages/academic/partials/materi-lms.html', 'utf8');
+assert(academicHtml.includes('id="materi-lms"') || materiLmsHtml.includes('id="materi-lms"'), 'Academic dashboard or partial includes materi-lms section');
+assert(academicHtml.includes('id="modal-form-materi"') || materiLmsHtml.includes('id="modal-form-materi"'), 'Academic dashboard or partial includes modal-form-materi');
+assert(academicHtml.includes('id="modal-viewer-materi"') || materiLmsHtml.includes('id="modal-viewer-materi"'), 'Academic dashboard or partial includes modal-viewer-materi');
 
 const acaMateriJs = fs.readFileSync('js/academic/materi.js', 'utf8');
 assert(acaMateriJs.includes('openTeacherViewer'), 'Academic materi.js includes openTeacherViewer');

@@ -3,12 +3,14 @@ import supabaseClient from '../core/supabase.js';
 import { escapeHTML, showToast } from '../core/utils.js';
 
 const db = supabaseClient;
-window.db = supabaseClient;
 
-document.addEventListener('DOMContentLoaded', () => {
+let isMigrationSectionInitialized = false;
+
+function initMigrationSection() {
     // Check elements exist
     const secMigration = document.getElementById('data-migration');
-    if (!secMigration) return;
+    if (!secMigration || isMigrationSectionInitialized) return;
+    isMigrationSectionInitialized = true;
 
     // UI Elements
     const selectType = document.getElementById('dm-type');
@@ -679,5 +681,30 @@ document.addEventListener('DOMContentLoaded', () => {
         XLSX.writeFile(wb, "Import_Error_Report.xlsx");
     });
 
+    runIntegrityCheck();
+}
+
+// Expose globally for router
+window.loadMigration = initMigrationSection;
+
+// Listen for lazy load event or hash
+document.addEventListener('sectionLoaded', (e) => {
+    if (e.detail && e.detail.id === 'data-migration') {
+        initMigrationSection();
+    }
+});
+
+const isMigrationPage = window.location.hash === '#data-migration';
+if (isMigrationPage) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMigrationSection);
+    } else {
+        initMigrationSection();
+    }
+}
+window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#data-migration') {
+        initMigrationSection();
+    }
 });
 

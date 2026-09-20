@@ -2,9 +2,14 @@ import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { escapeHTML, showToast } from '../core/utils.js';
 const db = supabaseClient;
-window.db = supabaseClient;
 
-document.addEventListener('DOMContentLoaded', () => {
+let isJadwalSectionInitialized = false;
+
+function initJadwalSection() {
+    const jadwalSection = document.getElementById('jadwal');
+    if (!jadwalSection || isJadwalSectionInitialized) return;
+    isJadwalSectionInitialized = true;
+
     // UI Elements
     const btnTambahJadwal = document.getElementById('btn-tambah-jadwal');
     const modalJadwal = document.getElementById('modal-jadwal');
@@ -440,7 +445,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    const jadwalSection = document.getElementById('jadwal');
     if (jadwalSection) {
         observer.observe(jadwalSection, { attributes: true, attributeFilter: ['style'] });
         if (jadwalSection.style.display !== 'none') loadJadwal();
@@ -448,4 +452,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Attach to global scope for nav links to trigger
     window.loadDataJadwal = loadJadwal;
+}
+
+// Listen for DOM, sectionLoaded, and hashchange
+document.addEventListener('DOMContentLoaded', initJadwalSection);
+window.addEventListener('sectionLoaded', (e) => {
+    if (e.detail && e.detail.id === 'jadwal') {
+        initJadwalSection();
+    }
 });
+if (document.getElementById('jadwal')) {
+    initJadwalSection();
+}
+
+window.loadSchedules = initJadwalSection;
+export { initJadwalSection };
+

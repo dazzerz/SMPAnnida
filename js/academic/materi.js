@@ -699,3 +699,26 @@ export async function deleteFromGoogleDriveGAS(fileUrlOrId, customGasUrl) {
         return { status: 'unknown', raw: text };
     }
 }
+
+// Expose globally for SPA router
+window.loadMateri = initMateriModule;
+
+document.addEventListener('sectionLoaded', (e) => {
+    if (e.detail && e.detail.id === 'materi-lms') {
+        initMateriModule();
+    }
+});
+
+const isMateriPage = window.location.hash === '#materi-lms';
+if (isMateriPage) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMateriModule);
+    } else {
+        initMateriModule();
+    }
+}
+window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#materi-lms') {
+        initMateriModule();
+    }
+});

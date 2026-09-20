@@ -4,7 +4,13 @@ import { showToast, escapeHTML } from '../core/utils.js';
 
 const db = supabaseClient;
 
-document.addEventListener('DOMContentLoaded', () => {
+let isMapelSectionInitialized = false;
+
+function initMapelSection() {
+    const mapelSection = document.getElementById('mata-pelajaran');
+    if (!mapelSection || isMapelSectionInitialized) return;
+    isMapelSectionInitialized = true;
+
     // Elements
     const tbodyMapel = document.getElementById('tbody-mapel');
     const btnAddMapel = document.getElementById('btn-add-mapel');
@@ -226,48 +232,63 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) el.addEventListener('change', renderTable);
     });
 
-    // Global function to load Mapel options into other dropdowns
-    window.loadGlobalMapelOptions = async function() {
-        try {
-            const { data, error } = await db.from('subjects').select('nama_mapel, aktif').order('urutan', { ascending: true });
-            if (error) throw error;
-            
-            const activeSubjects = data.filter(s => s.aktif !== false);
-            
-            // Expose globally for UUID conversions (Sprint 32A Addendum)
-            window.masterSubjects = activeSubjects;
-            
-            let optionsHtml = '<option value="">-- Pilih Mapel --</option>';
-            activeSubjects.forEach(s => {
-                // We use nama_mapel as value to maintain backward compatibility with old hardcoded inputs
-                optionsHtml += `<option value="${escapeHTML(s.nama_mapel)}">${escapeHTML(s.nama_mapel)}</option>`;
-            });
+    loadData();
+}
 
-            const selectIds = ['input-mapel-nilai', 'jurnal-subject', 'guru-mapel', 'filter-mapel-guru'];
-            selectIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    const prevVal = el.value;
-                    el.innerHTML = optionsHtml;
-                    if (prevVal) el.value = prevVal;
-                }
-            });
-        } catch (err) {
-            console.error("Gagal memuat opsi mapel global:", err);
-        }
-    };
+// Global function to load Mapel options into other dropdowns
+window.loadGlobalMapelOptions = async function() {
+    try {
+        const { data, error } = await db.from('subjects').select('nama_mapel, aktif').order('urutan', { ascending: true });
+        if (error) throw error;
+        
+        const activeSubjects = data.filter(s => s.aktif !== false);
+        
+        // Expose globally for UUID conversions (Sprint 32A Addendum)
+        window.masterSubjects = activeSubjects;
+        
+        let optionsHtml = '<option value="">-- Pilih Mapel --</option>';
+        activeSubjects.forEach(s => {
+            // We use nama_mapel as value to maintain backward compatibility with old hardcoded inputs
+            optionsHtml += `<option value="${escapeHTML(s.nama_mapel)}">${escapeHTML(s.nama_mapel)}</option>`;
+        });
 
-    // Initialize
-    window.loadGlobalMapelOptions();
-    
-    const isMapelPage = window.location.hash === '#mata-pelajaran';
-    if (isMapelPage) {
-        loadData();
+        const selectIds = ['input-mapel-nilai', 'jurnal-subject', 'guru-mapel', 'filter-mapel-guru'];
+        selectIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                const prevVal = el.value;
+                el.innerHTML = optionsHtml;
+                if (prevVal) el.value = prevVal;
+            }
+        });
+    } catch (err) {
+        console.error("Gagal memuat opsi mapel global:", err);
     }
-    window.addEventListener('hashchange', () => {
-        if (window.location.hash === '#mata-pelajaran') {
-            loadData();
-        }
-    });
+};
+
+// Expose globally for lazy router
+window.loadSubjects = initMapelSection;
+
+// Initialize global options immediately
+window.loadGlobalMapelOptions();
+
+// Listen for lazy load event or hash
+document.addEventListener('sectionLoaded', (e) => {
+    if (e.detail && e.detail.id === 'mata-pelajaran') {
+        initMapelSection();
+    }
 });
 
+const isMapelPage = window.location.hash === '#mata-pelajaran';
+if (isMapelPage) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMapelSection);
+    } else {
+        initMapelSection();
+    }
+}
+window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#mata-pelajaran') {
+        initMapelSection();
+    }
+});

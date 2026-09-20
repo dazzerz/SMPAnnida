@@ -1,0 +1,158 @@
+<section id="jadwal" class="page-section aca-inline-11">
+                    <div class="aca-inline-56">
+                        <h1>Jadwal Pelajaran</h1>
+                        <button id="btn-tambah-jadwal" class="btn-primary aca-inline-24">
+                            <span class="aca-inline-96">+</span> Tambah Jadwal
+                        </button>
+                    </div>
+
+                    <div class="card glass">
+                        <div class="aca-inline-97">
+                            <div class="form-group aca-inline-25">
+                                <label>Cari Guru</label>
+                                <input type="text" id="filter-jadwal-guru" class="input-control" placeholder="Nama guru...">
+                            </div>
+                            <div class="form-group aca-inline-25">
+                                <label>Cari Kelas</label>
+                                <input type="text" id="filter-jadwal-kelas" class="input-control" placeholder="Nama kelas...">
+                            </div>
+                            <div class="form-group aca-inline-25">
+                                <label>Cari Mapel</label>
+                                <input type="text" id="filter-jadwal-mapel" class="input-control" placeholder="Nama mapel...">
+                            </div>
+                            <div class="form-group aca-inline-25">
+                                <label>Cari Ruangan</label>
+                                <input type="text" id="filter-jadwal-ruangan" class="input-control" placeholder="Ruangan...">
+                            </div>
+                            <div class="form-group aca-inline-25">
+                                <label>Hari</label>
+                                <select id="filter-jadwal-hari" class="input-control">
+                                    <option value="">-- Semua --</option>
+                                    <option value="Senin">Senin</option>
+                                    <option value="Selasa">Selasa</option>
+                                    <option value="Rabu">Rabu</option>
+                                    <option value="Kamis">Kamis</option>
+                                    <option value="Jumat">Jumat</option>
+                                    <option value="Sabtu">Sabtu</option>
+                                </select>
+                            </div>
+                            <div class="form-group aca-inline-25">
+                                <label>Semester</label>
+                                <select id="filter-jadwal-semester" class="input-control">
+                                    <option value="">-- Semua --</option>
+                                    <option value="Ganjil">Ganjil</option>
+                                    <option value="Genap">Genap</option>
+                                </select>
+                            </div>
+                            <div class="form-group aca-inline-25">
+                                <label>Status</label>
+                                <select id="filter-jadwal-status" class="input-control">
+                                    <option value="">-- Semua --</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Draft">Draft</option>
+                                    <option value="Arsip">Arsip</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Hari</th>
+                                        <th>Jam</th>
+                                        <th>Kelas</th>
+                                        <th>Mata Pelajaran</th>
+                                        <th>Guru</th>
+                                        <th>Ruangan</th>
+                                        <th>Semester</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-jadwal">
+                                    <tr><td colspan="9" class="aca-inline-77">Memuat jadwal dari database...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+<!-- Modal Form Jadwal -->
+    <div id="modal-jadwal" class="modal hidden aca-inline-53" style="display: none;" style="display: none;">
+        <div class="modal-content card glass aca-inline-54">
+            <h2 id="modal-jadwal-title" class="aca-inline-18">Tambah Jadwal Pelajaran</h2>
+            <form id="form-jadwal">
+                <input type="hidden" id="jadwal-id">
+                
+                <div class="aca-inline-185">
+                    <div class="form-group">
+                        <label>Tahun Ajaran</label>
+                        <select id="jadwal-academic-year" class="input-control" required>
+                            <option value="">-- Pilih Tahun Ajaran --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Kelas</label>
+                        <select id="jadwal-class" class="input-control" required>
+                            <option value="">-- Pilih Kelas --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Guru Pengajar</label>
+                        <select id="jadwal-teacher" class="input-control" required>
+                            <option value="">-- Pilih Guru --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Mata Pelajaran</label>
+                        <select id="jadwal-subject" class="input-control" required>
+                            <option value="">-- Pilih Mata Pelajaran --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hari</label>
+                        <select id="jadwal-day" class="input-control" required>
+                            <option value="">-- Pilih Hari --</option>
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                            <option value="Sabtu">Sabtu</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ruangan</label>
+                        <input type="text" id="jadwal-room" class="input-control" placeholder="Contoh: Lab Komputer">
+                    </div>
+                    <div class="form-group">
+                        <label>Jam Mulai</label>
+                        <input type="time" id="jadwal-start-time" class="input-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Jam Selesai</label>
+                        <input type="time" id="jadwal-end-time" class="input-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Status Jadwal</label>
+                        <select id="jadwal-status" class="input-control" required>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Draft">Draft</option>
+                            <option value="Arsip">Arsip</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group aca-inline-29">
+                    <label>Catatan (Opsional)</label>
+                    <textarea id="jadwal-notes" class="input-control" rows="2" placeholder="Catatan tambahan..." class="aca-inline-141"></textarea>
+                </div>
+
+                <div class="aca-inline-188">
+                    <button type="button" id="btn-close-modal-jadwal" class="btn btn-outline">Batal</button>
+                    <button type="submit" id="btn-save-jadwal" class="btn-primary">Simpan Jadwal</button>
+                </div>
+            </form>
+        </div>
+    </div>

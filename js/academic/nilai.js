@@ -2,9 +2,14 @@ import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
 import { escapeHTML } from '../core/utils.js';
 const db = supabaseClient;
-window.db = supabaseClient;
 
-document.addEventListener('DOMContentLoaded', () => {
+let isNilaiSectionInitialized = false;
+
+function initNilaiSection() {
+    const nilaiSec = document.getElementById('nilai') || document.getElementById('rapor');
+    if (!nilaiSec || isNilaiSectionInitialized) return;
+    isNilaiSectionInitialized = true;
+
     const selectKelasNilai = document.getElementById('select-kelas-nilai');
     const selectSiswaNilai = document.getElementById('select-siswa-nilai');
     const btnSimpanNilai = document.getElementById('btn-simpan-nilai');
@@ -291,5 +296,20 @@ document.addEventListener('DOMContentLoaded', () => {
             window.print();
         });
     }
+}
+
+// Listen for DOM, sectionLoaded, and hashchange
+document.addEventListener('DOMContentLoaded', initNilaiSection);
+window.addEventListener('sectionLoaded', (e) => {
+    if (e.detail && (e.detail.id === 'nilai' || e.detail.id === 'rapor')) {
+        initNilaiSection();
+    }
 });
+if (document.getElementById('nilai') || document.getElementById('rapor')) {
+    initNilaiSection();
+}
+
+window.loadGrades = initNilaiSection;
+export { initNilaiSection };
+
 

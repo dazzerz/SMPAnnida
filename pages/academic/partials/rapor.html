@@ -1,0 +1,162 @@
+<section id="rapor" class="page-section aca-inline-11">
+                    <h1>Rapor Digital Siswa</h1>
+                    
+                    <style>
+                        @media print {
+                            body * { visibility: hidden; }
+                            #rapor-content, #rapor-content * { visibility: visible; }
+                            #rapor-content {
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                width: 100%;
+                                padding: 0;
+                                margin: 0;
+                            }
+                            #rapor-preview-container {
+                                box-shadow: none;
+                                border: none;
+                                background: none;
+                            }
+                        }
+                    </style>
+
+                    <div class="aca-inline-102">
+                        <!-- Bagian Kiri: Filter -->
+                        <div class="card glass" id="rapor-filter-container">
+                            <h2 class="aca-inline-103">Filter Rapor</h2>
+                            <div class="form-group">
+                                <label>Tahun Ajaran</label>
+                                <select id="rapor-tahun" class="input-control">
+                                    <option value="">-- Pilih Tahun --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Semester</label>
+                                <select id="rapor-semester" class="input-control">
+                                    <option value="">-- Pilih Semester --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Kelas</label>
+                                <select id="rapor-kelas" class="input-control">
+                                    <option value="">-- Pilih Kelas --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Siswa</label>
+                                <select id="rapor-siswa" class="input-control" disabled>
+                                    <option value="">-- Pilih Siswa --</option>
+                                </select>
+                            </div>
+                            <button id="btn-tampilkan-rapor" class="btn-primary aca-inline-27">Tampilkan Rapor</button>
+                        </div>
+                        
+                        <!-- Bagian Kanan: Preview Rapor -->
+                        <div class="card glass" id="rapor-preview-container" class="aca-inline-104">
+                            <div id="rapor-content" class="aca-inline-105">
+                                <!-- Identitas Sekolah & Siswa -->
+                                <div class="aca-inline-106">
+                                    <div class="aca-inline-107">
+                                        <!-- Placeholder Logo -->
+                                        <div class="aca-inline-108">LOGO</div>
+                                    </div>
+                                    <div class="aca-inline-109">
+                                        <h2 class="aca-inline-110">LAPORAN HASIL BELAJAR SISWA</h2>
+                                        <h3 class="aca-inline-111">SMP ANNIDA INTEGRATED SYSTEM</h3>
+                                        <p class="aca-inline-112">Jl. Pendidikan No. 1, Kota Cerdas, Indonesia | Telp: (021) 1234567</p>
+                                    </div>
+                                    <div class="aca-inline-113"></div>
+                                </div>
+                                
+                                <div class="aca-inline-114">
+                                    <div>
+                                        <table class="aca-inline-27">
+                                            <tr><td class="aca-inline-115">Nama Siswa</td><td>: <strong id="rapor-nama">-</strong></td></tr>
+                                            <tr><td>NIS/NISN</td><td>: <span id="rapor-nis">-</span></td></tr>
+                                            <tr><td>Wali Kelas</td><td>: <span id="rapor-wali">-</span></td></tr>
+                                        </table>
+                                    </div>
+                                    <div>
+                                        <table class="aca-inline-27">
+                                            <tr><td class="aca-inline-115">Kelas</td><td>: <strong id="rapor-kelas-lbl">-</strong></td></tr>
+                                            <tr><td>Semester</td><td>: <span id="rapor-semester-lbl">-</span></td></tr>
+                                            <tr><td>Tahun Ajaran</td><td>: <span id="rapor-tahun-lbl">-</span></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Tabel Nilai -->
+                                <table class="aca-inline-116" id="rapor-table">
+                                    <thead>
+                                        <tr class="aca-inline-117">
+                                            <th class="aca-inline-118">Mata Pelajaran</th>
+                                            <th class="aca-inline-119">Nilai</th>
+                                            <th class="aca-inline-120">Predikat</th>
+                                            <th class="aca-inline-118">Deskripsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rapor-tbody">
+                                        <tr><td colspan="4" class="aca-inline-121">Silakan pilih siswa dan klik Tampilkan Rapor</td></tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- Statistik & Kehadiran -->
+                                <div class="aca-inline-122">
+                                    <!-- Kiri: Statistik Nilai -->
+                                    <div>
+                                        <h4 class="aca-inline-123">Ringkasan Nilai</h4>
+                                        <table class="aca-inline-124">
+                                            <tr><td class="aca-inline-125">Jumlah Mapel</td><td class="aca-inline-126" id="rapor-jml-mapel">-</td></tr>
+                                            <tr><td class="aca-inline-125">Nilai Tertinggi</td><td class="aca-inline-126" id="rapor-max">-</td></tr>
+                                            <tr><td class="aca-inline-125">Nilai Terendah</td><td class="aca-inline-126" id="rapor-min">-</td></tr>
+                                            <tr><td class="aca-inline-127">Rata-rata</td><td class="aca-inline-128" id="rapor-rata">-</td></tr>
+                                            <tr><td class="aca-inline-125">Predikat Akhir</td><td class="aca-inline-128" id="rapor-predikat-akhir">-</td></tr>
+                                            <tr><td class="aca-inline-125">Ranking Kelas</td><td class="aca-inline-128" id="rapor-rank">-</td></tr>
+                                        </table>
+                                    </div>
+                                    
+                                    <!-- Kanan: Kehadiran & Jurnal -->
+                                    <div>
+                                        <h4 class="aca-inline-123">Ketidakhadiran & Catatan</h4>
+                                        <table class="aca-inline-129">
+                                            <tr><td class="aca-inline-125">Hadir</td><td class="aca-inline-130" id="rapor-hadir">-</td><td class="aca-inline-131">hari</td></tr>
+                                            <tr><td class="aca-inline-125">Sakit</td><td class="aca-inline-126" id="rapor-sakit">-</td><td class="aca-inline-125">hari</td></tr>
+                                            <tr><td class="aca-inline-125">Izin</td><td class="aca-inline-126" id="rapor-izin">-</td><td class="aca-inline-125">hari</td></tr>
+                                            <tr><td class="aca-inline-125">Tanpa Keterangan</td><td class="aca-inline-126" id="rapor-alpha">-</td><td class="aca-inline-125">hari</td></tr>
+                                        </table>
+                                        <div class="aca-inline-132">
+                                            <div class="aca-inline-133">Total Jurnal Terkait Kelas:</div>
+                                            <div class="aca-inline-134" id="rapor-jurnal-count">-</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tanda Tangan -->
+                                <div class="aca-inline-135">
+                                    <div>
+                                        <p class="aca-inline-136">Mengetahui,<br>Orang Tua / Wali Siswa</p>
+                                        <p class="aca-inline-137">( ........................................... )</p>
+                                    </div>
+                                    <div>
+                                        <p class="aca-inline-136" id="rapor-date-lbl">Jakarta, -<br>Wali Kelas</p>
+                                        <p class="aca-inline-137" id="rapor-ttd-wali">( ........................................... )</p>
+                                    </div>
+                                </div>
+                                <div class="aca-inline-138">
+                                    <div>
+                                        <p class="aca-inline-136">Mengesahkan,<br>Kepala Sekolah</p>
+                                        <p class="aca-inline-137">Dr. Ahmad Fathoni, M.Pd.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="aca-inline-139">
+                                <button id="btn-cetak-rapor" class="btn-primary aca-inline-28 flex items-center gap-1.5 justify-center" disabled>
+                                    <span class="material-symbols-outlined text-sm">print</span>
+                                    <span>Cetak PDF</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
