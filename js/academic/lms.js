@@ -498,50 +498,75 @@ function initMaterialViewer() {
 let allCbtQuizzes = [];
 
 export function initCbtTeacherModule() {
-    loadCbtDropdowns();
+    loadCbtRelations();
     loadCbtQuizzes();
+    loadKuisForParser();
     initCbtEventListeners();
 }
 
-async function loadCbtDropdowns() {
+export async function loadCbtRelations() {
     try {
         const [clsRes, mapelRes] = await Promise.all([
             db.from('classes').select('id, nama_kelas').order('nama_kelas'),
             db.from('subjects').select('id, nama_mapel').order('nama_mapel')
         ]);
 
-        const selClass = document.getElementById('quiz-class-select');
-        const filterClass = document.getElementById('filter-cbt-class');
-        const selSubject = document.getElementById('quiz-subject-select');
-        const filterSubject = document.getElementById('filter-cbt-subject');
-
         const classes = clsRes.data || [];
         const subjects = mapelRes.data || [];
 
-        if (selClass) {
-            selClass.innerHTML = '<option value="">-- Pilih Kelas --</option><option value="Semua">Semua Kelas</option>' + 
-                classes.map(c => `<option value="${c.nama_kelas}">${c.nama_kelas}</option>`).join('');
-        }
+        const selClass = document.getElementById('cbt-select-kelas') || document.getElementById('quiz-class-select');
+        const selSubject = document.getElementById('cbt-select-mapel') || document.getElementById('quiz-subject-select');
+        const filterClass = document.getElementById('filter-cbt-class');
+        const filterSubject = document.getElementById('filter-cbt-subject');
+
+        const classOptions = '<option value="">-- Pilih Kelas --</option><option value="Semua">Semua Kelas</option>' + 
+            classes.map(c => `<option value="${c.nama_kelas}">${c.nama_kelas}</option>`).join('');
+        const subjectOptions = '<option value="">-- Pilih Mapel --</option>' + 
+            subjects.map(s => `<option value="${s.nama_mapel}">${s.nama_mapel}</option>`).join('');
+
+        if (selClass) selClass.innerHTML = classOptions;
+        if (selSubject) selSubject.innerHTML = subjectOptions;
+
         if (filterClass) {
             filterClass.innerHTML = '<option value="">Semua Kelas</option>' + 
                 classes.map(c => `<option value="${c.nama_kelas}">${c.nama_kelas}</option>`).join('');
-        }
-        if (selSubject) {
-            selSubject.innerHTML = '<option value="">-- Pilih Mapel --</option>' + 
-                subjects.map(s => `<option value="${s.nama_mapel}">${s.nama_mapel}</option>`).join('');
         }
         if (filterSubject) {
             filterSubject.innerHTML = '<option value="">Semua Mata Pelajaran</option>' + 
                 subjects.map(s => `<option value="${s.nama_mapel}">${s.nama_mapel}</option>`).join('');
         }
     } catch (err) {
-        console.error('Gagal memuat dropdown CBT:', err);
+        console.error('Gagal memuat relasi CBT (kelas & mapel):', err);
+    }
+}
+
+// Backward compatibility alias
+export const loadCbtDropdowns = loadCbtRelations;
+
+export async function loadKuisForParser() {
+    const parserSelect = document.getElementById('parser-target-quiz');
+    if (!parserSelect) return;
+
+    try {
+        const { data: quizzes, error } = await db
+            .from('quizzes')
+            .select('id, title, class_name, subject')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        let html = '<option value="">-- Pilih Ujian CBT --</option>';
+        (quizzes || []).forEach(q => {
+            html += `<option value="${q.id}">${escapeHTML(q.title)} - ${escapeHTML(q.subject || '-')} (${escapeHTML(q.class_name || 'Semua')})</option>`;
+        });
+        parserSelect.innerHTML = html;
+    } catch (err) {
+        console.error('Gagal memuat kuis untuk parser:', err);
     }
 }
 
 export async function loadCbtQuizzes() {
     const tbody = document.getElementById('tbody-cbt-quizzes');
-    const parserSelect = document.getElementById('parser-target-quiz');
     if (!tbody) return;
 
     try {
@@ -558,11 +583,7 @@ export async function loadCbtQuizzes() {
 
         allCbtQuizzes = quizzes || [];
         renderCbtTable(allCbtQuizzes);
-
-        if (parserSelect) {
-            parserSelect.innerHTML = '<option value="">-- Pilih Ujian CBT --</option>' + 
-                allCbtQuizzes.map(q => `<option value="${q.id}">${q.title} (${q.class_name} • ${q.subject})</option>`).join('');
-        }
+        await loadKuisForParser();
     } catch (err) {
         console.error('Gagal memuat kuis CBT admin:', err);
         if (tbody) tbody.innerHTML = `<tr><td colspan="7" class="aca-inline-22 text-rose-400">Gagal: ${escapeHTML(err.message)}</td></tr>`;
@@ -665,6 +686,7 @@ function initCbtEventListeners() {
 
     if (btnCreate) btnCreate.onclick = () => {
         if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+        loadCbtRelations();
         formQuiz.reset();
         modalQuiz.style.display = 'flex';
         modalQuiz.classList.remove('hidden');
@@ -675,8 +697,9 @@ function initCbtEventListeners() {
         modalQuiz.classList.add('hidden');
     };
 
-    if (btnOpenParser) btnOpenParser.onclick = () => {
+    if (btnOpenParser) btnOpenParser.onclick = async () => {
         if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
+        await loadKuisForParser();
         modalParser.style.display = 'flex';
         modalParser.classList.remove('hidden');
     };
@@ -701,8 +724,8 @@ function initCbtEventListeners() {
             if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
 
             const title = document.getElementById('quiz-title-input').value.trim();
-            const cls = document.getElementById('quiz-class-select').value;
-            const sub = document.getElementById('quiz-subject-select').value;
+            const cls = (document.getElementById('cbt-select-kelas') || document.getElementById('quiz-class-select'))?.value || '';
+            const sub = (document.getElementById('cbt-select-mapel') || document.getElementById('quiz-subject-select'))?.value || '';
             const duration = parseInt(document.getElementById('quiz-duration-input').value) || 60;
             const antiCheat = document.getElementById('quiz-anticheat-select').value === 'true';
 
@@ -1189,6 +1212,8 @@ function initInfocusPresenterListeners() {
 // Expose globally for SPA router
 window.loadLms = initLmsTeacherModule;
 window.loadCbt = initCbtTeacherModule;
+window.loadCbtRelations = loadCbtRelations;
+window.loadKuisForParser = loadKuisForParser;
 window.startInfocusMode = startInfocusMode;
 
 document.addEventListener('sectionLoaded', (e) => {
