@@ -141,11 +141,10 @@ if (localStorage.getItem('theme') === 'dark') {
 }
 
 
-// ── SPA Router & Section Switcher ──
 const lazyModules = [
     'data-siswa', 'data-guru', 'guru', 'absensi-guru', 'jurnal-guru',
     'absensi', 'nilai', 'rapor', 'jadwal', 'mata-pelajaran', 'kelas',
-    'cbt-admin', 'cbt', 'materi-lms', 'tugas-lms', 'data-migration'
+    'data-migration'
 ];
 
 export async function handleAcademicHashChange() {
@@ -154,7 +153,6 @@ export async function handleAcademicHashChange() {
     // Map alternate hashes to section IDs
     let targetId = hash;
     if (hash === 'data-guru') targetId = 'guru';
-    else if (hash === 'cbt') targetId = 'cbt-admin';
 
     // Sembunyikan semua .page-section seperti biasa
     document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
@@ -166,7 +164,6 @@ export async function handleAcademicHashChange() {
         try {
             let fileName = `${hash}.html`;
             if (hash === 'guru' || hash === 'data-guru') fileName = 'guru.html';
-            else if (hash === 'cbt' || hash === 'cbt-admin') fileName = 'cbt-admin.html';
 
             const res = await fetch(`../../pages/academic/partials/${fileName}`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -196,10 +193,6 @@ export async function handleAcademicHashChange() {
                 window.loadSubjects();
             } else if (hash === 'kelas' && typeof window.loadClasses === 'function') {
                 window.loadClasses();
-            } else if ((hash === 'tugas-lms' || hash === 'cbt-admin' || hash === 'cbt') && typeof window.loadLms === 'function') {
-                window.loadLms();
-            } else if (hash === 'materi-lms' && typeof window.loadMateri === 'function') {
-                window.loadMateri();
             } else if (hash === 'data-migration' && typeof window.loadMigration === 'function') {
                 window.loadMigration();
             }
@@ -295,5 +288,3 @@ if (btnThemeToggle) {
 }
 
 // Legacy loadAbsensiClasses removed in favor of Master Kelas (kelas.js)
-
-import './materi.js';

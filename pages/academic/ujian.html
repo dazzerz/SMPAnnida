@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Ujian Tengah Semester - SMPAnnida</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+    .exam-container { max-width: 800px; margin: 0 auto; padding: 2rem; background: #fff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border-radius: 8px; margin-top: 2rem; margin-bottom: 2rem; }
+    .header-info { border-bottom: 2px solid #e2e8f0; padding-bottom: 1.5rem; margin-bottom: 2rem; text-align: center; }
+    .header-info img { max-width: 80px; margin: 0 auto 1rem; }
+    .header-info h1 { font-size: 1.5rem; font-weight: 700; color: #1e293b; }
+    .header-info h2 { font-size: 1.25rem; font-weight: 600; color: #334155; }
+    .meta-data { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; margin-top: 1rem; font-size: 0.95rem; font-weight: 500; }
+    .meta-data p { margin: 0; }
+    
+    .section-title { font-size: 1.25rem; font-weight: 700; color: #0f172a; margin-top: 2.5rem; margin-bottom: 1.5rem; border-left: 4px solid #10b981; padding-left: 0.75rem; }
+    
+    .question-card { margin-bottom: 1.5rem; padding: 1.25rem; border: 1px solid #e2e8f0; border-radius: 6px; background-color: #fcfcfc; }
+    .question-text { font-size: 1rem; color: #1e293b; font-weight: 500; margin-bottom: 1rem; line-height: 1.5; }
+    
+    .options { display: flex; flex-direction: column; gap: 0.5rem; }
+    .option-label { display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; padding: 0.5rem; border-radius: 4px; transition: background 0.2s; }
+    .option-label:hover { background-color: #f1f5f9; }
+    .option-input { margin-top: 0.25rem; }
+    .option-text { font-size: 0.95rem; color: #334155; }
+    
+    .reading-text { background-color: #f8fafc; border: 1px solid #cbd5e1; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.6; color: #334155; }
+    
+    .essay-textarea { width: 100%; min-height: 100px; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.95rem; resize: vertical; }
+    .essay-textarea:focus { outline: none; border-color: #10b981; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2); }
+    
+    .submit-btn { display: block; width: 100%; padding: 1rem; background-color: #10b981; color: white; font-weight: 600; font-size: 1.1rem; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s; margin-top: 3rem; }
+    .submit-btn:hover { background-color: #059669; }
+  </style>
+</head>
+<body>
+
+  <div class="exam-container">
+    <div class="header-info">
+      <!-- Menggunakan logo default -->
+      <img src="../../assets/logo/1.webp" alt="Logo Sekolah" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
+      <h1>UJIAN TENGAH SEMESTER GANJIL 2026/2027</h1>
+      <h2>SMP ANNIDA AL ISLAMY SETU</h2>
+      <div class="meta-data">
+        <p>Mata Pelajaran : Bahasa Indonesia</p>
+        <p>Kelas : 7</p>
+        <p>Guru Mata Pelajaran : Awfa Dikhrish, S.S.</p>
+      </div>
+    </div>
+
+    <form onsubmit="event.preventDefault(); alert('Jawaban telah disimpan!');">
+      <!-- BAGIAN A -->
+      <h3 class="section-title">A. Soal Pilihan Ganda</h3>
+
+      <div class="question-card">
+        <p class="question-text">1. Informasi yang biasanya dijelaskan dalam teks deskripsi adalah …</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q1" value="a" class="option-input"><span class="option-text">a. Ciri-ciri, bentuk, dan sifat objek</span></label>
+          <label class="option-label"><input type="radio" name="q1" value="b" class="option-input"><span class="option-text">b. Tokoh, latar, dan alur</span></label>
+          <label class="option-label"><input type="radio" name="q1" value="c" class="option-input"><span class="option-text">c. Judul, penulis, dan penerbit</span></label>
+          <label class="option-label"><input type="radio" name="q1" value="d" class="option-input"><span class="option-text">d. Masalah dan solusi</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">2. Ciri utama teks deskripsi adalah ...</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q2" value="a" class="option-input"><span class="option-text">a. Menggunakan bahasa ilmiah dan teknis</span></label>
+          <label class="option-label"><input type="radio" name="q2" value="b" class="option-input"><span class="option-text">b. Menggambarkan objek dengan menggunakan pancaindra</span></label>
+          <label class="option-label"><input type="radio" name="q2" value="c" class="option-input"><span class="option-text">c. Mengandung konflik dan alur cerita</span></label>
+          <label class="option-label"><input type="radio" name="q2" value="d" class="option-input"><span class="option-text">d. Ditulis dalam bentuk puisi atau pantun</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">3. Bacalah puisi berikut!</p>
+        <div class="reading-text">
+          Ada ubi ada talas<br>
+          Ada budi ada balas
+        </div>
+        <p class="question-text">Jenis puisi lama tersebut adalah …</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q3" value="a" class="option-input"><span class="option-text">a. Pantun</span></label>
+          <label class="option-label"><input type="radio" name="q3" value="b" class="option-input"><span class="option-text">b. Syair</span></label>
+          <label class="option-label"><input type="radio" name="q3" value="c" class="option-input"><span class="option-text">c. Gurindam</span></label>
+          <label class="option-label"><input type="radio" name="q3" value="d" class="option-input"><span class="option-text">d. Karmina</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">4. Berisi hal-hal yang tidak mungkin terjadi di dunia nyata merupakan ciri teks …</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q4" value="a" class="option-input"><span class="option-text">a. Puisi</span></label>
+          <label class="option-label"><input type="radio" name="q4" value="b" class="option-input"><span class="option-text">b. Cerita imajinasi</span></label>
+          <label class="option-label"><input type="radio" name="q4" value="c" class="option-input"><span class="option-text">c. Pantun</span></label>
+          <label class="option-label"><input type="radio" name="q4" value="d" class="option-input"><span class="option-text">d. Gurindam</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">5. Ciri khas bahasa dalam teks deskripsi adalah penggunaan …</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q5" value="a" class="option-input"><span class="option-text">a. Kata kerja prosedural dan teknis</span></label>
+          <label class="option-label"><input type="radio" name="q5" value="b" class="option-input"><span class="option-text">b. Kata sifat dan pancaindra</span></label>
+          <label class="option-label"><input type="radio" name="q5" value="c" class="option-input"><span class="option-text">c. Kalimat perintah dan ajakan</span></label>
+          <label class="option-label"><input type="radio" name="q5" value="d" class="option-input"><span class="option-text">d. Kata kerja masa lampau dan konjungsi waktu</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">6. Tokoh yang menimbulkan konflik dan memiliki penggambaran watak yang buruk dalam cerita disebut ...</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q6" value="a" class="option-input"><span class="option-text">a. Antagonis</span></label>
+          <label class="option-label"><input type="radio" name="q6" value="b" class="option-input"><span class="option-text">b. Protagonis</span></label>
+          <label class="option-label"><input type="radio" name="q6" value="c" class="option-input"><span class="option-text">c. Figuran</span></label>
+          <label class="option-label"><input type="radio" name="q6" value="d" class="option-input"><span class="option-text">d. Tritagonis</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">7. Bacalah puisi lama berikut!</p>
+        <div class="reading-text">
+          Buku terbuka tak pernah kubaca<br>
+          Waktu bermain habiskan hari<br>
+          Kini menangis menatap angka<br>
+          Menyesal malas di kemudian hari
+        </div>
+        <p class="question-text">Suasana yang digambarkan dalam puisi tersebut adalah …</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q7" value="a" class="option-input"><span class="option-text">a. Bimbingan</span></label>
+          <label class="option-label"><input type="radio" name="q7" value="b" class="option-input"><span class="option-text">b. Kebahagiaan</span></label>
+          <label class="option-label"><input type="radio" name="q7" value="c" class="option-input"><span class="option-text">c. Penyesalan</span></label>
+          <label class="option-label"><input type="radio" name="q7" value="d" class="option-input"><span class="option-text">d. Ketakutan</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text font-bold mb-2">Bacalah teks berikut untuk menjawab soal nomor 8 dan 9!</p>
+        <div class="reading-text">
+          Kawah Putih merupakan salah satu objek wisata alam yang terkenal di Kabupaten Bandung, Jawa Barat. Tempat ini berada di kawasan pegunungan dan dikenal karena danau kawahnya yang memiliki air berwarna putih kehijauan. Warna tersebut berpadu dengan kabut dan pepohonan di sekitarnya, menciptakan pemandangan yang indah dan unik.<br><br>
+          Selain menikmati keindahan alam, pengunjung dapat merasakan suasana sejuk khas pegunungan serta mengabadikan pemandangan Kawah Putih melalui foto. Lingkungan yang tenang dan panorama yang menarik menjadikan tempat ini salah satu destinasi wisata yang banyak dikunjungi untuk menikmati keindahan alam Jawa Barat.
+        </div>
+        
+        <p class="question-text mt-4">8. Objek utama dalam teks deskripsi adalah ...</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q8" value="a" class="option-input"><span class="option-text">a. Danau di Jawa Barat</span></label>
+          <label class="option-label"><input type="radio" name="q8" value="b" class="option-input"><span class="option-text">b. Pegunungan Bandung</span></label>
+          <label class="option-label"><input type="radio" name="q8" value="c" class="option-input"><span class="option-text">c. Kawah Putih</span></label>
+          <label class="option-label"><input type="radio" name="q8" value="d" class="option-input"><span class="option-text">d. Hutan di Kabupaten Bandung</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">9. Suasana apa yang digambarkan dalam teks deskripsi tersebut ....</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q9" value="a" class="option-input"><span class="option-text">a. Sejuk dan tenang</span></label>
+          <label class="option-label"><input type="radio" name="q9" value="b" class="option-input"><span class="option-text">b. Panas dan ramai</span></label>
+          <label class="option-label"><input type="radio" name="q9" value="c" class="option-input"><span class="option-text">c. Berisik dan padat</span></label>
+          <label class="option-label"><input type="radio" name="q9" value="d" class="option-input"><span class="option-text">d. Kering dan gersang</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">10. Puisi lama yang berasal dari Arab adalah …</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q10" value="a" class="option-input"><span class="option-text">a. Gurindam</span></label>
+          <label class="option-label"><input type="radio" name="q10" value="b" class="option-input"><span class="option-text">b. Syair</span></label>
+          <label class="option-label"><input type="radio" name="q10" value="c" class="option-input"><span class="option-text">c. Pantun</span></label>
+          <label class="option-label"><input type="radio" name="q10" value="d" class="option-input"><span class="option-text">d. Cerpen</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">11. Manakah yang termasuk dalam unsur intrinsik puisi rakyat …</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q11" value="a" class="option-input"><span class="option-text">a. Agama dan kepercayaan</span></label>
+          <label class="option-label"><input type="radio" name="q11" value="b" class="option-input"><span class="option-text">b. Tema</span></label>
+          <label class="option-label"><input type="radio" name="q11" value="c" class="option-input"><span class="option-text">c. Latar belakang pengarang</span></label>
+          <label class="option-label"><input type="radio" name="q11" value="d" class="option-input"><span class="option-text">d. Kondisi sosial masyarakat</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">12. Kalimat berikut yang merupakan bagian dari teks deskripsi adalah ...</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q12" value="a" class="option-input"><span class="option-text">a. Kerangka sepeda itu terbuat dari logam ringan berwarna biru.</span></label>
+          <label class="option-label"><input type="radio" name="q12" value="b" class="option-input"><span class="option-text">b. Saya sangat senang ketika pergi ke rumah nenek.</span></label>
+          <label class="option-label"><input type="radio" name="q12" value="c" class="option-input"><span class="option-text">c. Besok kami akan pergi ke taman.</span></label>
+          <label class="option-label"><input type="radio" name="q12" value="d" class="option-input"><span class="option-text">d. Menurut saya, menonton film itu menyenangkan.</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">13. Struktur teks deskripsi secara runtut, yaitu ...</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q13" value="a" class="option-input"><span class="option-text">a. Pembukaan – isi – penutup</span></label>
+          <label class="option-label"><input type="radio" name="q13" value="b" class="option-input"><span class="option-text">b. Deskripsi manfaat – deskripsi bagian – penutup</span></label>
+          <label class="option-label"><input type="radio" name="q13" value="c" class="option-input"><span class="option-text">c. Deskripsi bagian – identifikasi – penutup</span></label>
+          <label class="option-label"><input type="radio" name="q13" value="d" class="option-input"><span class="option-text">d. Identifikasi – deskripsi bagian – penutup</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">14. Di bawah ini adalah alur dalam cerita fantasi, kecuali …</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q14" value="a" class="option-input"><span class="option-text">a. Deskripsi bagian</span></label>
+          <label class="option-label"><input type="radio" name="q14" value="b" class="option-input"><span class="option-text">b. Pengenalan (orientasi)</span></label>
+          <label class="option-label"><input type="radio" name="q14" value="c" class="option-input"><span class="option-text">c. Rangkaian peristiwa (komplikasi)</span></label>
+          <label class="option-label"><input type="radio" name="q14" value="d" class="option-input"><span class="option-text">d. Penyelesaian (resolusi)</span></label>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">15. Latar dalam cerita imajinasi sering digambarkan sebagai …</p>
+        <div class="options">
+          <label class="option-label"><input type="radio" name="q15" value="a" class="option-input"><span class="option-text">a. Tempat wisata terkenal</span></label>
+          <label class="option-label"><input type="radio" name="q15" value="b" class="option-input"><span class="option-text">b. Dunia nyata tanpa perubahan</span></label>
+          <label class="option-label"><input type="radio" name="q15" value="c" class="option-input"><span class="option-text">c. Sekolah atau kantor modern</span></label>
+          <label class="option-label"><input type="radio" name="q15" value="d" class="option-input"><span class="option-text">d. Lingkungan fiksi dengan unsur magis atau futuristik</span></label>
+        </div>
+      </div>
+
+
+      <!-- BAGIAN B -->
+      <h3 class="section-title">B. Soal Essay</h3>
+
+      <div class="question-card">
+        <p class="question-text">1. Apa yang dimaksud dengan teks deskripsi?</p>
+        <textarea name="essay1" class="essay-textarea" placeholder="Tulis jawaban Anda di sini..."></textarea>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">2. Buatlah 1 pantun yang terdiri dari 4 baris!</p>
+        <textarea name="essay2" class="essay-textarea" placeholder="Tulis jawaban Anda di sini..."></textarea>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">3. Apa yang dimaksud dengan cerita fantasi?</p>
+        <textarea name="essay3" class="essay-textarea" placeholder="Tulis jawaban Anda di sini..."></textarea>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">4. Sebutkan ciri-ciri gurindam!</p>
+        <textarea name="essay4" class="essay-textarea" placeholder="Tulis jawaban Anda di sini..."></textarea>
+      </div>
+
+      <div class="question-card">
+        <p class="question-text">5. Sebutkan langkah-langkah dalam menulis teks deskripsi!</p>
+        <textarea name="essay5" class="essay-textarea" placeholder="Tulis jawaban Anda di sini..."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Kirim Jawaban Ujian</button>
+
+    </form>
+  </div>
+
+</body>
+</html>

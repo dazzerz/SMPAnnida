@@ -10,5 +10,3 @@ import './kelas.js';
 import './siswa.js';
 import './migration.js';
 import './jurnal.js';
-import './lms.js';
-import './materi.js';
