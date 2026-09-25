@@ -220,7 +220,7 @@ export async function handleAcademicHashChange() {
                        document.querySelector(`#nav-group-academic [data-target="${targetId}"]`);
     if (activeLink) activeLink.classList.add('active');
 
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 1024) {
         document.getElementById('sidebar')?.classList.remove('open');
         const overlay = document.getElementById('sidebar-overlay') || document.querySelector('.overlay');
         if (overlay) overlay.classList.remove('show', 'active');
@@ -269,7 +269,7 @@ if (menuToggle) {
 // Also close sidebar when nav link is clicked on mobile
 document.addEventListener('click', (e) => {
     if (e.target.closest('.nav-item, .nav-link')) {
-        if (window.innerWidth < 768 && window._closeSidebar) {
+        if (window.innerWidth < 1024 && window._closeSidebar) {
             window._closeSidebar();
         }
     }
