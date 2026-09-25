@@ -1,5 +1,5 @@
 // Service Worker - SMP Annida Progressive Web App
-const CACHE_NAME = 'smpannida-cache-v4';
+const CACHE_NAME = 'smpannida-cache-v5';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

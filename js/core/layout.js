@@ -252,7 +252,7 @@ export function injectSidebar(containerId) {
 
     // Close & Toggle Functions
     function closeSubmenuPanel() {
-        if (window.innerWidth < 1024) {
+        if (window.innerWidth <= 1024) {
             if (window._closeSidebar) {
                 window._closeSidebar();
             } else {
@@ -343,7 +343,7 @@ export function injectSidebar(containerId) {
     // Auto-close sidebar on mobile when a navigation link is clicked
     container.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', () => {
-            if (window.innerWidth < 1024) {
+            if (window.innerWidth <= 1024) {
                 if (window._closeSidebar) window._closeSidebar();
                 else closeSubmenuPanel();
             }
@@ -388,7 +388,7 @@ export function injectSidebar(containerId) {
         }
 
         if (!container.contains(e.target) && !e.target.closest('#mobile-menu-btn, .mobile-menu-btn')) {
-            if (window.innerWidth < 1024) {
+            if (window.innerWidth <= 1024) {
                 if (container.classList.contains('open')) closeSubmenuPanel();
             } else {
                 if (!container.classList.contains('panel-collapsed')) togglePanel(true);
@@ -632,7 +632,7 @@ if (typeof document !== 'undefined' && !window.__sidebar_lifecycle_bound) {
         }
 
         // If mobile sidebar is open and clicked anywhere outside sidebar and hamburger button
-        if (window.innerWidth < 1024) {
+        if (window.innerWidth <= 1024) {
             const hasOpen = document.querySelector('.sidebar.open, #sidebar.open, .sidebar-overlay.show, .sidebar-overlay.active');
             if (hasOpen) {
                 const insideSidebar = e.target.closest('.sidebar, #sidebar, #student-sidebar, .split-rail-container');

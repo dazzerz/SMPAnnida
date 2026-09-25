@@ -77,6 +77,10 @@ function navigateTo(sectionId) {
 
   // Lazy-init section
   initSection(sectionId);
+
+  if (window.innerWidth <= 1024 && typeof window._closeSidebar === 'function') {
+      window._closeSidebar();
+  }
 }
 
 function initSection(sectionId) {
