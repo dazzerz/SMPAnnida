@@ -340,6 +340,16 @@ export function injectSidebar(containerId) {
     updateActiveSidebar();
     window.addEventListener('hashchange', updateActiveSidebar);
 
+    // Auto-close sidebar on mobile when a navigation link is clicked
+    container.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth < 768) {
+                if (window._closeSidebar) window._closeSidebar();
+                else closeSubmenuPanel();
+            }
+        });
+    });
+
     // Overlay Drawer Management for Mobile
     let overlay = document.getElementById('sidebar-overlay');
     if (!overlay) {
@@ -643,3 +653,4 @@ if (typeof document !== 'undefined' && !window.__sidebar_lifecycle_bound) {
         }
     }, { passive: false });
 }
+
