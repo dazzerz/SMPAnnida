@@ -541,6 +541,8 @@ export function closeMobileSidebar() {
     const sidebars = document.querySelectorAll('.sidebar, #sidebar, #student-sidebar, .split-rail-container');
     sidebars.forEach(sb => {
         sb.classList.remove('open', 'active', 'show');
+        // Force removing inline transform if any
+        sb.style.transform = '';
     });
     const overlays = document.querySelectorAll('.sidebar-overlay, #sidebar-overlay');
     overlays.forEach(ov => {
