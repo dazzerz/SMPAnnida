@@ -619,8 +619,8 @@ option {
   flex-shrink: 0;
 }
 
-/* Mobile Split Rail Drawer (< 768px) */
-@media (max-width: 768px) {
+/* Mobile Split Rail Drawer (< 1024px) */
+@media (max-width: 1024px) {
   .sidebar.split-rail-container {
     position: fixed !important;
     top: 0 !important;
