@@ -635,9 +635,15 @@ option {
     z-index: 1200 !important;
     box-shadow: 0 0 35px rgba(0, 0, 0, 0.8) !important;
     background: #166534 !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
   .sidebar.split-rail-container.open {
     transform: translateX(0) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
   .sidebar.split-rail-container.panel-collapsed {
     width: 252px !important;

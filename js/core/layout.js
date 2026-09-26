@@ -358,6 +358,13 @@ export function injectSidebar(containerId) {
         overlay.className = 'sidebar-overlay';
         document.body.appendChild(overlay);
     }
+    // Fix click delegation bug on divs for all mobile browsers
+    overlay.style.cursor = 'pointer';
+    overlay.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (window._closeSidebar) window._closeSidebar();
+    };
 
     window._openSidebar = openMobileSidebar;
     window._closeSidebar = closeMobileSidebar;
@@ -567,6 +574,13 @@ export function openMobileSidebar() {
         overlay.className = 'sidebar-overlay';
         document.body.appendChild(overlay);
     }
+    // Fix click delegation bug on divs for all mobile browsers
+    overlay.style.cursor = 'pointer';
+    overlay.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (window._closeSidebar) window._closeSidebar();
+    };
     overlay.style.display = '';
     overlay.style.pointerEvents = '';
     overlay.style.opacity = '';
@@ -655,4 +669,5 @@ if (typeof document !== 'undefined' && !window.__sidebar_lifecycle_bound) {
         }
     }, { passive: false });
 }
+
 
