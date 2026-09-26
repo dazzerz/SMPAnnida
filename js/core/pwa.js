@@ -10,19 +10,6 @@ const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 let deferredPrompt = null;
 
 export function initPWA() {
-  // 1. Register Service Worker if supported
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then((reg) => {
-          console.log('[PWA] Service Worker registered with scope:', reg.scope);
-        })
-        .catch((err) => {
-          console.warn('[PWA] Service Worker registration failed:', err);
-        });
-    });
-  }
-
   // 2. Check if already running in standalone mode
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
                        window.navigator.standalone === true ||

@@ -76,7 +76,7 @@ export function injectSidebar(containerId) {
       <nav class="split-rail-panel-menu sidebar-nav">
         <!-- MAIN CATEGORY -->
         <div class="category-panel-content" id="nav-group-main" data-category="main" style="display:none;">
-          <a href="${basePath}dashboard.html" class="nav-item nav-link" data-target="super-dashboard" data-tooltip="Super Dashboard">
+          <a href="${basePath}dashboard.html" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="super-dashboard" data-tooltip="Super Dashboard">
             <span class="material-symbols-outlined nav-icon">grid_view</span>
             <span class="nav-text">Super Dashboard</span>
           </a>
@@ -84,51 +84,51 @@ export function injectSidebar(containerId) {
 
         <!-- ACADEMIC CATEGORY -->
         <div class="category-panel-content" id="nav-group-academic" data-category="academic">
-          <a href="${basePath}pages/academic/dashboard.html#dashboard" class="nav-item nav-link" data-target="dashboard" data-tooltip="Dashboard">
+          <a href="${basePath}pages/academic/dashboard.html#dashboard" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="dashboard" data-tooltip="Dashboard">
             <span class="material-symbols-outlined nav-icon">insights</span>
             <span class="nav-text">Dashboard</span>
           </a>
-          <a href="${basePath}pages/academic/dashboard.html#data-siswa" class="nav-item nav-link" data-target="data-siswa" data-tooltip="Data Siswa">
+          <a href="${basePath}pages/academic/dashboard.html#data-siswa" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="data-siswa" data-tooltip="Data Siswa">
             <span class="material-symbols-outlined nav-icon">group</span>
             <span class="nav-text">Data Siswa</span>
           </a>
-          <a href="${basePath}pages/academic/dashboard.html#guru" class="nav-item nav-link" data-target="guru" data-tooltip="Data Guru">
+          <a href="${basePath}pages/academic/dashboard.html#guru" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="guru" data-tooltip="Data Guru">
             <span class="material-symbols-outlined nav-icon">badge</span>
             <span class="nav-text">Data Guru</span>
           </a>
-          <a href="${basePath}pages/academic/dashboard.html#kelas" class="nav-item nav-link" data-target="kelas" data-tooltip="Data Kelas">
+          <a href="${basePath}pages/academic/dashboard.html#kelas" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="kelas" data-tooltip="Data Kelas">
             <span class="material-symbols-outlined nav-icon">meeting_room</span>
             <span class="nav-text">Data Kelas</span>
           </a>
-          <a href="${basePath}pages/academic/dashboard.html#mata-pelajaran" class="nav-item nav-link" data-target="mata-pelajaran" data-tooltip="Mata Pelajaran">
+          <a href="${basePath}pages/academic/dashboard.html#mata-pelajaran" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="mata-pelajaran" data-tooltip="Mata Pelajaran">
             <span class="material-symbols-outlined nav-icon">menu_book</span>
             <span class="nav-text">Mata Pelajaran</span>
           </a>
-          <a href="${basePath}pages/academic/dashboard.html#jadwal" class="nav-item nav-link" data-target="jadwal" data-tooltip="Jadwal Pelajaran">
+          <a href="${basePath}pages/academic/dashboard.html#jadwal" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="jadwal" data-tooltip="Jadwal Pelajaran">
             <span class="material-symbols-outlined nav-icon">calendar_month</span>
             <span class="nav-text">Jadwal</span>
           </a>
-          <a href="${basePath}pages/academic/dashboard.html#nilai" class="nav-item nav-link" data-target="nilai" data-tooltip="Nilai Siswa">
+          <a href="${basePath}pages/academic/dashboard.html#nilai" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="nilai" data-tooltip="Nilai Siswa">
             <span class="material-symbols-outlined nav-icon">assignment</span>
             <span class="nav-text">Nilai</span>
           </a>
-          <a href="${basePath}pages/academic/dashboard.html#rapor" class="nav-item nav-link" data-target="rapor" data-tooltip="Rapor Siswa">
+          <a href="${basePath}pages/academic/dashboard.html#rapor" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="rapor" data-tooltip="Rapor Siswa">
             <span class="material-symbols-outlined nav-icon">description</span>
             <span class="nav-text">Rapor</span>
           </a>
-          <a href="${basePath}pages/academic/dashboard.html#absensi" class="nav-item nav-link" data-target="absensi" data-tooltip="Absensi Siswa">
+          <a href="${basePath}pages/academic/dashboard.html#absensi" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="absensi" data-tooltip="Absensi Siswa">
             <span class="material-symbols-outlined nav-icon">fact_check</span>
             <span class="nav-text">Absensi Siswa</span>
           </a>
-          <a href="${basePath}pages/academic/dashboard.html#jurnal-guru" class="nav-item nav-link" data-target="jurnal-guru" data-tooltip="Jurnal Guru">
+          <a href="${basePath}pages/academic/dashboard.html#jurnal-guru" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="jurnal-guru" data-tooltip="Jurnal Guru">
             <span class="material-symbols-outlined nav-icon">menu_book</span>
             <span class="nav-text">Jurnal Guru</span>
           </a>
-          <a href="${basePath}pages/academic/dashboard.html#absensi-guru" class="nav-item nav-link" data-target="absensi-guru" data-tooltip="Absensi Guru">
+          <a href="${basePath}pages/academic/dashboard.html#absensi-guru" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="absensi-guru" data-tooltip="Absensi Guru">
             <span class="material-symbols-outlined nav-icon">badge</span>
             <span class="nav-text">Absensi Guru</span>
           </a>
-          <a href="${basePath}pages/academic/dashboard.html#data-migration" class="nav-item nav-link" data-target="data-migration" data-tooltip="Data Migration">
+          <a href="${basePath}pages/academic/dashboard.html#data-migration" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="data-migration" data-tooltip="Data Migration">
             <span class="material-symbols-outlined nav-icon">database</span>
             <span class="nav-text">Data Migration</span>
           </a>
@@ -136,23 +136,23 @@ export function injectSidebar(containerId) {
 
         <!-- FINANCE CATEGORY -->
         <div class="category-panel-content" id="nav-group-finance" data-category="finance" style="display:none;">
-          <a href="${basePath}pages/finance/dashboard.html#transactions" class="nav-item nav-link" data-target="transactions" data-tooltip="Transaksi Kas">
+          <a href="${basePath}pages/finance/dashboard.html#transactions" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="transactions" data-tooltip="Transaksi Kas">
             <span class="material-symbols-outlined nav-icon">payments</span>
             <span class="nav-text">Transaksi Kas</span>
           </a>
-          <a href="${basePath}pages/finance/dashboard.html#budget" class="nav-item nav-link" data-target="budget" data-tooltip="Budget Bulanan">
+          <a href="${basePath}pages/finance/dashboard.html#budget" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="budget" data-tooltip="Budget Bulanan">
             <span class="material-symbols-outlined nav-icon">savings</span>
             <span class="nav-text">Budget Bulanan</span>
           </a>
-          <a href="${basePath}pages/finance/dashboard.html#rab" class="nav-item nav-link" data-target="rab" data-tooltip="RAB Kelas">
+          <a href="${basePath}pages/finance/dashboard.html#rab" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="rab" data-tooltip="RAB Kelas">
             <span class="material-symbols-outlined nav-icon">table_chart</span>
             <span class="nav-text">RAB Kelas</span>
           </a>
-          <a href="${basePath}pages/finance/dashboard.html#reports" class="nav-item nav-link" data-target="reports" data-tooltip="Laporan Keuangan">
+          <a href="${basePath}pages/finance/dashboard.html#reports" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="reports" data-tooltip="Laporan Keuangan">
             <span class="material-symbols-outlined nav-icon">analytics</span>
             <span class="nav-text">Laporan</span>
           </a>
-          <a href="${basePath}pages/finance/dashboard.html#syahriah" class="nav-item nav-link" data-target="syahriah" data-tooltip="Syahriah Guru">
+          <a href="${basePath}pages/finance/dashboard.html#syahriah" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="syahriah" data-tooltip="Syahriah Guru">
             <span class="material-symbols-outlined nav-icon">account_balance_wallet</span>
             <span class="nav-text">Syahriah Guru</span>
           </a>
@@ -160,7 +160,7 @@ export function injectSidebar(containerId) {
 
         <!-- PPDB CATEGORY -->
         <div class="category-panel-content" id="nav-group-ppdb" data-category="ppdb" style="display:none;">
-          <a href="${basePath}pages/ppdb/dashboard-admin.html" class="nav-item nav-link" data-target="ppdb-admin" data-tooltip="Pendaftar Baru">
+          <a href="${basePath}pages/ppdb/dashboard-admin.html" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="ppdb-admin" data-tooltip="Pendaftar Baru">
             <span class="material-symbols-outlined nav-icon">person_add</span>
             <span class="nav-text">Pendaftar Baru</span>
           </a>
@@ -168,7 +168,7 @@ export function injectSidebar(containerId) {
 
         <!-- SYSTEM CATEGORY -->
         <div class="category-panel-content" id="nav-group-system" data-category="system" style="display:none;">
-          <a href="${basePath}pages/finance/dashboard.html#settings" class="nav-item nav-link" data-target="settings" data-tooltip="Pengaturan">
+          <a href="${basePath}pages/finance/dashboard.html#settings" class="nav-item nav-link" onclick="if(window.innerWidth<=1024 && window._closeSidebar) window._closeSidebar();" data-target="settings" data-tooltip="Pengaturan">
             <span class="material-symbols-outlined nav-icon">settings</span>
             <span class="nav-text">Pengaturan</span>
           </a>
