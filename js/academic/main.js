@@ -230,7 +230,6 @@ export async function handleAcademicHashChange() {
             if (overlay) {
                 overlay.style.display = 'none';
                 overlay.style.opacity = '0';
-                overlay.style.pointerEvents = 'none';
             }
             document.body.style.overflow = '';
             document.body.classList.remove('sidebar-open');
@@ -283,8 +282,11 @@ document.addEventListener('click', (e) => {
             setTimeout(() => {
                 if (window._closeSidebar) window._closeSidebar();
                 document.getElementById('sidebar')?.classList.remove('open', 'show', 'active');
-                const ov = document.getElementById('sidebar-overlay');
-                if (ov) { ov.classList.remove('show', 'active'); ov.style.display = 'none'; }
+                const overlay = document.getElementById('sidebar-overlay');
+                if (overlay) {
+                    overlay.style.display = 'none';
+                    overlay.style.opacity = '0';
+                }
             }, 50);
         }
     }

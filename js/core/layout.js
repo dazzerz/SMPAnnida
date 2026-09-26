@@ -360,11 +360,13 @@ export function injectSidebar(containerId) {
     }
     // Fix click delegation bug on divs for all mobile browsers
     overlay.style.cursor = 'pointer';
-    overlay.onclick = function(e) {
+    const closeHandler = function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (window._closeSidebar) window._closeSidebar();
     };
+    overlay.onclick = closeHandler;
+    overlay.ontouchend = closeHandler;
 
     window._openSidebar = openMobileSidebar;
     window._closeSidebar = closeMobileSidebar;
@@ -576,11 +578,13 @@ export function openMobileSidebar() {
     }
     // Fix click delegation bug on divs for all mobile browsers
     overlay.style.cursor = 'pointer';
-    overlay.onclick = function(e) {
+    const closeHandler = function(e) {
         e.preventDefault();
         e.stopPropagation();
         if (window._closeSidebar) window._closeSidebar();
     };
+    overlay.onclick = closeHandler;
+    overlay.ontouchend = closeHandler;
     overlay.style.display = '';
     overlay.style.pointerEvents = '';
     overlay.style.opacity = '';
