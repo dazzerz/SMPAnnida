@@ -1,5 +1,5 @@
 // Service Worker - SMP Annida Progressive Web App
-const CACHE_NAME = 'smpannida-cache-v6';
+const CACHE_NAME = 'smpannida-cache-v7';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -43,7 +43,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // HTML documents & Navigation: ALWAYS NETWORK-FIRST
-  if (event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html')) {
+  if (event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html') || event.request.url.match(/\.(js|css)(\?.*)?$/)) {
     event.respondWith(
       fetch(event.request).then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
