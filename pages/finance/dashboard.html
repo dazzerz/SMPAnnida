@@ -1,22 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(regs) {
-      for(let reg of regs) { reg.unregister(); }
-    });
-  }
-  if ('caches' in window) {
-    caches.keys().then(function(names) {
-      for (let name of names) caches.delete(name);
-    });
-  }
-  if (!localStorage.getItem('nuked_cache_v2')) {
-      localStorage.setItem('nuked_cache_v2', 'true');
-      setTimeout(() => window.location.reload(true), 800);
-  }
-</script>
+
   
   <!-- Defensive Content Security Policy & Security Meta -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://vxrgezyfxzynpucuomci.supabase.co wss://vxrgezyfxzynpucuomci.supabase.co https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com;" />
@@ -83,17 +68,7 @@
       document.body.classList.add('page-fade-out');
       setTimeout(() => { window.location.href = url; }, 300);
     };
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function(e) {
-          const href = this.getAttribute('href');
-          if (href && !href.startsWith('javascript') && this.target !== '_blank' && new URL(this.href, window.location.href).pathname !== window.location.pathname) {
-            e.preventDefault();
-            window.smoothRedirect(this.href);
-          }
-        });
-      });
-    });
+    
   </script>
 <script>
   window.addEventListener('pageshow', function (event) {

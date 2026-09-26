@@ -671,7 +671,7 @@ option {
   pointer-events: auto !important;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
   .sidebar-overlay {
     display: none !important;
     pointer-events: none !important;

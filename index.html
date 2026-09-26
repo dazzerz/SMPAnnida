@@ -1,22 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(regs) {
-      for(let reg of regs) { reg.unregister(); }
-    });
-  }
-  if ('caches' in window) {
-    caches.keys().then(function(names) {
-      for (let name of names) caches.delete(name);
-    });
-  }
-  if (!localStorage.getItem('nuked_cache_v2')) {
-      localStorage.setItem('nuked_cache_v2', 'true');
-      setTimeout(() => window.location.reload(true), 800);
-  }
-</script>
+
   
   <!-- Defensive Content Security Policy & Security Meta -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; frame-src 'self' https://www.google.com https://maps.google.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co;" />
@@ -647,18 +632,7 @@
       }
 
       // Efek Transisi Keluar (Page Fade Out)
-      document.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', function(e) {
-          const href = this.getAttribute('href');
-          if (href && !href.startsWith('#') && this.target !== '_blank') {
-            e.preventDefault();
-            document.body.classList.add('page-fade-out');
-            setTimeout(() => {
-              window.location.href = this.href;
-            }, 300);
-          }
-        });
-      });
+      
       
     });
   </script>
