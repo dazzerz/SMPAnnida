@@ -1,5 +1,9 @@
+// Note: All endpoints are now RLS-protected in Supabase (see sql/rls_policies.sql)
 // =====================================================
 // ANNIDA2FINANCE - Authentication Module
+// Mode guest dihapus total (audit 2026-09-27): seluruh dashboard privat
+// wajib sesi login Supabase. Halaman publik (PPDB landing/register,
+// index, login) tidak memakai modul ini untuk akses data.
 // =====================================================
 import supabaseClient from './supabase.js';
 import { showToast, setupThemeToggle, applySavedTheme } from './utils.js';
@@ -67,7 +71,6 @@ export async function resolveUserRole(user) {
   // 2. School domain resolution
   if (user.email && user.email.toLowerCase().endsWith('@smpannida.sch.id')) {
     const cleanEmail = user.email.toLowerCase().trim();
-    if (cleanEmail.includes('admin')) return 'admin';
 
     try {
       const { data: teacher } = await supabaseClient
@@ -100,10 +103,8 @@ export async function resolveUserRole(user) {
     console.warn('resolveUserRole error:', err);
   }
 
-  // Fallback if admin keyword is present in email
-  if (!role && user.email && user.email.toLowerCase().includes('admin')) {
-    role = 'admin';
-  }
+  // Peran admin TIDAK BOLEH ditebak dari email (audit 2026-09-27).
+  // Penentuan peran HANYA dari tabel user_roles / RPC get_user_role().
 
   // Fallback for phone login if role not explicitly set in database
   if (!role && user.phone) {
@@ -155,9 +156,6 @@ export async function handleLogin(e) {
     return;
   }
   showAuthMessage('Login berhasil! Mengalihkan...', 'success');
-  localStorage.removeItem('isGuest');
-  sessionStorage.removeItem('guest_mode_active');
-  
   // Periksa role untuk menentukan halaman redirect
   let r = await resolveUserRole(data.user);
 
@@ -237,9 +235,13 @@ async function handleRegister(e) {
 // ── LOGOUT ────────────────────────────────────────
 export async function handleLogout() {
   await supabaseClient.auth.signOut();
-  localStorage.removeItem('isGuest');
-  sessionStorage.removeItem('guest_mode_active');
-  sessionStorage.removeItem('guest_stats');
+  // Bersihkan sisa flag guest versi lama (satu kali, untuk perangkat yang
+  // pernah membuka versi lama sebelum guest dihapus total).
+  try {
+    localStorage.removeItem('isGuest');
+    sessionStorage.removeItem('guest_mode_active');
+    sessionStorage.removeItem('guest_stats');
+  } catch (_) { /* abaikan */ }
   const isInPages = window.location.pathname.includes('/pages/');
   if(window.smoothRedirect){window.smoothRedirect(isInPages ? '../../index.html' : './index.html');}else{window.location.href=isInPages ? '../../index.html' : './index.html';}
 }
