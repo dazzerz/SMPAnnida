@@ -8,6 +8,9 @@
 import { bindThemeSwitcher } from './theme.js';
 import { handleLogout } from './auth.js';
 
+/**
+ * Injects the sidebar navigation into the DOM.
+ */
 export function injectSidebar(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -560,10 +563,16 @@ export function setSidebar(open) {
     document.body.style.overflow = shouldOpen ? 'hidden' : '';
 }
 
+/**
+ * Opens the mobile sidebar drawer and displays the overlay.
+ */
 export function openMobileSidebar() {
     setSidebar(true);
 }
 
+/**
+ * Closes the mobile sidebar drawer and hides the overlay.
+ */
 export function closeMobileSidebar() {
     setSidebar(false);
 }
@@ -607,3 +616,5 @@ if (typeof window !== 'undefined') {
 }
 
 
+
+window._setSidebar = setSidebar;
