@@ -4,6 +4,7 @@
   <!-- Defensive Content Security Policy & Security Meta -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://vxrgezyfxzynpucuomci.supabase.co wss://vxrgezyfxzynpucuomci.supabase.co https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com;" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <script>/* Kill-switch: bebaskan perangkat dari Service Worker & cache PWA lama */if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(s=>s.unregister()))}if('caches' in window){caches.keys().then(k=>k.forEach(c=>caches.delete(c)))}</script>
   <script>
     (function() {
       document.documentElement.setAttribute('data-theme', 'light');
@@ -17,7 +18,7 @@
   <title>Registrasi Berhasil - SMP Annida</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,200..900;1,7..72,200..900&amp;family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&amp;display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="../../css/theme.css">
+  <link rel="stylesheet" href="../../css/theme.css?v=20260927">
     <style>
     .glass-panel-custom {
       background: var(--glass-bg, rgba(16, 26, 20, 0.4));

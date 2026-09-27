@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <script>if('caches' in window){caches.keys().then(k=>k.forEach(c=>{if(c.includes('smpannida'))caches.delete(c)}))}</script>
+  <script>/* Kill-switch: bebaskan perangkat dari Service Worker & cache PWA lama */if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(s=>s.unregister()))}if('caches' in window){caches.keys().then(k=>k.forEach(c=>caches.delete(c)))}</script>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: data: https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://cdn.tailwindcss.com https://kit.fontawesome.com https://ka-f.fontawesome.com https://code.jquery.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://ka-f.fontawesome.com; font-src 'self' data: blob: https://fonts.gstatic.com https://unpkg.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://ka-f.fontawesome.com; img-src 'self' data: blob: https:; frame-src 'self' blob: data: https://vxrgezyfxzynpucuomci.supabase.co https://*.supabase.co https://www.youtube.com https://www.google.com https://maps.google.com https://drive.google.com https://docs.google.com; connect-src 'self' blob: data: https://vxrgezyfxzynpucuomci.supabase.co wss://vxrgezyfxzynpucuomci.supabase.co https://script.google.com https://script.googleusercontent.com https://*.google.com https://*.googleusercontent.com https://unpkg.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com https://ka-f.fontawesome.com;" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
@@ -20,10 +20,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..700&family=Nunito+Sans:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" media="print" onload="this.media='all'" />
-  <link rel="stylesheet" href="../../css/theme.css" />
+  <link rel="stylesheet" href="../../css/theme.css?v=20260927" />
   <link rel="stylesheet" href="../../src/style.css" />
   <link rel="stylesheet" href="../../css/academic/absensi.css" />
-  <link rel="stylesheet" href="../../css/mobile.css" />
+  <link rel="stylesheet" href="../../css/mobile.css?v=20260927" />
   <meta name="theme-color" content="#059669" />
   <style>
     body { animation: pageFadeIn 0.3s ease-out forwards; }
