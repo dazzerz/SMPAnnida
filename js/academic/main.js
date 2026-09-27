@@ -16,8 +16,7 @@ import supabaseClient from '../core/supabase.js';
 const db = supabaseClient;
 window.db = supabaseClient;
 
-// NOTE: window.isGuest is set inside checkAuth() AFTER session is confirmed.
-// Do NOT set it here synchronously — that causes a race condition.
+// Sesi di-resolve di checkAuth() di bawah — jangan set state di sini.
 
 import { escapeHTML } from '../core/utils.js';
 window.escapeHTML = escapeHTML;
@@ -30,14 +29,8 @@ async function checkAuth() {
         let _teacher = null;
         let _admin = false;
         let _pembina = false;
-        let _guest = false;
 
-        // Only AFTER we know the session status do we decide on isGuest.
         if (user) {
-            // Valid session - override any stale isGuest flag
-            _guest = false;
-            localStorage.removeItem('isGuest');
-
             _user = user;
 
             // Resolve role cleanly via centralized helper
@@ -78,15 +71,12 @@ async function checkAuth() {
                     document.head.appendChild(style);
                 }
             }
-        } else {
-            // No valid session - check if user intentionally chose guest mode
-            _guest = localStorage.getItem('isGuest') === 'true';
         }
 
         // Commit to auth module
-        authState.setAuth(_user, _teacher, _admin, _guest, _pembina || false);
+        authState.setAuth(_user, _teacher, _admin, _pembina || false);
 
-        if (!user && !_guest) {
+        if (!user) {
             if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
             return;
         }
@@ -94,12 +84,7 @@ async function checkAuth() {
         // Update profil UI
         const profileName = document.querySelector('.user-profile span');
         if (profileName) {
-            if (authState.isGuest) {
-                profileName.textContent = 'Guest (View Only)';
-                document.body.classList.add('guest-mode');
-            } else {
-                profileName.textContent = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Guru Admin';
-            }
+            profileName.textContent = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Guru Admin';
         }
 
         // Update sidebar user info jika tersedia
@@ -175,26 +160,29 @@ export async function handleAcademicHashChange() {
             targetSection = document.getElementById(targetId);
 
             // Trigger initialization hook berdasarkan hash/modul
-            if (hash === 'data-siswa' && typeof window.loadStudents === 'function') {
-                window.loadStudents();
-            } else if ((hash === 'guru' || hash === 'data-guru') && typeof window.loadTeachers === 'function') {
-                window.loadTeachers();
-            } else if (hash === 'absensi-guru' && typeof window.loadAttendance === 'function') {
-                window.loadAttendance();
-            } else if (hash === 'jurnal-guru' && typeof window.loadJournals === 'function') {
-                window.loadJournals();
-            } else if (hash === 'absensi' && typeof window.loadStudentAttendance === 'function') {
-                window.loadStudentAttendance();
-            } else if ((hash === 'nilai' || hash === 'rapor') && typeof window.loadGrades === 'function') {
-                window.loadGrades();
-            } else if (hash === 'jadwal' && typeof window.loadSchedules === 'function') {
-                window.loadSchedules();
-            } else if (hash === 'mata-pelajaran' && typeof window.loadSubjects === 'function') {
-                window.loadSubjects();
-            } else if (hash === 'kelas' && typeof window.loadClasses === 'function') {
-                window.loadClasses();
-            } else if (hash === 'data-migration' && typeof window.loadMigration === 'function') {
-                window.loadMigration();
+            // Trigger initialization hook berdasarkan hash/modul
+            if (hash === 'data-siswa') {
+                import('./siswa.js').then(m => m.initStudentSection?.() || (typeof window.loadStudents === 'function' && window.loadStudents()));
+            } else if (hash === 'guru' || hash === 'data-guru') {
+                import('./guru.js').then(m => m.initGuruSection?.() || (typeof window.loadTeachers === 'function' && window.loadTeachers()));
+            } else if (hash === 'absensi-guru') {
+                import('./teacher-attendance.js').then(m => m.initTeacherAttendance?.() || (typeof window.loadAttendance === 'function' && window.loadAttendance()));
+            } else if (hash === 'jurnal-guru') {
+                import('./jurnal.js').then(m => m.initJurnalSection?.() || (typeof window.loadJournals === 'function' && window.loadJournals()));
+            } else if (hash === 'absensi') {
+                import('./attendance.js').then(m => m.initAttendanceSection?.() || (typeof window.loadStudentAttendance === 'function' && window.loadStudentAttendance()));
+            } else if (hash === 'nilai') {
+                import('./nilai.js').then(m => m.initNilaiSection?.() || (typeof window.loadNilai === 'function' && window.loadNilai()));
+            } else if (hash === 'rapor') {
+                import('./dashboard.js').then(m => m.initRaporSection?.() || (typeof window.loadRapor === 'function' && window.loadRapor()));
+            } else if (hash === 'jadwal') {
+                import('./jadwal.js').then(m => m.initJadwalSection?.() || (typeof window.loadJadwal === 'function' && window.loadJadwal()));
+            } else if (hash === 'mata-pelajaran') {
+                import('./mapel.js').then(m => m.initMapelSection?.() || (typeof window.loadMapel === 'function' && window.loadMapel()));
+            } else if (hash === 'kelas') {
+                import('./kelas.js').then(m => m.initKelasSection?.() || (typeof window.loadKelas === 'function' && window.loadKelas()));
+            } else if (hash === 'data-migration') {
+                import('./migration.js').then(m => m.initMigrationSection?.() || (typeof window.loadMigration === 'function' && window.loadMigration()));
             }
 
             window.dispatchEvent(new CustomEvent('sectionLoaded', { detail: { id: targetId, originalHash: hash } }));
@@ -282,3 +270,4 @@ if (btnThemeToggle) {
 }
 
 // Legacy loadAbsensiClasses removed in favor of Master Kelas (kelas.js)
+
