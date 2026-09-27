@@ -1,3 +1,4 @@
+import { logError } from '../core/analytics.js';
 import { authState } from './authState.js';
 import { injectSidebar, injectTopbar } from '../core/layout.js';
 import { resolveUserRole } from '../core/auth.js';
@@ -113,7 +114,7 @@ async function checkAuth() {
         window.dispatchEvent(new CustomEvent('authLoaded'));
 
     } catch (err) {
-        console.error("Auth check failed:", err);
+        logError("Auth check failed:", err);
         if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
     }
 }
@@ -187,7 +188,7 @@ export async function handleAcademicHashChange() {
 
             window.dispatchEvent(new CustomEvent('sectionLoaded', { detail: { id: targetId, originalHash: hash } }));
         } catch (err) {
-            console.error(`Gagal memuat partial ${hash}:`, err);
+            logError(`Gagal memuat partial ${hash}:`, err);
         }
     }
 

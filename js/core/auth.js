@@ -1,3 +1,4 @@
+import { logError } from './analytics.js';
 // Note: All endpoints are now RLS-protected in Supabase (see sql/rls_policies.sql)
 // =====================================================
 // ANNIDA2FINANCE - Authentication Module

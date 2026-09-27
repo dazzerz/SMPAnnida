@@ -38,10 +38,12 @@
         "vitest": "^5.0.2"
     },
     "dependencies": {
+        "@sentry/browser": "^11.0.0",
         "@supabase/supabase-js": "^2.112.3",
         "chart.js": "^4.5.1",
         "crypto-js": "^4.2.0",
         "jspdf": "^4.2.1",
+        "logrocket": "^12.4.0",
         "papaparse": "^5.6.0",
         "xlsx": "^0.18.5",
         "xlsx-js-style": "^1.2.0"

@@ -1,11 +1,12 @@
+import { logError } from '../core/analytics.js';
 // =====================================================
 // ANNIDA2FINANCE - SPA Entry Point
 // Unified controller for all finance sub-pages
 // =====================================================
 import { injectSidebar, injectTopbar } from '../core/layout.js';
 import supabaseClient from '../core/supabase.js';
-import { getOptionalUser, handleLogout } from '../core/auth.js';
-import { showToast, setupThemeToggle, applySavedTheme, formatCurrency, formatDate } from '../core/utils.js';
+import { requireAuth, handleLogout } from '../core/auth.js';
+import { showToast, setupThemeToggle, applySavedTheme, formatCurrency, formatDate, escapeHTML, escapeAttr } from '../core/utils.js';
 import {
   fetchCategories, fetchTransactions, addTransaction, updateTransaction,
   deleteTransaction, renderTransactionsTable, renderPagination,
@@ -68,12 +69,9 @@ function navigateTo(sectionId) {
   const activeLink = document.querySelector(`#nav-group-finance [data-target="${sectionId}"]`);
   if (activeLink) activeLink.classList.add('active');
 
-  // Close mobile sidebar
+  // Close mobile sidebar — delegasi tunggal ke pengendali drawer (js/core/layout.js)
   if (typeof window._closeSidebar === 'function') {
     window._closeSidebar();
-  } else {
-    document.getElementById('sidebar')?.classList.remove('open');
-    document.getElementById('sidebar-overlay')?.classList.remove('show');
   }
 
   currentSection = sectionId;
@@ -317,14 +315,14 @@ function initTransactions() {
       const statusIcon = hasErr ? '❌' : (hasWarn ? '⚠️' : '✅');
       const statusClass = hasErr ? 'err' : (hasWarn ? 'warn' : 'ok');
       const isIncome = r.type === 'income';
-      const tooltip = r.errors.length ? r.errors.join(' | ') : '';
+      const tooltip = r.errors.length ? r.errors.map(e => escapeAttr(e)).join(' | ') : '';
       return `<tr class="${rowClass}" title="${tooltip}" id="import-row-${i}">
         <td><div class="row-status ${statusClass}">${statusIcon}</div></td>
-        <td id="preview-date-${i}">${r.date || '—'}</td>
-        <td id="preview-desc-${i}" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${r.description || '—'}</td>
+        <td id="preview-date-${i}">${escapeHTML(r.date) || '—'}</td>
+        <td id="preview-desc-${i}" style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHTML(r.description) || '—'}</td>
         <td id="preview-type-${i}"><span class="badge ${isIncome ? 'badge-income' : 'badge-expense'}" style="font-size:.7rem">${isIncome ? '↑ Masuk' : '↓ Keluar'}</span></td>
-        <td id="preview-cat-${i}">${r.categoryIcon} ${r.categoryName}</td>
-        <td id="preview-amount-${i}" style="text-align:right;font-weight:600;color:var(--${isIncome?'income':'expense'}-color)">${isIncome?'+':'-'}${formatCurrency(r.amount)}</td>
+        <td id="preview-cat-${i}">${escapeHTML(r.categoryIcon)} ${escapeHTML(r.categoryName)}</td>
+        <td id="preview-amount-${i}" style="text-align:right;font-weight:600;color:var(--${isIncome?'income':'expense'}-color)">${isIncome?'+':'-'}${escapeHTML(formatCurrency(r.amount))}</td>
         <td style="text-align:center;" id="preview-action-${i}">
           <button type="button" class="btn-icon btn-ghost btn-sm" data-action="edit-import" data-idx="${i}" title="Edit">✏️</button>
         </td>
@@ -336,12 +334,12 @@ function initTransactions() {
     const row = parsedRows[idx];
     if (!row) return;
     const categories = getAllCategories();
-    const catOptions = categories.map(c => `<option value="${c.id}" ${row.category_id === c.id ? 'selected' : ''}>${c.icon} ${c.name}</option>`).join('');
-    document.getElementById(`preview-date-${idx}`).innerHTML = `<input type="date" id="edit-date-${idx}" value="${row.date}" style="width:110px;padding:2px;font-size:0.8rem;"/>`;
-    document.getElementById(`preview-desc-${idx}`).innerHTML = `<input type="text" id="edit-desc-${idx}" value="${row.description || ''}" style="width:100%;padding:2px;font-size:0.8rem;"/>`;
+    const catOptions = categories.map(c => `<option value="${escapeAttr(c.id)}" ${row.category_id === c.id ? 'selected' : ''}>${escapeHTML(c.icon)} ${escapeHTML(c.name)}</option>`).join('');
+    document.getElementById(`preview-date-${idx}`).innerHTML = `<input type="date" id="edit-date-${idx}" value="${escapeAttr(row.date)}" style="width:110px;padding:2px;font-size:0.8rem;"/>`;
+    document.getElementById(`preview-desc-${idx}`).innerHTML = `<input type="text" id="edit-desc-${idx}" value="${escapeAttr(row.description || '')}" style="width:100%;padding:2px;font-size:0.8rem;"/>`;
     document.getElementById(`preview-type-${idx}`).innerHTML = `<select id="edit-type-${idx}" style="width:100px;padding:2px;font-size:0.8rem;"><option value="expense" ${row.type==='expense'?'selected':''}>Pengeluaran</option><option value="income" ${row.type==='income'?'selected':''}>Pemasukan</option></select>`;
     document.getElementById(`preview-cat-${idx}`).innerHTML = `<select id="edit-cat-${idx}" style="width:100%;padding:2px;font-size:0.8rem;"><option value="">- Kategori -</option>${catOptions}</select>`;
-    document.getElementById(`preview-amount-${idx}`).innerHTML = `<input type="number" id="edit-amount-${idx}" value="${row.amount || ''}" style="width:80px;padding:2px;font-size:0.8rem;text-align:right;"/>`;
+    document.getElementById(`preview-amount-${idx}`).innerHTML = `<input type="number" id="edit-amount-${idx}" value="${escapeAttr(row.amount ?? '')}" style="width:80px;padding:2px;font-size:0.8rem;text-align:right;"/>`;
     document.getElementById(`preview-action-${idx}`).innerHTML = `<button type="button" class="btn-icon btn-ghost btn-sm" data-action="save-import" data-idx="${idx}" title="Simpan" style="color:var(--income-color);">💾</button>`;
   }
 
@@ -404,7 +402,7 @@ function initTransactions() {
   const cats = getAllCategories();
   const catFilter = document.getElementById('filter-category');
   if (catFilter && cats.length) {
-    catFilter.innerHTML = '<option value="">Semua Kategori</option>' + cats.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+    catFilter.innerHTML = '<option value="">Semua Kategori</option>' + cats.map(c => `<option value="${escapeAttr(c.id)}">${escapeHTML(c.icon)} ${escapeHTML(c.name)}</option>`).join('');
   }
 
   populateMonthFilter();
@@ -475,7 +473,7 @@ function initBudget() {
     const cats = await fetchCategories(userId);
     const catSelect = document.getElementById('budget-category-select');
     const expCats = cats.filter(c => c.type === 'expense');
-    if (catSelect) catSelect.innerHTML = '<option value="">-- Pilih Kategori --</option>' + expCats.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+    if (catSelect) catSelect.innerHTML = '<option value="">-- Pilih Kategori --</option>' + expCats.map(c => `<option value="${escapeAttr(c.id)}">${escapeHTML(c.icon)} ${escapeHTML(c.name)}</option>`).join('');
   })();
 
   function openBudgetModal() {
@@ -529,8 +527,7 @@ async function initReports() {
   const { renderReportTransactions, exportToPDF } = await import('./reports.js');
 
   let currentReportData = null;
-  const user = await getOptionalUser();
-  const currentUserName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Pengguna';
+  const currentUserName = document.getElementById('nav-user-name')?.textContent || 'Pengguna';
 
   function populateMonthFilter() {
     const select = document.getElementById('report-month');
@@ -602,13 +599,10 @@ async function initSettings() {
   const savedKey = localStorage.getItem('gemini_api_key') || '';
   if (geminiInput) geminiInput.value = savedKey;
 
-  const user = await getOptionalUser();
-  if (user) {
-    try {
-      const { data: profile } = await supabaseClient.from('profiles').select('whatsapp_number').eq('id', user.id).maybeSingle();
+  try {
+    const { data: profile } = await supabaseClient.from('profiles').select('whatsapp_number').eq('id', userId).maybeSingle();
       if (profile?.whatsapp_number && whatsappInput) whatsappInput.value = profile.whatsapp_number;
-    } catch (err) { console.error('Failed to load profile settings:', err); }
-  }
+    } catch (err) { logError('Failed to load profile settings:', err); }
 
   document.getElementById('settings-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -617,10 +611,8 @@ async function initSettings() {
     const whatsappClean = whatsappVal?.replace(/[^0-9]/g, '');
     try {
       localStorage.setItem('gemini_api_key', keyVal);
-      if (user) {
-        const { error } = await supabaseClient.from('profiles').update({ whatsapp_number: whatsappClean || null, updated_at: new Date().toISOString() }).eq('id', user.id);
-        if (error) { showToast('Gagal menyimpan: ' + error.message, 'error'); return; }
-      }
+      const { error } = await supabaseClient.from('profiles').update({ whatsapp_number: whatsappClean || null, updated_at: new Date().toISOString() }).eq('id', userId);
+      if (error) { showToast('Gagal menyimpan: ' + error.message, 'error'); return; }
       showToast('Pengaturan berhasil disimpan!', 'success');
     } catch (err) { showToast('Error: ' + err.message, 'error'); }
   });
@@ -686,15 +678,9 @@ async function main() {
 
   applySavedTheme();
 
-  let user = await getOptionalUser();
-  const isGuest = localStorage.getItem('isGuest') === 'true';
-  if (!user && !isGuest) {
-    if(window.smoothRedirect){window.smoothRedirect('../../login.html');}else{window.location.href='../../login.html';}
-    return;
-  }
-  if (!user && isGuest) {
-    user = { id: 'guest', email: 'guest@smpannida.sch.id', user_metadata: { full_name: 'Guest (View Only)' } };
-  }
+  // Seluruh dashboard finance wajib login — mode guest dihapus total (audit 2026-09-27).
+  const user = await requireAuth();
+  if (!user) return;
 
   userId = user.id;
 
@@ -708,8 +694,8 @@ async function main() {
   const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Pengguna';
   
   // Role check for topbar & sidebar role text
-  let roleLabel = isGuest ? 'Guest (View Only)' : 'Guru / Karyawan';
-  const { data: roleData } = (user.id && user.id !== 'guest') ? await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle() : { data: null };
+  let roleLabel = 'Guru / Karyawan';
+  const { data: roleData } = await supabaseClient.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
   if (roleData) {
       if (roleData.role === 'admin') roleLabel = 'Admin Keuangan';
       else if (roleData.role === 'pembina') {

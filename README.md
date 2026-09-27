@@ -54,3 +54,10 @@ Hanya untuk penggunaan internal SMP Annida.
 
 ## License
 MIT License.
+
+## Testing
+Run unit tests using \
+pm test\ (Vitest).
+
+## Monitoring
+Configure analytics by setting \VITE_ANALYTICS_PROVIDER\, \VITE_SENTRY_DSN\, and \VITE_LOGROCKET_ID\ in \.env\.
