@@ -1,44 +1,47 @@
 {
-  "name": "smpannida",
-  "version": "1.0.0",
-  "description": "Sistem Informasi Manajemen Terpadu SMP Annida yang mencakup tiga modul utama: Keuangan (Finance), Akademik, dan Penerimaan Peserta Didik Baru (PPDB). Dibangun untuk mengotomatisasi pencatatan dan pengelolaan operasional sekolah dengan arsitektur Serverless.",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "test": "npm run test:drawer",
-    "test:drawer": "node scripts/test-drawer-guards.js",
-    "test:integrity": "node scripts/test-integrity.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dazzerz/SMPAnnida.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-  "bugs": {
-    "url": "https://github.com/dazzerz/SMPAnnida/issues"
-  },
-  "homepage": "https://github.com/dazzerz/SMPAnnida#readme",
-  "devDependencies": {
-    "autoprefixer": "^10.5.4",
-    "pg": "^8.23.0",
-    "postcss": "^8.5.26",
-    "tailwindcss": "^3.4.19",
-    "vite": "^8.2.1"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.112.3",
-    "chart.js": "^4.5.1",
-    "crypto-js": "^4.2.0",
-    "jspdf": "^4.2.1",
-    "papaparse": "^5.6.0",
-    "xlsx": "^0.18.5",
-    "xlsx-js-style": "^1.2.0"
-  }
+    "name":  "smpannida",
+    "version":  "1.0.0",
+    "description":  "Sistem Informasi Manajemen Terpadu SMP Annida yang mencakup tiga modul utama: Keuangan (Finance), Akademik, dan Penerimaan Peserta Didik Baru (PPDB). Dibangun untuk mengotomatisasi pencatatan dan pengelolaan operasional sekolah dengan arsitektur Serverless.",
+    "main":  "index.js",
+    "directories":  {
+                        "doc":  "docs"
+                    },
+    "scripts":  {
+                    "dev":  "vite",
+                    "build":  "vite build",
+                    "test":  "npm run test:drawer",
+                    "test:drawer":  "node scripts/test-drawer-guards.js",
+                    "test:integrity":  "node scripts/test-integrity.js",
+                    "build:css":  "postcss css/**/*.css -d dist \u0026\u0026 csso dist/style.css -o dist/style.min.css"
+                },
+    "repository":  {
+                       "type":  "git",
+                       "url":  "git+https://github.com/dazzerz/SMPAnnida.git"
+                   },
+    "keywords":  [
+
+                 ],
+    "author":  "",
+    "license":  "ISC",
+    "type":  "module",
+    "bugs":  {
+                 "url":  "https://github.com/dazzerz/SMPAnnida/issues"
+             },
+    "homepage":  "https://github.com/dazzerz/SMPAnnida#readme",
+    "devDependencies":  {
+                            "autoprefixer":  "^10.5.4",
+                            "pg":  "^8.23.0",
+                            "postcss":  "^8.5.26",
+                            "tailwindcss":  "^3.4.19",
+                            "vite":  "^8.2.1"
+                        },
+    "dependencies":  {
+                         "@supabase/supabase-js":  "^2.112.3",
+                         "chart.js":  "^4.5.1",
+                         "crypto-js":  "^4.2.0",
+                         "jspdf":  "^4.2.1",
+                         "papaparse":  "^5.6.0",
+                         "xlsx":  "^0.18.5",
+                         "xlsx-js-style":  "^1.2.0"
+                     }
 }

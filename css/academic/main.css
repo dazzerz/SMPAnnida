@@ -36,14 +36,8 @@ body { font-family: 'Inter', sans-serif; background-color: var(--background); co
 .data-table th, .data-table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
 .data-table th { background-color: rgba(0,0,0,0.02); font-weight: 600; color: var(--text-muted); }
 
-/* Guest Mode (View Only) */
-body.guest-mode .btn-primary:not(#btn-lihat-rekap, #btn-lihat-jadwal),
-body.guest-mode .input-control:not(#filter-kelas-rekap, #filter-siswa-rekap, #filter-kelas-jadwal, #filter-hari-jadwal, #select-kelas-absensi),
-body.guest-mode input[type="radio"],
-body.guest-mode input[type="file"] {
-    pointer-events: none;
-    opacity: 0.5;
-}
+/* Guest Mode dihapus total (audit 2026-09-27): seluruh dashboard wajib login,
+   tidak ada lagi class body.guest-mode di mana pun. */
 
 /* Universal Modal Fixed Overlay */
 .modal {
