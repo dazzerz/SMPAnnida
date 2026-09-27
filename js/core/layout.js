@@ -250,19 +250,6 @@ export function injectSidebar(containerId) {
         });
     });
 
-    // Close & Toggle Functions
-    function closeSubmenuPanel() {
-        if (window.innerWidth <= 1024) {
-            if (window._closeSidebar) {
-                window._closeSidebar();
-            } else {
-                container.classList.remove('open', 'active', 'show');
-            }
-        } else {
-            togglePanel(true);
-        }
-    }
-
     const panelToggleBtn = container.querySelector('#sidebar-panel-toggle');
     if (panelToggleBtn) {
         panelToggleBtn.addEventListener('click', (e) => {
@@ -270,15 +257,6 @@ export function injectSidebar(containerId) {
             togglePanel();
         });
     }
-
-    const closeBtns = container.querySelectorAll('#sidebar-close-btn, #panel-close-btn, .sidebar-close-btn, .split-rail-panel-close');
-    closeBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            closeSubmenuPanel();
-        });
-    });
 
     // Detect Initial Category from URL / Hash
     if (path.includes('/finance/')) {
@@ -340,68 +318,41 @@ export function injectSidebar(containerId) {
     updateActiveSidebar();
     window.addEventListener('hashchange', updateActiveSidebar);
 
-    // Auto-close sidebar on mobile when a navigation link is clicked
-    container.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-            if (window.innerWidth <= 1024) {
-                if (window._closeSidebar) window._closeSidebar();
-                else closeSubmenuPanel();
-            }
-        });
-    });
+    // Item menu & tombol tutup ditangani satu listener delegasi di bawah.
 
-    // Overlay Drawer Management for Mobile
-    let overlay = document.getElementById('sidebar-overlay');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'sidebar-overlay';
-        overlay.className = 'sidebar-overlay';
-        document.body.appendChild(overlay);
-    }
-    // Fix click delegation bug on divs for all mobile browsers
-    overlay.style.cursor = 'pointer';
-    const closeHandler = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (window._closeSidebar) window._closeSidebar();
-    };
-    overlay.onclick = closeHandler;
-    overlay.ontouchend = closeHandler;
-
-    window._openSidebar = openMobileSidebar;
-    window._closeSidebar = closeMobileSidebar;
-
-    const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
-    if (sidebarCloseBtn) {
-        sidebarCloseBtn.addEventListener('click', (e) => {
+    // ── Backdrop drawer mobile ────────────────────────────────────────────
+    // Dikelola satu fungsi (setSidebar). Backdrop sengaja tidak ditaruh di
+    // <body>: kalau begitu, `.app-container { z-index: 1 }` membuat backdrop
+    // selalu menutupi drawer sehingga menu di dalam drawer tidak bisa dipencet.
+    const overlay = getDrawerOverlay();
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            closeSubmenuPanel();
+            setSidebar(false);
         });
+        overlay.addEventListener('touchend', (e) => {
+            // Sebagian browser mobile tidak memunculkan click untuk elemen <div>.
+            e.preventDefault();
+            setSidebar(false);
+        }, { passive: false });
     }
-    overlay.addEventListener('click', (e) => {
-        e.preventDefault();
-        closeSubmenuPanel();
-    });
 
+    // window._openSidebar / _closeSidebar sudah di-bind sekali di akhir file ini.
 
-
-    // Close on click outside or click close button
-    document.addEventListener('click', (e) => {
-        const clickedClose = e.target.closest('#sidebar-close-btn, #panel-close-btn, .sidebar-close-btn, .split-rail-panel-close');
-        if (clickedClose) {
+    // Satu listener untuk tombol tutup dan item menu di dalam drawer.
+    container.addEventListener('click', (e) => {
+        const closeBtn = e.target.closest('#sidebar-close-btn, #panel-close-btn, .sidebar-close-btn, .split-rail-panel-close');
+        if (closeBtn) {
             e.preventDefault();
             e.stopPropagation();
-            closeSubmenuPanel();
+            if (isMobileDrawerViewport()) setSidebar(false);
+            else togglePanel(true);
             return;
         }
-
-        if (!container.contains(e.target) && !e.target.closest('#mobile-menu-btn, .mobile-menu-btn')) {
-            if (window.innerWidth <= 1024) {
-                if (container.classList.contains('open')) closeSubmenuPanel();
-            } else {
-                if (!container.classList.contains('panel-collapsed')) togglePanel(true);
-            }
+        // Item menu: navigasi dibiarkan berjalan, drawer ditutup setelah itu.
+        if (e.target.closest('.nav-item') && isMobileDrawerViewport()) {
+            setSidebar(false);
         }
     });
 
@@ -475,15 +426,11 @@ if (typeof document !== 'undefined' && !window.__mobile_toggle_bound) {
   window.__mobile_toggle_bound = true;
   document.addEventListener('click', function(e) {
     const btn = e.target.closest('#mobile-menu-btn, .mobile-menu-btn, .menu-toggle, #menu-toggle');
-    if (btn) {
-      e.preventDefault();
-      const sidebar = document.getElementById('sidebar');
-      if (sidebar && sidebar.classList.contains('open')) {
-        if (window._closeSidebar) window._closeSidebar();
-      } else {
-        if (window._openSidebar) window._openSidebar();
-      }
-    }
+    if (!btn) return;
+    e.preventDefault();
+    const drawer = document.getElementById('sidebar') || document.getElementById('student-sidebar') || document.querySelector('.sidebar');
+    const isOpen = Boolean(drawer && drawer.classList.contains('open'));
+    setSidebar(!isOpen);
   });
 }
 
@@ -545,133 +492,118 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
 
 
 
-// ── Robust Mobile Sidebar & Overlay Controller ───────────────────────────
-export function closeMobileSidebar() {
-    const sidebars = document.querySelectorAll('.sidebar, #sidebar, #student-sidebar, .split-rail-container');
-    sidebars.forEach(sb => {
-        sb.classList.remove('open', 'active', 'show');
-        // Force removing inline transform if any
-        sb.style.transform = '';
-    });
-    const overlays = document.querySelectorAll('.sidebar-overlay, #sidebar-overlay');
-    overlays.forEach(ov => {
-        ov.classList.remove('show', 'active');
-        ov.style.display = 'none';
-        ov.style.pointerEvents = 'none';
-        ov.style.opacity = '0';
-    });
-    document.body.style.overflow = '';
-    document.body.classList.remove('sidebar-open');
+// ── Satu pengendali drawer mobile (satu sumber kebenaran) ────────────────
+// State drawer HANYA diwakili class:
+//   drawer  : .open / .active / .show
+//   backdrop: .show / .active
+// Tidak ada inline style, jadi tidak mungkin lagi "nyangkut" antara class dan
+// style seperti pada patch-patch sebelumnya.
+export const DRAWER_BREAKPOINT = 1024;
+const DRAWER_OVERLAY_ID = 'sidebar-overlay';
+
+export function isMobileDrawerViewport() {
+    return window.matchMedia(`(max-width: ${DRAWER_BREAKPOINT}px)`).matches;
+}
+
+function getDrawerElement() {
+    return document.getElementById('sidebar')
+        || document.getElementById('student-sidebar')
+        || document.querySelector('.sidebar');
+}
+
+/**
+ * Backdrop selalu diletakkan sebagai saudara drawer, supaya keduanya berada di
+ * konteks stacking yang sama. Kalau ditaruh langsung di <body>,
+ * `.app-container { z-index: 1 }` membuat backdrop selalu di atas drawer
+ * sehingga seluruh menu di dalam drawer tidak bisa dipencet.
+ */
+export function getDrawerOverlay() {
+    const drawer = getDrawerElement();
+    if (!drawer) return null;
+
+    let overlay = document.getElementById(DRAWER_OVERLAY_ID);
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = DRAWER_OVERLAY_ID;
+        overlay.className = 'sidebar-overlay';
+        overlay.setAttribute('aria-hidden', 'true');
+    }
+
+    const host = drawer.parentElement || document.body;
+    if (overlay.parentElement !== host) host.appendChild(overlay);
+
+    // Buang sisa inline style dari implementasi lama (penyebab backdrop nyangkut).
+    overlay.removeAttribute('style');
+    return overlay;
+}
+
+/** Membuka/menutup drawer mobile. Satu-satunya tempat state drawer diubah. */
+export function setSidebar(open) {
+    const drawer = getDrawerElement();
+    if (!drawer) return;
+
+    const shouldOpen = Boolean(open) && isMobileDrawerViewport();
+
+    drawer.classList.toggle('open', shouldOpen);
+    drawer.classList.toggle('active', shouldOpen);
+    drawer.classList.toggle('show', shouldOpen);
+    drawer.style.removeProperty('transform');
+
+    const overlay = getDrawerOverlay();
+    if (overlay) {
+        overlay.classList.toggle('show', shouldOpen);
+        overlay.classList.toggle('active', shouldOpen);
+        overlay.setAttribute('aria-hidden', shouldOpen ? 'false' : 'true');
+    }
+
+    document.body.classList.toggle('sidebar-open', shouldOpen);
+    document.body.style.overflow = shouldOpen ? 'hidden' : '';
 }
 
 export function openMobileSidebar() {
-    const sidebars = document.querySelectorAll('.sidebar, #sidebar, #student-sidebar, .split-rail-container');
-    sidebars.forEach(sb => {
-        sb.classList.add('open', 'active', 'show');
-    });
-    let overlay = document.getElementById('sidebar-overlay');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'sidebar-overlay';
-        overlay.className = 'sidebar-overlay';
-        document.body.appendChild(overlay);
-    }
-    // Fix click delegation bug on divs for all mobile browsers
-    overlay.style.cursor = 'pointer';
-    const closeHandler = function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        if (window._closeSidebar) window._closeSidebar();
-    };
-    overlay.onclick = closeHandler;
-    overlay.ontouchend = closeHandler;
-    overlay.style.display = '';
-    overlay.style.pointerEvents = '';
-    overlay.style.opacity = '';
-    overlay.classList.add('show', 'active');
-    document.body.style.overflow = 'hidden';
-    document.body.classList.add('sidebar-open');
+    setSidebar(true);
+}
+
+export function closeMobileSidebar() {
+    setSidebar(false);
 }
 
 // Bind globally immediately so any caller has access
 if (typeof window !== 'undefined') {
     window._closeSidebar = closeMobileSidebar;
     window._openSidebar = openMobileSidebar;
+    window._setSidebar = setSidebar;
 }
 
-// ── Tab Visibility & Window Focus Lifecycle Handlers ─────────────────────
-// Automatically closes mobile sidebar and cleans up overlay when switching tabs
-function handleTabVisibilityOrFocusChange() {
-    const hasOpenSidebar = document.querySelector('.sidebar.open, #sidebar.open, .sidebar-overlay.show, .sidebar-overlay.active, .sidebar.show');
-    if (hasOpenSidebar || (typeof document !== 'undefined' && document.body.classList.contains('sidebar-open'))) {
-        closeMobileSidebar();
-    }
-}
-
+// ── Lifecycle: drawer ditutup saat tidak relevan lagi ────────────────────
 if (typeof document !== 'undefined' && !window.__sidebar_lifecycle_bound) {
     window.__sidebar_lifecycle_bound = true;
 
-    // 1. Visibility change (user switches tab, minimizes browser, locks screen)
+    // 1. Aplikasi ke latar (pindah tab / kunci layar): jangan biarkan nyangkut.
     document.addEventListener('visibilitychange', () => {
-        handleTabVisibilityOrFocusChange();
+        if (document.visibilityState === 'hidden') setSidebar(false);
     });
 
-    // 2. Window blur & focus (user clicks outside browser or switches application)
-    window.addEventListener('blur', () => {
-        handleTabVisibilityOrFocusChange();
+    // 2. Viewport membesar (tablet/desktop): drawer mobile tidak berlaku lagi.
+    window.addEventListener('resize', () => {
+        if (!isMobileDrawerViewport()) setSidebar(false);
     });
-    window.addEventListener('focus', () => {
-        handleTabVisibilityOrFocusChange();
-    });
-
-    // 3. Mobile tab sleep / freeze lifecycle
-    window.addEventListener('pagehide', () => {
-        handleTabVisibilityOrFocusChange();
-    });
-    window.addEventListener('pageshow', () => {
-        handleTabVisibilityOrFocusChange();
+    window.addEventListener('orientationchange', () => {
+        if (!isMobileDrawerViewport()) setSidebar(false);
     });
 
-    // 4. Global capture-phase event delegation for closing overlay or outside clicks
-    document.addEventListener('click', function(e) {
-        // If clicked on overlay
-        if (e.target.closest('.sidebar-overlay, #sidebar-overlay')) {
-            e.preventDefault();
-            e.stopPropagation();
-            closeMobileSidebar();
-            return;
-        }
+    // 3. Tombol Escape menutup drawer.
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setSidebar(false);
+    });
+}
 
-        // If clicked close button
-        const closeBtn = e.target.closest('#sidebar-close-btn, #panel-close-btn, .sidebar-close-btn, .split-rail-panel-close');
-        if (closeBtn) {
-            e.preventDefault();
-            e.stopPropagation();
-            closeMobileSidebar();
-            return;
-        }
-
-        // If mobile sidebar is open and clicked anywhere outside sidebar and hamburger button
-        if (window.innerWidth <= 1024) {
-            const hasOpen = document.querySelector('.sidebar.open, #sidebar.open, .sidebar-overlay.show, .sidebar-overlay.active');
-            if (hasOpen) {
-                const insideSidebar = e.target.closest('.sidebar, #sidebar, #student-sidebar, .split-rail-container');
-                const insideHamburger = e.target.closest('#mobile-menu-btn, .mobile-menu-btn, .menu-toggle, #menu-toggle');
-                if (!insideSidebar && !insideHamburger) {
-                    e.preventDefault();
-                    closeMobileSidebar();
-                }
-            }
-        }
-    }, true); // Capturing phase ensures overlay click is never swallowed
-
-    // 5. Touch support on overlay for immediate mobile response
-    document.addEventListener('touchend', function(e) {
-        if (e.target.closest('.sidebar-overlay, #sidebar-overlay')) {
-            e.preventDefault();
-            closeMobileSidebar();
-        }
-    }, { passive: false });
+// Penanda build: memudahkan memastikan HP memuat versi terbaru.
+if (typeof window !== 'undefined') {
+    window.APP_BUILD = '2026-09-27-drawer-v2';
+    try {
+        console.info('[SMPAnnida] build', window.APP_BUILD);
+    } catch (_) { /* abaikan */ }
 }
 
 

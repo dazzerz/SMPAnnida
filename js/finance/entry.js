@@ -69,8 +69,12 @@ function navigateTo(sectionId) {
   if (activeLink) activeLink.classList.add('active');
 
   // Close mobile sidebar
-  document.getElementById('sidebar')?.classList.remove('open');
-  document.getElementById('sidebar-overlay')?.classList.remove('show');
+  if (typeof window._closeSidebar === 'function') {
+    window._closeSidebar();
+  } else {
+    document.getElementById('sidebar')?.classList.remove('open');
+    document.getElementById('sidebar-overlay')?.classList.remove('show');
+  }
 
   currentSection = sectionId;
   window.location.hash = sectionId;

@@ -165,7 +165,7 @@ export async function handleAcademicHashChange() {
             let fileName = `${hash}.html`;
             if (hash === 'guru' || hash === 'data-guru') fileName = 'guru.html';
 
-            const res = await fetch(`../../pages/academic/partials/${fileName}`);
+            const res = await fetch(`../../pages/academic/partials/${fileName}?v=20260927`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const htmlData = await res.text();
             const contentArea = document.querySelector('.content-area') || document.querySelector('main');
@@ -221,19 +221,10 @@ export async function handleAcademicHashChange() {
     if (activeLink) activeLink.classList.add('active');
 
     if (window.innerWidth <= 1024) {
+        // Satu jalur penutup: setSidebar(false) lewat window._closeSidebar().
         setTimeout(() => {
-            if (window._closeSidebar) window._closeSidebar();
-            document.querySelectorAll('.sidebar, .sidebar-overlay, .split-rail-container').forEach(el => {
-                el.classList.remove('open', 'show', 'active');
-            });
-            const overlay = document.getElementById('sidebar-overlay');
-            if (overlay) {
-                overlay.style.display = 'none';
-                overlay.style.opacity = '0';
-            }
-            document.body.style.overflow = '';
-            document.body.classList.remove('sidebar-open');
-        }, 50); // Give DOM time to settle before forcing close
+            if (typeof window._closeSidebar === 'function') window._closeSidebar();
+        }, 50); // beri waktu partial selesai disisipkan
     }
 }
 
@@ -275,22 +266,8 @@ if (menuToggle) {
     });
 }
 
-// Also close sidebar when nav link is clicked on mobile
-document.addEventListener('click', (e) => {
-    if (e.target.closest('.nav-item, .nav-link')) {
-        if (window.innerWidth <= 1024) {
-            setTimeout(() => {
-                if (window._closeSidebar) window._closeSidebar();
-                document.getElementById('sidebar')?.classList.remove('open', 'show', 'active');
-                const overlay = document.getElementById('sidebar-overlay');
-                if (overlay) {
-                    overlay.style.display = 'none';
-                    overlay.style.opacity = '0';
-                }
-            }, 50);
-        }
-    }
-});
+// Penutupan drawer saat item menu diklik kini ditangani satu listener delegasi
+// di js/core/layout.js (setSidebar) — tidak ada lagi jalur penutup kedua di sini.
 
 // Toggle Dark Mode
 const btnThemeToggle = document.getElementById('btn-theme-toggle');

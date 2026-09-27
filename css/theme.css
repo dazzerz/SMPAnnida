@@ -7,6 +7,17 @@
 [data-theme="light"] {
   --color-scheme: light;
 
+  /* ── SKALA Z-INDEX (satu-satunya sumber angka untuk lapisan UI) ──────────
+     Dipakai drawer/backdrop. Jangan menulis angka z-index mentah di file lain
+     untuk lapisan-lapisan ini: perang z-index lintas file adalah akar bug
+     "backdrop nyangkut" yang berulang di versi-versi sebelumnya. */
+  --z-content: 1;
+  --z-topbar: 1000;
+  --z-drawer-backdrop: 1150;
+  --z-drawer: 1200;
+  --z-modal: 9999;
+  --z-toast: 10000;
+
   /* Solid Canvas Background */
   --bg-nature-image: none;
   --leaf-filter: none;
@@ -632,7 +643,7 @@ option {
     width: 252px !important;
     min-width: 252px !important;
     max-width: 252px !important;
-    z-index: 1200 !important;
+    z-index: var(--z-drawer, 1200) !important;
     box-shadow: 0 0 35px rgba(0, 0, 0, 0.8) !important;
     background: #166534 !important;
     visibility: hidden !important;
@@ -656,7 +667,11 @@ option {
   }
 }
 
-/* ── SIDEBAR OVERLAY (Mobile & Tablet: Clean Semi-Transparent Backdrop, Zero Blur) ── */
+/* ── BACKDROP DRAWER (definisi TUNGGAL untuk semua halaman) ──────────────
+   Hanya tampil kalau punya class .show/.active, dan class itu hanya ditambah
+   oleh setSidebar() di js/core/layout.js. Semua properti memakai !important
+   supaya sisa inline style dari implementasi lama tidak bisa membuat backdrop
+   terlihat tetapi tidak bisa diklik (penyebab layar "nyangkut"). ── */
 .sidebar-overlay {
   position: fixed !important;
   inset: 0 !important;
@@ -664,10 +679,13 @@ option {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   filter: none !important;
-  z-index: 1150 !important;
+  z-index: var(--z-drawer-backdrop, 1150) !important;
+  display: none !important;
   opacity: 0 !important;
   pointer-events: none !important;
-  transition: opacity 0.25s ease !important;
+  transition: opacity 0.2s ease !important;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 .sidebar-overlay.show,
@@ -678,7 +696,9 @@ option {
 }
 
 @media (min-width: 1025px) {
-  .sidebar-overlay {
+  .sidebar-overlay,
+  .sidebar-overlay.show,
+  .sidebar-overlay.active {
     display: none !important;
     pointer-events: none !important;
   }

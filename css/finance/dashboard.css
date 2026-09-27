@@ -1209,15 +1209,7 @@
   font-size: 1.1rem;
 }
 
-.sidebar-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 99;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
+/* Backdrop drawer: definisinya TUNGGAL di css/theme.css (.sidebar-overlay). */
 
 /* =====================================================
    RESPONSIVE DASHBOARD
@@ -1251,9 +1243,7 @@
     box-shadow: var(--shadow-lg);
   }
 
-  .sidebar-overlay.show {
-    display: block;
-  }
+  /* Backdrop: diatur css/theme.css (.sidebar-overlay). */
 
   .main-content {
     margin-left: 0;

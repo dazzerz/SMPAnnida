@@ -20,20 +20,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Handle logout
   document.getElementById('logout-btn').addEventListener('click', handleLogout);
 
-  // Mobile menu toggle
+  // Mobile menu toggle (pakai pengendali tunggal di js/core/layout.js)
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('sidebar-overlay');
+  const toggleDrawer = (open) => {
+    if (typeof window._setSidebar === 'function') {
+      window._setSidebar(open);
+      return;
+    }
+    sidebar?.classList.toggle('open', open);
+    overlay?.classList.toggle('show', open);
+  };
 
-  mobileMenuBtn.addEventListener('click', () => {
-    sidebar.classList.add('open');
-    overlay.classList.add('show');
+  mobileMenuBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    toggleDrawer(!sidebar?.classList.contains('open'));
   });
 
-  overlay.addEventListener('click', () => {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('show');
-  });
+  overlay?.addEventListener('click', () => toggleDrawer(false));
 
   // Load existing settings
   const geminiInput = document.getElementById('gemini-key');

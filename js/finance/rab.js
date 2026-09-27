@@ -59,21 +59,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
   }
   
-  // Mobile Menu
+  // Mobile Menu (pakai pengendali tunggal di js/core/layout.js)
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const sidebar = document.getElementById('sidebar');
   const sidebarOverlay = document.getElementById('sidebar-overlay');
-  
-  if (mobileMenuBtn && sidebar && sidebarOverlay) {
-    mobileMenuBtn.addEventListener('click', () => {
-      sidebar.classList.add('open');
-      sidebarOverlay.classList.add('open');
-    });
-    sidebarOverlay.addEventListener('click', () => {
-      sidebar.classList.remove('open');
-      sidebarOverlay.classList.remove('open');
+
+  const toggleDrawer = (open) => {
+    if (typeof window._setSidebar === 'function') {
+      window._setSidebar(open);
+      return;
+    }
+    sidebar?.classList.toggle('open', open);
+    sidebarOverlay?.classList.toggle('show', open);
+  };
+
+  if (mobileMenuBtn && sidebar) {
+    mobileMenuBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleDrawer(!sidebar.classList.contains('open'));
     });
   }
+  sidebarOverlay?.addEventListener('click', () => toggleDrawer(false));
 });
 
 function setupEventListeners() {
