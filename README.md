@@ -10,18 +10,18 @@ Sistem Informasi Manajemen Terpadu SMP Annida yang mencakup tiga modul utama: Ke
 - **Centralized Layout**: Desain Glassmorphism responsif dengan navigasi Sidebar dan Topbar modular.
 
 ## Folder Structure
-```text
+`	ext
 /
-├── css/             # Global and Modular CSS Tokens
-├── js/              # Vanilla JS ES Modules
-│   ├── core/        # Shared Utilities, Auth, DB, Layout
-│   ├── finance/     # Finance Logic
-│   ├── academic/    # Academic Logic
-│   └── ppdb/        # PPDB Logic
-├── pages/           # HTML Pages categorized by modules
-├── docs/            # Project Documentation
-└── index.html       # Entry Point / Auth Gateway
-```
++-- css/             # Global and Modular CSS Tokens
++-- js/              # Vanilla JS ES Modules
+�   +-- core/        # Shared Utilities, Auth, DB, Layout
+�   +-- finance/     # Finance Logic
+�   +-- academic/    # Academic Logic
+�   +-- ppdb/        # PPDB Logic
++-- pages/           # HTML Pages categorized by modules
++-- docs/            # Project Documentation
++-- index.html       # Entry Point / Auth Gateway
+`
 
 ## Technology Stack
 - **Frontend**: HTML5, CSS3 (Vanilla), JavaScript (ES Modules).
@@ -34,20 +34,20 @@ Sistem Informasi Manajemen Terpadu SMP Annida yang mencakup tiga modul utama: Ke
 3. Use any static file server (e.g., Live Server, Nginx, Apache) to serve the root directory.
 
 ## Configuration
-Salin file `.env.example` ke `.env` dan isi kredensial Supabase Anda (hanya jika Anda mengonversi proyek ini dengan bundler di masa depan). Untuk arsitektur saat ini (Vanilla JS), kredensial dimasukkan pada `js/core/supabase.js`.
+Salin file .env.example ke .env dan isi kredensial Supabase Anda (hanya jika Anda mengonversi proyek ini dengan bundler di masa depan). Untuk arsitektur saat ini (Vanilla JS), kredensial dimasukkan pada js/core/supabase.js.
 
 ## Deployment
-Lihat `docs/deployment.md` untuk panduan lengkap. Aplikasi ini dapat di-deploy ke Vercel, Netlify, atau GitHub Pages secara langsung karena sifatnya statis.
+Lihat [docs/deployment.md](docs/deployment.md) untuk panduan lengkap. Aplikasi ini dapat di-deploy ke Vercel, Netlify, atau GitHub Pages secara langsung karena sifatnya statis.
 
 ## Environment Variables
-- `SUPABASE_URL`: Endpoint REST API Supabase.
-- `SUPABASE_ANON_KEY`: Kunci anonim publik untuk akses aman.
+- SUPABASE_URL: Endpoint REST API Supabase.
+- SUPABASE_ANON_KEY: Kunci anonim publik untuk akses aman.
 
 ## Database Overview
-Menggunakan relasi PostgreSQL. Tabel utama: `users`, `transactions`, `categories`, `budgets`, `pendaftaran`, `grades`, `schedules`. (Lihat `docs/database.md`).
+Menggunakan relasi PostgreSQL. Tabel utama: users, 	ransactions, categories, udgets, pendaftaran, grades, schedules. (Lihat [docs/database.md](docs/database.md) untuk skema lengkap.)
 
 ## Security Notes
-Aplikasi mengandalkan JWT berbasis *Local Storage* dan *Auth Guard* di sisi *client*. Wajib mengaktifkan **Row Level Security (RLS)** pada *dashboard* Supabase (Lihat `docs/security.md`).
+Aplikasi mengandalkan JWT berbasis *Local Storage* dan *Auth Guard* di sisi *client*. Wajib mengaktifkan **Row Level Security (RLS)** pada *dashboard* Supabase (Lihat [docs/security.md](docs/security.md) untuk detail RLS dan mitigasi XSS.)
 
 ## Contributing
 Hanya untuk penggunaan internal SMP Annida.
@@ -56,8 +56,10 @@ Hanya untuk penggunaan internal SMP Annida.
 MIT License.
 
 ## Testing
-Run unit tests using \
-pm test\ (Vitest).
+Run unit tests using 
+pm test (Vitest).
 
 ## Monitoring
-Configure analytics by setting \VITE_ANALYTICS_PROVIDER\, \VITE_SENTRY_DSN\, and \VITE_LOGROCKET_ID\ in \.env\.
+Configure analytics by setting VITE_ANALYTICS_PROVIDER, VITE_SENTRY_DSN, and VITE_LOGROCKET_ID in .env.
+
+<!-- TODO: Update README links when new docs are added -->
