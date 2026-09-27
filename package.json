@@ -9,7 +9,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "node scripts/test-integrity.js"
+    "test": "npm run test:drawer",
+    "test:drawer": "node scripts/test-drawer-guards.js",
+    "test:integrity": "node scripts/test-integrity.js"
   },
   "repository": {
     "type": "git",
