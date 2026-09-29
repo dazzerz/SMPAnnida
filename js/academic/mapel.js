@@ -30,11 +30,6 @@ function initMapelSection() {
 
     let currentData = [];
 
-    // Guest Mode Protection
-    if (authState.isGuest && btnAddMapel) {
-        btnAddMapel.style.display = 'none'; 
-    }
-
     // Load Data
     async function loadData() {
         if (!tbodyMapel) return;
@@ -112,7 +107,6 @@ function initMapelSection() {
         // Bind Edit Buttons
         document.querySelectorAll('.btn-edit-mapel').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 const mapel = currentData.find(x => x.id == id);
                 if (mapel) openModal(mapel);
@@ -122,7 +116,6 @@ function initMapelSection() {
         // Bind Delete Buttons
         document.querySelectorAll('.btn-del-mapel').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 if (confirm('Yakin ingin menghapus mata pelajaran ini?')) {
                     try {
@@ -164,7 +157,6 @@ function initMapelSection() {
 
     if (btnAddMapel) {
         btnAddMapel.addEventListener('click', () => {
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModal();
         });
     }
@@ -179,8 +171,6 @@ function initMapelSection() {
     if (formMapel) {
         formMapel.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-            
             const btnSave = document.getElementById('btn-save-mapel');
             const originalText = btnSave.textContent;
             btnSave.disabled = true;

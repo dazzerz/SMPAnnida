@@ -178,11 +178,9 @@ function initMigrationSection() {
     // Call on load if hash is data-migration
     window.addEventListener('hashchange', () => {
         if (window.location.hash === '#data-migration') {
-            if (!authState.isGuest) runIntegrityCheck();
         }
     });
     if (window.location.hash === '#data-migration') {
-        if (!authState.isGuest) runIntegrityCheck();
     }
     
     // Bind integrity button
@@ -211,10 +209,6 @@ function initMigrationSection() {
     // 3. Download Template
     btnDownload.addEventListener('click', async (e) => {
         e.preventDefault();
-        
-        
-        if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-        
         const type = selectType.value;
         
         
@@ -240,7 +234,6 @@ function initMigrationSection() {
 
     // 4. Upload Excel
     inputUpload.addEventListener('change', (e) => {
-        if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
         const file = e.target.files[0];
         if (!file) return;
 
@@ -512,8 +505,6 @@ function initMigrationSection() {
     // 8 & 9. Import Data (Batch Processing)
     btnImport.addEventListener('click', async (e) => {
         e.preventDefault();
-        if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-        
         const type = selectType.value;
         const strategy = selectStrategy.value; // skip, update, cancel
 

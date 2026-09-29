@@ -61,32 +61,32 @@ function setLoading(btnId, isLoading) {
 }
 
 // ── USER ROLE RESOLVER ────────────────────────────
+// ── USER ROLE RESOLVER ────────────────────────────
 export async function resolveUserRole(user) {
   if (!user) return null;
 
-  // 1. Direct check in user_metadata
-  if (user.user_metadata?.role === 'siswa') {
-    return 'siswa';
+  // Direct check in user_metadata for teacher or admin
+  if (user.user_metadata?.role === 'teacher' || user.user_metadata?.role === 'admin') {
+    return user.user_metadata.role;
   }
 
-  // 2. School domain resolution
+  // School domain resolution – only teachers have entries in teachers table
   if (user.email && user.email.toLowerCase().endsWith('@smpannida.sch.id')) {
     const cleanEmail = user.email.toLowerCase().trim();
-
     try {
       const { data: teacher } = await supabaseClient
         .from('teachers')
         .select('id')
         .ilike('email', cleanEmail)
         .maybeSingle();
-
       if (teacher) return 'teacher';
-      return 'siswa'; // Official student email
+      // Not a teacher, treat as unknown
     } catch (e) {
       console.warn('Teacher check error:', e);
     }
   }
 
+  // Fallback: get role from RPC or user_roles table
   let role = null;
   try {
     const { data: rpcRole, error: rpcErr } = await supabaseClient.rpc('get_user_role');
@@ -104,14 +104,7 @@ export async function resolveUserRole(user) {
     console.warn('resolveUserRole error:', err);
   }
 
-  // Peran admin TIDAK BOLEH ditebak dari email (audit 2026-09-27).
-  // Penentuan peran HANYA dari tabel user_roles / RPC get_user_role().
-
-  // Fallback for phone login if role not explicitly set in database
-  if (!role && user.phone) {
-    role = 'wali_murid';
-  }
-
+  // No fallback to student or wali_murid; unknown roles remain null
   return role;
 }
 
@@ -160,17 +153,12 @@ export async function handleLogin(e) {
   // Periksa role untuk menentukan halaman redirect
   let r = await resolveUserRole(data.user);
 
-  setTimeout(() => { 
-    if (r === 'siswa') {
-      if(window.smoothRedirect){window.smoothRedirect('./pages/student/dashboard.html');}else{window.location.href='./pages/student/dashboard.html';}
-    } else if (r === 'calon_siswa' || r === 'wali_murid') {
-      if(window.smoothRedirect){window.smoothRedirect('./pages/ppdb/dashboard-wali.html');}else{window.location.href='./pages/ppdb/dashboard-wali.html';}
-    } else if (r === 'finance') {
-      if(window.smoothRedirect){window.smoothRedirect('./pages/finance/dashboard.html');}else{window.location.href='./pages/finance/dashboard.html';}
-    } else if (r === 'teacher') {
-      if(window.smoothRedirect){window.smoothRedirect('./pages/academic/dashboard.html');}else{window.location.href='./pages/academic/dashboard.html';}
+  // Simplified redirect for teacher‑only access
+  setTimeout(() => {
+    if (r === 'teacher' || r === 'admin' || r === 'pembina') {
+      if (window.smoothRedirect) { window.smoothRedirect('./pages/academic/dashboard.html'); } else { window.location.href = './pages/academic/dashboard.html'; }
     } else {
-      if(window.smoothRedirect){window.smoothRedirect('./dashboard.html');}else{window.location.href='./dashboard.html';} 
+      showAuthMessage('Akses hanya untuk guru.', 'error');
     }
   }, 800);
 }

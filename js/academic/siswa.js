@@ -33,12 +33,6 @@ function initSiswaSection() {
     let currentPage = 1;
     let totalItems = 0;
     const itemsPerPage = 20;
-
-    // Guest Mode Protection
-    if (authState.isGuest && btnAddSiswa) {
-        btnAddSiswa.style.display = 'none'; 
-    }
-
     // Build Server-Side Query for Students with Filters
     function buildStudentsQuery(isCountOnly = false) {
         let query = db.from('students');
@@ -201,7 +195,6 @@ function initSiswaSection() {
         // Bind Edit Buttons
         document.querySelectorAll('.btn-edit-siswa').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 const student = currentData.find(st => String(st.id) === String(id));
                 if (student) openModal(student);
@@ -211,7 +204,6 @@ function initSiswaSection() {
         // Bind Delete Buttons
         document.querySelectorAll('.btn-del-siswa').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 if (confirm('Yakin ingin menghapus siswa ini?')) {
                     try {
@@ -300,7 +292,6 @@ function initSiswaSection() {
 
     if (btnAddSiswa) {
         btnAddSiswa.addEventListener('click', () => {
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModal();
         });
     }
@@ -315,8 +306,6 @@ function initSiswaSection() {
     if (formSiswa) {
         formSiswa.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-            
             const btnSave = document.getElementById('btn-save-siswa');
             const originalText = btnSave.textContent;
             btnSave.disabled = true;

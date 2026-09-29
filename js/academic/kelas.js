@@ -37,12 +37,6 @@ function initKelasSection() {
     let currentTahunData = [];
     let currentKelasData = [];
 
-    // Guest protection
-    if (authState.isGuest) {
-        if (btnAddTahun) btnAddTahun.style.display = 'none'; 
-        if (btnAddKelas) btnAddKelas.style.display = 'none'; 
-    }
-
     // ---------------------------------------------------------
     // MASTER TAHUN AJARAN
     // ---------------------------------------------------------
@@ -92,7 +86,6 @@ function initKelasSection() {
         // Edit
         document.querySelectorAll('.btn-edit-tahun').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 const t = currentTahunData.find(x => x.id == id);
                 if (t) openModalTahun(t);
@@ -102,7 +95,6 @@ function initKelasSection() {
         // Delete
         document.querySelectorAll('.btn-del-tahun').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 if (confirm('Yakin ingin menghapus tahun ajaran ini?')) {
                     try {
@@ -138,7 +130,6 @@ function initKelasSection() {
 
     if (btnAddTahun) {
         btnAddTahun.addEventListener('click', () => {
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModalTahun();
         });
     }
@@ -152,8 +143,6 @@ function initKelasSection() {
     if (formTahun) {
         formTahun.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-            
             const btnSave = document.getElementById('btn-save-tahun');
             const originalText = btnSave.textContent;
             btnSave.disabled = true;
@@ -272,7 +261,6 @@ function initKelasSection() {
         // Edit
         document.querySelectorAll('.btn-edit-kelas').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = btn.getAttribute('data-id') || e.currentTarget?.getAttribute('data-id') || e.target?.getAttribute('data-id');
                 const k = currentKelasData.find(x => String(x.id) === String(id));
                 if (k) openModalKelas(k);
@@ -282,7 +270,6 @@ function initKelasSection() {
         // Delete
         document.querySelectorAll('.btn-del-kelas').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = btn.getAttribute('data-id') || e.currentTarget?.getAttribute('data-id') || e.target?.getAttribute('data-id');
                 if (confirm('Yakin ingin menghapus kelas ini?')) {
                     try {
@@ -339,7 +326,6 @@ function initKelasSection() {
 
     if (btnAddKelas) {
         btnAddKelas.addEventListener('click', () => {
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModalKelas();
         });
     }
@@ -353,8 +339,6 @@ function initKelasSection() {
     if (formKelas) {
         formKelas.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-            
             const btnSave = document.getElementById('btn-save-kelas');
             const originalText = btnSave.textContent;
             btnSave.disabled = true;

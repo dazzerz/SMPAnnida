@@ -204,7 +204,6 @@ function initJadwalSection() {
     function attachActionEvents() {
         document.querySelectorAll('.btn-edit-jadwal').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 const j = allSchedules.find(x => x.id === id);
                 if (j) openModal(j);
@@ -213,8 +212,6 @@ function initJadwalSection() {
 
         document.querySelectorAll('.btn-delete-jadwal').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-
                 const id = e.target.getAttribute('data-id');
 
                 // Styled confirmation dialog (replaces native confirm())
@@ -310,7 +307,6 @@ function initJadwalSection() {
 
     if (btnTambahJadwal) {
         btnTambahJadwal.addEventListener('click', () => {
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModal();
         });
     }
@@ -342,8 +338,6 @@ function initJadwalSection() {
     if (formJadwal) {
         formJadwal.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-
             const id = jadwalId.value;
             const tYear = inputTahun.value;
             const tClass = inputKelas.value;

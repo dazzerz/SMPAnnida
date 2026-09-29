@@ -2,6 +2,7 @@
 // Menghubungkan Form Login & Register ke Supabase Auth
 
 import supabaseClient from '../core/supabase.js';
+import { resolveUserRole } from '../core/auth.js';
 const db = supabaseClient;
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Form Login
@@ -13,29 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('password').value;
 
             try {
-                // Autentikasi via Supabase Auth
-                const { data, error } = await db.auth.signInWithPassword({
+                // Autentikasi via Supabase Auth — wajib berhasil, tanpa bypass.
+                const { data } = await db.auth.signInWithPassword({
                     email: email,
                     password: password
                 });
+                if (!data?.user) { showToast("Login gagal.", 'error'); return; }
 
-                if (error) {
-                    // Fallback untuk guest/testing jika Supabase credentials salah atau belum ada akun
-                    
-                    if (email.includes('admin')) {
-                        if(window.smoothRedirect){window.smoothRedirect('dashboard-admin.html');}else{window.location.href='dashboard-admin.html';}
-                    } else {
-                        if(window.smoothRedirect){window.smoothRedirect('dashboard-wali.html');}else{window.location.href='dashboard-wali.html';}
-                    }
-                    return;
-                }
-
-                // Simpan email di localStorage untuk referensi UI
-                
-                
-
-                // Cek apakah admin atau calon siswa
-                if (email.includes('admin')) {
+                // Peran admin HANYA dari user_roles / RPC — jangan tebak dari email.
+                const userRole = data?.user ? await resolveUserRole(data.user) : null;
+                if (userRole === 'admin') {
                     if(window.smoothRedirect){window.smoothRedirect('dashboard-admin.html');}else{window.location.href='dashboard-admin.html';}
                 } else {
                     if(window.smoothRedirect){window.smoothRedirect('dashboard-wali.html');}else{window.location.href='dashboard-wali.html';}

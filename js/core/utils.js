@@ -2,12 +2,23 @@
 // ANNIDA2FINANCE - Utility Functions (shared)
 // =====================================================
 
-// Escape HTML untuk mencegah XSS
+// Escape HTML untuk mencegah XSS (isi teks / innerHTML)
 export function escapeHTML(str) {
   if (!str) return '-';
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
+}
+
+// Escape untuk nilai atribut HTML (value="...", title="...") — juga meng-escape kutip
+export function escapeAttr(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 // Format currency IDR

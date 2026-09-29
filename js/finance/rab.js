@@ -2,7 +2,7 @@
 
 import supabaseClient from '../core/supabase.js';
 import { formatCurrency } from '../core/utils.js';
-import { getOptionalUser, handleLogout } from '../core/auth.js';
+import { requireAuth, handleLogout } from '../core/auth.js';
 
 let userId = null;
 let currentRabId = null;
@@ -20,8 +20,10 @@ let state = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const user = await getOptionalUser();
-  if (user) {
+  // RAB Kelas wajib login — mode guest dihapus total (audit 2026-09-27).
+  const user = await requireAuth();
+  if (!user) return;
+  {
     userId = user.id;
     const fullName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Pengguna';
     const initials = fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
@@ -36,10 +38,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Load from DB
     await loadRAB();
-  } else {
-    // Guest mode is not allowed for RAB Kelas
-    if(window.smoothRedirect){window.smoothRedirect('../login.html');}else{window.location.href='../login.html';}
-    return;
   }
 
   setupEventListeners();

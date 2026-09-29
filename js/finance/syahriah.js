@@ -1,18 +1,14 @@
 import supabaseClient from '../core/supabase.js';
-import { showToast } from '../core/utils.js';
+import { showToast, escapeHTML, escapeAttr } from '../core/utils.js';
 import { injectSidebar } from '../core/layout.js';
-import { getOptionalUser, handleLogout } from '../core/auth.js';
+import { requireAuth, handleLogout } from '../core/auth.js';
 
 const db = supabaseClient;
 
 export async function initSyahriah() {
-    // 1. Setup Layout
-    
-    const user = await getOptionalUser();
-    if (!user) {
-        
-        return;
-    }
+    // 1. Setup Layout — Syahriah wajib login, mode guest dihapus total (audit 2026-09-27).
+    const user = await requireAuth();
+    if (!user) return;
     
     // Cek Role
     const { data: roleData } = await db.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
@@ -482,12 +478,12 @@ export async function initSyahriah() {
             data.forEach(comp => {
                 html += `
                     <tr>
-                        <td>${comp.name}</td>
+                        <td>${escapeHTML(comp.name)}</td>
                         <td>
-                            <input type="number" class="form-input comp-rate-input" data-id="${comp.id}" value="${comp.default_rate}" style="width: 100px; padding: 0.25rem;">
+                            <input type="number" class="form-input comp-rate-input" data-id="${escapeAttr(comp.id)}" value="${escapeAttr(comp.default_rate)}" style="width: 100px; padding: 0.25rem;">
                         </td>
                         <td>
-                            <button class="btn btn-primary btn-sm btn-save-comp" data-id="${comp.id}">Simpan</button>
+                            <button class="btn btn-primary btn-sm btn-save-comp" data-id="${escapeAttr(comp.id)}">Simpan</button>
                         </td>
                     </tr>
                 `;

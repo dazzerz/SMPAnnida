@@ -37,13 +37,6 @@ function initNilaiSection() {
     if(filterKelasRekap) filterKelasRekap.addEventListener('change', (e) => e.target.value ? populateStudentsDropdown(e.target.value, filterSiswaRekap) : (filterSiswaRekap.innerHTML = '<option value="">-- Pilih Siswa --</option>', filterSiswaRekap.disabled = true));
 
     if(btnSimpanNilai) {
-        if (authState.isGuest) {
-            btnSimpanNilai.disabled = true;
-            btnSimpanNilai.title = "Guest (View Only)";
-            document.getElementById('input-mapel-nilai').disabled = true;
-            document.getElementById('select-jenis-nilai').disabled = true;
-            document.getElementById('input-angka-nilai').disabled = true;
-        }
         btnSimpanNilai.addEventListener('click', async () => {
             const studentId = selectSiswaNilai.value, mapel = document.getElementById('input-mapel-nilai').value.trim(), jenis = document.getElementById('select-jenis-nilai').value, nilai = document.getElementById('input-angka-nilai').value;
             if (!studentId || !mapel || !nilai) return statusSimpanNilai.textContent = "Mohon lengkapi semua data.", statusSimpanNilai.style.color = "var(--danger)";

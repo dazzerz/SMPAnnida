@@ -26,12 +26,6 @@ function initGuruSection() {
     const filterSearch = document.getElementById('filter-search-guru');
     
     let currentData = [];
-
-    // Guest Mode Protection
-    if (authState.isGuest && btnAddGuru) {
-        btnAddGuru.style.display = 'none'; 
-    }
-
     // Load Data
     async function loadData() {
         if (!tbodyGuru) return;
@@ -104,7 +98,6 @@ function initGuruSection() {
         // Bind Edit Buttons
         document.querySelectorAll('.btn-edit-guru').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 const teacher = currentData.find(t => t.id == id);
                 if (teacher) openModal(teacher);
@@ -114,7 +107,6 @@ function initGuruSection() {
         // Bind Delete Buttons
         document.querySelectorAll('.btn-del-guru').forEach(btn => {
             btn.addEventListener('click', async (e) => {
-                if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
                 const id = e.target.getAttribute('data-id');
                 if (confirm('Yakin ingin menghapus guru ini?')) {
                     try {
@@ -169,7 +161,6 @@ function initGuruSection() {
 
     if (btnAddGuru) {
         btnAddGuru.addEventListener('click', () => {
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
             openModal();
         });
     }
@@ -184,8 +175,6 @@ function initGuruSection() {
     if (formGuru) {
         formGuru.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (authState.isGuest) return showToast('Akses ditolak untuk Guest', 'warning');
-            
             const btnSave = document.getElementById('btn-save-guru');
             const originalText = btnSave.textContent;
             btnSave.disabled = true;

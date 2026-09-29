@@ -1,5 +1,6 @@
 import { authState } from './authState.js';
 import supabaseClient from '../core/supabase.js';
+import { resolveUserRole } from '../core/auth.js';
 import { showToast, escapeHTML } from '../core/utils.js';
 const db = supabaseClient;
 
@@ -25,11 +26,12 @@ async function loadSchedulesToday(date) {
             const { data: { user } } = await db.auth.getUser();
             currentUser = user;
             if (user) {
-                // If email contains admin or role is admin
-                const userEmail = (user.email || '').toLowerCase().trim();
-                if (userEmail.includes('admin') || userEmail === 'daffa.al.akhdaan@gmail.com' || userEmail === 'daffaalakhdaan@gmail.com') {
+                // Peran admin HANYA dari user_roles / RPC — jangan tebak dari email.
+                const adminRole = await resolveUserRole(user);
+                if (adminRole === 'admin') {
                     isUserAdmin = true;
                 } else {
+                    const userEmail = (user.email || '').toLowerCase().trim();
                     const { data: tData } = await db
                         .from('teachers')
                         .select('id, nama, email')

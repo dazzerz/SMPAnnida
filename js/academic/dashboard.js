@@ -381,10 +381,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const importStatus = document.getElementById('import-status');
 
     if(btnImportSiswa) {
-        if (authState.isGuest) {
-            btnImportSiswa.disabled = true;
-            if(fileImportSiswa) fileImportSiswa.disabled = true;
-        }
         btnImportSiswa.addEventListener('click', async () => {
             const file = fileImportSiswa.files[0];
             if (!file) { importStatus.textContent = 'Pilih file CSV.'; importStatus.style.color = 'var(--danger)'; return; }
