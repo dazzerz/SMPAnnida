@@ -102,7 +102,7 @@ function initTeacherAttendanceSection() {
                     tabPribadi.classList.remove('hidden');
                 }
             }
-        } else if (authState.isGuest) {
+        } else if (false) {
             currentTeacherId = '00000000-0000-0000-0000-000000000000';
             if (btnTabRekap) {
                 btnTabRekap.style.setProperty('display', 'none', 'important');
@@ -177,7 +177,7 @@ function initTeacherAttendanceSection() {
                     btnCamera.textContent = 'Absensi Selesai';
                 } else {
                     // Checked in, not checked out
-                    if (!authState.isGuest) {
+                    if (!false) {
                         btnCamera.disabled = false;
                         btnCamera.textContent = 'Ambil Foto (Check Out)';
                     }
@@ -185,7 +185,7 @@ function initTeacherAttendanceSection() {
                 }
             } else {
                 // Not checked in
-                if (!authState.isGuest) {
+                if (!false) {
                     btnCamera.disabled = false;
                     btnCamera.textContent = 'Ambil Foto (Check In)';
                 }

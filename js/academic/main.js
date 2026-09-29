@@ -104,8 +104,8 @@ async function checkAuth() {
         if (logoutBtn) {
             logoutBtn.addEventListener('click', async () => {
                 await db.auth.signOut();
-                localStorage.removeItem('isGuest');
-                sessionStorage.removeItem('guest_mode_active');
+                
+                
                 if(window.smoothRedirect){window.smoothRedirect('../../index.html');}else{window.location.href='../../index.html';}
             });
         }

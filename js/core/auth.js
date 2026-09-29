@@ -227,9 +227,9 @@ export async function handleLogout() {
   // Bersihkan sisa flag guest versi lama (satu kali, untuk perangkat yang
   // pernah membuka versi lama sebelum guest dihapus total).
   try {
-    localStorage.removeItem('isGuest');
-    sessionStorage.removeItem('guest_mode_active');
-    sessionStorage.removeItem('guest_stats');
+    
+    
+    
   } catch (_) { /* abaikan */ }
   const isInPages = window.location.pathname.includes('/pages/');
   if(window.smoothRedirect){window.smoothRedirect(isInPages ? '../../index.html' : './index.html');}else{window.location.href=isInPages ? '../../index.html' : './index.html';}

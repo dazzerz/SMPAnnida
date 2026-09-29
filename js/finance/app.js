@@ -60,7 +60,7 @@ function updateGreeting(user) {
   } else {
     set('greeting-text', `${greeting}, 👋`);
     set('user-name-display', 'Pengunjung');
-    set('nav-user-name', 'Guest');
+    set('nav-user-name', 'User');
     set('nav-user-email', 'Read-Only Access');
     set('user-avatar', 'G');
     
@@ -80,38 +80,7 @@ function updateGreeting(user) {
       });
     }
     
-    // Hide Transaksi, Budget, and RAB Kelas in sidebar for guests
-    const navTransactions = document.getElementById('nav-transactions');
-    if (navTransactions) navTransactions.style.display = 'none';
-    const navBudget = document.getElementById('nav-budget');
-    if (navBudget) navBudget.style.display = 'none';
-    const navRab = document.getElementById('nav-rab');
-    if (navRab) navRab.style.display = 'none';
-    
-    // Hide Quick Actions / Buttons
-    const addTxBtn = document.getElementById('add-transaction-btn');
-    if (addTxBtn) addTxBtn.style.display = 'none';
-
-    // Show Guest Unlock Button if not already unlocked
-    const btnUnlock = document.getElementById('btn-guest-unlock');
-    if (btnUnlock) {
-      if (!sessionStorage.getItem('guest_stats')) {
-        btnUnlock.style.display = 'flex';
-        btnUnlock.innerHTML = '<span>🔒</span> Buka Kunci Angka';
-        btnUnlock.classList.remove('btn-danger');
-      } else {
-        btnUnlock.style.display = 'flex';
-        btnUnlock.innerHTML = '<span>🔓</span> Kunci Kembali';
-        btnUnlock.classList.add('btn-danger');
-        btnUnlock.onclick = (e) => {
-          e.preventDefault();
-          sessionStorage.removeItem('guest_stats');
-          window.location.reload();
-        };
-      }
     }
-  }
-}
 
 // ── Sidebar ───────────────────────────────────────
 function initSidebar(user) {
@@ -143,22 +112,22 @@ async function loadDashboard(user) {
   }
 
   const userId = user ? user.id : null;
-  const isGuestUnlocked = !!sessionStorage.getItem('guest_stats');
-  const isLockedGuest = !user && !isGuestUnlocked;
+  const isuserUnlocked = !!sessionStorage.getItem('finance_stats');
+  const isLockeduser = false;
 
   const [, summary, trend, catData, recent, budgets, spending] = await Promise.all([
-    isLockedGuest ? Promise.resolve([]) : fetchCategories(userId),
-    isLockedGuest ? Promise.resolve({ income: 0, expense: 0, kasBalance: 0, bankBalance: 0 }) : fetchMonthlySummary(userId, year, month),
-    isLockedGuest ? Promise.resolve({ labels: [], income: [], expense: [] }) : fetchMonthlyTrend(userId),
-    isLockedGuest ? Promise.resolve([]) : fetchCategoryBreakdown(userId, year, month),
-    isLockedGuest ? Promise.resolve({ data: [] }) : fetchRecentTransactions(userId),
-    isLockedGuest ? Promise.resolve([]) : fetchBudgets(userId, year, month),
-    isLockedGuest ? Promise.resolve([]) : fetchBudgetSpending(userId, year, month),
+     fetchCategories(userId),
+     fetchMonthlySummary(userId, year, month),
+     fetchMonthlyTrend(userId),
+     fetchCategoryBreakdown(userId, year, month),
+     fetchRecentTransactions(userId),
+     fetchBudgets(userId, year, month),
+     fetchBudgetSpending(userId, year, month),
   ]);
 
   // Stats
   if (!user) {
-    const cachedStats = sessionStorage.getItem('guest_stats');
+    const cachedStats = sessionStorage.getItem('finance_stats');
     if (cachedStats) {
        const s = JSON.parse(cachedStats);
        animateCounter(document.getElementById('stat-income'), s.income);
@@ -200,57 +169,17 @@ async function loadDashboard(user) {
     const existing = container.querySelector('.locked-overlay');
     if (existing) existing.remove();
     
-    if (isLockedGuest) {
-      const overlay = document.createElement('div');
-      overlay.className = 'locked-overlay';
-      overlay.innerHTML = `
-        <div class="locked-overlay-icon">🔒</div>
-        <div class="locked-overlay-text">Privasi Terkunci<br/><span style="font-size:0.75rem;font-weight:400;opacity:0.8;">Buka Kunci Angka di atas untuk melihat data.</span></div>
-      `;
-      container.appendChild(overlay);
-    }
-  });
+      });
 
-  // Also apply lock overlay to the summary grid if locked guest
+  // Also apply lock overlay to the summary grid if locked user
   const summaryGrid = document.querySelector('.summary-grid');
   if (summaryGrid) {
      const existingSummaryLock = summaryGrid.querySelector('.summary-locked-overlay');
      if (existingSummaryLock) existingSummaryLock.remove();
      
-     if (isLockedGuest) {
-        const overlay = document.createElement('div');
-        overlay.className = 'summary-locked-overlay';
-        overlay.style.position = 'absolute';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100%';
-        overlay.style.height = '100%';
-        overlay.style.background = 'rgba(15, 23, 42, 0.6)';
-        overlay.style.backdropFilter = 'blur(6px)';
-        overlay.style.zIndex = '5';
-        overlay.style.display = 'flex';
-        overlay.style.flexDirection = 'column';
-        overlay.style.alignItems = 'center';
-        overlay.style.justifyContent = 'center';
-        overlay.style.borderRadius = '16px';
-        overlay.innerHTML = `
-          <div style="font-size:3rem;margin-bottom:0.5rem;text-align:center;">🔒</div>
-          <div style="color:var(--text-primary);text-align:center;font-weight:600;font-size:1.1rem;">Angka Disembunyikan</div>
-        `;
-        
-        summaryGrid.style.position = 'relative';
-        summaryGrid.appendChild(overlay);
-     }
-  }
+       }
 
-  // Auto-prompt password for locked guests after a short delay
-  if (isLockedGuest && !window.hasPromptedGuest) {
-    window.hasPromptedGuest = true;
-    setTimeout(() => {
-      document.getElementById('btn-guest-unlock')?.click();
-    }, 500);
-  }
-}
+  
 
 // ── Transaction Modal ─────────────────────────────
 let editingId = null;
@@ -287,10 +216,10 @@ async function main() {
   injectTopbar('topbar', { greeting: 'Selamat Datang, 👋', title: 'Memuat...' });
   applySavedTheme();
 
-  // Clear guest unlock state on page refresh
+  
   const navEntries = performance.getEntriesByType('navigation');
   if (navEntries.length > 0 && navEntries[0].type === 'reload') {
-    sessionStorage.removeItem('guest_stats');
+    
   }
 
   const user = await requireAuth();
@@ -410,32 +339,11 @@ async function main() {
     }
   });
 
-  // Guest Unlock Button
-  document.getElementById('btn-guest-unlock')?.addEventListener('click', async (e) => {
-    e.preventDefault();
-    const pass = prompt('Masukkan Password Akses:');
-    if (!pass) return;
-
-    const btn = e.currentTarget;
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '⏳ Tunggu...';
-
-    try {
-      const monthFilter = document.getElementById('dashboard-month')?.value;
-      let p_year = null, p_month = null;
-      if (monthFilter) {
-        [p_year, p_month] = monthFilter.split('-').map(Number);
-      }
-
-      const { data, error } = await supabaseClient.rpc('guest_get_totals', {
-        p_pass: pass,
-        p_year: p_year,
-        p_month: p_month
-      });
+  
 
       if (error) throw error;
 
-      sessionStorage.setItem('guest_stats', JSON.stringify(data));
+      sessionStorage.setItem('finance_stats', JSON.stringify(data));
       showToast('Kunci berhasil dibuka!', 'success');
       btn.style.display = 'none';
       loadDashboard(currentUser); // Reload dashboard to show numbers

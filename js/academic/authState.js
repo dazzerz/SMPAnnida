@@ -14,7 +14,7 @@ export const authState = {
     get isAdmin() { return _isAdmin; },
     get isPembina() { return _isPembina; },
     // Getter dipertahankan (=false) agar kode lama tidak crash, tidak pernah true lagi.
-    get isGuest() { return false; },
+
     setAuth(user, teacher, admin, pembina = false) {
         _currentUser = user;
         _currentTeacher = teacher;
