@@ -427,7 +427,6 @@ footer p {
         border-right: none;
         border-bottom: 1px solid var(--border-color);
         padding: 15px;
-        position: relative;
     }
 }
 

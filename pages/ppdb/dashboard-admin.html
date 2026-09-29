@@ -96,7 +96,7 @@
   <aside class="sidebar" id="sidebar"></aside>
 
   <!-- Main Content Container -->
-  <main class="main-content flex-1 w-full max-w-full p-4 lg:p-8 overflow-y-auto">
+  <main class="main-content flex-1 w-full max-w-full p-4 lg:p-8">
     <!-- Topbar Header -->
     <header class="topbar mb-8" id="topbar"></header>
 
@@ -362,6 +362,12 @@
                   </button>
                   <button type="button" onclick="saveAdminVerification('Revisi')" class="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
                     Kembalikan untuk Revisi
+                  </button>
+                  <button type="button" onclick="saveAdminVerification('Lulus')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
+                    ✅ Lulus Seleksi (Setelah Tes Tahfidz)
+                  </button>
+                  <button type="button" onclick="saveAdminVerification('Tidak Lulus')" class="bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
+                    ❌ Tidak Lulus
                   </button>
                 </div>
               </div>
