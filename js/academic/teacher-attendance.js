@@ -231,7 +231,8 @@ function initTeacherAttendanceSection() {
                             currentLng = position.coords.longitude;
                         },
                         (error) => {
-                            
+                            console.error("Gagal mendapat GPS:", error);
+                            showToast("Gagal mendeteksi lokasi GPS. Absensi mungkin tidak valid.", "error");
                         },
                         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
                     );

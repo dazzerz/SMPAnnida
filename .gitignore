@@ -10,6 +10,8 @@ build.py
 !README.md
 !CHANGELOG.md
 !PRD.md
+!docs/**/*.md
+!docs/*.md
 graphify-out/
 anti-slop/
 docs/audit/

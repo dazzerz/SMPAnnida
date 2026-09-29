@@ -156,10 +156,19 @@ export async function handleLogin(e) {
   // Simplified redirect for teacher‑only access
   setTimeout(() => {
     if (r === 'teacher' || r === 'admin' || r === 'pembina') {
-      if (window.smoothRedirect) { window.smoothRedirect('./pages/academic/dashboard.html'); } else { window.location.href = './pages/academic/dashboard.html'; }
+      window.location.href = './pages/academic/dashboard.html';
+    } else if (r === 'finance') {
+      window.location.href = './pages/finance/dashboard.html';
+    } else if (r === 'panitia_ppdb') {
+      window.location.href = './pages/ppdb/dashboard-admin.html';
+    } else if (r === 'wali_murid' || r === 'calon_siswa') {
+      window.location.href = './pages/ppdb/dashboard-wali.html';
+    } else if (r === 'siswa') {
+      window.location.href = './pages/student/dashboard.html';
     } else {
-      showAuthMessage('Akses hanya untuk guru.', 'error');
+      window.location.href = './dashboard.html';
     }
+
   }, 800);
 }
 

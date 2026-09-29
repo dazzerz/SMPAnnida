@@ -1296,7 +1296,7 @@ window.submitKonversiSiswa = async function() {
       .from('students')
       .upsert(studentPayload, { onConflict: 'nama_lengkap' });
 
-    if (insErr) console.warn("Supabase students insert:", insErr.message);
+    if (insErr) throw new Error("Gagal menyimpan ke tabel siswa: " + insErr.message);
 
     // 3. Update pendaftaran status ke Diterima
     await db

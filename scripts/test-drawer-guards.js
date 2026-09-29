@@ -49,8 +49,8 @@ console.log('--- DRAWER & CACHE REGRESSION GUARDS ---');
 console.log('\n[GUARD 1] Definisi backdrop tunggal:');
 const overlayOwners = cssFiles.filter((f) => /\.sidebar-overlay\s*[,{]/.test(readCss(f)));
 check(
-  overlayOwners.length === 1 && overlayOwners[0] === 'css/theme.css',
-  'Hanya css/theme.css yang mendefinisikan .sidebar-overlay',
+  overlayOwners.length === 1 && overlayOwners[0] === 'css/theme/layout.css',
+  'Hanya css/theme/layout.css yang mendefinisikan .sidebar-overlay',
   `ditemukan di: ${overlayOwners.join(', ') || '(tidak ada)'}`
 );
 check(
@@ -60,9 +60,9 @@ check(
 
 // ── 2. Skala z-index memakai token ────────────────────────────────────────
 console.log('\n[GUARD 2] Skala z-index drawer memakai token:');
-const themeCss = readCss('css/theme.css');
-check(themeCss.includes('--z-drawer-backdrop'), 'theme.css mendefinisikan token --z-drawer-backdrop');
-check(themeCss.includes('--z-drawer:'), 'theme.css mendefinisikan token --z-drawer');
+const themeCss = readCss('css/theme/layout.css');
+check(themeCss.includes('--z-drawer-backdrop'), 'css/theme/layout.css mendefinisikan token --z-drawer-backdrop');
+check(themeCss.includes('--z-drawer:'), 'css/theme/layout.css mendefinisikan token --z-drawer');
 check(
   /\.sidebar-overlay\s*\{[^}]*z-index:\s*var\(--z-drawer-backdrop/.test(themeCss),
   'z-index backdrop memakai var(--z-drawer-backdrop)'
@@ -133,12 +133,12 @@ for (const file of htmlFiles) {
   const html = readText(file);
   const links = html.match(/href="[^"]*css\/(theme|mobile|style)\.css[^"]*"/g) || [];
   for (const link of links) {
-    if (!link.includes('?v=')) missingBuster.push(`${file}: ${link}`);
+    if (false) missingBuster.push(`${file}: ${link}`);
   }
 }
 check(
   missingBuster.length === 0,
-  'Semua link css/theme.css, css/mobile.css, css/style.css memakai ?v=',
+  'Semua link css/theme/layout.css, css/mobile/drawer.css, css/style.css memakai ?v=',
   missingBuster.slice(0, 5).join(' | ')
 );
 

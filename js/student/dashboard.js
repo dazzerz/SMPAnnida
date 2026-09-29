@@ -68,14 +68,20 @@ async function initStudentSession() {
     .maybeSingle();
 
   if (!student) {
-    // Fallback Mocking untuk preview akun baru jika belum terhubung
-    student = {
-      nama_lengkap: user.user_metadata?.full_name || 'Santri SMP Annida',
-      nisn: '0123456789',
-      kelas: '7A',
-      email: user.email,
-      classes: { nama_kelas: '7A' }
-    };
+      document.getElementById('topbar-student-name').textContent = 'Akun Belum Dikonfigurasi';
+      const classEl = document.getElementById('topbar-student-class');
+      if (classEl) classEl.textContent = 'Hubungi Tata Usaha';
+      
+      const main = document.querySelector('main');
+      if (main) {
+          main.innerHTML = `
+            <div style="padding: 2rem; max-width: 600px; margin: 2rem auto; background: #fee2e2; border: 1px solid #ef4444; border-radius: 8px; color: #991b1b; text-align: center;">
+              <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 1rem;">Akun Belum Dikonfigurasi</h2>
+              <p>Mohon maaf, akun email Anda belum terhubung dengan data profil Santri Aktif kami. Silakan hubungi bagian Administrasi atau Tata Usaha untuk melengkapi profil data Anda.</p>
+            </div>
+          `;
+      }
+      return;
   }
   currentStudent = student;
 
