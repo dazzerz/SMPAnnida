@@ -1,4 +1,3 @@
-import { logError } from './analytics.js';
 // Note: All endpoints are now RLS-protected in Supabase (see sql/rls_policies.sql)
 // =====================================================
 // ANNIDA2FINANCE - Authentication Module
@@ -7,7 +6,7 @@ import { logError } from './analytics.js';
 // index, login) tidak memakai modul ini untuk akses data.
 // =====================================================
 import supabaseClient from './supabase.js';
-import { showToast, setupThemeToggle, applySavedTheme } from './utils.js';
+import { setupThemeToggle, applySavedTheme } from './utils.js';
 
 function showAuthMessage(message, type) {
   let el = document.getElementById('auth-message');
@@ -149,32 +148,31 @@ export async function handleLogin(e) {
     setLoading('login-btn', false);
     return;
   }
-  showAuthMessage('Login berhasil! Mengalihkan...', 'success');
   // Periksa role untuk menentukan halaman redirect
   let r = await resolveUserRole(data.user);
+  // CHECK constraint DB memakai 'student', UI memakai 'siswa' — samakan ke 'siswa'.
+  if (r === 'student') r = 'siswa';
 
-    const allowedRoles = ['admin','teacher','pembina','finance','wali_murid','calon_siswa','siswa','student'];
-  if (!allowedRoles.includes(r)) {
-    showAuthMessage('Akses ditolak: role tidak dikenali', 'error');
+  const ROLE_HOME = {
+    admin: './pages/academic/dashboard.html',
+    teacher: './pages/academic/dashboard.html',
+    pembina: './pages/academic/dashboard.html',
+    finance: './pages/finance/dashboard.html',
+    panitia_ppdb: './pages/ppdb/dashboard-admin.html',
+    wali_murid: './pages/ppdb/dashboard-wali.html',
+    calon_siswa: './pages/ppdb/dashboard-wali.html',
+    siswa: './pages/student/dashboard.html',
+  };
+  const target = Object.prototype.hasOwnProperty.call(ROLE_HOME, r) ? ROLE_HOME[r] : null;
+  if (!target) {
+    showAuthMessage('Akses ditolak: akun ini belum memiliki role yang dikenali. Hubungi admin sekolah.', 'error');
     setLoading('login-btn', false);
     return;
   }
 
+  showAuthMessage('Login berhasil! Mengalihkan...', 'success');
   setTimeout(() => {
-    if (r === 'teacher' || r === 'admin' || r === 'pembina') {
-      window.location.href = './pages/academic/dashboard.html';
-    } else if (r === 'finance') {
-      window.location.href = './pages/finance/dashboard.html';
-    } else if (r === 'panitia_ppdb') {
-      window.location.href = './pages/ppdb/dashboard-admin.html';
-    } else if (r === 'wali_murid' || r === 'calon_siswa') {
-      window.location.href = './pages/ppdb/dashboard-wali.html';
-    } else if (r === 'siswa') {
-      window.location.href = './pages/student/dashboard.html';
-    } else {
-      window.location.href = './dashboard.html';
-    }
-
+    if (window.smoothRedirect) { window.smoothRedirect(target); } else { window.location.href = target; }
   }, 800);
 }
 
