@@ -63,3 +63,6 @@ pm test (Vitest).
 Configure analytics by setting VITE_ANALYTICS_PROVIDER, VITE_SENTRY_DSN, and VITE_LOGROCKET_ID in .env.
 
 <!-- TODO: Update README links when new docs are added -->
+
+## Setup
+Pastikan untuk melakukan set `VITE_SUPABASE_URL` & `VITE_SUPABASE_ANON_KEY` di file `.env` sebelum menjalankan aplikasi.

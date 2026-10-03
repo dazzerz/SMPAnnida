@@ -153,7 +153,13 @@ export async function handleLogin(e) {
   // Periksa role untuk menentukan halaman redirect
   let r = await resolveUserRole(data.user);
 
-  // Simplified redirect for teacher‑only access
+    const allowedRoles = ['admin','teacher','pembina','finance','wali_murid','calon_siswa','siswa','student'];
+  if (!allowedRoles.includes(r)) {
+    showAuthMessage('Akses ditolak: role tidak dikenali', 'error');
+    setLoading('login-btn', false);
+    return;
+  }
+
   setTimeout(() => {
     if (r === 'teacher' || r === 'admin' || r === 'pembina') {
       window.location.href = './pages/academic/dashboard.html';

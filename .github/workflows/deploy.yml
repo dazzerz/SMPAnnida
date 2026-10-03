@@ -39,6 +39,9 @@ jobs:
         run: npm ci
         
       - name: Run tests
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'https://vxrgezyfxzynpucuomci.supabase.co' }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY || 'dummy' }}
         run: npm test
       
       - name: Build
