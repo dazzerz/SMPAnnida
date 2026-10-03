@@ -12,16 +12,35 @@ const db = supabaseClient;
 let allRegistrations = [];
 let selectedRegForVerif = null;
 
-// Helper for decryption
+// Kunci NIK hanya dari env build. Fallback dipertahankan agar halaman tidak crash,
+// tetapi data yang dienkripsi dengan fallback TIDAK aman (lihat docs/security.md).
+const NIK_FALLBACK_KEY = 'dev-fallback-key-do-not-use-in-prod';
+let nikKeyWarned = false;
+
+function getEncryptionKey() {
+  const key = import.meta.env.VITE_ENCRYPTION_KEY;
+  if (key) return key;
+  if (!nikKeyWarned) {
+    nikKeyWarned = true;
+    console.error('[PPDB] VITE_ENCRYPTION_KEY kosong: NIK dienkripsi dengan kunci fallback yang tidak aman.');
+  }
+  return NIK_FALLBACK_KEY;
+}
+
+// Rotasi kunci: coba kunci utama, lalu VITE_ENCRYPTION_KEY_LEGACY (kunci lama),
+// lalu fallback (data yang ditulis build tanpa kunci). Hasil kosong = kunci salah.
 function decryptNik(encryptedText) {
   if (!encryptedText) return '-';
-  try {
-    const bytes = CryptoJS.AES.decrypt(encryptedText, import.meta.env.VITE_ENCRYPTION_KEY || 'dev-fallback-key-do-not-use-in-prod');
-    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-    return decrypted || encryptedText; // Kembalikan plaintext lama jika decrypt kosong
-  } catch (e) {
-    return encryptedText; // Kembalikan plaintext lama jika error
+  const keys = [getEncryptionKey(), import.meta.env.VITE_ENCRYPTION_KEY_LEGACY, NIK_FALLBACK_KEY];
+  for (const key of new Set(keys.filter(Boolean))) {
+    try {
+      const decrypted = CryptoJS.AES.decrypt(encryptedText, key).toString(CryptoJS.enc.Utf8);
+      if (decrypted) return decrypted;
+    } catch (e) {
+      // Kunci salah sering memicu "Malformed UTF-8"; lanjut ke kunci berikutnya.
+    }
   }
+  return encryptedText; // Kembalikan plaintext lama bila tidak ada kunci yang cocok
 }
 
 let currentDocVerification = {
@@ -403,7 +422,7 @@ async function saveSiswaForm() {
     if (pError) throw pError;
 
     // 2. Upsert biodata
-    const secretKey = import.meta.env.VITE_ENCRYPTION_KEY || 'dev-fallback-key-do-not-use-in-prod';
+    const secretKey = getEncryptionKey();
     const encryptedNik = nik ? CryptoJS.AES.encrypt(nik, secretKey).toString() : null;
 
     const biodataPayload = {

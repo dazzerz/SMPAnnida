@@ -8,7 +8,8 @@
 3. [Mitigasi Cross-Site Scripting (XSS)](#mitigasi-cross-site-scripting-xss)
 4. [Content-Security-Policy (CSP)](#content-security-policy-csp)
 5. [Monitoring & Analytics](#monitoring--analytics)
-6. [Security Checklist untuk Reviewer](#security-checklist-untuk-reviewer)
+6. [Enkripsi NIK (PPDB)](#enkripsi-nik-ppdb)
+7. [Security Checklist untuk Reviewer](#security-checklist-untuk-reviewer)
 
 ---
 
@@ -53,6 +54,21 @@ Jika ada anomali atau intrusi yang tertangkap sebagai *Error* JavaScript, kita w
 - Cukup isi nilai `VITE_ANALYTICS_PROVIDER` di dalam berkas `.env` dengan kata `sentry` atau `logrocket`.
 - Konfigurasi `VITE_SENTRY_DSN` atau `VITE_LOGROCKET_ID`.
 - Semua *error* yang ditangkap oleh `logError()` secara cerdas akan diteruskan ke panel analitik secara *real-time*.
+
+---
+
+## Enkripsi NIK (PPDB)
+NIK dienkripsi AES di browser (`js/ppdb/db.js`, fungsi `getEncryptionKey()`) sebelum disimpan ke `biodata_siswa.nik`.
+
+> **Batasan:** semua variabel `VITE_*` ditanam ke bundle JavaScript. Siapa pun yang membuka `dist/assets/*.js` di browser bisa membaca kuncinya. Enkripsi client-side **tidak** melindungi NIK dari pembaca bundle; ia hanya mencegah NIK tersimpan sebagai teks polos di tabel.
+
+**Sumber kunci:**
+- Produksi (CI): GitHub Secret `VITE_ENCRYPTION_KEY`, diteruskan ke step `Build` di `.github/workflows/deploy.yml`. Jika kosong, build tetap jalan dengan peringatan dan aplikasi memakai kunci fallback yang tidak aman.
+- Lokal: `.env.development.local` (hanya dimuat `npm run dev`, diabaikan git). Jangan menaruh kunci di `.env`, karena Vite memuat `.env` di semua mode termasuk `vite build`.
+
+**Rotasi kunci:** isi kunci lama ke Secret `VITE_ENCRYPTION_KEY_LEGACY` dan kunci baru ke `VITE_ENCRYPTION_KEY`. Saat dekripsi, aplikasi mencoba kunci utama, lalu kunci legacy, lalu fallback. Data baru selalu dienkripsi dengan kunci utama.
+
+**Langkah lanjutan yang direkomendasikan:** pindahkan enkripsi/dekripsi ke server (RPC Postgres dengan `pgcrypto`/Supabase Vault, atau Edge Function) supaya kunci tidak pernah dikirim ke browser, dan batasi dekripsi hanya untuk role yang berwenang.
 
 ---
 

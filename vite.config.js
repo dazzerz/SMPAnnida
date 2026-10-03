@@ -18,6 +18,15 @@ if (fs.existsSync(partialsDir)) {
 
 export default defineConfig({
   base: '/',
+  plugins: [{
+    name: 'warn-missing-nik-key',
+    configResolved(config) {
+      if (config.mode === 'production' && !config.env.VITE_ENCRYPTION_KEY) {
+        console.warn('\n[build] PERINGATAN: VITE_ENCRYPTION_KEY kosong. NIK PPDB akan dienkripsi dengan kunci fallback yang tidak aman.\n' +
+          '        Set GitHub Secret VITE_ENCRYPTION_KEY (lihat docs/security.md).\n');
+      }
+    }
+  }],
   resolve: {
     alias: {
       '@': resolve(root, './js'),

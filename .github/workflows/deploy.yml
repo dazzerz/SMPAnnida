@@ -45,6 +45,9 @@ jobs:
         run: npm test
 
       - name: Build
+        env:
+          VITE_ENCRYPTION_KEY: ${{ secrets.VITE_ENCRYPTION_KEY }}
+          VITE_ENCRYPTION_KEY_LEGACY: ${{ secrets.VITE_ENCRYPTION_KEY_LEGACY }}
         run: npm run build
         
       - name: Setup Pages
