@@ -3,7 +3,7 @@
 <head>
   <script>/* Kill-switch: bebaskan perangkat dari Service Worker & cache PWA lama */if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(s=>s.unregister()))}if('caches' in window){caches.keys().then(k=>k.forEach(c=>caches.delete(c)))}</script>
   <!-- Defensive Content Security Policy & Security Meta -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com;" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com https://script.google.com https://script.googleusercontent.com;" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <script>
     (function() {
@@ -42,12 +42,19 @@
       opacity: 1;
     }
     .glass-card {
-      background: rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(16, 185, 129, 0.45);
+      transform: translateY(-2px);
     }
   </style>
+  <link rel="stylesheet" href="../../src/style.css">
+</head>
 <body class="min-h-screen">
 
   <!-- Main Content Container -->
@@ -80,7 +87,7 @@
         <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -z-10"></div>
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div>
-            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold mb-3 border border-emerald-500/20">
+            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 text-xs font-semibold mb-3 border border-emerald-500/20">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
               Tahun Ajaran 2027/2028
             </span>
@@ -185,7 +192,7 @@
             <div class="space-y-3" id="siswa-notification-list">
               <!-- Item 1 -->
               <div class="flex gap-3 text-xs p-3 rounded-lg bg-slate-50 border border-slate-200">
-                <span class="material-symbols-outlined text-emerald-400 text-sm">done</span>
+                <span class="material-symbols-outlined text-emerald-600 text-sm">done</span>
                 <div>
                   <p class="font-bold text-slate-900">Akun PPDB Berhasil Dibuat</p>
                   <p class="text-slate-600 mt-0.5">Wali Murid telah terdaftar pada platform.</p>
@@ -193,7 +200,7 @@
               </div>
               <!-- Item 2 -->
               <div class="flex gap-3 text-xs p-3 rounded-lg bg-slate-50 border border-slate-200">
-                <span class="text-amber-400">⏳</span>
+                <span class="text-amber-600">⏳</span>
                 <div>
                   <p class="font-bold text-slate-900">Menunggu Kelengkapan Formulir</p>
                   <p class="text-slate-600 mt-0.5">Silakan selesaikan data siswa & orang tua.</p>
@@ -241,7 +248,7 @@
             <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">Pembayaran DP Komitmen Tahfidz (30%)</h2>
             <p class="text-xs text-slate-600">Harap lakukan pembayaran uang muka (DP) pendaftaran untuk mengunci berkas persyaratan Anda.</p>
           </div>
-          <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-bold uppercase tracking-wider" id="dp-status-badge">Menunggu Pembayaran</span>
+          <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20 text-xs font-bold uppercase tracking-wider" id="dp-status-badge">Menunggu Pembayaran</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -295,7 +302,7 @@
         <h2 class="text-xl lg:text-2xl font-bold text-slate-900 mb-6">Lengkapi Data Pendaftaran</h2>
         
         <form id="multiStepForm" class="space-y-6">
-          <div id="wali-draft-indicator" class="hidden text-xs text-emerald-400 font-medium py-2 px-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 mb-4 transition-all"></div>
+          <div id="wali-draft-indicator" class="hidden text-xs text-emerald-600 font-medium py-2 px-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 mb-4 transition-all"></div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Program Pendaftaran -->
             <div class="md:col-span-2">
@@ -395,7 +402,7 @@
             </div>
           </div>
 
-          <div class="flex justify-between pt-4 border-t border-slate-700/50 mt-6">
+          <div class="flex justify-between pt-4 border-t border-slate-200 mt-6">
             <button type="button" id="btn-delete-data" class="bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/30 font-semibold px-4 py-2 rounded-xl shadow-lg transition-all flex items-center gap-2 text-sm">
               <span class="material-symbols-outlined text-base">delete_forever</span> Hapus Data Pendaftaran Saya
             </button>
@@ -416,10 +423,10 @@
         <p class="text-slate-600 text-sm mb-6">Silakan unggah dokumen persyaratan dalam format gambar (JPG/PNG) atau PDF maksimal 2MB.</p>
         
         <!-- Lock Notice Banner -->
-        <div id="berkas-lock-banner" class="hidden flex flex-col items-center justify-center p-8 border border-red-500/20 bg-red-500/5 text-red-300 rounded-xl space-y-3">
+        <div id="berkas-lock-banner" class="hidden flex flex-col items-center justify-center p-8 border border-red-500/20 bg-red-500/5 text-red-600 rounded-xl space-y-3">
           <span class="material-symbols-outlined text-5xl">lock</span>
           <h4 class="font-bold text-lg">Akses Dikunci: Harap Lunasi DP Terlebih Dahulu</h4>
-          <p class="text-xs text-slate-400 max-w-md">Anda wajib mengunggah bukti transfer DP Komitmen Tahfidz (30%) di tab <strong>Beranda</strong> dan menunggu validasi panitia sebelum dapat mengakses pengunggahan berkas persyaratan.</p>
+          <p class="text-xs text-slate-600 max-w-md">Anda wajib mengunggah bukti transfer DP Komitmen Tahfidz (30%) di tab <strong>Beranda</strong> dan menunggu validasi panitia sebelum dapat mengakses pengunggahan berkas persyaratan.</p>
         </div>
 
         <div id="berkas-upload-content" class="space-y-4">
@@ -507,7 +514,7 @@
           </button>
         </form>
         
-        <div id="payment-success-msg" class="hidden flex items-center gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs text-center justify-center">
+        <div id="payment-success-msg" class="hidden flex items-center gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 text-xs text-center justify-center">
           Bukti transfer telah terkirim dan sedang dalam proses verifikasi oleh Bendahara.
         </div>
       </div>
@@ -518,7 +525,7 @@
     <!-- ========================================================================= -->
     <div id="tab-pengumuman" class="tab-panel space-y-6">
       <div class="max-w-2xl mx-auto glass-card rounded-2xl p-8 shadow-2xl text-center space-y-6">
-        <div id="announce-icon-wrapper" class="w-20 h-20 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-4xl mx-auto">
+        <div id="announce-icon-wrapper" class="w-20 h-20 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20 flex items-center justify-center text-4xl mx-auto">
           ⏳
         </div>
         
@@ -543,7 +550,7 @@
         </div>
 
         <div id="announce-help-container" class="pt-2 hidden">
-          <a href="https://wa.me/6281234567890?text=Halo%20Panitia%20PPDB%20SMP%20Annida,%20saya%20ingin%20menanyakan%20status%20pendaftaran" target="_blank" class="inline-flex items-center gap-2 text-xs text-emerald-400 hover:underline">
+          <a href="https://wa.me/6281234567890?text=Halo%20Panitia%20PPDB%20SMP%20Annida,%20saya%20ingin%20menanyakan%20status%20pendaftaran" target="_blank" class="inline-flex items-center gap-2 text-xs text-emerald-600 hover:underline">
             <span class="material-symbols-outlined text-xs">chat</span> Hubungi Panitia PPDB via WhatsApp
           </a>
         </div>
