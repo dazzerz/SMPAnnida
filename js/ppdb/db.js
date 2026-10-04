@@ -2,9 +2,9 @@
 // Menghubungkan Dashboard Pendaftar & Admin ke Supabase DB dengan Integrasi Live
 
 import supabaseClient from '../core/supabase.js';
-import { escapeHTML } from '../core/utils.js';
+import { escapeHTML, showToast } from '../core/utils.js';
 import { getOptionalUser } from '../core/auth.js';
-import CryptoJS from 'crypto-js';
+import { decryptNik, encryptNik } from './nik-crypto.js';
 
 const db = supabaseClient;
 
@@ -12,37 +12,35 @@ const db = supabaseClient;
 let allRegistrations = [];
 let selectedRegForVerif = null;
 
-// Kunci NIK hanya dari env build. Fallback dipertahankan agar halaman tidak crash,
-// tetapi data yang dienkripsi dengan fallback TIDAK aman (lihat docs/security.md).
-const NIK_FALLBACK_KEY = 'dev-fallback-key-do-not-use-in-prod';
-let nikKeyWarned = false;
+// Endpoint Google Apps Script yang sama dengan dashboard-wali.html (upload ke Drive).
+const GAS_UPLOAD_URL = 'https://script.google.com/macros/s/AKfycbwK_BdUAcDMdUTGaM3aLmNJ5i_enWm2vFnE6mtT3wJNEhKIxWsLofudDYGrWpvJMwM/exec';
 
-function getEncryptionKey() {
-  const key = import.meta.env.VITE_ENCRYPTION_KEY;
-  if (key) return key;
-  if (!nikKeyWarned) {
-    nikKeyWarned = true;
-    console.error('[PPDB] VITE_ENCRYPTION_KEY kosong: NIK dienkripsi dengan kunci fallback yang tidak aman.');
-  }
-  return NIK_FALLBACK_KEY;
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(',')[1]);
+    reader.onerror = () => reject(new Error('Gagal membaca file.'));
+    reader.readAsDataURL(file);
+  });
 }
 
-// Rotasi kunci: coba kunci utama, lalu VITE_ENCRYPTION_KEY_LEGACY (kunci lama),
-// lalu fallback (data yang ditulis build tanpa kunci). Hasil kosong = kunci salah.
-function decryptNik(encryptedText) {
-  if (!encryptedText) return '-';
-  const keys = [getEncryptionKey(), import.meta.env.VITE_ENCRYPTION_KEY_LEGACY, NIK_FALLBACK_KEY];
-  for (const key of new Set(keys.filter(Boolean))) {
-    try {
-      const decrypted = CryptoJS.AES.decrypt(encryptedText, key).toString(CryptoJS.enc.Utf8);
-      if (decrypted) return decrypted;
-    } catch (e) {
-      // Kunci salah sering memicu "Malformed UTF-8"; lanjut ke kunci berikutnya.
-    }
-  }
-  return encryptedText; // Kembalikan plaintext lama bila tidak ada kunci yang cocok
+async function uploadToGas(file, docType) {
+  const payload = {
+    filename: file.name,
+    image: await readFileAsBase64(file),
+    docType,
+    noPendaftaran: sessionStorage.getItem('last_ppdb_no') || 'UNKNOWN',
+    namaSiswa: sessionStorage.getItem('last_student_name') || 'Calon Siswa'
+  };
+  const response = await fetch(GAS_UPLOAD_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(payload)
+  });
+  const result = await response.json();
+  if (result.status !== 'success') throw new Error(result.message || 'Gagal mengunggah ke Drive');
+  return result.url;
 }
-
 let currentDocVerification = {
   kartu_keluarga: { status: 'pending', note: '' },
   akta_kelahiran: { status: 'pending', note: '' },
@@ -414,16 +412,15 @@ async function saveSiswaForm() {
   saveBtn.textContent = '⏳ Menyimpan...';
 
   try {
-    // 1. Update tipe & status pendaftaran ke "Verifikasi"
+    // 1. Update tipe pendaftaran (status hanya diubah panitia/admin, bukan dari sisi wali)
     const { error: pError } = await db.from('pendaftaran')
-      .update({ tipe_pendaftaran: tipe, status_pendaftaran: 'Verifikasi' })
+      .update({ tipe_pendaftaran: tipe })
       .eq('id', pendaftaranId);
 
     if (pError) throw pError;
 
     // 2. Upsert biodata
-    const secretKey = getEncryptionKey();
-    const encryptedNik = nik ? CryptoJS.AES.encrypt(nik, secretKey).toString() : null;
+    const encryptedNik = encryptNik(nik);
 
     const biodataPayload = {
       pendaftaran_id: pendaftaranId,
@@ -456,7 +453,7 @@ async function saveSiswaForm() {
 
     if (sError) throw sError;
 
-    alert("Sukses! Data formulir pendaftaran berhasil disimpan dan status Anda kini: Menunggu Verifikasi.");
+    alert("Sukses! Data formulir pendaftaran berhasil disimpan.");
     window.location.reload();
   } catch (err) {
     console.error("Gagal simpan formulir:", err.message);
@@ -508,28 +505,31 @@ async function deleteMyRegistrationData() {
 
 async function submitPaymentConfirmation() {
   const btn = document.getElementById('btnConfirmPayment');
-  const msg = document.getElementById('payment-success-msg');
+  const file = document.getElementById('bukti-transfer')?.files?.[0];
+  if (!file) {
+    showToast('Pilih file bukti transfer terlebih dahulu.', 'error');
+    return;
+  }
+  const idleLabel = btn.textContent;
   btn.disabled = true;
-  btn.textContent = '⏳ Mengirim Konfirmasi...';
-  
-  // Simulate payment confirmation uploading (for RLS demo & UX Flow)
-  setTimeout(() => {
-    btn.classList.add('hidden');
-    msg.classList.remove('hidden');
-    
-    // Auto-update status to "Seleksi" in backend simulation
-    const pId = sessionStorage.getItem('pendaftaran_id');
-    if (pId) {
-      db.from('pendaftaran')
-        .update({ status_pendaftaran: 'Seleksi' })
-        .eq('id', pId)
-        .then(() => {
-          updateTimelineUI('Seleksi');
-        });
-    }
-  }, 1500);
-}
+  btn.textContent = '⏳ Mengunggah bukti transfer...';
 
+  try {
+    // Jalur yang sama dengan DP: unggah via GAS, simpan ke document_verification.dp_payment.
+    // status_pendaftaran TIDAK diubah dari klien; hanya panitia yang memvalidasi.
+    const fileUrl = await uploadToGas(file, 'dp');
+    const ok = await window.submitDpPayment(file.name, fileUrl);
+    if (!ok) {
+      btn.disabled = false;
+      btn.textContent = idleLabel;
+    }
+  } catch (err) {
+    console.error('Gagal mengirim bukti transfer:', err.message);
+    showToast('Gagal mengirim bukti transfer: ' + err.message, 'error');
+    btn.disabled = false;
+    btn.textContent = idleLabel;
+  }
+}
 
 function updateAnnouncementTab(status, studentName) {
   const announceIcon = document.getElementById('announce-icon-wrapper');
@@ -543,7 +543,7 @@ function updateAnnouncementTab(status, studentName) {
 
   const cleanName = studentName && studentName !== '-' ? studentName : 'Calon Siswa';
 
-  if (status === 'Lulus') {
+  if (status === 'Lulus' || status === 'Diterima') {
     if (announceIcon) {
       announceIcon.textContent = '🎉';
       announceIcon.className = 'w-20 h-20 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-4xl mx-auto';
@@ -559,7 +559,7 @@ function updateAnnouncementTab(status, studentName) {
     if (announceHelp) announceHelp.classList.remove('hidden');
     const studentPortalCard = document.getElementById('student-portal-access-card');
     if (studentPortalCard) studentPortalCard.classList.remove('hidden');
-  } else if (status === 'Tidak Lulus' || status === 'Ditolak') {
+  } else if (status === 'Gugur') {
     if (announceIcon) {
       announceIcon.textContent = 'ℹ️';
       announceIcon.className = 'w-20 h-20 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center justify-center text-4xl mx-auto';
@@ -649,7 +649,8 @@ function updateTimelineUI(status) {
   if (status === 'Draft') activeMax = 3;
   if (status === 'Verifikasi' || status === 'Revisi') activeMax = 4;
   if (status === 'Seleksi') activeMax = 5;
-  if (status === 'Lulus') activeMax = 6;
+  if (status === 'Gugur') activeMax = 5;
+  if (status === 'Lulus' || status === 'Diterima') activeMax = 6;
 
   // Render completed paths
   for (let i = 1; i <= activeMax; i++) {
@@ -658,10 +659,10 @@ function updateTimelineUI(status) {
     const line = document.getElementById(`line-track-${i - 1}`);
 
     if (icon) {
-      if (i === 4 && status === 'Revisi') {
+      if ((i === 4 && status === 'Revisi') || (i === 5 && status === 'Gugur')) {
         icon.className = 'w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-red-500 text-white ring-4 ring-red-500/20';
         icon.textContent = '✗';
-      } else if (i === activeMax && status !== 'Lulus') {
+      } else if (i === activeMax && status !== 'Lulus' && status !== 'Diterima') {
         icon.className = 'w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-amber-600 text-white ring-4 ring-amber-500/20';
         icon.textContent = i;
       } else {
@@ -669,7 +670,7 @@ function updateTimelineUI(status) {
         icon.textContent = '✓';
       }
     }
-    if (i === 4 && status === 'Revisi') {
+    if ((i === 4 && status === 'Revisi') || (i === 5 && status === 'Gugur')) {
       if (text) text.className = 'text-xs font-semibold text-red-800 mt-1';
       if (line) line.className = 'hidden md:block h-0.5 bg-red-500 flex-1 mx-2';
     } else {
@@ -697,21 +698,20 @@ function updateTimelineUI(status) {
     }
     if (desc) desc.textContent = 'Bukti transfer DP Anda telah divalidasi oleh panitia. Berkas dokumen digital pendaftaran Anda sedang dalam antrean verifikasi oleh panitia PPDB.';
     if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-yellow-500/20 bg-yellow-500/5 text-yellow-300';
-  } else if (status === 'Pembayaran') {
+  } else if (status === 'Gugur') {
     if (badge) {
-      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/35 text-xs font-bold uppercase tracking-wider mb-2';
-      badge.textContent = '🔵 Pembayaran Formulir';
+      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+      badge.textContent = '🔴 Belum Memenuhi Syarat';
     }
-    if (desc) desc.textContent = 'Berkas terverifikasi! Silakan lakukan transfer pembayaran formulir pendaftaran ke rekening Yayasan.';
-    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-blue-500/20 bg-blue-500/5 text-blue-300';
-  } else if (status === 'Seleksi') {
+    if (desc) desc.textContent = 'Mohon maaf, calon siswa belum memenuhi kriteria penerimaan tahun ini. Terima kasih atas partisipasi Ayah/Bunda.';
+    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-400';  } else if (status === 'Seleksi') {
     if (badge) {
       badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/35 text-xs font-bold uppercase tracking-wider mb-2';
       badge.textContent = '🟣 Tahap Tes Tahfidz';
     }
     if (desc) desc.textContent = 'Berkas terverifikasi! Calon siswa dijadwalkan mengikuti tes pemetaan Tahfidz secara langsung. Panitia akan menginformasikan detail jadwal via WhatsApp.';
     if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-purple-500/20 bg-purple-500/5 text-purple-300';
-  } else if (status === 'Lulus') {
+  } else if (status === 'Lulus' || status === 'Diterima') {
     if (badge) {
       badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/35 text-xs font-bold uppercase tracking-wider mb-2';
       badge.textContent = '🟢 Lulus';
@@ -845,6 +845,12 @@ function renderAdminTable(data) {
     } else if (r.status_pendaftaran === 'Revisi') {
       badgeClass = 'bg-red-500/10 text-red-400 border border-red-500/20';
       badgeText = 'Revisi';
+    } else if (r.status_pendaftaran === 'Gugur') {
+      badgeClass = 'bg-rose-50 text-rose-800 border border-rose-200';
+      badgeText = 'Tidak Lulus';
+    } else if (r.status_pendaftaran === 'Diterima') {
+      badgeClass = 'bg-emerald-100 text-emerald-900 border border-emerald-300';
+      badgeText = 'Siswa Aktif';
     }
 
     const tr = document.createElement('tr');
@@ -866,7 +872,7 @@ function renderAdminTable(data) {
           </button>
           ${r.status_pendaftaran === 'Lulus' ? `
             <button onclick="openKonversiModal('${r.id}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg shadow-sm transition-all flex items-center gap-1">
-              🎓 Terbitkan Akun
+              🎓 Konversi ke Siswa
             </button>
           ` : r.status_pendaftaran === 'Diterima' ? `
             <span class="text-[0.7rem] bg-emerald-500/20 text-emerald-300 font-semibold px-2 py-1 rounded border border-emerald-500/30">
@@ -893,6 +899,88 @@ function filterRegistrationsTable(query) {
     return studentName.includes(q) || regNo.includes(q);
   });
   renderAdminTable(filtered);
+}
+
+// Hanya izinkan http(s): file_url berasal dari JSON yang bisa diisi wali murid.
+function safeHttpUrl(url) {
+  return typeof url === 'string' && /^https?:\/\//i.test(url) ? url : null;
+}
+
+function setPreviewLink(el, url, emptyHint) {
+  if (!el) return;
+  const safe = safeHttpUrl(url);
+  if (safe) {
+    el.href = safe;
+    el.rel = 'noopener noreferrer';
+    el.title = '';
+    el.classList.remove('pointer-events-none', 'opacity-50');
+  } else {
+    el.removeAttribute('href');
+    el.title = emptyHint;
+    el.classList.add('pointer-events-none', 'opacity-50');
+  }
+}
+
+// Awalan nama file hasil unggah register.html ke bucket 'ppdb_documents'.
+const DOC_FILE_PREFIX = { kartu_keluarga: ['kk_'], akta_kelahiran: ['akta_'], ijazah: ['ijazah_', 'skl_'] };
+
+// Prioritas: file_url di document_verification (GAS/Drive) -> berkas di bucket privat
+// 'ppdb_documents' ({pendaftaran_id}/{awalan}{nama}) lewat signed URL (bucket tidak publik).
+async function resolveDocLink(reg, docKey, storedFiles) {
+  const fileUrl = safeHttpUrl((reg.document_verification || {})[docKey]?.file_url);
+  if (fileUrl) return fileUrl;
+  const found = storedFiles.find(f => (DOC_FILE_PREFIX[docKey] || []).some(pre => f.name.startsWith(pre)));
+  if (!found) return null;
+  const { data, error } = await db.storage.from('ppdb_documents').createSignedUrl(`${reg.id}/${found.name}`, 3600);
+  return error ? null : data.signedUrl;
+}
+
+async function renderAdminDocLinks(reg) {
+  const links = { kartu_keluarga: 'doc-kk-link', akta_kelahiran: 'doc-akta-link', ijazah: 'doc-ijazah-link' };
+  Object.values(links).forEach(id => setPreviewLink(document.getElementById(id), null, 'Memuat berkas...'));
+
+  let storedFiles = [];
+  try {
+    const { data, error } = await db.storage.from('ppdb_documents').list(reg.id);
+    if (error) throw error;
+    storedFiles = data || [];
+  } catch (err) {
+    console.warn('Gagal membaca daftar berkas storage:', err.message);
+  }
+
+  for (const [docKey, elId] of Object.entries(links)) {
+    const url = await resolveDocLink(reg, docKey, storedFiles);
+    if (selectedRegForVerif?.id !== reg.id) return; // admin sudah membuka pendaftar lain
+    setPreviewLink(document.getElementById(elId), url, 'Berkas belum diunggah');
+  }
+}
+
+function renderAdminDpCard(reg) {
+  const dp = (reg.document_verification || {}).dp_payment || null;
+  const hasFile = !!(dp && safeHttpUrl(dp.file_url));
+  setPreviewLink(document.getElementById('doc-dp-link'), dp && dp.file_url, 'Belum ada bukti transfer');
+
+  const badge = document.getElementById('dp-admin-badge');
+  if (badge) {
+    const approved = dp && dp.status === 'approved';
+    badge.textContent = !dp ? 'Belum ada bukti' : approved ? 'Tervalidasi' : 'Menunggu Validasi';
+    badge.className = 'px-2 py-0.5 rounded text-[0.65rem] font-bold uppercase tracking-wider border ' +
+      (approved ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+        : dp ? 'bg-amber-50 text-amber-800 border-amber-200'
+          : 'bg-slate-100 text-slate-600 border-slate-300');
+  }
+  const fileName = document.getElementById('dp-admin-filename');
+  if (fileName) fileName.textContent = dp && dp.file_name ? dp.file_name : '-';
+
+  // Validasi DP hanya bermakna saat status masih Draft dan bukti sudah ada.
+  const btn = document.getElementById('btn-validate-dp');
+  if (btn) {
+    const canValidate = hasFile && reg.status_pendaftaran === 'Draft';
+    btn.disabled = !canValidate;
+    btn.classList.toggle('opacity-50', !canValidate);
+    btn.classList.toggle('cursor-not-allowed', !canValidate);
+    btn.title = canValidate ? '' : (reg.status_pendaftaran !== 'Draft' ? 'DP sudah divalidasi' : 'Menunggu bukti transfer dari wali murid');
+  }
 }
 
 window.viewRegistrationDetails = function(regId) {
@@ -946,11 +1034,9 @@ window.viewRegistrationDetails = function(regId) {
     window.setDocStatus(docType, docData.status);
   });
 
-  // Dynamic preview links to Supabase Storage (fallback path using user_id)
-  const storageUrl = 'https://vxrgezyfxzynpucuomci.supabase.co/storage/v1/object/public/documents';
-  document.getElementById('doc-kk-link').href = `${storageUrl}/${r.user_id}/kk.pdf`;
-  document.getElementById('doc-akta-link').href = `${storageUrl}/${r.user_id}/akta.pdf`;
-  document.getElementById('doc-ijazah-link').href = `${storageUrl}/${r.user_id}/ijazah.pdf`;
+  // Tautan pratinjau berkas + kartu Bukti Transfer DP
+  renderAdminDpCard(r);
+  renderAdminDocLinks(r);
 
   // Open Details Tab
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -996,6 +1082,20 @@ window.saveAdminVerification = async function(newStatus) {
   const waNumber = selectedRegForVerif.data_orangtua ? selectedRegForVerif.data_orangtua.whatsapp : '';
   const studentName = selectedRegForVerif.biodata_siswa ? selectedRegForVerif.biodata_siswa.nama_lengkap : 'Calon Siswa';
 
+  const currentStatus = selectedRegForVerif.status_pendaftaran;
+  const prevDocs = selectedRegForVerif.document_verification || {};
+  const dp = prevDocs.dp_payment || null;
+
+  // Tahap DP: selama masih Draft hanya boleh Validasi DP (butuh bukti) atau Gugur.
+  if (currentStatus === 'Draft' && newStatus !== 'Verifikasi' && newStatus !== 'Gugur') {
+    showToast('Validasi bukti transfer DP terlebih dahulu sebelum melanjutkan ke tahap berikutnya.', 'error');
+    return;
+  }
+  if (currentStatus === 'Draft' && newStatus === 'Verifikasi' && !(dp && safeHttpUrl(dp.file_url))) {
+    showToast('Belum ada bukti transfer DP dari wali murid.', 'error');
+    return;
+  }
+
   // Gather notes
   ['kartu_keluarga', 'akta_kelahiran', 'ijazah'].forEach(docType => {
     const noteInput = document.getElementById(`note-${docType}`);
@@ -1006,12 +1106,18 @@ window.saveAdminVerification = async function(newStatus) {
     }
   });
 
+  // Gabungkan dengan data lama agar dp_payment (dan field lain) tidak terhapus.
+  const mergedDocs = { ...prevDocs, ...currentDocVerification };
+  if (currentStatus === 'Draft' && newStatus === 'Verifikasi') {
+    mergedDocs.dp_payment = { ...dp, status: 'approved', approved_at: new Date().toISOString() };
+  }
+
   try {
     const { error } = await db
       .from('pendaftaran')
       .update({
         status_pendaftaran: newStatus,
-        document_verification: currentDocVerification
+        document_verification: mergedDocs
       })
       .eq('id', id);
 
@@ -1043,7 +1149,7 @@ window.saveAdminVerification = async function(newStatus) {
         statusMsg = 'Perlu Revisi Dokumen:\n' + rejectedDocs.join('\n');
       } else if (newStatus === 'Lulus') {
         statusMsg = 'Selamat! Calon siswa dinyatakan LULUS Seleksi PPDB SMP Annida.';
-      } else if (newStatus === 'Tidak Lulus') {
+      } else if (newStatus === 'Gugur') {
         statusMsg = 'Mohon Maaf, pendaftaran calon siswa belum memenuhi kriteria penerimaan tahun ini.';
       }
 
@@ -1179,7 +1285,7 @@ window.adminSetTidakLulus = async function(paramId) {
   try {
     const { error } = await db
       .from('pendaftaran')
-      .update({ status_pendaftaran: 'Tidak Lulus' })
+      .update({ status_pendaftaran: 'Gugur' })
       .eq('id', regId);
 
     if (error) throw error;
@@ -1294,7 +1400,6 @@ window.submitKonversiSiswa = async function() {
     const parts = cleanName.split(' ').filter(Boolean);
     const baseUsername = parts.length >= 2 ? `${parts[0]}.${parts[1]}` : (parts[0] || 'siswa');
     const studentEmail = `${baseUsername}@smpannida.sch.id`;
-    const defaultPassword = 'abc123';
 
     // 2. Insert into students table
     const studentPayload = {
@@ -1311,47 +1416,35 @@ window.submitKonversiSiswa = async function() {
       email: studentEmail
     };
 
-    const { error: insErr } = await db
-      .from('students')
-      .upsert(studentPayload, { onConflict: 'nama_lengkap' });
-
-    if (insErr) throw new Error("Gagal menyimpan ke tabel siswa: " + insErr.message);
-
-    // 3. Update pendaftaran status ke Diterima
-    await db
-      .from('pendaftaran')
-      .update({ status_pendaftaran: 'Diterima' })
-      .eq('id', r.id);
-
-    // Close konversi modal
-    window.closeKonversiModal();
-
-    // 4. Open Credential Modal
-    const elCredName = document.getElementById('cred-student-name');
-    const elCredClass = document.getElementById('cred-student-class');
-    const elCredEmail = document.getElementById('cred-student-email');
-    const elCredPass = document.getElementById('cred-student-password');
-    if (elCredName) elCredName.textContent = studentName;
-    if (elCredClass) elCredClass.textContent = `Kelas ${selectedClass}`;
-    if (elCredEmail) elCredEmail.textContent = studentEmail;
-    if (elCredPass) elCredPass.textContent = defaultPassword;
-
-    // WA Link setup
-    const waNumber = r.data_orangtua?.whatsapp || '';
-    const linkWa = document.getElementById('link-wa-share');
-    if (linkWa) {
-      if (waNumber) {
-        const sanitizedPhone = waNumber.replace(/[^0-9]/g, '');
-        const waMsg = `Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nAyah/Bunda dari ananda *${studentName}*,\n\nSelamat! Ananda telah resmi terdaftar sebagai Santri Aktif *SMP Annida* di *Kelas ${selectedClass}*.\n\nBerikut informasi akun resmi untuk mengakses *Portal Siswa*:\n🌐 *Website:* https://smpannida.sch.id/login.html\n📧 *Email:* ${studentEmail}\n🔑 *Password Awal:* ${defaultPassword}\n\n_Mohon ananda segera login dan mengganti kata sandi pada saat masuk perdana._\n\nJazakumullah Khairan,\n*Panitia PPDB & Akademik SMP Annida*`;
-        linkWa.href = `https://wa.me/${sanitizedPhone}?text=${encodeURIComponent(waMsg)}`;
-        linkWa.classList.remove('hidden');
+    let insErr = null;
+    if (studentPayload.nisn) {
+      const { error } = await db.from('students').upsert(studentPayload, { onConflict: 'nisn' });
+      insErr = error;
+    } else {
+      const { data: exist } = await db.from('students').select('id').eq('email', studentEmail).maybeSingle();
+      if (exist) {
+        const { error } = await db.from('students').update(studentPayload).eq('id', exist.id);
+        insErr = error;
       } else {
-        linkWa.classList.add('hidden');
+        const { error } = await db.from('students').insert(studentPayload);
+        insErr = error;
       }
     }
 
-    const credModal = document.getElementById('modal-kredensial-siswa');
-    if (credModal) credModal.classList.remove('hidden');
+    if (insErr) throw new Error("Gagal menyimpan ke tabel siswa: " + insErr.message);
+
+    // 3. Update status pendaftaran ke Diterima; berhenti jika gagal
+    const { error: statusErr } = await db
+      .from('pendaftaran')
+      .update({ status_pendaftaran: 'Diterima' })
+      .eq('id', r.id);
+    if (statusErr) throw new Error('Data siswa tersimpan, tetapi status pendaftaran gagal diperbarui: ' + statusErr.message);
+
+    window.closeKonversiModal();
+
+    // 4. Akun login BELUM dibuat otomatis (butuh Edge Function service_role).
+    //    Modal kredensial sengaja tidak dibuka agar tidak menampilkan kredensial palsu.
+    showToast(`${studentName} resmi dikonversi ke Kelas ${selectedClass}. Akun login portal siswa belum dibuat otomatis; buat melalui Supabase Auth.`, 'success');
 
     await fetchAllRegistrations();
   } catch (err) {
@@ -1360,7 +1453,7 @@ window.submitKonversiSiswa = async function() {
   } finally {
     if (btn) {
       btn.disabled = false;
-      btn.textContent = 'Konversi & Terbitkan Akun';
+      btn.textContent = 'Konversi ke Siswa';
     }
   }
 };
@@ -1481,13 +1574,14 @@ window.updateDocUploadStatus = async function(docType, fileName, fileUrl = null)
         newRegStatus = 'Verifikasi';
       }
 
-      await db
+      const { error: upErr } = await db
         .from('pendaftaran')
         .update({
           document_verification: currentDocs,
           status_pendaftaran: newRegStatus
         })
         .eq('id', pendaftaranId);
+      if (upErr) throw upErr;
 
       console.log(`Document ${docType} uploaded successfully, status set to pending.`);
       
@@ -1497,6 +1591,7 @@ window.updateDocUploadStatus = async function(docType, fileName, fileUrl = null)
     }
   } catch (err) {
     console.error("Gagal menyimpan status unggahan dokumen:", err.message);
+    showToast('Gagal menyimpan status unggahan dokumen: ' + err.message, 'error');
   }
 };
 
@@ -1504,7 +1599,7 @@ window.submitDpPayment = async function(fileName, fileUrl = null) {
   const pId = sessionStorage.getItem('pendaftaran_id');
   if (!pId) {
     alert("Data pendaftaran tidak ditemukan.");
-    return;
+    return false;
   }
   
   try {
@@ -1533,6 +1628,7 @@ window.submitDpPayment = async function(fileName, fileUrl = null) {
     
     alert("Bukti transfer DP berhasil dikirim! Menunggu validasi dari panitia.");
     window.location.reload();
+    return true;
   } catch (err) {
     console.error("Gagal mengirim bukti transfer DP:", err.message);
     alert("Gagal mengirim bukti transfer: " + err.message);
@@ -1541,6 +1637,7 @@ window.submitDpPayment = async function(fileName, fileUrl = null) {
       submitBtn.disabled = false;
       submitBtn.textContent = '🚀 Kirim Bukti Pembayaran';
     }
+    return false;
   }
 };
 

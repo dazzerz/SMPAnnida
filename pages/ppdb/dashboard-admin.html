@@ -309,6 +309,18 @@
             <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-800 border-b border-slate-200 pb-2">Checklist Verifikasi Berkas</h3>
             
             <div class="space-y-4">
+              <!-- Bukti Transfer DP -->
+              <div class="glass-card rounded-xl p-4 border border-slate-200 space-y-2 bg-white" id="dp-admin-card">
+                <div class="flex justify-between items-center gap-2">
+                  <span class="text-xs font-bold text-slate-800">Bukti Transfer DP</span>
+                  <span id="dp-admin-badge" class="px-2 py-0.5 rounded text-[0.65rem] font-bold uppercase tracking-wider border bg-slate-100 text-slate-600 border-slate-300">Belum ada bukti</span>
+                </div>
+                <div class="flex justify-between items-center gap-2">
+                  <span class="text-xs text-slate-600 truncate" id="dp-admin-filename">-</span>
+                  <a href="#" target="_blank" rel="noopener noreferrer" id="doc-dp-link" class="text-xs text-blue-600 hover:underline flex items-center gap-1 font-semibold pointer-events-none opacity-50">Pratinjau Bukti</a>
+                </div>
+              </div>
+
               <!-- Dokumen 1: Kartu Keluarga -->
               <div class="glass-card rounded-xl p-4 border border-slate-200 space-y-3 bg-white">
                 <div class="flex justify-between items-center">
@@ -354,7 +366,7 @@
               <div class="space-y-2">
                 <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Aksi Keputusan Status Pendaftaran</label>
                 <div class="grid grid-cols-1 gap-2">
-                  <button type="button" onclick="saveAdminVerification('Verifikasi')" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
+                  <button type="button" id="btn-validate-dp" onclick="saveAdminVerification('Verifikasi')" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
                     Validasi DP (Lanjut ke Verifikasi Berkas)
                   </button>
                   <button type="button" onclick="saveAdminVerification('Seleksi')" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
@@ -366,7 +378,7 @@
                   <button type="button" onclick="saveAdminVerification('Lulus')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
                     ✅ Lulus Seleksi (Setelah Tes Tahfidz)
                   </button>
-                  <button type="button" onclick="saveAdminVerification('Tidak Lulus')" class="bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
+                  <button type="button" onclick="saveAdminVerification('Gugur')" class="bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs shadow-lg transition-all text-center">
                     ❌ Tidak Lulus
                   </button>
                 </div>
@@ -455,7 +467,7 @@
             <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center"><span class="material-symbols-outlined text-2xl">school</span></div>
             <div>
               <h3 class="font-bold text-slate-900 text-base">Konversi ke Siswa Aktif</h3>
-              <p class="text-xs text-slate-600">Terbitkan Akun Portal & Tempatkan Kelas</p>
+              <p class="text-xs text-slate-600">Tempatkan Kelas & Salin Data Siswa</p>
             </div>
           </div>
           <button onclick="closeKonversiModal()" class="text-slate-400 hover:text-slate-700 flex items-center justify-center"><span class="material-symbols-outlined text-base">close</span></button>
@@ -485,12 +497,12 @@
           </div>
 
           <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-[0.75rem] text-emerald-800 font-medium">
-            Sistem akan otomatis mengenerate email resmi <b>nama.depan@smpannida.sch.id</b> dan password awal untuk login di Portal Siswa.
+            Data siswa disalin ke tabel siswa dengan email <b>nama.depan@smpannida.sch.id</b>. Akun login Portal Siswa belum dibuat otomatis; buat melalui Supabase Auth.
           </div>
 
           <div class="flex gap-3 pt-2">
             <button type="button" onclick="closeKonversiModal()" class="flex-1 py-2.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 transition-all">Batal</button>
-            <button type="button" id="btn-submit-konversi" onclick="submitKonversiSiswa()" class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg transition-all">Konversi & Terbitkan Akun</button>
+            <button type="button" id="btn-submit-konversi" onclick="submitKonversiSiswa()" class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg transition-all">Konversi ke Siswa</button>
           </div>
         </div>
       </div>

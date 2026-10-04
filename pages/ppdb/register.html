@@ -428,6 +428,7 @@
   <!-- Main JavaScript Logic -->
   <script type="module">
     import supabaseClient from '../../js/core/supabase.js';
+import { encryptNik } from '../../js/ppdb/nik-crypto.js';
 
     let currentStep = 1;
     const totalSteps = 5;
@@ -680,7 +681,7 @@
             user_id: userId,
             no_pendaftaran: noPendaftaran,
             tipe_pendaftaran: prog,
-            status_pendaftaran: 'Verifikasi'
+            status_pendaftaran: 'Draft'
           }])
           .select('id')
           .single();
@@ -695,7 +696,7 @@
           .insert([{
             pendaftaran_id: pendaftaranId,
             nama_lengkap: name,
-            nik: nik,
+            nik: encryptNik(nik),
             nisn: nisn,
             tanggal_lahir: tgl,
             jenis_kelamin: jk
