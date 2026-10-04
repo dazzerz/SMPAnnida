@@ -733,6 +733,7 @@ import { encryptNik } from '../../js/ppdb/nik-crypto.js';
         const fileKk = document.getElementById('file-kk').files[0];
         const fileAkta = document.getElementById('file-akta').files[0];
         const fileFoto = document.getElementById('file-foto').files[0];
+        const fileSkl = document.getElementById('file-skl')?.files[0];
 
         const uploadFile = async (file, path) => {
           if (!file) return;

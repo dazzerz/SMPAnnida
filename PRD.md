@@ -302,7 +302,7 @@ flowchart TD
     SeleksiTahfidz --> InputNilaiTahfidz[Panitia Input Level Hafalan]
     
     InputNilaiTahfidz --> Keputusan{Keputusan Hasil}
-    Keputusan -- Tidak Lulus --> StatusGagal[Status: Tidak Lulus / Pengumuman Ditolak]
+    Keputusan -- Gugur --> StatusGagal[Status: Gugur / Pengumuman Ditolak]
     Keputusan -- Lulus Seleksi --> StatusLulus[Status: Lulus / Unduh PDF Surat Lulus]
     
     StatusLulus --> Konversi[Panitia Klik: Konversi Santri & Terbitkan Akun]

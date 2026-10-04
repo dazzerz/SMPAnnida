@@ -358,8 +358,8 @@ async function fetchMyRegistrationStatus(userId) {
             <div class="flex items-center gap-2 text-base font-bold text-red-300">
               ⚠️ Pendaftaran Membutuhkan Revisi Berkas
             </div>
-            <p class="text-xs text-slate-300">Panitia PPDB menemukan ketidaksesuaian pada dokumen berikut. Silakan masuk ke tab <strong>Berkas</strong> untuk mengunggah ulang dokumen tersebut:</p>
-            <ul class="text-xs space-y-1 mt-1 text-slate-200">
+            <p class="text-xs text-slate-700">Panitia PPDB menemukan ketidaksesuaian pada dokumen berikut. Silakan masuk ke tab <strong>Berkas</strong> untuk mengunggah ulang dokumen tersebut:</p>
+            <ul class="text-xs space-y-1 mt-1 text-slate-700">
               ${rejectedList.join('')}
             </ul>
           `;
@@ -686,11 +686,11 @@ function updateTimelineUI(status) {
 
   if (status === 'Draft') {
     if (badge) {
-      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold uppercase tracking-wider mb-2';
       badge.textContent = '⚪ Menunggu DP';
     }
-    if (desc) desc.textContent = 'Formulir pendaftaran Anda sudah diterima. Silakan selesaikan pembayaran DP Komitmen Tahfidz (30%) di seksi Pembayaran DP di bawah ini untuk membuka akses pengunggahan berkas persyaratan.';
-    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-slate-500/20 bg-slate-500/5 text-slate-400';
+    if (desc) desc.textContent = 'Formulir pendaftaran Anda sudah diterima. Silakan selesaikan pembayaran Pembayaran DP (Sesuai Gelombang & Program) di seksi Pembayaran DP di bawah ini untuk membuka akses pengunggahan berkas persyaratan.';
+    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600';
   } else if (status === 'Verifikasi') {
     if (badge) {
       badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-yellow-500/20 text-yellow-300 border border-yellow-500/35 text-xs font-bold uppercase tracking-wider mb-2';
@@ -738,11 +738,11 @@ function updateTimelineUI(status) {
   } else {
     // Default fallback
     if (badge) {
-      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-500/20 text-slate-400 border border-slate-500/35 text-xs font-bold uppercase tracking-wider mb-2';
+      badge.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold uppercase tracking-wider mb-2';
       badge.textContent = status;
     }
     if (desc) desc.textContent = 'Status pendaftaran Anda saat ini: ' + status;
-    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-slate-500/20 bg-slate-500/5 text-slate-400';
+    if (alertBox) alertBox.className = 'flex items-start gap-4 p-5 rounded-xl border border-slate-200 bg-slate-50 text-slate-600';
   }
 }
 
@@ -827,11 +827,11 @@ function renderAdminTable(data) {
     const progLabel = r.tipe_pendaftaran === 'pondok' ? 'Sekolah + Pondok' : 'Sekolah Saja';
 
     // Badge styling mapping
-    let badgeClass = 'bg-slate-500/10 text-slate-400 border border-slate-500/20';
+    let badgeClass = 'bg-slate-100 text-slate-600 border border-slate-200';
     let badgeText = r.status_pendaftaran;
     
     if (r.status_pendaftaran === 'Draft') {
-      badgeClass = 'bg-slate-500/10 text-slate-400 border border-slate-500/20';
+      badgeClass = 'bg-slate-100 text-slate-600 border border-slate-200';
       badgeText = 'Menunggu DP';
     } else if (r.status_pendaftaran === 'Verifikasi') {
       badgeClass = 'bg-blue-500/10 text-blue-400 border border-blue-500/20';
@@ -854,11 +854,11 @@ function renderAdminTable(data) {
     }
 
     const tr = document.createElement('tr');
-    tr.className = 'border-b border-white/5 hover:bg-white/[0.02] transition-colors';
+    tr.className = 'border-b border-slate-200 hover:bg-slate-50 transition-colors';
     tr.innerHTML = `
-      <td class="py-4 px-4 font-mono font-bold text-slate-300">${escapeHTML(r.no_pendaftaran)}</td>
-      <td class="py-4 px-4 font-semibold text-slate-100">${escapeHTML(studentName)}</td>
-      <td class="py-4 px-4 text-xs text-slate-300">${progLabel}</td>
+      <td class="py-4 px-4 font-mono font-bold text-slate-700">${escapeHTML(r.no_pendaftaran)}</td>
+      <td class="py-4 px-4 font-semibold text-slate-800">${escapeHTML(studentName)}</td>
+      <td class="py-4 px-4 text-xs text-slate-700">${progLabel}</td>
       <td class="py-4 px-4 text-xs text-slate-600">${dateFormatted}</td>
       <td class="py-4 px-4 text-center">
         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold uppercase tracking-wider ${badgeClass}">
@@ -1142,7 +1142,7 @@ window.saveAdminVerification = async function(newStatus) {
 
       let statusMsg = '';
       if (newStatus === 'Verifikasi') {
-        statusMsg = 'Pembayaran DP Komitmen Tahfidz (30%) Diterima. Pendaftaran Anda lanjut ke tahap Verifikasi Berkas.';
+        statusMsg = 'Pembayaran Pembayaran DP (Sesuai Gelombang & Program) Diterima. Pendaftaran Anda lanjut ke tahap Verifikasi Berkas.';
       } else if (newStatus === 'Seleksi') {
         statusMsg = 'Dokumen Persyaratan Valid. Calon siswa diundang mengikuti Ujian Seleksi Pemetaan Tahfidz secara langsung.';
       } else if (newStatus === 'Revisi') {
@@ -1207,7 +1207,7 @@ function renderRankingData(data) {
     const badgeColor = r.status_pendaftaran === 'Lulus' ? 'text-emerald-700 font-bold' : 'text-slate-600';
 
     const tr = document.createElement('tr');
-    tr.className = 'border-b border-white/5 hover:bg-white/[0.01]';
+    tr.className = 'border-b border-slate-200 hover:bg-slate-50';
     
     let actionHtml = '';
     if (r.status_pendaftaran === 'Lulus') {
@@ -1222,8 +1222,8 @@ function renderRankingData(data) {
 
     tr.innerHTML = `
       <td class="py-3 px-3 font-mono text-slate-600">${escapeHTML(r.no_pendaftaran)}</td>
-      <td class="py-3 px-3 font-semibold text-slate-200">${escapeHTML(name)}</td>
-      <td class="py-3 px-3 font-medium text-slate-300">${escapeHTML(levelHafalan)}</td>
+      <td class="py-3 px-3 font-semibold text-slate-700">${escapeHTML(name)}</td>
+      <td class="py-3 px-3 font-medium text-slate-700">${escapeHTML(levelHafalan)}</td>
       <td class="py-3 px-3 ${badgeColor}">${r.status_pendaftaran === 'Lulus' ? 'Lulus' : 'Tes Tahfidz'}</td>
       <td class="py-3 px-3 text-center">
         ${actionHtml}
@@ -1325,7 +1325,7 @@ window.adminSetLulus = async function(paramId) {
     // Auto WhatsApp
     if (student.data_orangtua && student.data_orangtua.whatsapp) {
       const waNumber = student.data_orangtua.whatsapp;
-      const rawMsg = `Halo Ayah/Bunda dari ${name},\n\nPendaftaran PPDB SMP Annida No. Registrasi *${student.no_pendaftaran}* dinyatakan *LULUS* Seleksi Pemetaan Tahfidz.\n\nSilakan masuk ke portal PPDB untuk melakukan konfirmasi daftar ulang:\nhttps://dazzerz.github.io/SMPAnnida/`;
+      const rawMsg = `Halo Ayah/Bunda dari ${name},\n\nPendaftaran PPDB SMP Annida No. Registrasi *${student.no_pendaftaran}* dinyatakan *LULUS* Seleksi Pemetaan Tahfidz.\n\nSilakan masuk ke portal PPDB untuk melakukan konfirmasi daftar ulang:\nhttps://smpannida.sch.id/`;
       const encodedMsg = encodeURIComponent(rawMsg);
       const sanitizedPhone = waNumber.replace(/[^0-9]/g, '');
       const waUrl = `https://wa.me/${sanitizedPhone}?text=${encodedMsg}`;
@@ -1522,10 +1522,10 @@ function renderMonthlyChart(data) {
         y: {
           beginAtZero: true,
           grid: {
-            color: 'rgba(255, 255, 255, 0.05)'
+            color: 'rgba(100, 116, 139, 0.15)'
           },
           ticks: {
-            color: 'rgba(255, 255, 255, 0.5)',
+            color: '#475569',
             stepSize: 1
           }
         },
@@ -1534,7 +1534,7 @@ function renderMonthlyChart(data) {
             display: false
           },
           ticks: {
-            color: 'rgba(255, 255, 255, 0.5)'
+            color: '#475569'
           }
         }
       },
