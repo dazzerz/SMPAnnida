@@ -348,6 +348,18 @@
               </div>
               <input type="file" id="file-foto" class="text-xs text-slate-600 file:bg-emerald-50 file:border-0 file:text-emerald-800 file:py-1.5 file:px-3 file:rounded-md file:cursor-pointer hover:file:bg-emerald-100" />
             </div>
+
+            <!-- SKL -->
+            <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-50/60">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-3xl text-emerald-700">school</span>
+                <div class="text-left">
+                  <h5 class="text-sm font-bold text-slate-900">SKL / Ijazah SD/MI</h5>
+                  <p class="text-[10px] text-slate-500">Format PDF/JPG/PNG maks 2MB</p>
+                </div>
+              </div>
+              <input type="file" id="file-skl" class="text-xs text-slate-600 file:bg-emerald-50 file:border-0 file:text-emerald-800 file:py-1.5 file:px-3 file:rounded-md file:cursor-pointer hover:file:bg-emerald-100" />
+            </div>
           </div>
         </div>
 
@@ -670,23 +682,31 @@ import { encryptNik } from '../../js/ppdb/nik-crypto.js';
 
         const userId = user.id;
 
-        // Generate No. Pendaftaran (Format: PPDB-2027-XXXXX)
-        const randNum = Math.floor(10000 + Math.random() * 90000);
-        const noPendaftaran = `PPDB-2027-${randNum}`;
-
         // 3. INSERT INTO pendaftaran (Returns id)
-        const { data: regData, error: regError } = await supabaseClient
-          .from('pendaftaran')
-          .insert([{
-            user_id: userId,
-            no_pendaftaran: noPendaftaran,
-            tipe_pendaftaran: prog,
-            status_pendaftaran: 'Draft'
-          }])
-          .select('id')
-          .single();
+        // No. Pendaftaran (PPDB-2027-XXXXX) dibuat ulang hingga 3 kali bila bentrok unique (SQLSTATE 23505).
+        let regData = null;
+        let noPendaftaran = '';
+        for (let attempt = 1; attempt <= 3; attempt++) {
+          const randNum = Math.floor(10000 + Math.random() * 90000);
+          noPendaftaran = `PPDB-2027-${randNum}`;
 
-        if (regError) throw regError;
+          const { data, error } = await supabaseClient
+            .from('pendaftaran')
+            .insert([{
+              user_id: userId,
+              no_pendaftaran: noPendaftaran,
+              tipe_pendaftaran: prog,
+              status_pendaftaran: 'Draft'
+            }])
+            .select('id')
+            .single();
+
+          if (error && error.code === '23505' && attempt < 3) continue;
+          if (error) throw error;
+          regData = data;
+          break;
+        }
+        if (!regData) throw new Error('Gagal membuat nomor pendaftaran unik. Silakan coba lagi.');
 
         const pendaftaranId = regData.id;
 
@@ -750,6 +770,7 @@ import { encryptNik } from '../../js/ppdb/nik-crypto.js';
         if (fileKk) await uploadFile(fileKk, `${pendaftaranId}/kk_${fileKk.name}`);
         if (fileAkta) await uploadFile(fileAkta, `${pendaftaranId}/akta_${fileAkta.name}`);
         if (fileFoto) await uploadFile(fileFoto, `${pendaftaranId}/foto_${fileFoto.name}`);
+        if (fileSkl) await uploadFile(fileSkl, `${pendaftaranId}/skl_${fileSkl.name}`);
 
         // Success redirection state
         sessionStorage.setItem('last_ppdb_no', noPendaftaran);
