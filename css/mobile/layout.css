@@ -492,8 +492,10 @@ html, body {
     overflow-x: hidden;
   }
 
-  /* Fixed Sidebar Drawer: Completely out of normal document flow */
-  .sidebar {
+  /* Fixed Sidebar Drawer: definisi TUNGGAL ada di css/theme/layout.css
+     (.sidebar.split-rail-container, 252px, token --z-drawer).
+     Blok ini hanya reset sisa legacy agar tidak bertabrakan. */
+  .sidebar:not(.split-rail-container) {
     position: fixed;
     left: 0;
     top: 0;
@@ -506,8 +508,6 @@ html, body {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
     background: var(--sidebar-bg, #166534) !important;
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-right: 1px solid var(--sidebar-border, #15803d) !important;
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
   }

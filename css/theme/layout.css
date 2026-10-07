@@ -146,7 +146,7 @@ body::before {
   background: transparent !important;
   background-color: transparent !important;
   position: relative !important;
-  z-index: var(--z-sidebar) !important;
+  z-index: var(--z-content, 1) !important;
 }
 
 /* ── CARDS, SURFACES & CONTAINERS (100% Solid & High-Contrast) ── */
@@ -295,6 +295,7 @@ option {
   border-right: 1px solid #15803d !important;
   position: relative;
   overflow-x: hidden;
+  isolation: isolate;
 }
 
 /* Subtle botanical signature watermark in bottom right of sidebar (18-20% opacity) */
@@ -318,7 +319,6 @@ option {
 .sidebar > *,
 #student-sidebar > * {
   position: relative;
-  z-index: 1;
 }
 
 /* Topbar — Clean White / Slate Border on Light Mode */
