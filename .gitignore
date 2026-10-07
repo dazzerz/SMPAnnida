@@ -10,6 +10,7 @@ build.py
 # AI Context & Cache (Local Only)
 *.md
 !README.md
+!AGENTS.md
 !CHANGELOG.md
 !PRD.md
 !docs/**/*.md

@@ -1,4 +1,6 @@
 # SMP Annida Integrated System
+> **AI / kontributor baru? WAJIB baca `AGENTS.md` lalu `docs/MUST_READ_FIRST.md` SEBELUM mengubah kode apa pun.**
+
 
 ## Project Overview
 Sistem Informasi Manajemen Terpadu SMP Annida yang mencakup tiga modul utama: Keuangan (Finance), Akademik, dan Penerimaan Peserta Didik Baru (PPDB). Dibangun untuk mengotomatisasi pencatatan dan pengelolaan operasional sekolah dengan arsitektur Serverless.
@@ -14,10 +16,10 @@ Sistem Informasi Manajemen Terpadu SMP Annida yang mencakup tiga modul utama: Ke
 /
 +-- css/             # Global and Modular CSS Tokens
 +-- js/              # Vanilla JS ES Modules
-¦   +-- core/        # Shared Utilities, Auth, DB, Layout
-¦   +-- finance/     # Finance Logic
-¦   +-- academic/    # Academic Logic
-¦   +-- ppdb/        # PPDB Logic
+ï¿½   +-- core/        # Shared Utilities, Auth, DB, Layout
+ï¿½   +-- finance/     # Finance Logic
+ï¿½   +-- academic/    # Academic Logic
+ï¿½   +-- ppdb/        # PPDB Logic
 +-- pages/           # HTML Pages categorized by modules
 +-- docs/            # Project Documentation
 +-- index.html       # Entry Point / Auth Gateway
