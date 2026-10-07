@@ -83,21 +83,10 @@ function updateGreeting(user) {
     }
 
 // ── Sidebar ───────────────────────────────────────
+// Drawer mobile dikendalikan tunggal oleh js/core/layout.js (setSidebar +
+// delegasi global #mobile-menu-btn / overlay). Listener lokal dihapus agar
+// tidak terjadi toggle ganda yang membuat backdrop nyangkut di HP.
 function initSidebar(user) {
-  document.getElementById('mobile-menu-btn')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar && sidebar.classList.contains('open')) {
-      if (typeof window._closeSidebar === 'function') window._closeSidebar();
-      else sidebar.classList.remove('open');
-    } else {
-      if (typeof window._openSidebar === 'function') window._openSidebar();
-      else sidebar?.classList.add('open');
-    }
-  });
-  document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
-    if (typeof window._closeSidebar === 'function') window._closeSidebar();
-  });
   if (user) {
     document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
   }

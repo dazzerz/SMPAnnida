@@ -733,24 +733,9 @@ async function main() {
   set('sidebar-user-role', roleLabel);
   document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
 
-  // Mobile sidebar toggle
-  document.getElementById('mobile-menu-btn')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar && sidebar.classList.contains('open')) {
-      if (typeof window._closeSidebar === 'function') window._closeSidebar();
-      else sidebar.classList.remove('open');
-    } else {
-      if (typeof window._openSidebar === 'function') window._openSidebar();
-      else sidebar?.classList.add('open');
-    }
-  });
-  document.getElementById('sidebar-overlay')?.addEventListener('click', () => {
-    if (typeof window._closeSidebar === 'function') window._closeSidebar();
-  });
-  document.getElementById('sidebar-close-btn')?.addEventListener('click', () => {
-    if (typeof window._closeSidebar === 'function') window._closeSidebar();
-  });
+  // Drawer mobile dikendalikan tunggal oleh js/core/layout.js (delegasi global
+  // #mobile-menu-btn / overlay / tombol tutup). Listener lokal dihapus agar
+  // tidak terjadi toggle ganda yang membuat backdrop nyangkut di HP.
 
   setupThemeToggle('theme-toggle');
 

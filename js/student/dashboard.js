@@ -497,6 +497,22 @@ function initTabNavigation() {
     });
   }
 
+  // Tombol hamburger topbar mobile membuka sheet "Lainnya" yang sama,
+  // supaya tidak ada tombol mati di HP (sebelumnya tanpa handler).
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const isExpanded = moreBtn && moreBtn.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        closeMoreSheet();
+      } else {
+        openMoreSheet();
+      }
+    });
+  }
+
   if (closeMoreBtn) {
     closeMoreBtn.addEventListener('click', (e) => {
       e.preventDefault();
