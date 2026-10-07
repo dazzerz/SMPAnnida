@@ -49,7 +49,7 @@ Terdapat 3 perintah pengujian utama pada `package.json`:
 
 1. **`npm test` (`vitest run`)**:
    - Menjalankan unit test berbasis Vitest.
-   - Saat ini menguji satu file: [`js/core/layout.test.js`](file:///C:/Users/ThinkPad/Projects/SMPAnnida/js/core/layout.test.js) (2 skenario uji lolos / *passed*).
+   - Saat ini menguji dua file: [`js/core/layout.test.js`](file:///C:/Users/ThinkPad/Projects/SMPAnnida/js/core/layout.test.js) (2 skenario drawer) dan [`js/core/auth.test.js`](file:///C:/Users/ThinkPad/Projects/SMPAnnida/js/core/auth.test.js) (12 skenario auth) — total 14 test.
    - Memvalidasi fungsi `setSidebar(true)` dan `setSidebar(false)` untuk membuka/menutup drawer mobile, memanipulasi class `.open` dan `.show`, serta mengunci *scrolling* `document.body.style.overflow = 'hidden'`.
 
 2. **`npm run test:drawer` ([`scripts/test-drawer-guards.js`](file:///C:/Users/ThinkPad/Projects/SMPAnnida/scripts/test-drawer-guards.js))**:

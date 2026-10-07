@@ -24,6 +24,18 @@ Sistem SMP Annida menggunakan PostgreSQL melalui Supabase. Berikut adalah tabel-
 - **`grades`**: Tabel nilai ujian dan rapor untuk setiap mata pelajaran per siswa dalam modul Akademik.
 - **`class_schedules`**: Tabel penjadwalan akademik yang memetakan jam belajar, ruang kelas, guru pengajar, dan mata pelajaran.
 - **`teacher_journals`**: Tabel log harian guru (Jurnal Guru) untuk merekam aktivitas belajar mengajar di kelas.
+- **`biodata_siswa`**: Biodata santri terhubung `pendaftaran` (termasuk NIK terenkripsi AES).
+- **`students`**: Santri aktif hasil konversi PPDB (NIS, kelas, status).
+- **`teachers`**: Data dewan guru (nama, email, NIP).
+- **`classes` / `subjects`**: Rombel kelas dan mata pelajaran master akademik.
+- **CBT & E-Learning** (`database/migrations/cbt_and_elearning_modules.sql`): `quizzes`, `quiz_questions`, `quiz_attempts`, `learning_modules`, `materials`.
+- **Tugas & LMS** (`student_lms_and_assignments.sql`): `assignments`, `assignment_submissions`.
+- **Tahfidz** (`student_portal_ppdb_integration.sql`): `student_tahfidz_records`.
+- **Syahriah / payroll** (`syahriah_schema.sql`): `salary_components`, `teacher_salary_config`, `salary_slips`, `salary_slip_items`.
+
+> Daftar di atas dirangkum dari `database/migrations/` dan
+> `supabase/migrations/`. Bila menambah tabel baru, daftarkan di sini +
+> sertakan RLS-nya (lihat § RLS di bawah & `security.md`).
 
 ---
 

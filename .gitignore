@@ -11,6 +11,7 @@ build.py
 *.md
 !README.md
 !AGENTS.md
+!CONTRIBUTING.md
 !CHANGELOG.md
 !PRD.md
 !docs/**/*.md

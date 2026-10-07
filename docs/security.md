@@ -58,7 +58,7 @@ Jika ada anomali atau intrusi yang tertangkap sebagai *Error* JavaScript, kita w
 ---
 
 ## Enkripsi NIK (PPDB)
-NIK dienkripsi AES di browser (`js/ppdb/db.js`, fungsi `getEncryptionKey()`) sebelum disimpan ke `biodata_siswa.nik`.
+NIK dienkripsi AES di browser (`js/ppdb/nik-crypto.js`, fungsi `getEncryptionKey()`) sebelum disimpan ke `biodata_siswa.nik`.
 
 > **Batasan:** semua variabel `VITE_*` ditanam ke bundle JavaScript. Siapa pun yang membuka `dist/assets/*.js` di browser bisa membaca kuncinya. Enkripsi client-side **tidak** melindungi NIK dari pembaca bundle; ia hanya mencegah NIK tersimpan sebagai teks polos di tabel.
 

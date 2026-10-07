@@ -32,6 +32,9 @@ Sebagian besar layanan hosting membutuhkan penyetelan *environment variables* ya
 
 - `VITE_SUPABASE_URL` = URL proyek Supabase (contoh: `https://xyz.supabase.co`)
 - `VITE_SUPABASE_ANON_KEY` = Kunci publik *anon* Supabase
+- `VITE_ENCRYPTION_KEY` = (Wajib di produksi via GitHub Secret) Kunci AES enkripsi NIK PPDB
+- `VITE_ENCRYPTION_KEY_LEGACY` = (Opsional) Kunci lama saat rotasi agar NIK lama tetap terbaca
+
 - `VITE_ANALYTICS_PROVIDER` = (Opsional) `sentry` atau `logrocket`
 - `VITE_SENTRY_DSN` = (Opsional) DSN Endpoint Sentry
 - `VITE_LOGROCKET_ID` = (Opsional) ID App LogRocket
@@ -110,6 +113,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
 ```
+
+> Workflow aktual project ini memakai `actions/deploy-pages@v4` (bukan `peaceiris`)
+> dan meneruskan `VITE_ENCRYPTION_KEY` dari GitHub Secret ke step Build —
+> lihat `.github/workflows/deploy.yml` sebagai acuan, bukan contoh generik di atas.
+
 4. Pastikan Anda telah mengatur `base` di `vite.config.js` sesuai dengan nama repositori jika tidak di-host di domain *root*.
 5. GitHub Actions akan membangun proyek secara otomatis setiap ada pembaruan di *branch main*.
 

@@ -1,5 +1,11 @@
 # CSS Refactor
 
+> CATATAN HISTORIS — jangan jadikan acuan struktur kini. Definisi
+> drawer/backdrop/token terpusat di `css/theme/layout.css`; file sidebar/,
+> overlay/, drawer.css kini placeholder. Acuan resmi: `Code_style.md` §5 dan
+> `layout.md`.
+
+
 The CSS has been modularised into:
 - \css/theme/layout.css\: Core layout styles
 - \css/theme/sidebar.css\: Sidebar specific styles
