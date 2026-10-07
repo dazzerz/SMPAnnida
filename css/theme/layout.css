@@ -130,7 +130,7 @@ body::before {
   width: 100vw !important;
   height: 100vh !important;
   pointer-events: none !important;
-  z-index: var(--z-sidebar) !important;
+  z-index: 0 !important;
   opacity: 0.45 !important; /* Clearly present yet subtle per DESIGN.md */
   background-repeat: repeat !important;
   background-attachment: fixed !important;
