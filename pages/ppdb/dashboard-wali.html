@@ -420,7 +420,7 @@
     <div id="tab-berkas" class="tab-panel space-y-6">
       <div class="glass-card rounded-2xl p-6 lg:p-8 shadow-xl">
         <h2 class="text-xl lg:text-2xl font-bold text-slate-900 mb-2">Unggah Berkas & Dokumen Pendukung</h2>
-        <p class="text-slate-600 text-sm mb-6">Silakan unggah dokumen persyaratan dalam format gambar (JPG/PNG) atau PDF maksimal 2MB.</p>
+        <p class="text-slate-600 text-sm mb-6">Syarat: fotokopi Ijazah SD/MI, Kartu NISN, KK, 1 lembar KTP Orang Tua, dan 1 lembar Akte Kelahiran. Format gambar (JPG/PNG) atau PDF maksimal 2MB.</p>
         
         <!-- Lock Notice Banner -->
         <div id="berkas-lock-banner" class="hidden flex flex-col items-center justify-center p-8 border border-red-500/20 bg-red-500/5 text-red-600 rounded-xl space-y-3">
@@ -459,13 +459,39 @@
           <!-- Item 3: SKL/Ijazah -->
           <div class="flex flex-col md:flex-row md:items-center justify-between p-5 rounded-xl bg-slate-50 border border-slate-200 gap-4">
             <div>
-              <h4 class="font-bold text-slate-900 mb-1">3. Ijazah / Surat Keterangan Lulus (SKL)</h4>
+              <h4 class="font-bold text-slate-900 mb-1">3. Ijazah SD/MI / Surat Keterangan Lulus (SKL)</h4>
               <p class="text-xs text-slate-600" id="skl-name">Belum ada file diunggah.</p>
             </div>
             <div class="flex items-center gap-3">
               <span class="px-2.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300 text-xs font-semibold" id="skl-status">Belum Diunggah</span>
               <input type="file" id="file-skl" class="hidden" accept="image/*,application/pdf" onchange="handleFileUpload('skl')">
               <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-semibold px-4 py-2 rounded-lg transition-all" onclick="document.getElementById('file-skl').click()">Pilih File</button>
+            </div>
+          </div>
+
+          <!-- Item 4: Kartu NISN -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between p-5 rounded-xl bg-slate-50 border border-slate-200 gap-4">
+            <div>
+              <h4 class="font-bold text-slate-900 mb-1">4. Kartu NISN</h4>
+              <p class="text-xs text-slate-600" id="nisn-name">Belum ada file diunggah.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="px-2.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300 text-xs font-semibold" id="nisn-status">Belum Diunggah</span>
+              <input type="file" id="file-nisn" class="hidden" accept="image/*,application/pdf" onchange="handleFileUpload('nisn')">
+              <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-semibold px-4 py-2 rounded-lg transition-all" onclick="document.getElementById('file-nisn').click()">Pilih File</button>
+            </div>
+          </div>
+
+          <!-- Item 5: KTP Orang Tua -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between p-5 rounded-xl bg-slate-50 border border-slate-200 gap-4">
+            <div>
+              <h4 class="font-bold text-slate-900 mb-1">5. KTP Orang Tua (1 Lembar)</h4>
+              <p class="text-xs text-slate-600" id="ktp-name">Belum ada file diunggah.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="px-2.5 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300 text-xs font-semibold" id="ktp-status">Belum Diunggah</span>
+              <input type="file" id="file-ktp" class="hidden" accept="image/*,application/pdf" onchange="handleFileUpload('ktp')">
+              <button class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-semibold px-4 py-2 rounded-lg transition-all" onclick="document.getElementById('file-ktp').click()">Pilih File</button>
             </div>
           </div>
         </div>

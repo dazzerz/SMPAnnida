@@ -44,7 +44,9 @@ async function uploadToGas(file, docType) {
 let currentDocVerification = {
   kartu_keluarga: { status: 'pending', note: '' },
   akta_kelahiran: { status: 'pending', note: '' },
-  ijazah: { status: 'pending', note: '' }
+  ijazah: { status: 'pending', note: '' },
+  kartu_nisn: { status: 'pending', note: '' },
+  ktp_orangtua: { status: 'pending', note: '' }
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -276,8 +278,8 @@ async function fetchMyRegistrationStatus(userId) {
 
       // Render Document Verification Status
       const savedDocs = pendaftaran.document_verification || {};
-      ['kk', 'akta', 'skl'].forEach(docType => {
-        const dbKey = docType === 'skl' ? 'ijazah' : docType === 'kk' ? 'kartu_keluarga' : 'akta_kelahiran';
+      ['kk', 'akta', 'skl', 'nisn', 'ktp'].forEach(docType => {
+        const dbKey = docType === 'skl' ? 'ijazah' : docType === 'kk' ? 'kartu_keluarga' : docType === 'nisn' ? 'kartu_nisn' : docType === 'ktp' ? 'ktp_orangtua' : 'akta_kelahiran';
         const docData = savedDocs[dbKey] || { status: 'pending', note: '' };
         
         const statusSpan = document.getElementById(`${docType}-status`);
@@ -922,7 +924,7 @@ function setPreviewLink(el, url, emptyHint) {
 }
 
 // Awalan nama file hasil unggah register.html ke bucket 'ppdb_documents'.
-const DOC_FILE_PREFIX = { kartu_keluarga: ['kk_'], akta_kelahiran: ['akta_'], ijazah: ['ijazah_', 'skl_'] };
+const DOC_FILE_PREFIX = { kartu_keluarga: ['kk_'], akta_kelahiran: ['akta_'], ijazah: ['ijazah_', 'skl_'], kartu_nisn: ['nisn_', 'kartu_nisn_'], ktp_orangtua: ['ktp_', 'ktp_ortu_'] };
 
 // Prioritas: file_url di document_verification (GAS/Drive) -> berkas di bucket privat
 // 'ppdb_documents' ({pendaftaran_id}/{awalan}{nama}) lewat signed URL (bucket tidak publik).
@@ -936,7 +938,7 @@ async function resolveDocLink(reg, docKey, storedFiles) {
 }
 
 async function renderAdminDocLinks(reg) {
-  const links = { kartu_keluarga: 'doc-kk-link', akta_kelahiran: 'doc-akta-link', ijazah: 'doc-ijazah-link' };
+  const links = { kartu_keluarga: 'doc-kk-link', akta_kelahiran: 'doc-akta-link', ijazah: 'doc-ijazah-link', kartu_nisn: 'doc-nisn-link', ktp_orangtua: 'doc-ktp-link' };
   Object.values(links).forEach(id => setPreviewLink(document.getElementById(id), null, 'Memuat berkas...'));
 
   let storedFiles = [];
@@ -1021,11 +1023,13 @@ window.viewRegistrationDetails = function(regId) {
   currentDocVerification = {
     kartu_keluarga: savedVerification.kartu_keluarga || { status: 'pending', note: '' },
     akta_kelahiran: savedVerification.akta_kelahiran || { status: 'pending', note: '' },
-    ijazah: savedVerification.ijazah || { status: 'pending', note: '' }
+    ijazah: savedVerification.ijazah || { status: 'pending', note: '' },
+    kartu_nisn: savedVerification.kartu_nisn || { status: 'pending', note: '' },
+    ktp_orangtua: savedVerification.ktp_orangtua || { status: 'pending', note: '' }
   };
 
   // Update button visual styles and note values
-  ['kartu_keluarga', 'akta_kelahiran', 'ijazah'].forEach(docType => {
+  ['kartu_keluarga', 'akta_kelahiran', 'ijazah', 'kartu_nisn', 'ktp_orangtua'].forEach(docType => {
     const docData = currentDocVerification[docType];
     const noteInput = document.getElementById(`note-${docType}`);
     if (noteInput) {
@@ -1131,9 +1135,9 @@ window.saveAdminVerification = async function(newStatus) {
     if (waNumber) {
       let rejectedDocs = [];
       if (newStatus === 'Revisi') {
-        ['kartu_keluarga', 'akta_kelahiran', 'ijazah'].forEach(doc => {
+        ['kartu_keluarga', 'akta_kelahiran', 'ijazah', 'kartu_nisn', 'ktp_orangtua'].forEach(doc => {
           if (currentDocVerification[doc].status === 'rejected') {
-            const docLabel = doc === 'kartu_keluarga' ? 'Kartu Keluarga' : doc === 'akta_kelahiran' ? 'Akta Kelahiran' : 'Ijazah/SKL';
+            const docLabel = doc === 'kartu_keluarga' ? 'Kartu Keluarga' : doc === 'akta_kelahiran' ? 'Akta Kelahiran' : doc === 'kartu_nisn' ? 'Kartu NISN' : doc === 'ktp_orangtua' ? 'KTP Orang Tua' : 'Ijazah/SKL';
             const note = currentDocVerification[doc].note ? ` (${currentDocVerification[doc].note})` : '';
             rejectedDocs.push(`- ${docLabel}${note}`);
           }
@@ -1559,7 +1563,7 @@ window.updateDocUploadStatus = async function(docType, fileName, fileUrl = null)
       .single();
 
     if (reg) {
-      const dbKey = docType === 'skl' ? 'ijazah' : docType === 'kk' ? 'kartu_keluarga' : 'akta_kelahiran';
+      const dbKey = docType === 'skl' ? 'ijazah' : docType === 'ijazah' ? 'ijazah' : docType === 'kk' ? 'kartu_keluarga' : docType === 'nisn' ? 'kartu_nisn' : docType === 'ktp' ? 'ktp_orangtua' : 'akta_kelahiran';
       const currentDocs = reg.document_verification || {};
       
       currentDocs[dbKey] = { status: 'pending', note: '', file_name: fileName, file_url: fileUrl };

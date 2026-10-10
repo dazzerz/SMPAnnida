@@ -309,8 +309,9 @@
         <div class="step-section hidden" id="step-4">
           <h3 class="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-2">
             <span class="material-symbols-outlined text-emerald-700">upload_file</span>
-            Langkah 4: Unggah Berkas Persyaratan (Opsional Saat Ini)
+            Langkah 4: Unggah Berkas Persyaratan
           </h3>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4">Siapkan: formulir pendaftaran (diisi online) + fotokopi Ijazah SD/MI, Kartu NISN, KK, 1 lembar KTP Orang Tua, dan 1 lembar Akte Kelahiran. Boleh dilengkapi bertahap setelah daftar.</p>
           
           <div class="space-y-4">
             <!-- KK -->
@@ -359,6 +360,42 @@
                 </div>
               </div>
               <input type="file" id="file-skl" class="text-xs text-slate-600 file:bg-emerald-50 file:border-0 file:text-emerald-800 file:py-1.5 file:px-3 file:rounded-md file:cursor-pointer hover:file:bg-emerald-100" />
+            </div>
+
+            <!-- Ijazah SD/MI -->
+            <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-50/60">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-3xl text-emerald-700">workspace_premium</span>
+                <div class="text-left">
+                  <h5 class="text-sm font-bold text-slate-900">Fotokopi Ijazah SD/MI</h5>
+                  <p class="text-[10px] text-slate-500">Format PDF/JPG/PNG maks 2MB</p>
+                </div>
+              </div>
+              <input type="file" id="file-ijazah" class="text-xs text-slate-600 file:bg-emerald-50 file:border-0 file:text-emerald-800 file:py-1.5 file:px-3 file:rounded-md file:cursor-pointer hover:file:bg-emerald-100" />
+            </div>
+
+            <!-- Kartu NISN -->
+            <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-50/60">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-3xl text-emerald-700">contact_mail</span>
+                <div class="text-left">
+                  <h5 class="text-sm font-bold text-slate-900">Kartu NISN</h5>
+                  <p class="text-[10px] text-slate-500">Format PDF/JPG/PNG maks 2MB</p>
+                </div>
+              </div>
+              <input type="file" id="file-nisn" class="text-xs text-slate-600 file:bg-emerald-50 file:border-0 file:text-emerald-800 file:py-1.5 file:px-3 file:rounded-md file:cursor-pointer hover:file:bg-emerald-100" />
+            </div>
+
+            <!-- KTP Orang Tua -->
+            <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-50/60">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-3xl text-emerald-700">id_card</span>
+                <div class="text-left">
+                  <h5 class="text-sm font-bold text-slate-900">KTP Orang Tua (1 Lembar)</h5>
+                  <p class="text-[10px] text-slate-500">Format PDF/JPG/PNG maks 2MB</p>
+                </div>
+              </div>
+              <input type="file" id="file-ktp" class="text-xs text-slate-600 file:bg-emerald-50 file:border-0 file:text-emerald-800 file:py-1.5 file:px-3 file:rounded-md file:cursor-pointer hover:file:bg-emerald-100" />
             </div>
           </div>
         </div>
@@ -754,6 +791,9 @@ import { encryptNik } from '../../js/ppdb/nik-crypto.js';
         const fileAkta = document.getElementById('file-akta').files[0];
         const fileFoto = document.getElementById('file-foto').files[0];
         const fileSkl = document.getElementById('file-skl')?.files[0];
+        const fileIjazah = document.getElementById('file-ijazah')?.files[0];
+        const fileNisn = document.getElementById('file-nisn')?.files[0];
+        const fileKtp = document.getElementById('file-ktp')?.files[0];
 
         const uploadFile = async (file, path) => {
           if (!file) return;
@@ -771,6 +811,9 @@ import { encryptNik } from '../../js/ppdb/nik-crypto.js';
         if (fileAkta) await uploadFile(fileAkta, `${pendaftaranId}/akta_${fileAkta.name}`);
         if (fileFoto) await uploadFile(fileFoto, `${pendaftaranId}/foto_${fileFoto.name}`);
         if (fileSkl) await uploadFile(fileSkl, `${pendaftaranId}/skl_${fileSkl.name}`);
+        if (fileIjazah) await uploadFile(fileIjazah, `${pendaftaranId}/ijazah_${fileIjazah.name}`);
+        if (fileNisn) await uploadFile(fileNisn, `${pendaftaranId}/nisn_${fileNisn.name}`);
+        if (fileKtp) await uploadFile(fileKtp, `${pendaftaranId}/ktp_${fileKtp.name}`);
 
         // Success redirection state
         sessionStorage.setItem('last_ppdb_no', noPendaftaran);

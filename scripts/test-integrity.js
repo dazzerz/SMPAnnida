@@ -87,22 +87,22 @@ pages.forEach(page => {
 });
 assert(missingCache.length === 0, 'All dashboard pages have CSS cache-busters');
 
-// Test 5: PPDB Calculator Multiplication Logic (legacy, keep)
+// Test 5: PPDB Calculator Multiplication Logic (sinkron rincian biaya resmi 2027/2028)
 console.log('\n[TEST 5] PPDB Calculator Multiplication Logic:');
 function calculateEstimate(program, childCount) {
-  const baseEntry = program === 'pondok' ? 8500000 : 5000000;
-  const baseMonthly = program === 'pondok' ? 1100000 : 425000;
+  const baseEntry = program === 'pondok' ? 6825000 : 4375000;
+  const baseMonthly = program === 'pondok' ? 1050000 : 200000;
   return {
     entry: baseEntry * childCount,
     monthly: baseMonthly * childCount
   };
 }
 const res1 = calculateEstimate('reguler', 1);
-assert(res1.entry === 5000000 && res1.monthly === 425000, '1 Child Reguler calculation correct');
+assert(res1.entry === 4375000 && res1.monthly === 200000, '1 Child Reguler calculation correct');
 const res4 = calculateEstimate('reguler', 4);
-assert(res4.entry === 20000000 && res4.monthly === 1700000, '4 Children Reguler calculation multiplied correctly');
+assert(res4.entry === 17500000 && res4.monthly === 800000, '4 Children Reguler calculation multiplied correctly');
 const resPondok3 = calculateEstimate('pondok', 3);
-assert(resPondok3.entry === 25500000 && resPondok3.monthly === 3300000, '3 Children Boarding calculation multiplied correctly');
+assert(resPondok3.entry === 20475000 && resPondok3.monthly === 3150000, '3 Children Boarding calculation multiplied correctly');
 
 // Results
 console.log('\n--- RESULTS ---');

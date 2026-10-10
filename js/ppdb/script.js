@@ -151,6 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFileSimulator('file-kk', 'kk-status', 'kk-name');
     setupFileSimulator('file-akta', 'akta-status', 'akta-name');
     setupFileSimulator('file-skl', 'skl-status', 'skl-name');
+    setupFileSimulator('file-ijazah', 'ijazah-status', 'ijazah-name');
+    setupFileSimulator('file-nisn', 'nisn-status', 'nisn-name');
+    setupFileSimulator('file-ktp', 'ktp-status', 'ktp-name');
 
     // 5. Payment Details Setup & Confirmation
     // 5. Payment Details Setup & Confirmation
@@ -387,8 +390,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (simProgram && simAnak && outAwal && outBulanan) {
         const rates = {
-            reguler: { biayaAwal: 3250000, spp: 425000 },
-            pondok: { biayaAwal: 4500000, spp: 1100000 }
+            reguler: { biayaAwal: 4375000, spp: 200000 },
+            pondok: { biayaAwal: 6825000, spp: 1050000 }
         };
 
         const calculateBudget = () => {
