@@ -276,6 +276,24 @@ async function fetchMyRegistrationStatus(userId) {
         invoiceNominal.textContent = pendaftaran.tipe_pendaftaran === 'pondok' ? 'Rp 500.000' : 'Rp 250.000';
       }
 
+      // DP Gelombang 1: 50% dari total biaya masuk resmi (reguler 4.375.000 / pondok 6.825.000)
+      const dpNominalEl = document.getElementById('dp-nominal-display');
+      const dpPelunasanEl = document.getElementById('dp-pelunasan-display');
+      const dpProgramNote = document.getElementById('dp-program-note');
+      if (dpNominalEl || dpPelunasanEl || dpProgramNote) {
+        const isPondok = pendaftaran.tipe_pendaftaran === 'pondok';
+        const totalMasuk = isPondok ? 6825000 : 4375000;
+        const half = totalMasuk / 2;
+        const rupiah = (n) => 'Rp ' + n.toLocaleString('id-ID');
+        if (dpNominalEl) dpNominalEl.textContent = rupiah(half);
+        if (dpPelunasanEl) dpPelunasanEl.textContent = rupiah(half);
+        if (dpProgramNote) {
+          dpProgramNote.textContent = isPondok
+            ? 'Program Pondok — total biaya masuk Rp 6.825.000 (sekolah Rp 4.375.000 + perlengkapan boarding Rp 2.450.000).'
+            : 'Program Reguler — total biaya masuk Rp 4.375.000.';
+        }
+      }
+
       // Render Document Verification Status
       const savedDocs = pendaftaran.document_verification || {};
       ['kk', 'akta', 'skl', 'nisn', 'ktp'].forEach(docType => {
