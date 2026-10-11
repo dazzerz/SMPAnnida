@@ -890,6 +890,9 @@ function renderAdminTable(data) {
           <button onclick="viewRegistrationDetails('${r.id}')" class="bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-all">
             🔍 Detail
           </button>
+          <button onclick="printFormulirPendaftaran('${r.id}')" title="Cetak formulir pendaftaran" class="bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 border border-slate-300 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-all">
+            🖨️ Cetak
+          </button>
           ${r.status_pendaftaran === 'Lulus' ? `
             <button onclick="openKonversiModal('${r.id}')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs px-2.5 py-1.5 rounded-lg shadow-sm transition-all flex items-center gap-1">
               🎓 Konversi ke Siswa
@@ -1742,4 +1745,116 @@ window.printPDFLulus = function() {
 
 function exportDataToExcel() { window.exportDataToExcel(); }
 function printPDFLulus() { window.printPDFLulus(); }
+
+// =========================================================================
+// E-FORMULIR PENDAFTARAN (cetak) — Khusus panitia/admin.
+// NIK ditampilkan penuh untuk kebutuhan administrasi ke pemerintahan.
+// Akses tetap dibatasi RLS + guard role pada dashboard admin.
+// =========================================================================
+function getStatusPendaftaranLabel(status) {
+  const map = {
+    Draft: 'Menunggu DP',
+    Verifikasi: 'Verifikasi Berkas',
+    Revisi: 'Perlu Revisi',
+    Seleksi: 'Tes Tahfidz',
+    Lulus: 'Lulus',
+    Gugur: 'Tidak Lulus',
+    Diterima: 'Siswa Aktif'
+  };
+  return map[status] || status || '-';
+}
+
+function getDocStatusLabel(status) {
+  if (status === 'approved') return 'Disetujui';
+  if (status === 'rejected') return 'Perlu Revisi';
+  return 'Menunggu';
+}
+
+window.printFormulirPendaftaran = function(regId) {
+  const r = allRegistrations.find(item => item.id === regId) || selectedRegForVerif;
+  if (!r) {
+    alert('Data pendaftaran tidak ditemukan. Silakan muat ulang halaman dan coba lagi.');
+    return;
+  }
+
+  const template = document.getElementById('formulir-cetak');
+  if (!template) {
+    alert('Template formulir tidak ditemukan di halaman ini.');
+    return;
+  }
+
+  // Semua nilai diisi lewat textContent (bukan innerHTML) agar aman dari XSS.
+  const setText = (id, value) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const v = (value === null || value === undefined) ? '' : String(value).trim();
+    el.textContent = v === '' ? '-' : v;
+  };
+
+  const bio = r.biodata_siswa || {};
+  const ortu = r.data_orangtua || {};
+  const sekolah = r.sekolah_asal || {};
+  const docs = r.document_verification || {};
+
+  // Identitas pendaftaran
+  setText('f-no-daftar', r.no_pendaftaran);
+  setText('f-tanggal-daftar', r.created_at
+    ? new Date(r.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+    : '');
+  setText('f-program', r.tipe_pendaftaran === 'pondok' ? 'Sekolah + Pondok (Boarding)' : 'Hanya Sekolah (Non-Pondok)');
+  setText('f-status', getStatusPendaftaranLabel(r.status_pendaftaran));
+
+  // A. Calon siswa (NIK penuh)
+  setText('f-nama', bio.nama_lengkap);
+  setText('f-nik', bio.nik ? decryptNik(bio.nik) : '');
+  setText('f-nisn', bio.nisn);
+  const ttlParts = [bio.tempat_lahir, bio.tanggal_lahir].filter(Boolean);
+  setText('f-ttl', ttlParts.join(', '));
+  const jkMap = { L: 'Laki-laki', P: 'Perempuan', 'Laki-laki': 'Laki-laki', 'Perempuan': 'Perempuan' };
+  setText('f-jk', jkMap[bio.jenis_kelamin] || bio.jenis_kelamin);
+  setText('f-alamat', bio.alamat_lengkap);
+
+  // B. Orang tua / wali
+  setText('f-ayah', ortu.nama_ayah);
+  setText('f-pekerjaan-ayah', ortu.pekerjaan_ayah);
+  setText('f-ibu', ortu.nama_ibu);
+  setText('f-pekerjaan-ibu', ortu.pekerjaan_ibu);
+  setText('f-wa', ortu.whatsapp);
+  setText('f-email', ortu.email);
+
+  // C. Sekolah asal
+  setText('f-sekolah', sekolah.nama_sekolah);
+  setText('f-npsn', sekolah.npsn);
+
+  // D. Status berkas
+  setText('f-doc-kk', getDocStatusLabel(docs.kartu_keluarga && docs.kartu_keluarga.status));
+  setText('f-doc-akta', getDocStatusLabel(docs.akta_kelahiran && docs.akta_kelahiran.status));
+  setText('f-doc-ijazah', getDocStatusLabel(docs.ijazah && docs.ijazah.status));
+  setText('f-doc-nisn', getDocStatusLabel(docs.kartu_nisn && docs.kartu_nisn.status));
+  setText('f-doc-ktp', getDocStatusLabel(docs.ktp_orangtua && docs.ktp_orangtua.status));
+
+  // Tanda tangan & meta cetak
+  setText('f-ttd-wali', ortu.nama_ayah || ortu.nama_ibu || 'Calon Peserta Didik');
+  setText('f-ttd-panitia', 'Panitia PPDB');
+  setText('f-tanggal-cetak', new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }));
+
+  const cetakOleh = document.getElementById('sidebar-user-name') || document.getElementById('nav-user-name');
+  setText('f-dicetak-oleh', cetakOleh ? cetakOleh.textContent : 'Panitia PPDB');
+
+  // Tampilkan template, cetak, lalu sembunyikan lagi.
+  template.classList.remove('hidden');
+  let restored = false;
+  const restore = () => {
+    if (restored) return;
+    restored = true;
+    template.classList.add('hidden');
+    window.removeEventListener('afterprint', restore);
+  };
+  window.addEventListener('afterprint', restore);
+  window.print();
+  // Fallback untuk browser yang tidak memicu afterprint.
+  setTimeout(restore, 2000);
+};
+
+function printFormulirPendaftaran(regId) { window.printFormulirPendaftaran(regId); }
 

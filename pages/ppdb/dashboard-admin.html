@@ -56,6 +56,22 @@
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 4px;
     }
+    /* Cetak e-formulir pendaftaran: hanya template yang ikut tercetak */
+    @media print {
+      body * { visibility: hidden; }
+      #formulir-cetak, #formulir-cetak * { visibility: visible; }
+      #formulir-cetak {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        box-shadow: none !important;
+        border: none !important;
+        background: #ffffff !important;
+      }
+    }
   </style>
   <style>
     body { animation: pageFadeIn 0.3s ease-out forwards; }
@@ -254,9 +270,14 @@
             <h2 class="text-xl lg:text-2xl font-bold text-slate-900">Detail Verifikasi Berkas</h2>
             <p class="text-slate-600 text-xs mt-1">ID Pendaftaran: <span id="detail-reg-id" class="font-mono text-slate-800 font-bold">-</span></p>
           </div>
-          <button class="tab-trigger bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-semibold px-4 py-2 rounded-xl text-xs transition-all" data-target="admin-dashboard">
-            ← Kembali ke List
-          </button>
+          <div class="flex items-center gap-2 flex-wrap justify-end">
+            <button type="button" id="btn-cetak-formulir" onclick="printFormulirPendaftaran()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-xl text-xs transition-all shadow-lg flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">print</span> Cetak Formulir
+            </button>
+            <button class="tab-trigger bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-semibold px-4 py-2 rounded-xl text-xs transition-all" data-target="admin-dashboard">
+              ← Kembali ke List
+            </button>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -570,7 +591,104 @@
 
   </main>
 
-    
+  <!-- TEMPLATE E-FORMULIR PENDAFTARAN (tersembunyi di layar, tampil saat cetak) -->
+  <!-- Khusus panitia: NIK ditampilkan penuh untuk kebutuhan administrasi. -->
+  <div id="formulir-cetak" class="hidden" style="background:#fff; color:#000; font-family: Arial, Helvetica, sans-serif; max-width:800px; margin:0 auto; padding:40px;">
+    <div style="text-align:center; border-bottom:3px double #000; padding-bottom:14px; margin-bottom:18px;">
+      <h1 style="font-size:22px; font-weight:bold; margin:0; letter-spacing:.5px;">YAYASAN ANNIDA AL-ISLAMY</h1>
+      <h2 style="font-size:18px; font-weight:bold; margin:4px 0 0;">SMP ANNIDA 2 SETU</h2>
+      <p style="font-size:11px; margin:6px 0 0;">Gg. Al-Ikhlas No.47, RT.002/RW.05, Kp. Rawa Atug, Desa Cibening,<br>Kec. Setu, Kabupaten Bekasi, Jawa Barat 17320</p>
+    </div>
+
+    <div style="text-align:center; margin-bottom:18px;">
+      <h3 style="font-size:16px; font-weight:bold; margin:0; text-decoration:underline;">FORMULIR PENDAFTARAN PESERTA DIDIK BARU</h3>
+      <p style="font-size:13px; margin:6px 0 0;">Tahun Ajaran 2027/2028</p>
+    </div>
+
+    <table style="width:100%; border-collapse:collapse; font-size:12px; margin-bottom:16px;">
+      <tr>
+        <td style="width:28%; padding:4px 6px;">No. Pendaftaran</td><td style="width:2%; padding:4px 6px;">:</td>
+        <td style="font-weight:bold;" id="f-no-daftar">-</td>
+        <td style="width:18%; padding:4px 6px;">Tanggal Daftar</td><td style="width:2%; padding:4px 6px;">:</td>
+        <td id="f-tanggal-daftar">-</td>
+      </tr>
+      <tr>
+        <td style="padding:4px 6px;">Program</td><td style="padding:4px 6px;">:</td>
+        <td id="f-program">-</td>
+        <td style="padding:4px 6px;">Status Pendaftaran</td><td style="padding:4px 6px;">:</td>
+        <td style="font-weight:bold;" id="f-status">-</td>
+      </tr>
+    </table>
+    <p style="font-size:13px; font-weight:bold; margin:14px 0 6px; border-bottom:1px solid #000; padding-bottom:3px;">A. DATA CALON SISWA</p>
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <tr><td style="width:28%; padding:4px 6px;">Nama Lengkap</td><td style="width:2%; padding:4px 6px;">:</td><td style="font-weight:bold;" id="f-nama">-</td></tr>
+      <tr><td style="padding:4px 6px;">NIK</td><td style="padding:4px 6px;">:</td><td style="font-weight:bold; letter-spacing:.5px;" id="f-nik">-</td></tr>
+      <tr><td style="padding:4px 6px;">NISN</td><td style="padding:4px 6px;">:</td><td id="f-nisn">-</td></tr>
+      <tr><td style="padding:4px 6px;">Tempat, Tanggal Lahir</td><td style="padding:4px 6px;">:</td><td id="f-ttl">-</td></tr>
+      <tr><td style="padding:4px 6px;">Jenis Kelamin</td><td style="padding:4px 6px;">:</td><td id="f-jk">-</td></tr>
+      <tr><td style="padding:4px 6px; vertical-align:top;">Alamat Lengkap</td><td style="padding:4px 6px; vertical-align:top;">:</td><td id="f-alamat">-</td></tr>
+    </table>
+
+    <p style="font-size:13px; font-weight:bold; margin:14px 0 6px; border-bottom:1px solid #000; padding-bottom:3px;">B. DATA ORANG TUA / WALI</p>
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <tr><td style="width:28%; padding:4px 6px;">Nama Ayah</td><td style="width:2%; padding:4px 6px;">:</td><td id="f-ayah">-</td></tr>
+      <tr><td style="padding:4px 6px;">Pekerjaan Ayah</td><td style="padding:4px 6px;">:</td><td id="f-pekerjaan-ayah">-</td></tr>
+      <tr><td style="padding:4px 6px;">Nama Ibu</td><td style="padding:4px 6px;">:</td><td id="f-ibu">-</td></tr>
+      <tr><td style="padding:4px 6px;">Pekerjaan Ibu</td><td style="padding:4px 6px;">:</td><td id="f-pekerjaan-ibu">-</td></tr>
+      <tr><td style="padding:4px 6px;">Nomor WhatsApp</td><td style="padding:4px 6px;">:</td><td id="f-wa">-</td></tr>
+      <tr><td style="padding:4px 6px;">Email</td><td style="padding:4px 6px;">:</td><td id="f-email">-</td></tr>
+    </table>
+
+    <p style="font-size:13px; font-weight:bold; margin:14px 0 6px; border-bottom:1px solid #000; padding-bottom:3px;">C. SEKOLAH ASAL</p>
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <tr><td style="width:28%; padding:4px 6px;">Nama Sekolah</td><td style="width:2%; padding:4px 6px;">:</td><td id="f-sekolah">-</td></tr>
+      <tr><td style="padding:4px 6px;">NPSN</td><td style="padding:4px 6px;">:</td><td id="f-npsn">-</td></tr>
+    </table>
+    <p style="font-size:13px; font-weight:bold; margin:14px 0 6px; border-bottom:1px solid #000; padding-bottom:3px;">D. STATUS BERKAS PERSYARATAN</p>
+    <table style="width:100%; border-collapse:collapse; font-size:12px; border:1px solid #000;">
+      <tr style="background:#f0f0f0;">
+        <td style="border:1px solid #000; padding:5px 6px; width:5%;">No.</td>
+        <td style="border:1px solid #000; padding:5px 6px;">Jenis Berkas</td>
+        <td style="border:1px solid #000; padding:5px 6px; width:30%;">Status</td>
+      </tr>
+      <tr><td style="border:1px solid #000; padding:5px 6px;">1</td><td style="border:1px solid #000; padding:5px 6px;">Kartu Keluarga (KK)</td><td style="border:1px solid #000; padding:5px 6px;" id="f-doc-kk">-</td></tr>
+      <tr><td style="border:1px solid #000; padding:5px 6px;">2</td><td style="border:1px solid #000; padding:5px 6px;">Akta Kelahiran</td><td style="border:1px solid #000; padding:5px 6px;" id="f-doc-akta">-</td></tr>
+      <tr><td style="border:1px solid #000; padding:5px 6px;">3</td><td style="border:1px solid #000; padding:5px 6px;">Ijazah / SKL SD-MI</td><td style="border:1px solid #000; padding:5px 6px;" id="f-doc-ijazah">-</td></tr>
+      <tr><td style="border:1px solid #000; padding:5px 6px;">4</td><td style="border:1px solid #000; padding:5px 6px;">Kartu NISN</td><td style="border:1px solid #000; padding:5px 6px;" id="f-doc-nisn">-</td></tr>
+      <tr><td style="border:1px solid #000; padding:5px 6px;">5</td><td style="border:1px solid #000; padding:5px 6px;">KTP Orang Tua</td><td style="border:1px solid #000; padding:5px 6px;" id="f-doc-ktp">-</td></tr>
+    </table>
+
+    <p style="font-size:13px; font-weight:bold; margin:14px 0 6px; border-bottom:1px solid #000; padding-bottom:3px;">E. SKEMA PEMBAYARAN GELOMBANG 1</p>
+    <table style="width:100%; border-collapse:collapse; font-size:12px;">
+      <tr><td style="width:28%; padding:4px 6px;">Tahap 1 (maks. Des 2026)</td><td style="width:2%; padding:4px 6px;">:</td><td>DP minimal 50% dari total biaya masuk</td></tr>
+      <tr><td style="padding:4px 6px;">Tahap 2 (maks. Jun 2027)</td><td style="padding:4px 6px;">:</td><td>Pelunasan sisa 50% (biaya masuk, formulir &amp; sumatif lunas)</td></tr>
+      <tr><td style="padding:4px 6px;">Juli 2027</td><td style="padding:4px 6px;">:</td><td>SPP tetap dibayar</td></tr>
+      <tr><td style="padding:4px 6px;">Agu &ndash; Des 2027</td><td style="padding:4px 6px;">:</td><td style="font-weight:bold;">Bebas SPP (5 bulan)</td></tr>
+    </table>
+
+    <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:34px;">
+      <tr>
+        <td style="width:50%; text-align:center;">
+          <p style="margin:0;">Calon Peserta Didik / Orang Tua</p>
+          <br><br><br><br>
+          <p style="margin:0; font-weight:bold; text-decoration:underline;" id="f-ttd-wali">(&hellip;)</p>
+        </td>
+        <td style="width:50%; text-align:center;">
+          <p style="margin:0;">Setu, <span id="f-tanggal-cetak">-</span></p>
+          <p style="margin:0;">Panitia PPDB SMP Annida 2 Setu</p>
+          <br><br><br><br>
+          <p style="margin:0; font-weight:bold; text-decoration:underline;" id="f-ttd-panitia">(&hellip;)</p>
+        </td>
+      </tr>
+    </table>
+
+    <p style="font-size:10px; color:#555; margin-top:24px; border-top:1px solid #999; padding-top:6px;">
+      Dokumen dicetak dari Sistem Informasi PPDB SMP Annida oleh <span id="f-dicetak-oleh">-</span>.
+      Formulir ini merupakan rekapitulasi data pendaftaran dan bukan surat kelulusan.
+    </p>
+  </div>
+
+
   <script>
     function showTahfidzTab() {
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
