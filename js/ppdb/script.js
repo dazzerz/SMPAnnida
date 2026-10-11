@@ -16,14 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
+            // Lewati placeholder ("#") & link keluar (target=_blank) agar tidak
+            // memicu SyntaxError di querySelector('#') maupun memblokir tab baru.
+            const href = this.getAttribute('href');
+            if (!href || href === '#' || this.target === '_blank') return;
+            const target = document.querySelector(href);
+            if (!target) return;
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         });
     });
 
