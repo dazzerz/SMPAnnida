@@ -13,6 +13,7 @@ export const authState = {
     get currentTeacher() { return _currentTeacher; },
     get isAdmin() { return _isAdmin; },
     get isPembina() { return _isPembina; },
+    get isLoaded() { return _isLoaded; },
     // Getter dipertahankan (=false) agar kode lama tidak crash, tidak pernah true lagi.
 
     setAuth(user, teacher, admin, pembina = false) {
